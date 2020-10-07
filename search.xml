@@ -240,6 +240,20 @@
       </tags>
   </entry>
   <entry>
+    <title>adt-sdk-tools-eclipse-java版本关系</title>
+    <url>/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/</url>
+    <content><![CDATA[<p>图片、反正这东西只是查看、不需要复制粘贴<br><img src="version.png" alt="version"></p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+        <tag>sdk</tag>
+        <tag>adt</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>android中使用intent来实现Activity带数据跳转</title>
     <url>/2016/04/22/android%E4%B8%AD%E4%BD%BF%E7%94%A8intent%E6%9D%A5%E5%AE%9E%E7%8E%B0Activity%E5%B8%A6%E6%95%B0%E6%8D%AE%E8%B7%B3%E8%BD%AC/</url>
     <content><![CDATA[<h2 id="为什么要使用startActivityForResult"><a href="#为什么要使用startActivityForResult" class="headerlink" title="为什么要使用startActivityForResult"></a>为什么要使用startActivityForResult</h2><p>大家都知道startActivity()是用来切换跳转Activity的,如果想要在另个Activity中出书数据的话,只需要在源activity中使用intent.putExtra()方法传出数据,在对应activity中使用intent.get**Extra()方法接收数据就行了</p>
@@ -295,20 +309,6 @@
       <tags>
         <tag>android</tag>
         <tag>intent</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>adt-sdk-tools-eclipse-java版本关系</title>
-    <url>/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/</url>
-    <content><![CDATA[<p>图片、反正这东西只是查看、不需要复制粘贴<br><img src="version.png" alt="version"></p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
-        <tag>sdk</tag>
-        <tag>adt</tag>
       </tags>
   </entry>
   <entry>
@@ -393,80 +393,6 @@
         <tag>java</tag>
         <tag>批处理</tag>
         <tag>bat</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>chrome adobe flash不是最新版本</title>
-    <url>/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/</url>
-    <content><![CDATA[<p>google-chrome最近更新后flash不能正常运行了, 好象是不再包含flash player了,<br>在看视频或者需要用到flash player的时候就会提示:<br><code>adobe flash player 不是最新版本</code></p>
-<p>解决方法也简单, 只是需要梯(fan)子(qiang), 如何找梯子本文就不提及了.<br>有了梯子之后, 设置好代理启动chrome, 在地址栏输入: <code>chrome://components/</code>, 回车,<br>然后找到flash player那一项, 点击更新就行了. </p>
-<p>下面详细说说linux下和windows下怎么设置代理:</p>
-<p>linux下在<code>终端</code>中设置好代理变量, 然后接着在同一个终端下以命令的方式启动chrome就行了,下面是具体命令:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export http_proxy&#x3D;127.0.0.1:8787</span><br><span class="line">export https_proxy&#x3D;127.0.0.1:8787</span><br><span class="line">google-chrome</span><br></pre></td></tr></table></figure>
-
-<p>命令解释, 前两行主要是指定代理地址和端口, 因为我是在本机运行的代理软件, 所以地址是127.0.0.1<br>而8787则是代理软件监听的端口, 第三行则是启动chrome</p>
-<p>windows下就十分简单了, 启动代理软件, 一般代理软件都有系统代理的选项, 选择启动系统代理,<br>然后运行chrome就行了. </p>
-<p>下面附上linux下的过程:<br><img src="update-flash.png" alt="update-flash"></p>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>chrome</tag>
-        <tag>flash</tag>
-        <tag>版本</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>clickhouse materialized view 踩坑记录</title>
-    <url>/2019/12/23/clickhouse-materialized-view-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>最近在使用 clickhouse（下面简称 CH） 的 materialized view（下面简称为 MV）功能，类似其他数据库的物化视图，触发器之类的功能，不过遇到了几点坑，有的通过升级 CH 版本解决了，有的可以在写 sql 的时候小心避免。</p>
-<p>先列一下我个人总结出来的使用要点，不想继续看的可以尝试依据这些要点看能否解决自己的问题：</p>
-<ol>
-<li>在创建 MV 表时，一定要使用 <code>TO</code> 关键字为 MV 表指定存储位置</li>
-<li>在创建 MV 表时如果用到了多表联查，不能为连接表指定别名，如果多个连接表中存在同名字段，在连接表的查询语句中使用 AS 将字段名区分开</li>
-<li>在创建 MV 表时如果用到了多表联查，只有当第一个查询的表有数据插入时，这个 MV 才会被触发</li>
-<li>在创建 MV 表时如果用到了子查询，且子查询会回查 SRC 表，那么这个子查询会回查整个 SRC 表，并不是只有新插入的那部分数据</li>
-<li>在创建 MV 表时不要使用 <code>POPULATE</code> 关键字，而是在 MV 表建好之后将数据手动导入 MV 表</li>
-</ol>
-<hr>
-<p>先看看官方的创建 MV 的语句：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [TO[db.]name] [ENGINE &#x3D; engine] [POPULATE] AS SELECT ...</span><br></pre></td></tr></table></figure>
-
-<p>具体的介绍可以阅读官方文档：<a href="https://clickhouse.yandex/docs/en/query_language/create/#create-view">https://clickhouse.yandex/docs/en/query_language/create/#create-view</a></p>
-<p>值得一提的虽然官方提供了中文文档，但中文文档内容更新不及时，较英文文档有缺失的部分，还是建议阅读英文的。</p>
-<p>我使用 MV 的场景是：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SRC -&gt; MV1 -&gt; MV2</span><br></pre></td></tr></table></figure>
-
-<p>MV1 基于 SRC 表，MV2 基于 MV1 表，且 MV2 中包含多表联查，即 MV2 中的查询语句使用了多个 JOIN 语句，来连接从 MV1 中查询出来的多个子表。</p>
-<p>遇到的的第一个坑是：</p>
-<p>MV2 中的多表联查语句（建表语句中 SELECT 之后的语句）可以手动执行，并使用 <code>INSERT INTO MV2 SELECT ...</code> 语句将结果插入 MV2，但是当通过 MV 功能自动执行这一过程时会报部分列名找不到的错误，自动执行这一过程是指往 SRC 表插入数据，数据会送往 MV1，进而送往 MV2。</p>
-<p>起初我使用的 CH 版本是 <code>19.6.2.11</code>，这个版本的 CH 不支持上述问题中的 MV 复杂查询，升级到目前的最新版：<code>19.16.9.37</code> 可以解决，确切的说 MV 的复杂查询是从 <code>19.11.12.69</code> 版本开始支持的，新版本虽然支持了 MV 复杂查询，但是 sql 语法上需要小心：不能为连接表指定别名，如果多个子查询（连接表）中包含同名字段，可以在子查询（连接表）的 SELECT 中使用 <code>AS</code> 为字段名起个别名，然后在 <code>最终选择字段</code> 中使用子表字段的别名。总之就是不能使用表的别名，但可以使用字段的别名。</p>
-<p>说起来糊涂，举个例子，假设下面的 SELECT 是 MV2 的建表语句中的 SELECT 部分：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT A.user_id, A.user_name, B.user_age, C.user_gender</span><br><span class="line">FROM</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_name</span><br><span class="line">    FROM MV1</span><br><span class="line">) AS A</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_age</span><br><span class="line">    FROM MV1</span><br><span class="line">) AS B</span><br><span class="line">ON A.user_id &#x3D; B.user_id</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_gender</span><br><span class="line">    FROM MV1</span><br><span class="line">) AS C</span><br><span class="line">ON A.user_id &#x3D; c.user_id</span><br></pre></td></tr></table></figure>
-
-<p>由于 MV2 是基于 MV1 的，上述 sql 在手动往 MV1 插入数据时，就会发生报错，但是数据依旧可以插入 MV1，正确的 sql 写法如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT user_id, user_name, user_age, user_gender</span><br><span class="line">FROM</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_name</span><br><span class="line">    FROM MV1</span><br><span class="line">)</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id AS user_id_a, user_age</span><br><span class="line">    FROM MV1</span><br><span class="line">)</span><br><span class="line">ON user_id &#x3D; user_id_a</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id AS user_id_b, user_gender</span><br><span class="line">    FROM MV1</span><br><span class="line">)</span><br><span class="line">ON user_id &#x3D; user_id_b</span><br></pre></td></tr></table></figure>
-
-<p>新版本虽然支持了 MV 复杂查询，但是引入了一个新的问题：第二层 MV 获取不到数据，在本例中即当数据插入 SRC 时，数据也可以插入到 MV1，但却无法插入到 MV2，也没有任何提示，看起来像是 MV2 完全不知道 MV1 通过 SRC 插入了新数据。这个功能在我使用的旧版 CH 时是支持的，只是那时候不支持 MV 复杂查询，这个问题相关的 issue 是：<a href="https://github.com/ClickHouse/ClickHouse/issues/7195">https://github.com/ClickHouse/ClickHouse/issues/7195</a>，解决方案我已经在这个 issue 中回复了，在这里再说一下。</p>
-<p>说到解决方案就得提一下创建 MV 的两种不同的语法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 方法一</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS test_view ENGINE &#x3D; Memory AS SELECT ...</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 方法二</span><br><span class="line">CREATE TABLE test (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS test_view TO test AS SELECT ...</span><br></pre></td></tr></table></figure>
-
-<p>方法一会自动生成一个 CH 内部表，表名以 <code>.inner.</code> 开头，用来存储 MV 的数据。方法二是先创建一个用来存储 MV 数据的表，这个表跟普通的表一样，然后再创建 MV，但使用 <code>TO</code> 关键字为其指定数据存储的位置。</p>
-<p>在目前最新版的 CH <code>19.16.9.37</code> 中，方法一在只有一层 MV 时可以正常工作，当有两层乃至多层 MV 时，只有第一层 MV 会收到插入 SRC 中的数据，后面的 MV 不知道有新数据插入，方法二可以避免这个问题。</p>
-<p>所以在开头我提到的我的使用场景下，可以正常工作的 MV 建表 sql 大致如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE src (定义列) ENGINE Memory;</span><br><span class="line">CREATE TABLE foo (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV1 TO foo AS SELECT ... FROM src WHERE ...</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV2 AS SELECT ... FROM foo WHERE ...</span><br></pre></td></tr></table></figure>
-
-<p>但考虑到后期可能会基于 MV2 创建 MV3，所以最好为 MV2 也指定数据存储位置：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE src (定义列) ENGINE Memory;</span><br><span class="line">CREATE TABLE foo (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV1 TO foo AS SELECT ... FROM src WHERE ...</span><br><span class="line">CREATE TABLE bar (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV2 TO bar AS SELECT ... FROM foo WHERE ...</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>clickhouse</category>
-      </categories>
-      <tags>
-        <tag>clickhouse</tag>
-        <tag>materialized-view</tag>
       </tags>
   </entry>
   <entry>
@@ -1110,6 +1036,80 @@
       </tags>
   </entry>
   <entry>
+    <title>chrome adobe flash不是最新版本</title>
+    <url>/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/</url>
+    <content><![CDATA[<p>google-chrome最近更新后flash不能正常运行了, 好象是不再包含flash player了,<br>在看视频或者需要用到flash player的时候就会提示:<br><code>adobe flash player 不是最新版本</code></p>
+<p>解决方法也简单, 只是需要梯(fan)子(qiang), 如何找梯子本文就不提及了.<br>有了梯子之后, 设置好代理启动chrome, 在地址栏输入: <code>chrome://components/</code>, 回车,<br>然后找到flash player那一项, 点击更新就行了. </p>
+<p>下面详细说说linux下和windows下怎么设置代理:</p>
+<p>linux下在<code>终端</code>中设置好代理变量, 然后接着在同一个终端下以命令的方式启动chrome就行了,下面是具体命令:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export http_proxy&#x3D;127.0.0.1:8787</span><br><span class="line">export https_proxy&#x3D;127.0.0.1:8787</span><br><span class="line">google-chrome</span><br></pre></td></tr></table></figure>
+
+<p>命令解释, 前两行主要是指定代理地址和端口, 因为我是在本机运行的代理软件, 所以地址是127.0.0.1<br>而8787则是代理软件监听的端口, 第三行则是启动chrome</p>
+<p>windows下就十分简单了, 启动代理软件, 一般代理软件都有系统代理的选项, 选择启动系统代理,<br>然后运行chrome就行了. </p>
+<p>下面附上linux下的过程:<br><img src="update-flash.png" alt="update-flash"></p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>chrome</tag>
+        <tag>flash</tag>
+        <tag>版本</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>clickhouse materialized view 踩坑记录</title>
+    <url>/2019/12/23/clickhouse-materialized-view-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>最近在使用 clickhouse（下面简称 CH） 的 materialized view（下面简称为 MV）功能，类似其他数据库的物化视图，触发器之类的功能，不过遇到了几点坑，有的通过升级 CH 版本解决了，有的可以在写 sql 的时候小心避免。</p>
+<p>先列一下我个人总结出来的使用要点，不想继续看的可以尝试依据这些要点看能否解决自己的问题：</p>
+<ol>
+<li>在创建 MV 表时，一定要使用 <code>TO</code> 关键字为 MV 表指定存储位置</li>
+<li>在创建 MV 表时如果用到了多表联查，不能为连接表指定别名，如果多个连接表中存在同名字段，在连接表的查询语句中使用 AS 将字段名区分开</li>
+<li>在创建 MV 表时如果用到了多表联查，只有当第一个查询的表有数据插入时，这个 MV 才会被触发</li>
+<li>在创建 MV 表时如果用到了子查询，且子查询会回查 SRC 表，那么这个子查询会回查整个 SRC 表，并不是只有新插入的那部分数据</li>
+<li>在创建 MV 表时不要使用 <code>POPULATE</code> 关键字，而是在 MV 表建好之后将数据手动导入 MV 表</li>
+</ol>
+<hr>
+<p>先看看官方的创建 MV 的语句：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [TO[db.]name] [ENGINE &#x3D; engine] [POPULATE] AS SELECT ...</span><br></pre></td></tr></table></figure>
+
+<p>具体的介绍可以阅读官方文档：<a href="https://clickhouse.yandex/docs/en/query_language/create/#create-view">https://clickhouse.yandex/docs/en/query_language/create/#create-view</a></p>
+<p>值得一提的虽然官方提供了中文文档，但中文文档内容更新不及时，较英文文档有缺失的部分，还是建议阅读英文的。</p>
+<p>我使用 MV 的场景是：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SRC -&gt; MV1 -&gt; MV2</span><br></pre></td></tr></table></figure>
+
+<p>MV1 基于 SRC 表，MV2 基于 MV1 表，且 MV2 中包含多表联查，即 MV2 中的查询语句使用了多个 JOIN 语句，来连接从 MV1 中查询出来的多个子表。</p>
+<p>遇到的的第一个坑是：</p>
+<p>MV2 中的多表联查语句（建表语句中 SELECT 之后的语句）可以手动执行，并使用 <code>INSERT INTO MV2 SELECT ...</code> 语句将结果插入 MV2，但是当通过 MV 功能自动执行这一过程时会报部分列名找不到的错误，自动执行这一过程是指往 SRC 表插入数据，数据会送往 MV1，进而送往 MV2。</p>
+<p>起初我使用的 CH 版本是 <code>19.6.2.11</code>，这个版本的 CH 不支持上述问题中的 MV 复杂查询，升级到目前的最新版：<code>19.16.9.37</code> 可以解决，确切的说 MV 的复杂查询是从 <code>19.11.12.69</code> 版本开始支持的，新版本虽然支持了 MV 复杂查询，但是 sql 语法上需要小心：不能为连接表指定别名，如果多个子查询（连接表）中包含同名字段，可以在子查询（连接表）的 SELECT 中使用 <code>AS</code> 为字段名起个别名，然后在 <code>最终选择字段</code> 中使用子表字段的别名。总之就是不能使用表的别名，但可以使用字段的别名。</p>
+<p>说起来糊涂，举个例子，假设下面的 SELECT 是 MV2 的建表语句中的 SELECT 部分：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT A.user_id, A.user_name, B.user_age, C.user_gender</span><br><span class="line">FROM</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_name</span><br><span class="line">    FROM MV1</span><br><span class="line">) AS A</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_age</span><br><span class="line">    FROM MV1</span><br><span class="line">) AS B</span><br><span class="line">ON A.user_id &#x3D; B.user_id</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_gender</span><br><span class="line">    FROM MV1</span><br><span class="line">) AS C</span><br><span class="line">ON A.user_id &#x3D; c.user_id</span><br></pre></td></tr></table></figure>
+
+<p>由于 MV2 是基于 MV1 的，上述 sql 在手动往 MV1 插入数据时，就会发生报错，但是数据依旧可以插入 MV1，正确的 sql 写法如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT user_id, user_name, user_age, user_gender</span><br><span class="line">FROM</span><br><span class="line">(</span><br><span class="line">    SELECT user_id, user_name</span><br><span class="line">    FROM MV1</span><br><span class="line">)</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id AS user_id_a, user_age</span><br><span class="line">    FROM MV1</span><br><span class="line">)</span><br><span class="line">ON user_id &#x3D; user_id_a</span><br><span class="line">ALL LEFT JOIN</span><br><span class="line">(</span><br><span class="line">    SELECT user_id AS user_id_b, user_gender</span><br><span class="line">    FROM MV1</span><br><span class="line">)</span><br><span class="line">ON user_id &#x3D; user_id_b</span><br></pre></td></tr></table></figure>
+
+<p>新版本虽然支持了 MV 复杂查询，但是引入了一个新的问题：第二层 MV 获取不到数据，在本例中即当数据插入 SRC 时，数据也可以插入到 MV1，但却无法插入到 MV2，也没有任何提示，看起来像是 MV2 完全不知道 MV1 通过 SRC 插入了新数据。这个功能在我使用的旧版 CH 时是支持的，只是那时候不支持 MV 复杂查询，这个问题相关的 issue 是：<a href="https://github.com/ClickHouse/ClickHouse/issues/7195">https://github.com/ClickHouse/ClickHouse/issues/7195</a>，解决方案我已经在这个 issue 中回复了，在这里再说一下。</p>
+<p>说到解决方案就得提一下创建 MV 的两种不同的语法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 方法一</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS test_view ENGINE &#x3D; Memory AS SELECT ...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 方法二</span><br><span class="line">CREATE TABLE test (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS test_view TO test AS SELECT ...</span><br></pre></td></tr></table></figure>
+
+<p>方法一会自动生成一个 CH 内部表，表名以 <code>.inner.</code> 开头，用来存储 MV 的数据。方法二是先创建一个用来存储 MV 数据的表，这个表跟普通的表一样，然后再创建 MV，但使用 <code>TO</code> 关键字为其指定数据存储的位置。</p>
+<p>在目前最新版的 CH <code>19.16.9.37</code> 中，方法一在只有一层 MV 时可以正常工作，当有两层乃至多层 MV 时，只有第一层 MV 会收到插入 SRC 中的数据，后面的 MV 不知道有新数据插入，方法二可以避免这个问题。</p>
+<p>所以在开头我提到的我的使用场景下，可以正常工作的 MV 建表 sql 大致如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE src (定义列) ENGINE Memory;</span><br><span class="line">CREATE TABLE foo (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV1 TO foo AS SELECT ... FROM src WHERE ...</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV2 AS SELECT ... FROM foo WHERE ...</span><br></pre></td></tr></table></figure>
+
+<p>但考虑到后期可能会基于 MV2 创建 MV3，所以最好为 MV2 也指定数据存储位置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE src (定义列) ENGINE Memory;</span><br><span class="line">CREATE TABLE foo (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV1 TO foo AS SELECT ... FROM src WHERE ...</span><br><span class="line">CREATE TABLE bar (定义列) ENGINE Memory;</span><br><span class="line">CREATE MATERIALIZED VIEW IF NOT EXISTS MV2 TO bar AS SELECT ... FROM foo WHERE ...</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>clickhouse</category>
+      </categories>
+      <tags>
+        <tag>clickhouse</tag>
+        <tag>materialized-view</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>clickhouse 部署集群</title>
     <url>/2019/10/25/clickhouse-%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4/</url>
     <content><![CDATA[<blockquote>
@@ -1240,39 +1240,6 @@
       </tags>
   </entry>
   <entry>
-    <title>c语言在函数中修改指针的值</title>
-    <url>/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/</url>
-    <content><![CDATA[<p>继续学习c语言中…</p>
-<h1 id="引入话题"><a href="#引入话题" class="headerlink" title="引入话题"></a>引入话题</h1><p>请注意文章标题: 在函数中修改指针的值, 而不是修改指针指向的值<br>修改指针指向的值很容易理解, 在函数参数中声明一个指针类型,<br>然后调用方法的时候把需要修改的值的指针传递过去就行了, 大体如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    *a &#x3D; *a + 1; &#x2F;&#x2F;使用取值运算符让指针a指向的值+1</span><br><span class="line">    printf(&quot;a: %d&quot;, *a);</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int a &#x3D; 0;</span><br><span class="line">    test(&amp;a);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a: 1</span><br></pre></td></tr></table></figure>
-
-<p>但本文所要说的是如何修改指针的值, 看下面的例子:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    a &#x3D; a + 1; &#x2F;&#x2F;让指针a的值+1</span><br><span class="line">    if (a !&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;test: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int *a &#x3D; NULL;</span><br><span class="line">    if (a &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    test(a);</span><br><span class="line">    if (a &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">main: a为空</span><br><span class="line">test: a不为空</span><br><span class="line">main: a为空</span><br></pre></td></tr></table></figure>
-<p>可以看到虽然在test()方法里修改了指针的值(不是其指向的值),<br>但main()方法中的指针的值并没有改变, 其实这很容易理解,<code>因为指针也是一种变量</code><br>而且在c语言中方法之间传参都是按值传递, 第一个例子之所以成功修改变量a的值,<br>是因为相对于变量a来说是传递了a的地址(按地址传递),<br>但如果相对于指针而言, 则依然是按值传递(传递的a的地址就是指针的值)</p>
-<h1 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h1><p>所以如果要通过函数修改传递过去的指针的值, 就得使用指向指针的指针,<br>可以如下声明:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;声明test方法</span><br><span class="line">void test(int **b);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;在main中声明指向指针a的指针b</span><br><span class="line">int *a &#x3D; NULL;</span><br><span class="line">int **b &#x3D; NULL;</span><br><span class="line">b &#x3D; &amp;a;</span><br></pre></td></tr></table></figure>
-<p>这样调用test方法时将b传过去就行了, 在test()方法中修改b<code>所指向的值</code>,<br>也就是修改了指针a的值</p>
-<h1 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h1><p>但上述方法比较容易把人搞糊涂, 所以最明了的方式是让test()方法返回修改后的指针,<br>还是第二个例子, 稍作修改:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">int * test(int *a) &#123;</span><br><span class="line">    a &#x3D; a + 1; &#x2F;&#x2F;让指针a的值+1</span><br><span class="line">    if (a !&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;test: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int *a &#x3D; NULL;</span><br><span class="line">    if (a &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    a &#x3D; test(a);</span><br><span class="line">    if (a !&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">main: a为空</span><br><span class="line">test: a不为空</span><br><span class="line">main: a不为空</span><br></pre></td></tr></table></figure>
-
-<p>如果学过传c++, 那么c++中的<code>引用</code>这个概念可以很容易的实现在方法内修改指针,<br>后来才知道c中并没有<code>引用</code>这个东西…</p>
-]]></content>
-      <categories>
-        <category>c</category>
-      </categories>
-      <tags>
-        <tag>c</tag>
-        <tag>指针</tag>
-        <tag>函数</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>c语言修饰符static,extern,#define,const</title>
     <url>/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/</url>
     <content><![CDATA[<blockquote>
@@ -1303,6 +1270,39 @@
         <tag>static</tag>
         <tag>extern</tag>
         <tag>const</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>c语言在函数中修改指针的值</title>
+    <url>/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/</url>
+    <content><![CDATA[<p>继续学习c语言中…</p>
+<h1 id="引入话题"><a href="#引入话题" class="headerlink" title="引入话题"></a>引入话题</h1><p>请注意文章标题: 在函数中修改指针的值, 而不是修改指针指向的值<br>修改指针指向的值很容易理解, 在函数参数中声明一个指针类型,<br>然后调用方法的时候把需要修改的值的指针传递过去就行了, 大体如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    *a &#x3D; *a + 1; &#x2F;&#x2F;使用取值运算符让指针a指向的值+1</span><br><span class="line">    printf(&quot;a: %d&quot;, *a);</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int a &#x3D; 0;</span><br><span class="line">    test(&amp;a);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a: 1</span><br></pre></td></tr></table></figure>
+
+<p>但本文所要说的是如何修改指针的值, 看下面的例子:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    a &#x3D; a + 1; &#x2F;&#x2F;让指针a的值+1</span><br><span class="line">    if (a !&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;test: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int *a &#x3D; NULL;</span><br><span class="line">    if (a &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    test(a);</span><br><span class="line">    if (a &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">main: a为空</span><br><span class="line">test: a不为空</span><br><span class="line">main: a为空</span><br></pre></td></tr></table></figure>
+<p>可以看到虽然在test()方法里修改了指针的值(不是其指向的值),<br>但main()方法中的指针的值并没有改变, 其实这很容易理解,<code>因为指针也是一种变量</code><br>而且在c语言中方法之间传参都是按值传递, 第一个例子之所以成功修改变量a的值,<br>是因为相对于变量a来说是传递了a的地址(按地址传递),<br>但如果相对于指针而言, 则依然是按值传递(传递的a的地址就是指针的值)</p>
+<h1 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h1><p>所以如果要通过函数修改传递过去的指针的值, 就得使用指向指针的指针,<br>可以如下声明:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;声明test方法</span><br><span class="line">void test(int **b);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;在main中声明指向指针a的指针b</span><br><span class="line">int *a &#x3D; NULL;</span><br><span class="line">int **b &#x3D; NULL;</span><br><span class="line">b &#x3D; &amp;a;</span><br></pre></td></tr></table></figure>
+<p>这样调用test方法时将b传过去就行了, 在test()方法中修改b<code>所指向的值</code>,<br>也就是修改了指针a的值</p>
+<h1 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h1><p>但上述方法比较容易把人搞糊涂, 所以最明了的方式是让test()方法返回修改后的指针,<br>还是第二个例子, 稍作修改:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">int * test(int *a) &#123;</span><br><span class="line">    a &#x3D; a + 1; &#x2F;&#x2F;让指针a的值+1</span><br><span class="line">    if (a !&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;test: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int *a &#x3D; NULL;</span><br><span class="line">    if (a &#x3D;&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    a &#x3D; test(a);</span><br><span class="line">    if (a !&#x3D; NULL) &#123;</span><br><span class="line">	printf(&quot;main: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">main: a为空</span><br><span class="line">test: a不为空</span><br><span class="line">main: a不为空</span><br></pre></td></tr></table></figure>
+
+<p>如果学过传c++, 那么c++中的<code>引用</code>这个概念可以很容易的实现在方法内修改指针,<br>后来才知道c中并没有<code>引用</code>这个东西…</p>
+]]></content>
+      <categories>
+        <category>c</category>
+      </categories>
+      <tags>
+        <tag>c</tag>
+        <tag>指针</tag>
+        <tag>函数</tag>
       </tags>
   </entry>
   <entry>
@@ -1536,6 +1536,25 @@
       </tags>
   </entry>
   <entry>
+    <title>java打印三角和乘法口诀</title>
+    <url>/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/</url>
+    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//打印正三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">helloworld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 打印倒三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">helloworld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lines=<span class="number">9</span>; lines&gt;=<span class="number">1</span>; lines--) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 打印乘法口诀</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">helloworld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> columns=<span class="number">1</span>; columns&lt;=lines; columns++) &#123;</span><br><span class="line">                System.out.print(columns+<span class="string">&quot;*&quot;</span>+lines+<span class="string">&quot;=&quot;</span>+columns*lines+<span class="string">&quot;\t&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>附上图片:<br><img src="zsanjiao.png" alt="正三角"><br><img src="dsanjiao.png" alt="倒三角"><br><img src="koujue.png" alt="乘法口诀"></p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>乘法口诀</tag>
+        <tag>三角</tag>
+        <tag>打印</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>jsp-android使用http</title>
     <url>/2016/04/23/jsp-android%E4%BD%BF%E7%94%A8http/</url>
     <content><![CDATA[<blockquote>
@@ -1563,48 +1582,6 @@
         <tag>http</tag>
         <tag>httpget</tag>
         <tag>httppost</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java打印三角和乘法口诀</title>
-    <url>/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/</url>
-    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//打印正三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">helloworld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 打印倒三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">helloworld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lines=<span class="number">9</span>; lines&gt;=<span class="number">1</span>; lines--) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 打印乘法口诀</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">helloworld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> columns=<span class="number">1</span>; columns&lt;=lines; columns++) &#123;</span><br><span class="line">                System.out.print(columns+<span class="string">&quot;*&quot;</span>+lines+<span class="string">&quot;=&quot;</span>+columns*lines+<span class="string">&quot;\t&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>附上图片:<br><img src="zsanjiao.png" alt="正三角"><br><img src="dsanjiao.png" alt="倒三角"><br><img src="koujue.png" alt="乘法口诀"></p>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>乘法口诀</tag>
-        <tag>三角</tag>
-        <tag>打印</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>klib-khash 使用记录</title>
-    <url>/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>klib 的项目地址：<a href="https://github.com/attractivechaos/klib/">https://github.com/attractivechaos/klib/</a></p>
-<p>klib 官方文档：<a href="http://attractivechaos.github.io/klib/">http://attractivechaos.github.io/klib/</a></p>
-<p>总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中遇到的问题和使用过程中需要注意的点。</p>
-<p>上面的 klib 官方文档链接中有不少入门的小例子，但也只是简单的使用方法，很多接口并没有提及，不过也有可能作者没有及时更新文档中的例子。</p>
-<p>在使用过程中要时刻谨记 khash 中给出的接口都是宏，这也意味着在调试的时候很不方便，如果搞不懂一个接口的意思或者想知道这个接口都做了什么，最好还是看一下 khash.h 中的实现。</p>
-<p>就我个人来说，最想提出要注意的一点是 <code>内存释放</code>，在过去一段时间内，我手上依赖 klib 的程序一直都有内存泄漏，不过我始终没有找到原因，直到昨天我才终于定位到是 khash 相关的数据没有被彻底释放。导致这一问题出现的重要原因也在于我接手这个项目时，khash 相关的释放代码已经大量存在了，以至于先入为主，令我以为正确的释放操作就应该就那样，昨天定位到这个问题后我仔细分析了一下 khash 的源码，发现一直以来程序里关于销毁释放内存的操作，一直都是错误的。下面只会使用正确的方法（至少目前我认为是正确的:))，以免误导了其他人。</p>
-<p>khash 里面提供了两种数据结构：hashmap 和 hashset，两种结构的使用方法大致是一样的，可以把 hashset 结构看作是没有值的 hashmap。</p>
-<h1 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明 hashmap 名字和键值的类型</span></span><br><span class="line"><span class="comment">// 这个宏还定义了大量的函数，不过一般都不直接使用那些函数，而是使用通用的接口宏</span></span><br><span class="line"><span class="comment">// 这里声明了一个键值对是 int:int 的 map 类型，注意这里只是声明了一个 类型</span></span><br><span class="line"><span class="comment">// 这个 map 类型的名字是 MAP_int2int，map 的名字后面会经常用到</span></span><br><span class="line"><span class="comment">// 此外，这个宏是对宏 KHASH_INIT 的一个简单封装</span></span><br><span class="line"><span class="comment">// 如果有复杂需求要使用 KHASH_INIT，则需要提供两个 hash 函数，我没有用到就不举例了</span></span><br><span class="line"><span class="comment">// hash 函数的实现可以参考 khash 里已有的来实现</span></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_int2int) *map_int2int = kh_init(MAP_int2int); <span class="comment">// 使用上面声明的 map 类型声明并初始化一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>; <span class="comment">// 访问键、值都需要使用 iter</span></span><br><span class="line">iter = kh_get(MAP_int2int, map_int2int, <span class="number">100</span>); <span class="comment">// 查看 100 这个键是否在 map 中存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_int2int)) &#123; <span class="comment">// 不存在</span></span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>; <span class="comment">// 将 100 这个键放入 map，ret 是一个额外的返回值，用来表示放入操作的结果</span></span><br><span class="line">    iter = kh_put(MAP_int2int, map_int2int, <span class="number">100</span>, &amp;ret); <span class="comment">// 放入成功后返回值 iter 即表示为 100 这个键在 map 中的位置</span></span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_int2int, iter) = <span class="number">200</span>; <span class="comment">// 使用 iter 来存值，值为 200</span></span><br><span class="line"><span class="comment">/* 至此 map 中就有了 100:200 这一个数据 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历 map</span></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_int2int); iter != kh_end(map_int2int); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_int2int, iter)) &#123; <span class="comment">// 这里的判断一定要有</span></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_int2int, iter));</span><br><span class="line">    do_something_bar(kh_val(map_int2int, iter));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* khash 里还提供了更便利的遍历宏：kh_foreach 和 kh_foreach_value */</span></span><br><span class="line"></span><br><span class="line">kh_del(MAP_int2int, map_int2int, iter); <span class="comment">// 当确定一个 iter 之后，可以移除一个键值对</span></span><br><span class="line">kh_clear(MAP_int2int, map_int2int); <span class="comment">// 清空这个 map 的所有数据</span></span><br><span class="line"></span><br><span class="line">do_something_zzz(map_int2int); <span class="comment">// 清空后的 map 还可以继续使用，比如继续往里面存值</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_int2int, map_int2int); <span class="comment">// 销毁 map，销毁之后就不能再使用了</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 与 demo1 基本相同，但多了释放内存的操作，不再使用过多注释了</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">// 一些结构体变量</span></span><br><span class="line">&#125; <span class="keyword">struct_a_t</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct_a_t</span> *<span class="title">create_struct_a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个创建示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_struct_a</span><span class="params">(<span class="keyword">struct_a_t</span> *)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_str</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *c_str)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例字符串的函数</span></span><br><span class="line">    <span class="built_in">free</span>(c_str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建测试数据</span></span><br><span class="line"><span class="keyword">char</span> *test_key = <span class="string">&quot;test_key_data&quot;</span>;</span><br><span class="line"><span class="keyword">struct_a_t</span> *test_value = create_struct_a();</span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2struct_p, <span class="keyword">struct_a_t</span> *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2struct_p) *map_str2struct_p = kh_init(MAP_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>;</span><br><span class="line">iter = kh_get(MAP_str2struct_p, map_str2struct_p, test_key);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_str2struct_p)) &#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    iter = kh_put(MAP_str2struct_p, map_str2struct_p, test_key, &amp;ret);</span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_str2struct_p, iter) = test_value;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_str2struct_p); iter != kh_end(map_str2struct_p); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_str2struct_p, iter)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_str2struct_p, iter));</span><br><span class="line">    do_something_bar(kh_val(map_str2struct_p, iter));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">kh_del(MAP_str2struct_p, map_str2struct_p, iter);</span><br><span class="line">kh_clear(MAP_str2struct_p, map_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要注意的是，map 或 set 中不论键还是值，只要类型是指针，那么指针指向的内存就需要使用者自行释放</span></span><br><span class="line">kh_free_vals(MAP_str2struct_p, map_str2struct_p, free_struct_a); <span class="comment">// 销毁值的宏</span></span><br><span class="line">kh_free(MAP_str2struct_p, map_str2struct_p, free_str); <span class="comment">// 销毁键的宏</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_str2struct_p, map_str2struct_p);</span><br></pre></td></tr></table></figure>
-
-<h1 id="demo3"><a href="#demo3" class="headerlink" title="demo3"></a>demo3</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 还可以嵌套使用</span></span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2map_p, <span class="keyword">khash_t</span>(MAP_int2int) *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2map_p) *map_str2map_p = kh_init(MAP_str2map_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>c</category>
-      </categories>
-      <tags>
-        <tag>klib</tag>
-        <tag>khash</tag>
       </tags>
   </entry>
   <entry>
@@ -1650,6 +1627,29 @@
       <tags>
         <tag>dashboard</tag>
         <tag>登录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>klib-khash 使用记录</title>
+    <url>/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>klib 的项目地址：<a href="https://github.com/attractivechaos/klib/">https://github.com/attractivechaos/klib/</a></p>
+<p>klib 官方文档：<a href="http://attractivechaos.github.io/klib/">http://attractivechaos.github.io/klib/</a></p>
+<p>总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中遇到的问题和使用过程中需要注意的点。</p>
+<p>上面的 klib 官方文档链接中有不少入门的小例子，但也只是简单的使用方法，很多接口并没有提及，不过也有可能作者没有及时更新文档中的例子。</p>
+<p>在使用过程中要时刻谨记 khash 中给出的接口都是宏，这也意味着在调试的时候很不方便，如果搞不懂一个接口的意思或者想知道这个接口都做了什么，最好还是看一下 khash.h 中的实现。</p>
+<p>就我个人来说，最想提出要注意的一点是 <code>内存释放</code>，在过去一段时间内，我手上依赖 klib 的程序一直都有内存泄漏，不过我始终没有找到原因，直到昨天我才终于定位到是 khash 相关的数据没有被彻底释放。导致这一问题出现的重要原因也在于我接手这个项目时，khash 相关的释放代码已经大量存在了，以至于先入为主，令我以为正确的释放操作就应该就那样，昨天定位到这个问题后我仔细分析了一下 khash 的源码，发现一直以来程序里关于销毁释放内存的操作，一直都是错误的。下面只会使用正确的方法（至少目前我认为是正确的:))，以免误导了其他人。</p>
+<p>khash 里面提供了两种数据结构：hashmap 和 hashset，两种结构的使用方法大致是一样的，可以把 hashset 结构看作是没有值的 hashmap。</p>
+<h1 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明 hashmap 名字和键值的类型</span></span><br><span class="line"><span class="comment">// 这个宏还定义了大量的函数，不过一般都不直接使用那些函数，而是使用通用的接口宏</span></span><br><span class="line"><span class="comment">// 这里声明了一个键值对是 int:int 的 map 类型，注意这里只是声明了一个 类型</span></span><br><span class="line"><span class="comment">// 这个 map 类型的名字是 MAP_int2int，map 的名字后面会经常用到</span></span><br><span class="line"><span class="comment">// 此外，这个宏是对宏 KHASH_INIT 的一个简单封装</span></span><br><span class="line"><span class="comment">// 如果有复杂需求要使用 KHASH_INIT，则需要提供两个 hash 函数，我没有用到就不举例了</span></span><br><span class="line"><span class="comment">// hash 函数的实现可以参考 khash 里已有的来实现</span></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_int2int) *map_int2int = kh_init(MAP_int2int); <span class="comment">// 使用上面声明的 map 类型声明并初始化一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>; <span class="comment">// 访问键、值都需要使用 iter</span></span><br><span class="line">iter = kh_get(MAP_int2int, map_int2int, <span class="number">100</span>); <span class="comment">// 查看 100 这个键是否在 map 中存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_int2int)) &#123; <span class="comment">// 不存在</span></span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>; <span class="comment">// 将 100 这个键放入 map，ret 是一个额外的返回值，用来表示放入操作的结果</span></span><br><span class="line">    iter = kh_put(MAP_int2int, map_int2int, <span class="number">100</span>, &amp;ret); <span class="comment">// 放入成功后返回值 iter 即表示为 100 这个键在 map 中的位置</span></span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_int2int, iter) = <span class="number">200</span>; <span class="comment">// 使用 iter 来存值，值为 200</span></span><br><span class="line"><span class="comment">/* 至此 map 中就有了 100:200 这一个数据 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历 map</span></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_int2int); iter != kh_end(map_int2int); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_int2int, iter)) &#123; <span class="comment">// 这里的判断一定要有</span></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_int2int, iter));</span><br><span class="line">    do_something_bar(kh_val(map_int2int, iter));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* khash 里还提供了更便利的遍历宏：kh_foreach 和 kh_foreach_value */</span></span><br><span class="line"></span><br><span class="line">kh_del(MAP_int2int, map_int2int, iter); <span class="comment">// 当确定一个 iter 之后，可以移除一个键值对</span></span><br><span class="line">kh_clear(MAP_int2int, map_int2int); <span class="comment">// 清空这个 map 的所有数据</span></span><br><span class="line"></span><br><span class="line">do_something_zzz(map_int2int); <span class="comment">// 清空后的 map 还可以继续使用，比如继续往里面存值</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_int2int, map_int2int); <span class="comment">// 销毁 map，销毁之后就不能再使用了</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 与 demo1 基本相同，但多了释放内存的操作，不再使用过多注释了</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">// 一些结构体变量</span></span><br><span class="line">&#125; <span class="keyword">struct_a_t</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct_a_t</span> *<span class="title">create_struct_a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个创建示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_struct_a</span><span class="params">(<span class="keyword">struct_a_t</span> *)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_str</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *c_str)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例字符串的函数</span></span><br><span class="line">    <span class="built_in">free</span>(c_str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建测试数据</span></span><br><span class="line"><span class="keyword">char</span> *test_key = <span class="string">&quot;test_key_data&quot;</span>;</span><br><span class="line"><span class="keyword">struct_a_t</span> *test_value = create_struct_a();</span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2struct_p, <span class="keyword">struct_a_t</span> *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2struct_p) *map_str2struct_p = kh_init(MAP_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>;</span><br><span class="line">iter = kh_get(MAP_str2struct_p, map_str2struct_p, test_key);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_str2struct_p)) &#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    iter = kh_put(MAP_str2struct_p, map_str2struct_p, test_key, &amp;ret);</span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_str2struct_p, iter) = test_value;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_str2struct_p); iter != kh_end(map_str2struct_p); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_str2struct_p, iter)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_str2struct_p, iter));</span><br><span class="line">    do_something_bar(kh_val(map_str2struct_p, iter));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">kh_del(MAP_str2struct_p, map_str2struct_p, iter);</span><br><span class="line">kh_clear(MAP_str2struct_p, map_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要注意的是，map 或 set 中不论键还是值，只要类型是指针，那么指针指向的内存就需要使用者自行释放</span></span><br><span class="line">kh_free_vals(MAP_str2struct_p, map_str2struct_p, free_struct_a); <span class="comment">// 销毁值的宏</span></span><br><span class="line">kh_free(MAP_str2struct_p, map_str2struct_p, free_str); <span class="comment">// 销毁键的宏</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_str2struct_p, map_str2struct_p);</span><br></pre></td></tr></table></figure>
+
+<h1 id="demo3"><a href="#demo3" class="headerlink" title="demo3"></a>demo3</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 还可以嵌套使用</span></span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2map_p, <span class="keyword">khash_t</span>(MAP_int2int) *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2map_p) *map_str2map_p = kh_init(MAP_str2map_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>c</category>
+      </categories>
+      <tags>
+        <tag>klib</tag>
+        <tag>khash</tag>
       </tags>
   </entry>
   <entry>
@@ -2197,6 +2197,45 @@
       </tags>
   </entry>
   <entry>
+    <title>python 生成器与协程的关系和区别</title>
+    <url>/2020/09/22/python-%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>部分摘录自官方中文文档，python 版本 <code>3.7.4</code></p>
+<p>注意概念区分：生成器函数，生成器，协程函数，协程，异步生成器函数，异步生成器</p>
+<p>主要是学习笔记，没有进行过多整理</p>
+<ul>
+<li><p>使用 async def 语法定义的函数总是为协程函数，即使它们不包含 await 或 async 关键字，另外 await，async for 以及 async with 只能在协程函数体中使用（注：以普通函数调用方式调用协程函数时，将返回协程对象，而不是运行协程）</p>
+</li>
+<li><p>在一个函数体内使用 yield 表达式会使这个函数变成一个生成器，并且在一个 async def 定义的函数体（注：协程函数）内使用 yield 表达式会让协程函数变成异步的生成器（注：以普通函数调用方式调用生成器函数时，将返回生成器对象，而不是运行生成器；以普通函数调用方式调用异步生成器函数时，将返回异步生成器对象，而不是运行异步生成器）</p>
+</li>
+<li><p>生成器函数与协程（注：函数）非常相似，它们 yield 多次，它们具有多个入口点，并且它们的执行可以被挂起。唯一的区别是生成器函数不能控制在它在 yield 后交给哪里继续执行，控制权总是转移到生成器的调用者</p>
+</li>
+<li><p>当使用 yield from <expr> 时，它会将所提供的表达式视为一个子迭代器，这个子迭代器产生的所有值都直接被传递给当前生成器方法的调用者</p>
+</li>
+<li><p>启动一个生成器的方法有两种，注意，这两种调用都有返回值，返回的是生成器 yield 的值：</p>
+<ul>
+<li>使用内建的 next() 函数，继续使用 next() 函数将继续运行生成器</li>
+<li>使用生成器的 send() 方法，但启动时必须传参 None，继续调用 send() 方法将继续运行生成器，此时可以向生成器传入任意值</li>
+</ul>
+</li>
+<li><p>启动一个协程的方法：导入 asyncio 包，使用 asyncio.run() 函数执行一个协程，注意，需要传入协程对象作为参数，而不是协程函数</p>
+</li>
+<li><p>注意，await 语句返回指定协程 return 的值（与生成器的 yeild 有区别）</p>
+</li>
+<li><p>如果只有一个协程在运行的话，代码执行流程与普通函数一样，因为协程函数中的 await &lt;指定协程&gt; 语句将会挂起（阻塞）当前协程，去执行 await 语句指定的协程，直到指定协程执行结束返回后才恢复当前协程</p>
+</li>
+<li><p>可以使用 asyncio.gather() 函数并发执行多个协程</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>生成器</tag>
+        <tag>协程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python的库文件在哪儿</title>
     <url>/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/</url>
     <content><![CDATA[<blockquote>
@@ -2449,6 +2488,30 @@
       </tags>
   </entry>
   <entry>
+    <title>vim-ycm-qt自动补全问题</title>
+    <url>/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<blockquote>
+<p>更新：<br>可以使用<a href="https://github.com/rdnetto/YCM-Generator">rdnetto/YCM-Generator</a>插件来自动生成<code>.ycm_extra_conf.py</code></p>
+</blockquote>
+<blockquote>
+<p>当前操作系统: osx 10.13<br/><br>使用brew安装的qt5</p>
+</blockquote>
+<p>qt安装目录在哪里不需要管, 因为使用brew更新qt后安装目录会随着版本变动而变动, 但不管哪个版本brew都会在<code>/usr/local/opt/</code>创建一个链接指向真正的目录, 我只安装了qt5, 所以上述目录下有两个链接, qt和qt5, 这两个目录都指向qt5的安装目录, 任选一个路径用于下面的命令即可, 这里使用这个路径:<code>/usr/local/opt/qt</code>.</p>
+<p>执行一个命令来找到所有需要的库的路径:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find &#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F; -name &quot;Headers&quot; | grep &quot;framework\&#x2F;Headers&quot; &gt; ~&#x2F;headers</span><br></pre></td></tr></table></figure>
+<p>执行完毕后会在HOME下生成<code>headers</code>文件, 文件的内容就是qt5所有的库的路径(头文件), 接下来就是将这些路径添加到ycm的配置文件<code>.ycm_extra_conf.py</code>里了, 下面是我修改好的, 保存为:<code>.ycm_extra_conf.py</code>放到项目目录下(或上级目录), ycm就会自动读取了.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from distutils.sysconfig import get_python_inc</span><br><span class="line">import platform</span><br><span class="line">import os</span><br><span class="line">import ycm_core</span><br><span class="line"></span><br><span class="line"># These are the compilation flags that will be used in case there&#39;s no</span><br><span class="line"># compilation database set (by default, one is not set).</span><br><span class="line"># CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.</span><br><span class="line">flags &#x3D; [</span><br><span class="line">&#39;-Wall&#39;,</span><br><span class="line">&#39;-Wextra&#39;,</span><br><span class="line">&#39;-Werror&#39;,</span><br><span class="line">&#39;-Wno-long-long&#39;,</span><br><span class="line">&#39;-Wno-variadic-macros&#39;,</span><br><span class="line">&#39;-fexceptions&#39;,</span><br><span class="line">&#39;-DNDEBUG&#39;,</span><br><span class="line"># You 100% do NOT need -DUSE_CLANG_COMPLETER in your flags; only the YCM</span><br><span class="line"># source code needs it.</span><br><span class="line">&#39;-DUSE_CLANG_COMPLETER&#39;,</span><br><span class="line"># THIS IS IMPORTANT! Without the &#39;-x&#39; flag, Clang won&#39;t know which language to</span><br><span class="line"># use when compiling headers. So it will guess. Badly. So C++ headers will be</span><br><span class="line"># compiled as C headers. You don&#39;t want that so ALWAYS specify the &#39;-x&#39; flag.</span><br><span class="line"># For a C project, you would set this to &#39;c&#39; instead of &#39;c++&#39;.</span><br><span class="line">&#39;-x&#39;,</span><br><span class="line">&#39;c++&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;BoostParts&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">get_python_inc(),</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;llvm&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;llvm&#x2F;tools&#x2F;clang&#x2F;include&#39;,</span><br><span class="line">&#39;-I&#39;,</span><br><span class="line">&#39;.&#39;,</span><br><span class="line">&#39;-I&#39;,</span><br><span class="line">&#39;.&#x2F;ClangCompleter&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;gtest&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;gtest&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;benchmarks&#x2F;benchmark&#x2F;include&#39;,</span><br><span class="line"># for qt5 which installed by brew in mac</span><br><span class="line">&#39;-I&#39;, &#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;include&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DAnimation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DInput.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DLogic.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuick.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickAnimation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickInput.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickRender.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickScene2D.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DRender.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtBluetooth.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtCharts.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtConcurrent.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDataVisualization.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDBus.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDesigner.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDesignerComponents.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtGamepad.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtGui.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtHelp.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtLocation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMacExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimedia.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimediaQuick_p.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimediaWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNetwork.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNetworkAuth.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNfc.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtOpenGL.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPositioning.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPrintSupport.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPurchasing.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuick.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickControls2.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickParticles.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickTemplates2.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickTest.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtRemoteObjects.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtRepParser.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScript.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScriptTools.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScxml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSensors.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSerialBus.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSerialPort.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSql.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSvg.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtTest.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtTextToSpeech.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtUiPlugin.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebChannel.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngine.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngineCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngineWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebSockets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebView.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtXml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtXmlPatterns.framework&#x2F;Headers&#39;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"># Clang automatically sets the &#39;-std&#x3D;&#39; flag to &#39;c++14&#39; for MSVC 2015 or later,</span><br><span class="line"># which is required for compiling the standard library, and to &#39;c++11&#39; for older</span><br><span class="line"># versions.</span><br><span class="line">if platform.system() !&#x3D; &#39;Windows&#39;:</span><br><span class="line">  flags.append( &#39;-std&#x3D;c++11&#39; )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Set this to the absolute path to the folder (NOT the file!) containing the</span><br><span class="line"># compile_commands.json file to use that instead of &#39;flags&#39;. See here for</span><br><span class="line"># more details: http:&#x2F;&#x2F;clang.llvm.org&#x2F;docs&#x2F;JSONCompilationDatabase.html</span><br><span class="line">#</span><br><span class="line"># You can get CMake to generate this file for you by adding:</span><br><span class="line">#   set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )</span><br><span class="line"># to your CMakeLists.txt file.</span><br><span class="line">#</span><br><span class="line"># Most projects will NOT need to set this to anything; you can just change the</span><br><span class="line"># &#39;flags&#39; list of compilation flags. Notice that YCM itself uses that approach.</span><br><span class="line">compilation_database_folder &#x3D; &#39;&#39;</span><br><span class="line"></span><br><span class="line">if os.path.exists( compilation_database_folder ):</span><br><span class="line">  database &#x3D; ycm_core.CompilationDatabase( compilation_database_folder )</span><br><span class="line">else:</span><br><span class="line">  database &#x3D; None</span><br><span class="line"></span><br><span class="line">SOURCE_EXTENSIONS &#x3D; [ &#39;.cpp&#39;, &#39;.cxx&#39;, &#39;.cc&#39;, &#39;.c&#39;, &#39;.m&#39;, &#39;.mm&#39; ]</span><br><span class="line"></span><br><span class="line">def DirectoryOfThisScript():</span><br><span class="line">  return os.path.dirname( os.path.abspath( __file__ ) )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def IsHeaderFile( filename ):</span><br><span class="line">  extension &#x3D; os.path.splitext( filename )[ 1 ]</span><br><span class="line">  return extension in [ &#39;.h&#39;, &#39;.hxx&#39;, &#39;.hpp&#39;, &#39;.hh&#39; ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def GetCompilationInfoForFile( filename ):</span><br><span class="line">  # The compilation_commands.json file generated by CMake does not have entries</span><br><span class="line">  # for header files. So we do our best by asking the db for flags for a</span><br><span class="line">  # corresponding source file, if any. If one exists, the flags for that file</span><br><span class="line">  # should be good enough.</span><br><span class="line">  if IsHeaderFile( filename ):</span><br><span class="line">    basename &#x3D; os.path.splitext( filename )[ 0 ]</span><br><span class="line">    for extension in SOURCE_EXTENSIONS:</span><br><span class="line">      replacement_file &#x3D; basename + extension</span><br><span class="line">      if os.path.exists( replacement_file ):</span><br><span class="line">        compilation_info &#x3D; database.GetCompilationInfoForFile(</span><br><span class="line">          replacement_file )</span><br><span class="line">        if compilation_info.compiler_flags_:</span><br><span class="line">          return compilation_info</span><br><span class="line">    return None</span><br><span class="line">  return database.GetCompilationInfoForFile( filename )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def FlagsForFile( filename, **kwargs ):</span><br><span class="line">  if not database:</span><br><span class="line">    return &#123;</span><br><span class="line">      &#39;flags&#39;: flags,</span><br><span class="line">      &#39;include_paths_relative_to_dir&#39;: DirectoryOfThisScript()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  compilation_info &#x3D; GetCompilationInfoForFile( filename )</span><br><span class="line">  if not compilation_info:</span><br><span class="line">    return None</span><br><span class="line"></span><br><span class="line">  # Bear in mind that compilation_info.compiler_flags_ does NOT return a</span><br><span class="line">  # python list, but a &quot;list-like&quot; StringVec object.</span><br><span class="line">  final_flags &#x3D; list( compilation_info.compiler_flags_ )</span><br><span class="line"></span><br><span class="line">  # NOTE: This is just for YouCompleteMe; it&#39;s highly likely that your project</span><br><span class="line">  # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR</span><br><span class="line">  # ycm_extra_conf IF YOU&#39;RE NOT 100% SURE YOU NEED IT.</span><br><span class="line">  try:</span><br><span class="line">    final_flags.remove( &#39;-stdlib&#x3D;libc++&#39; )</span><br><span class="line">  except ValueError:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    &#39;flags&#39;: final_flags,</span><br><span class="line">    &#39;include_paths_relative_to_dir&#39;: compilation_info.compiler_working_dir_</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>vim</category>
+      </categories>
+      <tags>
+        <tag>qt</tag>
+        <tag>vim</tag>
+        <tag>ycm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vim中javacomplete2与syntastic一点使用心得</title>
     <url>/2017/02/12/vim%E4%B8%ADjavacomplete2%E4%B8%8Esyntastic%E4%B8%80%E7%82%B9%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/</url>
     <content><![CDATA[<h1 id="插件简介"><a href="#插件简介" class="headerlink" title="插件简介"></a>插件简介</h1><h2 id="javacomplete2"><a href="#javacomplete2" class="headerlink" title="javacomplete2"></a>javacomplete2</h2><ul>
@@ -2499,27 +2562,31 @@
       </tags>
   </entry>
   <entry>
-    <title>vim-ycm-qt自动补全问题</title>
-    <url>/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<blockquote>
-<p>更新：<br>可以使用<a href="https://github.com/rdnetto/YCM-Generator">rdnetto/YCM-Generator</a>插件来自动生成<code>.ycm_extra_conf.py</code></p>
-</blockquote>
-<blockquote>
-<p>当前操作系统: osx 10.13<br/><br>使用brew安装的qt5</p>
-</blockquote>
-<p>qt安装目录在哪里不需要管, 因为使用brew更新qt后安装目录会随着版本变动而变动, 但不管哪个版本brew都会在<code>/usr/local/opt/</code>创建一个链接指向真正的目录, 我只安装了qt5, 所以上述目录下有两个链接, qt和qt5, 这两个目录都指向qt5的安装目录, 任选一个路径用于下面的命令即可, 这里使用这个路径:<code>/usr/local/opt/qt</code>.</p>
-<p>执行一个命令来找到所有需要的库的路径:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find &#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F; -name &quot;Headers&quot; | grep &quot;framework\&#x2F;Headers&quot; &gt; ~&#x2F;headers</span><br></pre></td></tr></table></figure>
-<p>执行完毕后会在HOME下生成<code>headers</code>文件, 文件的内容就是qt5所有的库的路径(头文件), 接下来就是将这些路径添加到ycm的配置文件<code>.ycm_extra_conf.py</code>里了, 下面是我修改好的, 保存为:<code>.ycm_extra_conf.py</code>放到项目目录下(或上级目录), ycm就会自动读取了.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from distutils.sysconfig import get_python_inc</span><br><span class="line">import platform</span><br><span class="line">import os</span><br><span class="line">import ycm_core</span><br><span class="line"></span><br><span class="line"># These are the compilation flags that will be used in case there&#39;s no</span><br><span class="line"># compilation database set (by default, one is not set).</span><br><span class="line"># CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.</span><br><span class="line">flags &#x3D; [</span><br><span class="line">&#39;-Wall&#39;,</span><br><span class="line">&#39;-Wextra&#39;,</span><br><span class="line">&#39;-Werror&#39;,</span><br><span class="line">&#39;-Wno-long-long&#39;,</span><br><span class="line">&#39;-Wno-variadic-macros&#39;,</span><br><span class="line">&#39;-fexceptions&#39;,</span><br><span class="line">&#39;-DNDEBUG&#39;,</span><br><span class="line"># You 100% do NOT need -DUSE_CLANG_COMPLETER in your flags; only the YCM</span><br><span class="line"># source code needs it.</span><br><span class="line">&#39;-DUSE_CLANG_COMPLETER&#39;,</span><br><span class="line"># THIS IS IMPORTANT! Without the &#39;-x&#39; flag, Clang won&#39;t know which language to</span><br><span class="line"># use when compiling headers. So it will guess. Badly. So C++ headers will be</span><br><span class="line"># compiled as C headers. You don&#39;t want that so ALWAYS specify the &#39;-x&#39; flag.</span><br><span class="line"># For a C project, you would set this to &#39;c&#39; instead of &#39;c++&#39;.</span><br><span class="line">&#39;-x&#39;,</span><br><span class="line">&#39;c++&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;BoostParts&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">get_python_inc(),</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;llvm&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;llvm&#x2F;tools&#x2F;clang&#x2F;include&#39;,</span><br><span class="line">&#39;-I&#39;,</span><br><span class="line">&#39;.&#39;,</span><br><span class="line">&#39;-I&#39;,</span><br><span class="line">&#39;.&#x2F;ClangCompleter&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;gtest&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;gtest&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;benchmarks&#x2F;benchmark&#x2F;include&#39;,</span><br><span class="line"># for qt5 which installed by brew in mac</span><br><span class="line">&#39;-I&#39;, &#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;include&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DAnimation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DInput.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DLogic.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuick.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickAnimation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickInput.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickRender.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickScene2D.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DRender.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtBluetooth.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtCharts.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtConcurrent.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDataVisualization.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDBus.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDesigner.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDesignerComponents.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtGamepad.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtGui.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtHelp.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtLocation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMacExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimedia.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimediaQuick_p.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimediaWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNetwork.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNetworkAuth.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNfc.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtOpenGL.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPositioning.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPrintSupport.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPurchasing.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuick.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickControls2.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickParticles.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickTemplates2.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickTest.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtRemoteObjects.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtRepParser.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScript.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScriptTools.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScxml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSensors.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSerialBus.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSerialPort.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSql.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSvg.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtTest.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtTextToSpeech.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtUiPlugin.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebChannel.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngine.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngineCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngineWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebSockets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebView.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtXml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtXmlPatterns.framework&#x2F;Headers&#39;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"># Clang automatically sets the &#39;-std&#x3D;&#39; flag to &#39;c++14&#39; for MSVC 2015 or later,</span><br><span class="line"># which is required for compiling the standard library, and to &#39;c++11&#39; for older</span><br><span class="line"># versions.</span><br><span class="line">if platform.system() !&#x3D; &#39;Windows&#39;:</span><br><span class="line">  flags.append( &#39;-std&#x3D;c++11&#39; )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Set this to the absolute path to the folder (NOT the file!) containing the</span><br><span class="line"># compile_commands.json file to use that instead of &#39;flags&#39;. See here for</span><br><span class="line"># more details: http:&#x2F;&#x2F;clang.llvm.org&#x2F;docs&#x2F;JSONCompilationDatabase.html</span><br><span class="line">#</span><br><span class="line"># You can get CMake to generate this file for you by adding:</span><br><span class="line">#   set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )</span><br><span class="line"># to your CMakeLists.txt file.</span><br><span class="line">#</span><br><span class="line"># Most projects will NOT need to set this to anything; you can just change the</span><br><span class="line"># &#39;flags&#39; list of compilation flags. Notice that YCM itself uses that approach.</span><br><span class="line">compilation_database_folder &#x3D; &#39;&#39;</span><br><span class="line"></span><br><span class="line">if os.path.exists( compilation_database_folder ):</span><br><span class="line">  database &#x3D; ycm_core.CompilationDatabase( compilation_database_folder )</span><br><span class="line">else:</span><br><span class="line">  database &#x3D; None</span><br><span class="line"></span><br><span class="line">SOURCE_EXTENSIONS &#x3D; [ &#39;.cpp&#39;, &#39;.cxx&#39;, &#39;.cc&#39;, &#39;.c&#39;, &#39;.m&#39;, &#39;.mm&#39; ]</span><br><span class="line"></span><br><span class="line">def DirectoryOfThisScript():</span><br><span class="line">  return os.path.dirname( os.path.abspath( __file__ ) )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def IsHeaderFile( filename ):</span><br><span class="line">  extension &#x3D; os.path.splitext( filename )[ 1 ]</span><br><span class="line">  return extension in [ &#39;.h&#39;, &#39;.hxx&#39;, &#39;.hpp&#39;, &#39;.hh&#39; ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def GetCompilationInfoForFile( filename ):</span><br><span class="line">  # The compilation_commands.json file generated by CMake does not have entries</span><br><span class="line">  # for header files. So we do our best by asking the db for flags for a</span><br><span class="line">  # corresponding source file, if any. If one exists, the flags for that file</span><br><span class="line">  # should be good enough.</span><br><span class="line">  if IsHeaderFile( filename ):</span><br><span class="line">    basename &#x3D; os.path.splitext( filename )[ 0 ]</span><br><span class="line">    for extension in SOURCE_EXTENSIONS:</span><br><span class="line">      replacement_file &#x3D; basename + extension</span><br><span class="line">      if os.path.exists( replacement_file ):</span><br><span class="line">        compilation_info &#x3D; database.GetCompilationInfoForFile(</span><br><span class="line">          replacement_file )</span><br><span class="line">        if compilation_info.compiler_flags_:</span><br><span class="line">          return compilation_info</span><br><span class="line">    return None</span><br><span class="line">  return database.GetCompilationInfoForFile( filename )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def FlagsForFile( filename, **kwargs ):</span><br><span class="line">  if not database:</span><br><span class="line">    return &#123;</span><br><span class="line">      &#39;flags&#39;: flags,</span><br><span class="line">      &#39;include_paths_relative_to_dir&#39;: DirectoryOfThisScript()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  compilation_info &#x3D; GetCompilationInfoForFile( filename )</span><br><span class="line">  if not compilation_info:</span><br><span class="line">    return None</span><br><span class="line"></span><br><span class="line">  # Bear in mind that compilation_info.compiler_flags_ does NOT return a</span><br><span class="line">  # python list, but a &quot;list-like&quot; StringVec object.</span><br><span class="line">  final_flags &#x3D; list( compilation_info.compiler_flags_ )</span><br><span class="line"></span><br><span class="line">  # NOTE: This is just for YouCompleteMe; it&#39;s highly likely that your project</span><br><span class="line">  # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR</span><br><span class="line">  # ycm_extra_conf IF YOU&#39;RE NOT 100% SURE YOU NEED IT.</span><br><span class="line">  try:</span><br><span class="line">    final_flags.remove( &#39;-stdlib&#x3D;libc++&#39; )</span><br><span class="line">  except ValueError:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    &#39;flags&#39;: final_flags,</span><br><span class="line">    &#39;include_paths_relative_to_dir&#39;: compilation_info.compiler_working_dir_</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+    <title>vscode vim 在 mac osx 和 linux 下输入法自动切换</title>
+    <url>/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/</url>
+    <content><![CDATA[<p>目前 vscode 的 vim 插件支持在不同输入模式下自动切换输入法，可是 vscode 的配置目前不支持判断操作系统， 所以关于输入法切换的相关配置不能在 mac osx 和 linux 下通用，但是又不想因为这个问题维护两份 vscode 的配置文件，所以就想办法在 linux 使用 shell 脚本模仿了一个 im-select 的命令。</p>
+<p>关于 vscode vim 插件输入法相关的配置可以到下面的链接中查看：</p>
+<p><a href="https://github.com/VSCodeVim/Vim#input-method">https://github.com/VSCodeVim/Vim#input-method</a></p>
+<p>按照上面的链接在 mac osx 下安装 im-select 并在 vscode 中进行如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;vim.autoSwitchInputMethod.enable&quot;: true,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.defaultIM&quot;: &quot;com.apple.keylayout.ABC&quot;,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.obtainIMCmd&quot;: &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;im-select&quot;,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.switchIMCmd&quot;: &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;im-select &#123;im&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>关于 <code>vim.autoSwitchInputMethod.defaultIM</code>，我在 mac osx 下用的英文输入法是 <code>com.apple.keylayout.ABC</code>，也可能是其他选项如：<code>com.apple.keylayout.US</code>，这个要根据具体情况来设置。</p>
+<p><strong>需要注意的是这个选项的值关系到下面脚本的内容，需要保持一致。</strong></p>
+<p>上面的配置在 linux 下会报错，因为上面在 mac osx 下安装的 im-select 没有提供对 linux 的支持，im-select 项目里建议直接使用 fcitx-remote 命令，链接如下：</p>
+<p><a href="https://github.com/daipeihust/im-select#fcitx">https://github.com/daipeihust/im-select#fcitx</a></p>
+<p>鉴于不想维护两份 vscode 配置文件的原因，分析了一下 vscode 调用 im-select 的情况，在 linux 使用 shell 实现了一个仿冒 mac osx 下 im-select 的脚本，脚本内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env bash</span><br><span class="line"></span><br><span class="line"># this script in order to fake the im-select in mac osx for fcitx in linux</span><br><span class="line"></span><br><span class="line">IM_EN&#x3D;&quot;com.apple.keylayout.ABC&quot;</span><br><span class="line">IM_CN&#x3D;&quot;2&quot;</span><br><span class="line"></span><br><span class="line">FCITX_CMD&#x3D;&#x2F;usr&#x2F;bin&#x2F;fcitx-remote</span><br><span class="line"></span><br><span class="line"># there is no arguments that means query the current im</span><br><span class="line">if [[ -z $@ ]]; then</span><br><span class="line">    if [[ &quot;1&quot; &#x3D;&#x3D; $($FCITX_CMD) ]]; then</span><br><span class="line">        echo &quot;$IM_EN&quot;</span><br><span class="line">    else</span><br><span class="line">        echo &quot;$IM_CN&quot;</span><br><span class="line">    fi</span><br><span class="line">else</span><br><span class="line">    if [[ &quot;$@&quot; &#x3D;&#x3D; &quot;$IM_EN&quot; ]]; then</span><br><span class="line">        $FCITX_CMD -c</span><br><span class="line">    elif [[ &quot;$@&quot; &#x3D;&#x3D; &quot;$IM_CN&quot; ]]; then</span><br><span class="line">        $FCITX_CMD -o</span><br><span class="line">    fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>注意根据实际情况修正脚本中 <code>IM_EN</code> 变量的值，将脚本内容复制并保存到 <code>/usr/local/bin/im-select</code> 文件中即可，记得给文件增加可执行权限。</p>
 ]]></content>
       <categories>
-        <category>vim</category>
+        <category>linux</category>
+        <category>hackintosh</category>
       </categories>
       <tags>
-        <tag>qt</tag>
+        <tag>osx</tag>
         <tag>vim</tag>
-        <tag>ycm</tag>
+        <tag>fctix</tag>
+        <tag>vscode</tag>
+        <tag>im-select</tag>
       </tags>
   </entry>
   <entry>
@@ -2592,34 +2659,6 @@
       </categories>
       <tags>
         <tag>zookeeper</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vscode vim 在 mac osx 和 linux 下输入法自动切换</title>
-    <url>/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/</url>
-    <content><![CDATA[<p>目前 vscode 的 vim 插件支持在不同输入模式下自动切换输入法，可是 vscode 的配置目前不支持判断操作系统， 所以关于输入法切换的相关配置不能在 mac osx 和 linux 下通用，但是又不想因为这个问题维护两份 vscode 的配置文件，所以就想办法在 linux 使用 shell 脚本模仿了一个 im-select 的命令。</p>
-<p>关于 vscode vim 插件输入法相关的配置可以到下面的链接中查看：</p>
-<p><a href="https://github.com/VSCodeVim/Vim#input-method">https://github.com/VSCodeVim/Vim#input-method</a></p>
-<p>按照上面的链接在 mac osx 下安装 im-select 并在 vscode 中进行如下配置：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;vim.autoSwitchInputMethod.enable&quot;: true,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.defaultIM&quot;: &quot;com.apple.keylayout.ABC&quot;,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.obtainIMCmd&quot;: &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;im-select&quot;,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.switchIMCmd&quot;: &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;im-select &#123;im&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>关于 <code>vim.autoSwitchInputMethod.defaultIM</code>，我在 mac osx 下用的英文输入法是 <code>com.apple.keylayout.ABC</code>，也可能是其他选项如：<code>com.apple.keylayout.US</code>，这个要根据具体情况来设置。</p>
-<p><strong>需要注意的是这个选项的值关系到下面脚本的内容，需要保持一致。</strong></p>
-<p>上面的配置在 linux 下会报错，因为上面在 mac osx 下安装的 im-select 没有提供对 linux 的支持，im-select 项目里建议直接使用 fcitx-remote 命令，链接如下：</p>
-<p><a href="https://github.com/daipeihust/im-select#fcitx">https://github.com/daipeihust/im-select#fcitx</a></p>
-<p>鉴于不想维护两份 vscode 配置文件的原因，分析了一下 vscode 调用 im-select 的情况，在 linux 使用 shell 实现了一个仿冒 mac osx 下 im-select 的脚本，脚本内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env bash</span><br><span class="line"></span><br><span class="line"># this script in order to fake the im-select in mac osx for fcitx in linux</span><br><span class="line"></span><br><span class="line">IM_EN&#x3D;&quot;com.apple.keylayout.ABC&quot;</span><br><span class="line">IM_CN&#x3D;&quot;2&quot;</span><br><span class="line"></span><br><span class="line">FCITX_CMD&#x3D;&#x2F;usr&#x2F;bin&#x2F;fcitx-remote</span><br><span class="line"></span><br><span class="line"># there is no arguments that means query the current im</span><br><span class="line">if [[ -z $@ ]]; then</span><br><span class="line">    if [[ &quot;1&quot; &#x3D;&#x3D; $($FCITX_CMD) ]]; then</span><br><span class="line">        echo &quot;$IM_EN&quot;</span><br><span class="line">    else</span><br><span class="line">        echo &quot;$IM_CN&quot;</span><br><span class="line">    fi</span><br><span class="line">else</span><br><span class="line">    if [[ &quot;$@&quot; &#x3D;&#x3D; &quot;$IM_EN&quot; ]]; then</span><br><span class="line">        $FCITX_CMD -c</span><br><span class="line">    elif [[ &quot;$@&quot; &#x3D;&#x3D; &quot;$IM_CN&quot; ]]; then</span><br><span class="line">        $FCITX_CMD -o</span><br><span class="line">    fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>注意根据实际情况修正脚本中 <code>IM_EN</code> 变量的值，将脚本内容复制并保存到 <code>/usr/local/bin/im-select</code> 文件中即可，记得给文件增加可执行权限。</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>hackintosh</category>
-      </categories>
-      <tags>
-        <tag>osx</tag>
-        <tag>vim</tag>
-        <tag>fctix</tag>
-        <tag>vscode</tag>
-        <tag>im-select</tag>
       </tags>
   </entry>
   <entry>
@@ -2734,6 +2773,46 @@
       </tags>
   </entry>
   <entry>
+    <title>使用 quilt 给软件包打补丁</title>
+    <url>/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/</url>
+    <content><![CDATA[<p>quilt 是一个管理补丁的工具，它使用了栈的概念来管理多个补丁，其管理的补丁一般被放在 <strong>patches</strong> 目录下，在这个目录下除了补丁文件还有一个 <strong>series</strong> 文件，这个文件中列出的补丁文件才是真正被打入项目的补丁文件，同时补丁文件在 series 文件中出现的顺序也是它们在栈中的顺序，没有包含在 series 文件中的补丁文件将不会被 quilt 管理，当新增或移除补丁时 quilt 会自动更新 series 文件不需要手动管理。</p>
+<p>接触到这个命令是因为要给一个 deb 软件包打上我自己的补丁，但是 quilt 命令的 man 手册比较混乱，没有将相关的子命令放在一起进行介绍，下面将根据子命令之间的相关性总结下用到的和与之相关的子命令。</p>
+<h2 id="applied-unapplied"><a href="#applied-unapplied" class="headerlink" title="applied-unapplied"></a>applied-unapplied</h2><ul>
+<li>applied：列出包含在 series 文件中且已经应用（生效）了的补丁</li>
+<li>unapplied：列出包含在 series 文件中但没有应用（生效）的补丁</li>
+</ul>
+<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>指定一个被打过补丁的项目文件并根据其变动生成一个 diff 文件，如果指定了补丁则只把指定补丁对项目文件的改动生成到 diff 文件，当同一个项目文件被多个补丁改动过，这个参数就有用了，如果不指定补丁则默认使用最顶层的补丁，如果被打过补丁的项目文件也没有指定，则将包含指定补丁或最顶层的补丁导致的所有项目文件变动。</p>
+<h2 id="files"><a href="#files" class="headerlink" title="files"></a>files</h2><p>列出最顶层的一个或指定的补丁改动了的所有项目文件</p>
+<h2 id="patches"><a href="#patches" class="headerlink" title="patches"></a>patches</h2><p>列出所有改动了指定的项目文件的补丁</p>
+<h2 id="pop-push"><a href="#pop-push" class="headerlink" title="pop-push"></a>pop-push</h2><ul>
+<li>pop：从栈中移除一个或多个已经生效了的补丁，不会修改 series 文件（使补丁不生效）</li>
+<li>push：根据 series 文件应用一个或多个补丁，不会修改 series 文件（使补丁生效）</li>
+</ul>
+<h2 id="import-delete"><a href="#import-delete" class="headerlink" title="import-delete"></a>import-delete</h2><ul>
+<li>import：将指定的补丁文件导入到项目的补丁系统中，会修改 series 文件，同时将指定的补丁文件复制到 patches 目录下，但不会将这个补丁应用，因此还需要执行 push 命令来让这个补丁生效</li>
+<li>delete：从 series 文件中移除指定或最后一行的补丁文件，会修改 series 文件，也可一起将补丁文件从 patches 目录中删除（默认不会删除），在移除前将取消这个补丁的应用，类似执行 pop 命令</li>
+</ul>
+<h2 id="add-remove"><a href="#add-remove" class="headerlink" title="add-remove"></a>add-remove</h2><ul>
+<li>add：将指定的项目文件添加到指定的或顶层的补丁中，一般是为了要使用下面的 edit 命令修改这个文件</li>
+<li>remove：从指定的或最顶层的补丁中移除指定的项目文件，大概是当一个补丁修改了多个文件时，移除一个指定的文件不让这个补丁修改</li>
+</ul>
+<h2 id="fork-edit-refresh"><a href="#fork-edit-refresh" class="headerlink" title="fork-edit-refresh"></a>fork-edit-refresh</h2><ul>
+<li>fork：使用指定的名字复制一个补丁，并使用复制后的补丁覆盖 series 文件中旧的补丁</li>
+<li>edit：编辑指定的项目文件，这个项目文件应该先被使用 add 命令添加到当前补丁中</li>
+<li>refresh：更新指定的或顶层的补丁</li>
+</ul>
+<p>fork 通常用于一个补丁应用后又需要被修改，但这个补丁又需要保留这原始内容，这种情况下就可以先复制出来一个副本，然后修改这个副本</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>quilt</tag>
+        <tag>patch</tag>
+        <tag>deb</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用XMLReader接口解析XML</title>
     <url>/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/</url>
     <content><![CDATA[<h1 id="如何获取XMLReader接口"><a href="#如何获取XMLReader接口" class="headerlink" title="如何获取XMLReader接口"></a>如何获取XMLReader接口</h1><p>从JDK文档来看，有两种方法：</p>
@@ -2781,46 +2860,6 @@
       </tags>
   </entry>
   <entry>
-    <title>使用 quilt 给软件包打补丁</title>
-    <url>/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/</url>
-    <content><![CDATA[<p>quilt 是一个管理补丁的工具，它使用了栈的概念来管理多个补丁，其管理的补丁一般被放在 <strong>patches</strong> 目录下，在这个目录下除了补丁文件还有一个 <strong>series</strong> 文件，这个文件中列出的补丁文件才是真正被打入项目的补丁文件，同时补丁文件在 series 文件中出现的顺序也是它们在栈中的顺序，没有包含在 series 文件中的补丁文件将不会被 quilt 管理，当新增或移除补丁时 quilt 会自动更新 series 文件不需要手动管理。</p>
-<p>接触到这个命令是因为要给一个 deb 软件包打上我自己的补丁，但是 quilt 命令的 man 手册比较混乱，没有将相关的子命令放在一起进行介绍，下面将根据子命令之间的相关性总结下用到的和与之相关的子命令。</p>
-<h2 id="applied-unapplied"><a href="#applied-unapplied" class="headerlink" title="applied-unapplied"></a>applied-unapplied</h2><ul>
-<li>applied：列出包含在 series 文件中且已经应用（生效）了的补丁</li>
-<li>unapplied：列出包含在 series 文件中但没有应用（生效）的补丁</li>
-</ul>
-<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>指定一个被打过补丁的项目文件并根据其变动生成一个 diff 文件，如果指定了补丁则只把指定补丁对项目文件的改动生成到 diff 文件，当同一个项目文件被多个补丁改动过，这个参数就有用了，如果不指定补丁则默认使用最顶层的补丁，如果被打过补丁的项目文件也没有指定，则将包含指定补丁或最顶层的补丁导致的所有项目文件变动。</p>
-<h2 id="files"><a href="#files" class="headerlink" title="files"></a>files</h2><p>列出最顶层的一个或指定的补丁改动了的所有项目文件</p>
-<h2 id="patches"><a href="#patches" class="headerlink" title="patches"></a>patches</h2><p>列出所有改动了指定的项目文件的补丁</p>
-<h2 id="pop-push"><a href="#pop-push" class="headerlink" title="pop-push"></a>pop-push</h2><ul>
-<li>pop：从栈中移除一个或多个已经生效了的补丁，不会修改 series 文件（使补丁不生效）</li>
-<li>push：根据 series 文件应用一个或多个补丁，不会修改 series 文件（使补丁生效）</li>
-</ul>
-<h2 id="import-delete"><a href="#import-delete" class="headerlink" title="import-delete"></a>import-delete</h2><ul>
-<li>import：将指定的补丁文件导入到项目的补丁系统中，会修改 series 文件，同时将指定的补丁文件复制到 patches 目录下，但不会将这个补丁应用，因此还需要执行 push 命令来让这个补丁生效</li>
-<li>delete：从 series 文件中移除指定或最后一行的补丁文件，会修改 series 文件，也可一起将补丁文件从 patches 目录中删除（默认不会删除），在移除前将取消这个补丁的应用，类似执行 pop 命令</li>
-</ul>
-<h2 id="add-remove"><a href="#add-remove" class="headerlink" title="add-remove"></a>add-remove</h2><ul>
-<li>add：将指定的项目文件添加到指定的或顶层的补丁中，一般是为了要使用下面的 edit 命令修改这个文件</li>
-<li>remove：从指定的或最顶层的补丁中移除指定的项目文件，大概是当一个补丁修改了多个文件时，移除一个指定的文件不让这个补丁修改</li>
-</ul>
-<h2 id="fork-edit-refresh"><a href="#fork-edit-refresh" class="headerlink" title="fork-edit-refresh"></a>fork-edit-refresh</h2><ul>
-<li>fork：使用指定的名字复制一个补丁，并使用复制后的补丁覆盖 series 文件中旧的补丁</li>
-<li>edit：编辑指定的项目文件，这个项目文件应该先被使用 add 命令添加到当前补丁中</li>
-<li>refresh：更新指定的或顶层的补丁</li>
-</ul>
-<p>fork 通常用于一个补丁应用后又需要被修改，但这个补丁又需要保留这原始内容，这种情况下就可以先复制出来一个副本，然后修改这个副本</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>quilt</tag>
-        <tag>patch</tag>
-        <tag>deb</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>判断是否是 vscode 内启动的终端</title>
     <url>/2020/04/10/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF-vscode-%E5%86%85%E5%90%AF%E5%8A%A8%E7%9A%84%E7%BB%88%E7%AB%AF/</url>
     <content><![CDATA[<p>由于在 <code>bashrc</code> 中配置了自动 run/attach tmux，因此在 vscode 内启动终端时也会找 tmux，如果想避免这种情况或者类似的情况可以通过修改 vscode 的配置文件，添加自定义环境变量，然后在 <code>bashrc</code> 里进行判断，比如在 vscode 的配置文件中添加如下内容：</p>
@@ -2836,6 +2875,29 @@
         <tag>terminal</tag>
         <tag>bashrc</tag>
         <tag>tmux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>同步安卓源码:Cannot fetch CyanogenMod/android external svox</title>
+    <url>/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/</url>
+    <content><![CDATA[<p>同步CM10.1到99%出现错误：<br><code>error: Cannot fetch CyanogenMod/</code><font color=red><strong>Android</strong></font> <code>external svox</code></p>
+<p>或者是这样的提示：<br><code>repo sync Repository unavailable due to DMCA takedown</code></p>
+<p>解决办法：</p>
+<p>repo init后<br>修改 <code>.repo/manifests/default.xml</code><br>把<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;CyanogenMod/android_external_svox&quot;/&gt;</code><br>替换修改为<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;platform/external/svox&quot; remote=&quot;aosp&quot; revision=&quot;refs/tags/android-4.4.4_r2&quot;/&gt;</code></p>
+<p>注意红色文字部分、那是你同步的版本号</p>
+<p>如果不确定应该改为多少、就搜索aosp、会发现每一个搜索结果中的行里都有一个类似的语句、</p>
+<p>把这句里的版本号改为你搜索到的那些版本号就行了</p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+        <tag>repo</tag>
+        <tag>Cannot</tag>
+        <tag>fetch</tag>
+        <tag>external</tag>
+        <tag>svox</tag>
       </tags>
   </entry>
   <entry>
@@ -3844,29 +3906,6 @@
       </tags>
   </entry>
   <entry>
-    <title>同步安卓源码:Cannot fetch CyanogenMod/android external svox</title>
-    <url>/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/</url>
-    <content><![CDATA[<p>同步CM10.1到99%出现错误：<br><code>error: Cannot fetch CyanogenMod/</code><font color=red><strong>Android</strong></font> <code>external svox</code></p>
-<p>或者是这样的提示：<br><code>repo sync Repository unavailable due to DMCA takedown</code></p>
-<p>解决办法：</p>
-<p>repo init后<br>修改 <code>.repo/manifests/default.xml</code><br>把<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;CyanogenMod/android_external_svox&quot;/&gt;</code><br>替换修改为<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;platform/external/svox&quot; remote=&quot;aosp&quot; revision=&quot;refs/tags/android-4.4.4_r2&quot;/&gt;</code></p>
-<p>注意红色文字部分、那是你同步的版本号</p>
-<p>如果不确定应该改为多少、就搜索aosp、会发现每一个搜索结果中的行里都有一个类似的语句、</p>
-<p>把这句里的版本号改为你搜索到的那些版本号就行了</p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
-        <tag>repo</tag>
-        <tag>Cannot</tag>
-        <tag>fetch</tag>
-        <tag>external</tag>
-        <tag>svox</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>增大osx启动分区大小</title>
     <url>/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/</url>
     <content><![CDATA[<p>场景：<br>osx，deepin linux, windows三系统, 需要扩大黑苹果的分区.</p>
@@ -4033,6 +4072,36 @@
       </tags>
   </entry>
   <entry>
+    <title>水平与垂直 拆分与扩展 数据库与分布式</title>
+    <url>/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/</url>
+    <content><![CDATA[<p>标题写出来后发现覆盖面有点大，其实要说的只是字面意义上的一点学习小结：</p>
+<p>数据库优化：<br>水平分库，水平分表，使各个库/表的<strong>结构相同，但内容不同</strong><br>垂直分库，垂直分表，使各个库/表的<strong>结构不同，且内容不同</strong><br>库的结构可以理解为包含了哪些表<br>表的结构可以理解为包含了哪些字段<br>在垂直拆分的基础上，可以进一步水平拆分</p>
+<p>分布式优化：<br>水平扩展，增加更多节点以达到整体性能增强<br>垂直扩展，增强单机配置以达到单点性能增强，进而达到整体性能增强<br>水平扩展优点更多，使用得当的话，对整个系统的可用性，负载均衡都有益处</p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>others</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试网站是否能被百度蜘蛛抓取</title>
+    <url>/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/</url>
+    <content><![CDATA[<p>只需要使用curl命令配合一些参数就可以测试了,看返回内容就知道能否抓取了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用PC的UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;</span> http://listenerri.com</span><br><span class="line"><span class="comment"># 用移动UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (Linux;u;Android 4.2.2;zh-cn;) AppleWebKit/534.46 (KHTML,like Gecko) Version/5.1 Mobile Safari/10600.6.3 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）&quot;</span> http://listenerri.com</span><br></pre></td></tr></table></figure>
+<p>下面两张图是我测试正常的,第一张是上述命令返回的开始部分,第二张是上述命令返回的结束部分:<br><img src="spider1.png" alt="开始"><br><img src="spider2.png" alt="结束"></p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>seo</tag>
+        <tag>蜘蛛</tag>
+        <tag>百度</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>源码构建qtcreator记录</title>
     <url>/2019/02/24/%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BAqtcreator%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>在 deepin linux 系统下编译 qtcreator 4.8.0 版本，可是按照官方 README 却始终编译不通过，遇到了以下几个问题，并列出了相关解决方案。当然官方的 README 上所说的编译依赖还是要装上的。</p>
@@ -4081,22 +4150,6 @@
       </tags>
   </entry>
   <entry>
-    <title>测试网站是否能被百度蜘蛛抓取</title>
-    <url>/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/</url>
-    <content><![CDATA[<p>只需要使用curl命令配合一些参数就可以测试了,看返回内容就知道能否抓取了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用PC的UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;</span> http://listenerri.com</span><br><span class="line"><span class="comment"># 用移动UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (Linux;u;Android 4.2.2;zh-cn;) AppleWebKit/534.46 (KHTML,like Gecko) Version/5.1 Mobile Safari/10600.6.3 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）&quot;</span> http://listenerri.com</span><br></pre></td></tr></table></figure>
-<p>下面两张图是我测试正常的,第一张是上述命令返回的开始部分,第二张是上述命令返回的结束部分:<br><img src="spider1.png" alt="开始"><br><img src="spider2.png" alt="结束"></p>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>seo</tag>
-        <tag>蜘蛛</tag>
-        <tag>百度</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>线段树-区间树-范围树-二叉索引树</title>
     <url>/2020/04/02/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E5%8C%BA%E9%97%B4%E6%A0%91-%E8%8C%83%E5%9B%B4%E6%A0%91-%E4%BA%8C%E5%8F%89%E7%B4%A2%E5%BC%95%E6%A0%91/</url>
     <content><![CDATA[<blockquote>
@@ -4131,6 +4184,50 @@
         <tag>segment</tag>
         <tag>interval</tag>
         <tag>range</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>终于发现了素数的一种用途</title>
+    <url>/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/</url>
+    <content><![CDATA[<p>以前只知道素数的定义：<code>质数又称素数。一个大于 1 的自然数，除了 1 和它自身外，不能被其他自然数整除的数叫做质数；否则称为合数</code>。今天在学习<a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/Readme.md">《编程之法》(github) </a>时，第一章第二节 <a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/01.02.md">“字符串包含”</a>，其提到的一种算法用到了素数，在此仅摘取原文部分内容作为记录。<strong>需要注意的是，这种算法并不是这个问题的最优解</strong>，具体请查看原文。</p>
+<p>以下为原文摘录：</p>
+<hr>
+<p><strong>字符串包含</strong></p>
+<p>题目描述：<br>给定两个分别由字母组成的字符串 A 和字符串 B，字符串 B 的长度比字符串 A 短。请问，如何最快地判断字符串 B 中所有字母是否都在字符串 A 里？</p>
+<p>为了简单起见，我们规定输入的字符串只包含大写英文字母，请实现函数 <code>bool StringContains(string &amp;A, string &amp;B)</code></p>
+<p>比如，如果是下面两个字符串：</p>
+<p>String 1：ABCD</p>
+<p>String 2：BAD</p>
+<p>答案是 true，即 String2 里的字母在 String1 里也都有，或者说 String2 是 String1 的真子集。</p>
+<p>如果是下面两个字符串：</p>
+<p>String 1：ABCD</p>
+<p>String 2：BCE</p>
+<p>答案是 false，因为字符串 String2 里的 E 字母不在字符串 String1 里。</p>
+<p>同时，如果 string1：ABCD，string 2：AA，同样返回 true。</p>
+<p>……此处省略部分内容……</p>
+<p><strong>解法三</strong></p>
+<p>有没有比快速排序更好的方法呢？</p>
+<p>我们换一种角度思考本问题：</p>
+<p>假设有一个仅由字母组成字串，让每个字母与一个素数对应，从 2 开始，往后类推，A 对应 2，B 对应 3，C 对应 5，……。遍历第一个字串，把每个字母对应素数相乘。最终会得到一个整数。</p>
+<p>利用上面字母和素数的对应关系，对应第二个字符串中的字母，然后轮询，用每个字母对应的素数除前面得到的整数。如果结果有余数，说明结果为 false。如果整个过程中没有余数，则说明第二个字符串是第一个的子集了（判断是不是真子集，可以比较两个字符串对应的素数乘积，若相等则不是真子集）。</p>
+<p>思路总结如下：</p>
+<ol>
+<li>按照从小到大的顺序，用26个素数分别与字符’A’到’Z’一一对应。</li>
+<li>遍历长字符串，求得每个字符对应素数的乘积。</li>
+<li>遍历短字符串，判断乘积能否被短字符串中的字符对应的素数整除。</li>
+<li>输出结果。</li>
+</ol>
+<p>如前所述，算法的时间复杂度为 O(m+n) 的最好的情况为 O(n)（遍历短的字符串的第一个数，与长字符串素数的乘积相除，即出现余数，便可退出程序，返回 false），n 为长字串的长度，空间复杂度为O(1)。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;此方法只有理论意义，因为整数乘积很大，有溢出风险</span><br><span class="line">bool StringContain(string &amp;a,string &amp;b)</span><br><span class="line">&#123;</span><br><span class="line">    const int p[26] &#x3D; &#123;2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61, 67, 71, 73, 79, 83, 89, 97, 101&#125;;</span><br><span class="line">    int f &#x3D; 1;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; a.length(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        int x &#x3D; p[a[i] - &#39;A&#39;];</span><br><span class="line">        if (f % x)</span><br><span class="line">        &#123;</span><br><span class="line">            f *&#x3D; x;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; b.length(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        int x &#x3D; p[b[i] - &#39;A&#39;];</span><br><span class="line">        if (f % x)</span><br><span class="line">        &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此种素数相乘的方法看似完美，但缺点是素数相乘的结果容易导致整数溢出。</p>
+<p>……此处省略部分内容……</p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>素数</tag>
+        <tag>质数</tag>
       </tags>
   </entry>
   <entry>
@@ -4178,50 +4275,6 @@
         <tag>bash</tag>
         <tag>提示符</tag>
         <tag>终端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>终于发现了素数的一种用途</title>
-    <url>/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/</url>
-    <content><![CDATA[<p>以前只知道素数的定义：<code>质数又称素数。一个大于 1 的自然数，除了 1 和它自身外，不能被其他自然数整除的数叫做质数；否则称为合数</code>。今天在学习<a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/Readme.md">《编程之法》(github) </a>时，第一章第二节 <a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/01.02.md">“字符串包含”</a>，其提到的一种算法用到了素数，在此仅摘取原文部分内容作为记录。<strong>需要注意的是，这种算法并不是这个问题的最优解</strong>，具体请查看原文。</p>
-<p>以下为原文摘录：</p>
-<hr>
-<p><strong>字符串包含</strong></p>
-<p>题目描述：<br>给定两个分别由字母组成的字符串 A 和字符串 B，字符串 B 的长度比字符串 A 短。请问，如何最快地判断字符串 B 中所有字母是否都在字符串 A 里？</p>
-<p>为了简单起见，我们规定输入的字符串只包含大写英文字母，请实现函数 <code>bool StringContains(string &amp;A, string &amp;B)</code></p>
-<p>比如，如果是下面两个字符串：</p>
-<p>String 1：ABCD</p>
-<p>String 2：BAD</p>
-<p>答案是 true，即 String2 里的字母在 String1 里也都有，或者说 String2 是 String1 的真子集。</p>
-<p>如果是下面两个字符串：</p>
-<p>String 1：ABCD</p>
-<p>String 2：BCE</p>
-<p>答案是 false，因为字符串 String2 里的 E 字母不在字符串 String1 里。</p>
-<p>同时，如果 string1：ABCD，string 2：AA，同样返回 true。</p>
-<p>……此处省略部分内容……</p>
-<p><strong>解法三</strong></p>
-<p>有没有比快速排序更好的方法呢？</p>
-<p>我们换一种角度思考本问题：</p>
-<p>假设有一个仅由字母组成字串，让每个字母与一个素数对应，从 2 开始，往后类推，A 对应 2，B 对应 3，C 对应 5，……。遍历第一个字串，把每个字母对应素数相乘。最终会得到一个整数。</p>
-<p>利用上面字母和素数的对应关系，对应第二个字符串中的字母，然后轮询，用每个字母对应的素数除前面得到的整数。如果结果有余数，说明结果为 false。如果整个过程中没有余数，则说明第二个字符串是第一个的子集了（判断是不是真子集，可以比较两个字符串对应的素数乘积，若相等则不是真子集）。</p>
-<p>思路总结如下：</p>
-<ol>
-<li>按照从小到大的顺序，用26个素数分别与字符’A’到’Z’一一对应。</li>
-<li>遍历长字符串，求得每个字符对应素数的乘积。</li>
-<li>遍历短字符串，判断乘积能否被短字符串中的字符对应的素数整除。</li>
-<li>输出结果。</li>
-</ol>
-<p>如前所述，算法的时间复杂度为 O(m+n) 的最好的情况为 O(n)（遍历短的字符串的第一个数，与长字符串素数的乘积相除，即出现余数，便可退出程序，返回 false），n 为长字串的长度，空间复杂度为O(1)。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;此方法只有理论意义，因为整数乘积很大，有溢出风险</span><br><span class="line">bool StringContain(string &amp;a,string &amp;b)</span><br><span class="line">&#123;</span><br><span class="line">    const int p[26] &#x3D; &#123;2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61, 67, 71, 73, 79, 83, 89, 97, 101&#125;;</span><br><span class="line">    int f &#x3D; 1;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; a.length(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        int x &#x3D; p[a[i] - &#39;A&#39;];</span><br><span class="line">        if (f % x)</span><br><span class="line">        &#123;</span><br><span class="line">            f *&#x3D; x;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; b.length(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        int x &#x3D; p[b[i] - &#39;A&#39;];</span><br><span class="line">        if (f % x)</span><br><span class="line">        &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此种素数相乘的方法看似完美，但缺点是素数相乘的结果容易导致整数溢出。</p>
-<p>……此处省略部分内容……</p>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>素数</tag>
-        <tag>质数</tag>
       </tags>
   </entry>
   <entry>
