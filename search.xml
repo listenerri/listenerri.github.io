@@ -3149,9 +3149,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int max(int, int);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 不使用别名，接收一个函数指针并调用</span><br><span class="line">void test(int (* max_func)(int, int)) &#123;</span><br><span class="line">    max_func(1, 2);</span><br><span class="line">&#125;</span><br><span class="line">test(max);</span><br><span class="line"></span><br><span class="line">typedef int (* max_func_t)(int, int);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 使用别名，接收一个函数指针并调用</span><br><span class="line">void test(max_func_t max_func) &#123;</span><br><span class="line">    max_func(1, 2);</span><br><span class="line">&#125;</span><br><span class="line">test(max);</span><br></pre></td></tr></table></figure>
 
 <p>函数别名的语法一直让我很奇怪写着也很难受，今天又碰到要将函数作为参数传递的情况，于是谷歌了一下，其实可以这样理解：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 正确语法</span><br><span class="line">typedef int (*max_func_t)(int, int);</span><br><span class="line">&#x2F;&#x2F;       ^        ^          ^</span><br><span class="line">&#x2F;&#x2F;    返回类型   别名        参数</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 错误语法，但有助于理解（强行理解）</span><br><span class="line">typedef int (*) (int, int) max_func_t;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 正确语法</span><br><span class="line">typedef int (*max_func_t)(int, int);</span><br><span class="line">&#x2F;&#x2F;       ^        ^          ^</span><br><span class="line">&#x2F;&#x2F;    返回类型   别名        参数</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 错误语法，但有助于理解（强行理解）</span><br><span class="line">typedef int (*) (int, int) max_func_t;</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
-        <category>c</category>
         <category>cpp</category>
       </categories>
       <tags>
@@ -3327,7 +3327,6 @@
 ]]></content>
       <categories>
         <category>linux</category>
-        <category>hackintosh</category>
       </categories>
       <tags>
         <tag>osx</tag>
