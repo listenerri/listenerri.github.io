@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
+<meta name="generator" content="Hexo 5.0.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -301,7 +301,7 @@
 <p>写的比较乱，因为是刚开始学C，没有一个系统的概念，都是想到什么，测试到什么就添加什么，仅供参考<br>而且可能会有错误的地方，如果有请指出</p>
 </blockquote>
 <h1 id="static：静态"><a href="#static：静态" class="headerlink" title="static：静态"></a>static：静态</h1><h2 id="作用域以及声明方法："><a href="#作用域以及声明方法：" class="headerlink" title="作用域以及声明方法："></a>作用域以及声明方法：</h2><p>1、在函数中声明则仅作用于该函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>2、在函数外声明则作用于<font color="red">从声明开始到文件末尾</font></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> i;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -415,7 +415,7 @@
           <p><strong><font color="red">本文中使用的系统是archlinux,其他系统应该只有安装方法不同</font></strong></p>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yaourt -S archlinuxcn/create_ap</span><br><span class="line"><span class="comment">#或者：</span></span><br><span class="line">yaourt -S aur/create_ap</span><br></pre></td></tr></table></figure>
 <h1 id="终端下创建热点"><a href="#终端下创建热点" class="headerlink" title="终端下创建热点"></a>终端下创建热点</h1><p>首先执行ifconfig命令查看网卡端口<br>下面是我的：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">		...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">		...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">		...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">		...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">		...................</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">        ...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        ...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">        ...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br></pre></td></tr></table></figure>
 <p>解释：</p>
 <ul>
 <li>ap0：是我用create_ap命令创建出来的ap</li>
@@ -628,7 +628,7 @@
 
       
           <p>假设要得到字符串B在字符串A中出现的次数：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设字符串A和B已声明并赋值</span></span><br><span class="line"><span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> fromIndex=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(fromIndex!=-<span class="number">1</span>)&#123;</span><br><span class="line">	fromIndex=A.indexOf(B,fromIndex);</span><br><span class="line">	<span class="keyword">if</span>(fromIndex!=-<span class="number">1</span>)&#123;</span><br><span class="line">		fromIndex+=B.length();;</span><br><span class="line">		count++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(count);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设字符串A和B已声明并赋值</span></span><br><span class="line"><span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> fromIndex=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(fromIndex!=-<span class="number">1</span>)&#123;</span><br><span class="line">    fromIndex=A.indexOf(B,fromIndex);</span><br><span class="line">    <span class="keyword">if</span>(fromIndex!=-<span class="number">1</span>)&#123;</span><br><span class="line">        fromIndex+=B.length();;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(count);</span><br></pre></td></tr></table></figure>
 <p>主要用到的就是一个字符串对象的indexOf()方法</p>
 
       
@@ -1433,7 +1433,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">listenerri</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v5.2.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v5.0.2
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
