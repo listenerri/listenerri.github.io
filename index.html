@@ -220,6 +220,120 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/" class="post-title-link" itemprop="url">ubuntu16.04 安装 python3.8 以及对应版本的 pip</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-10 17:48:00" itemprop="dateCreated datePublished" datetime="2021-08-10T17:48:00+08:00">2021-08-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-11 16:00:53" itemprop="dateModified" datetime="2021-08-11T16:00:53+08:00">2021-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/" class="post-meta-item leancloud_visitors" data-flag-title="ubuntu16.04 安装 python3.8 以及对应版本的 pip" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。</p>
+<h2 id="安装-python3-8"><a href="#安装-python3-8" class="headerlink" title="安装 python3.8"></a>安装 python3.8</h2><p>执行如下命令增加 ppa 仓库，并更新源数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:deadsnakes&#x2F;ppa</span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>如果提示找不到 <code>add-apt-repository</code> 命令，执行如下命令安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install software-properties-common</span><br></pre></td></tr></table></figure>
+
+<p>更新完成源数据之后，就可以安装 ppa 仓库中的包了，这个仓库中不止是包含 python3.8，还包含其他版本的 python 包，详细情况可查看链接：</p>
+<p><a target="_blank" rel="noopener" href="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa">https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa</a></p>
+<p>执行以下命令安装 python3.8 相关的包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.8 python3.8-dev python3.8-distutils python3.8-venv</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2021/03/11/Clickhouse-%E6%95%B0%E6%8D%AE%E5%89%AF%E6%9C%AC%E4%B8%8E%E9%9B%86%E7%BE%A4%E9%AB%98%E5%8F%AF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -701,7 +815,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-10 16:12:10" itemprop="dateModified" datetime="2021-08-10T16:12:10+08:00">2021-08-10</time>
+                <time title="修改时间：2021-08-10 17:26:21" itemprop="dateModified" datetime="2021-08-10T17:26:21+08:00">2021-08-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1204,123 +1318,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/" class="post-title-link" itemprop="url">mysql 索引学习小结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-24 15:44:13" itemprop="dateCreated datePublished" datetime="2020-08-24T15:44:13+08:00">2020-08-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-20 21:49:35" itemprop="dateModified" datetime="2020-09-20T21:49:35+08:00">2020-09-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="mysql 索引学习小结" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="mysql-索引"><a href="#mysql-索引" class="headerlink" title="mysql 索引"></a>mysql 索引</h1><p>学习了《MySQL 是怎样运行的：从根儿上理解 MySQL》中的索引一节，收获颇丰，总结如下。</p>
-<h2 id="innodb-索引（组织结构-b-树）"><a href="#innodb-索引（组织结构-b-树）" class="headerlink" title="innodb 索引（组织结构 b+ 树）"></a>innodb 索引（组织结构 b+ 树）</h2><p>用户记录 -&gt; 用户记录数据页-&gt; 目录项记录 -&gt; 目录项记录数据页 -&gt; 更大范围目录项记录 -&gt; 更大范围目录项记录数据页 -&gt; 更大范围…</p>
-<ol>
-<li><code>用户记录数据页</code> 中包含针对 <code>用户记录</code> 的目录，称为 <code>页目录</code>，用来使用二分法快速查找 <code>用户记录</code></li>
-<li><code>目录项记录数据页</code> 是针对 <code>用户记录数据页</code> 的目录，也包含一个 <code>页目录</code>，但用来使用二分法快速查找 <code>目录项记录</code></li>
-<li>一个 <code>用户记录数据页</code> 对应多个 <code>用户记录</code></li>
-<li>一个 <code>用户记录数据页</code> 对应一个 <code>目录项记录</code></li>
-<li>一个 <code>目录项记录数据页</code> 对应多个 <code>目录项记录</code></li>
-<li>一个 <code>目录项记录数据页</code> 对应一个 <code>更大范围目录项记录</code></li>
-<li>…</li>
-</ol>
-<h2 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h2><p>以上述结构组织数据，且存储了所有 <code>完整</code> 用户记录的索引，一般是主键索引</p>
-<h2 id="二级索引"><a href="#二级索引" class="headerlink" title="二级索引"></a>二级索引</h2><p>以上述结构组织数据，但数据不存储完整用户记录，仅存储索引列 + 主键列的值，一般是用户自己建立的索引。这里存储主键的原因是用来使用这个主键进行 <code>回表</code>，去聚簇索引中取出该索引列对应的完整用户记录，因为会查询两次索引，所以二级索引命名由此而来，除聚簇索引外都是二级索引，联合（多列）索引也属于二级索引的一种</p>
-<h2 id="MyISAM："><a href="#MyISAM：" class="headerlink" title="MyISAM："></a>MyISAM：</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1371,7 +1368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

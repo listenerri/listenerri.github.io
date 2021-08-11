@@ -220,6 +220,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" class="post-title-link" itemprop="url">tilda开机启动不透明</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-01 14:37:24" itemprop="dateCreated datePublished" datetime="2016-05-01T14:37:24+08:00">2016-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" class="post-meta-item leancloud_visitors" data-flag-title="tilda开机启动不透明" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>当前系统,archlinux+xfce4</p>
+</blockquote>
+<h1 id="tilda简介"><a href="#tilda简介" class="headerlink" title="tilda简介"></a>tilda简介</h1><p>tilda有一个非常方便的功能,那就是绑定一个按键,来切换tilda这个终端模拟器的显示和隐藏,<br>注意是显示和隐藏而不是开启和关闭,它在切换的期间不会影响终端中所执行的命令,<br>如果用过deepin linux的话应该就知道dde自带的终端有个特殊的模式叫雷神模式,<br>原理就跟tilda一样</p>
+<h1 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h1><p>设置tilda开机启动很简单,就是在’~/.config/autostart/‘下放一个tilda的desktop文件就行了,<br>也可以把系统的链接过去:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/share/applications/tilda.desktop ~/.config/autostart/</span><br></pre></td></tr></table></figure>
+
+<h1 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h1><p>可是当你开机后按’F1’(tilda默认绑定的按键)打开tilda后,如果你设置了tilda的背景为透明,<br>你会发现透明没有生效,而是黑色的背景,此时按’CTRL-SHIFT-q’退出tilda,再重新打开,<br>发现透明又生效了,经过再三校验tilda的配置文件的确正确后,只能猜测是xfce4桌面环境在<br>刚启动的时候,透明化这个功能暂时还没有初始化完成,而此时tilda已经启动了,所以就造成上述结果</p>
+<h1 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h1><p>既然tilda的透明化需要等待系统初始化完毕,那么让tilda暂停一会儿再启动就行了<br>所以上面开机启动一段在’~/.config/autostart/‘下的tilda.desktop文件就不要了,删掉后自己新建一个</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1206,103 +1318,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/" class="post-title-link" itemprop="url">adt-sdk-tools-eclipse-java版本关系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-04-22 22:35:11" itemprop="dateCreated datePublished" datetime="2016-04-22T22:35:11+08:00">2016-04-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/" class="post-meta-item leancloud_visitors" data-flag-title="adt-sdk-tools-eclipse-java版本关系" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>图片、反正这东西只是查看、不需要复制粘贴<br><img src="version.png" alt="version"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1353,7 +1368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

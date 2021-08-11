@@ -220,6 +220,123 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/" class="post-title-link" itemprop="url">mysql 索引学习小结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-24 15:44:13" itemprop="dateCreated datePublished" datetime="2020-08-24T15:44:13+08:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-20 21:49:35" itemprop="dateModified" datetime="2020-09-20T21:49:35+08:00">2020-09-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="mysql 索引学习小结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="mysql-索引"><a href="#mysql-索引" class="headerlink" title="mysql 索引"></a>mysql 索引</h1><p>学习了《MySQL 是怎样运行的：从根儿上理解 MySQL》中的索引一节，收获颇丰，总结如下。</p>
+<h2 id="innodb-索引（组织结构-b-树）"><a href="#innodb-索引（组织结构-b-树）" class="headerlink" title="innodb 索引（组织结构 b+ 树）"></a>innodb 索引（组织结构 b+ 树）</h2><p>用户记录 -&gt; 用户记录数据页-&gt; 目录项记录 -&gt; 目录项记录数据页 -&gt; 更大范围目录项记录 -&gt; 更大范围目录项记录数据页 -&gt; 更大范围…</p>
+<ol>
+<li><code>用户记录数据页</code> 中包含针对 <code>用户记录</code> 的目录，称为 <code>页目录</code>，用来使用二分法快速查找 <code>用户记录</code></li>
+<li><code>目录项记录数据页</code> 是针对 <code>用户记录数据页</code> 的目录，也包含一个 <code>页目录</code>，但用来使用二分法快速查找 <code>目录项记录</code></li>
+<li>一个 <code>用户记录数据页</code> 对应多个 <code>用户记录</code></li>
+<li>一个 <code>用户记录数据页</code> 对应一个 <code>目录项记录</code></li>
+<li>一个 <code>目录项记录数据页</code> 对应多个 <code>目录项记录</code></li>
+<li>一个 <code>目录项记录数据页</code> 对应一个 <code>更大范围目录项记录</code></li>
+<li>…</li>
+</ol>
+<h2 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h2><p>以上述结构组织数据，且存储了所有 <code>完整</code> 用户记录的索引，一般是主键索引</p>
+<h2 id="二级索引"><a href="#二级索引" class="headerlink" title="二级索引"></a>二级索引</h2><p>以上述结构组织数据，但数据不存储完整用户记录，仅存储索引列 + 主键列的值，一般是用户自己建立的索引。这里存储主键的原因是用来使用这个主键进行 <code>回表</code>，去聚簇索引中取出该索引列对应的完整用户记录，因为会查询两次索引，所以二级索引命名由此而来，除聚簇索引外都是二级索引，联合（多列）索引也属于二级索引的一种</p>
+<h2 id="MyISAM："><a href="#MyISAM：" class="headerlink" title="MyISAM："></a>MyISAM：</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2020/06/11/mysql-%E8%8E%B7%E5%8F%96%E8%A1%A8%E7%BB%93%E6%9E%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1211,128 +1328,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" class="post-title-link" itemprop="url">zookeeper 小记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-12-04 09:13:22" itemprop="dateCreated datePublished" datetime="2019-12-04T09:13:22+08:00">2019-12-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/zookeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">zookeeper</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="zookeeper 小记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="zookeeper-崩溃恢复过程中两个关键性问题"><a href="#zookeeper-崩溃恢复过程中两个关键性问题" class="headerlink" title="zookeeper 崩溃恢复过程中两个关键性问题"></a>zookeeper 崩溃恢复过程中两个关键性问题</h1><p>Q1：leader 提交事务 A 后崩溃，follower 没有收到提交事务 A 的消息，再次选举 leader 时如何确保事务 A 被应用？</p>
-<p>A1：既然 leader 已经在本地提交了事务 A，那么说明事务 A 肯定已经经过了多数 follower 的确认，即多数 follower 上都有事务 A 的记录，leader 崩溃后，重新选举出的新 leader 肯定包含未提交的事务 A，因为事务 A 的事务 ID 最大，新 leader 会继续提交事务 A。</p>
-<hr>
-<p>Q2：leader 在还未将事务 B 广播到集群中时崩溃，在重新选举 leader 并在旧 leader 恢复正常后如何处理事务 B？</p>
-<p>A2：事务 B 将会被删除，不会被提交。leader 在接收到一个请求，并将其转化为事务 B 后崩溃，此时还没有将事务 B 广播到集群中，即此事务只存在于 leader 机器上，经过新一轮的 leader 选举后，旧 leader 恢复正常并加入集群，此时会发现事务 B 的事务 ID 所使用的 epoch 号与新 leader 的对不上，那么事务 B 就会被删除。</p>
-<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><p>把握好 zookeeper 的主要特性就可以将其应用在多种多样的场景下。主要特性如下：</p>
-<ul>
-<li>节点<ul>
-<li>树结构</li>
-<li>持久节点</li>
-<li>持久顺序节点</li>
-<li>临时节点</li>
-<li>临时顺序节点</li>
-<li>节点只能被注册一次</li>
-</ul>
-</li>
-<li>watcher</li>
-</ul>
-<p>在《从 Paxos 到 Zookeeper》一书中提到的应用场景以及我认为场景所应用到的主要特性如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1383,7 +1378,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

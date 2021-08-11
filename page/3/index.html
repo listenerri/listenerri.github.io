@@ -220,6 +220,128 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" class="post-title-link" itemprop="url">zookeeper 小记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-04 09:13:22" itemprop="dateCreated datePublished" datetime="2019-12-04T09:13:22+08:00">2019-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/zookeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">zookeeper</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="zookeeper 小记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="zookeeper-崩溃恢复过程中两个关键性问题"><a href="#zookeeper-崩溃恢复过程中两个关键性问题" class="headerlink" title="zookeeper 崩溃恢复过程中两个关键性问题"></a>zookeeper 崩溃恢复过程中两个关键性问题</h1><p>Q1：leader 提交事务 A 后崩溃，follower 没有收到提交事务 A 的消息，再次选举 leader 时如何确保事务 A 被应用？</p>
+<p>A1：既然 leader 已经在本地提交了事务 A，那么说明事务 A 肯定已经经过了多数 follower 的确认，即多数 follower 上都有事务 A 的记录，leader 崩溃后，重新选举出的新 leader 肯定包含未提交的事务 A，因为事务 A 的事务 ID 最大，新 leader 会继续提交事务 A。</p>
+<hr>
+<p>Q2：leader 在还未将事务 B 广播到集群中时崩溃，在重新选举 leader 并在旧 leader 恢复正常后如何处理事务 B？</p>
+<p>A2：事务 B 将会被删除，不会被提交。leader 在接收到一个请求，并将其转化为事务 B 后崩溃，此时还没有将事务 B 广播到集群中，即此事务只存在于 leader 机器上，经过新一轮的 leader 选举后，旧 leader 恢复正常并加入集群，此时会发现事务 B 的事务 ID 所使用的 epoch 号与新 leader 的对不上，那么事务 B 就会被删除。</p>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><p>把握好 zookeeper 的主要特性就可以将其应用在多种多样的场景下。主要特性如下：</p>
+<ul>
+<li>节点<ul>
+<li>树结构</li>
+<li>持久节点</li>
+<li>持久顺序节点</li>
+<li>临时节点</li>
+<li>临时顺序节点</li>
+<li>节点只能被注册一次</li>
+</ul>
+</li>
+<li>watcher</li>
+</ul>
+<p>在《从 Paxos 到 Zookeeper》一书中提到的应用场景以及我认为场景所应用到的主要特性如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2019/11/27/caida-tools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1219,121 +1341,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">通过打DSDT补丁让黑苹果显示电池状态信息</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-10-11 16:03:22" itemprop="dateCreated datePublished" datetime="2019-10-11T16:03:22+08:00">2019-10-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/translation/" itemprop="url" rel="index">
-                    <span itemprop="name">translation</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" class="post-meta-item leancloud_visitors" data-flag-title="通过打DSDT补丁让黑苹果显示电池状态信息" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>翻译自：<a target="_blank" rel="noopener" href="https://www.tonymacx86.com/threads/guide-how-to-patch-dsdt-for-working-battery-status.116102/">https://www.tonymacx86.com/threads/guide-how-to-patch-dsdt-for-working-battery-status.116102/</a></p>
-</blockquote>
-<blockquote>
-<p>转载请注明出处</p>
-</blockquote>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>因为电脑中的电池硬件与苹果的 SMbus 硬件不兼容，所以在笔记本电脑上运行 OS X 时，我们使用 ACPI 来访问电池状态。一般来说，我建议你使用 <code>ACPIBatteryManager.kext</code>，可在这里找到: <a target="_blank" rel="noopener" href="https://github.com/RehabMan/OS-X-ACPI-Battery-Driver">https://github.com/RehabMan/OS-X-ACPI-Battery-Driver</a></p>
-<p>AppleACPIPlatform 的更高版本无法正确访问 EC（嵌入式控制器）中的字段。由于各种 ACPI 方法（_BIF，_STA，_BST等）失效，这会导致 ACPIBatteryManager 获取电池数据出现问题。尽管可以使用较旧版本的 AppleACPIPlatform（来自 Snow Leopard），但还是希望使用最新版本的AppleACPIPlatform，因为对于具有 Ivy Bridge CPU 的计算机，它可以为这些计算机启用本机电源管理。要使用最新版本，必须更改 DSDT 以符合 Apple 的 AppleACPIPlatform 的限制。</p>
-<p>特别是，EC 中大于 8 位的任何字段都必须更改为 8 位。 这包括 16、32、64 甚至更大的字段。</p>
-<p>你应该先熟悉 DSDT/SSDT 打补丁的基本知识： <a target="_blank" rel="noopener" href="http://www.tonymacx86.com/yosemite-laptop-support/152573-guide-patching-laptop-dsdt-ssdts.html">http://www.tonymacx86.com/yosemite-laptop-support/152573-guide-patching-laptop-dsdt-ssdts.html</a></p>
-<h1 id="已存在的补丁"><a href="#已存在的补丁" class="headerlink" title="已存在的补丁"></a>已存在的补丁</h1><p>首先，你的笔记本电脑可能已经有补丁了。请看我的补丁仓库: <a target="_blank" rel="noopener" href="https://github.com/RehabMan/Laptop-DSDT-Patch">https://github.com/RehabMan/Laptop-DSDT-Patch</a></p>
-<p>为了使 DSDT 与补丁程序匹配，通常首先需要了解补丁程序的制作方式，以便你知道在 DSDT 中要查找的内容，并且可以将所看到的内容与现有补丁程序进行匹配。补丁集的更改比率很高，不会产生错误，并且似乎在补丁所有需要补丁的字段，这很可能是匹配的（本句原文：A patch set that has a high ratio of changes to patches, creates no errors, and appears to patch all fields that need to be patched is likely a match）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1384,7 +1391,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
