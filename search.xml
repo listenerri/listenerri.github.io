@@ -2930,6 +2930,26 @@
       </tags>
   </entry>
   <entry>
+    <title>nextcloud 部署后没有日历邮件等应用</title>
+    <url>/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<p>在公司内部服务器上搭了一个 <a href="https://nextcloud.com/">Nextcloud</a> 服务，跑起来之后发现没有日历、邮件等应用，且不能打开应用商店，分析了服务日志发现是由于网络问题。</p>
+<p>启动服务时加上代理即可正常，比如使用 docker 跑的话：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --name nextcloud -p 8080:80 -e http_proxy&#x3D;http:&#x2F;&#x2F;192.168.1.100:1081 -e https_proxy&#x3D;http:&#x2F;&#x2F;192.168.1.100:1081 nextcloud</span><br></pre></td></tr></table></figure>
+
+<p>代理相关参数解释：</p>
+<ul>
+<li>-e http_proxy 为容器内 NC 服务设置 http 代理地址和端口</li>
+<li>-e https_proxy 同上</li>
+</ul>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>nextcloud</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>osx bash completion 补全</title>
     <url>/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/</url>
     <content><![CDATA[<p>在 linux 下补全的配置一般发行版都给默认配了，原本以为在 OSX 下用 brew 装个 bash-completion 包，再在 bashrc 下贴两行配置也就搞定了，没想到不行，OSX 下 bash-completion 包有两个，另一个是 <code>bash-completion@2</code>，这两个包分别对应 bash 的两个版本，具体可以用 brew info <code>bash-completion@2</code> 来看。</p>
