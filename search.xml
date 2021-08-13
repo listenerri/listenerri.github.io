@@ -1733,20 +1733,6 @@
       </tags>
   </entry>
   <entry>
-    <title>docker-CMD-ENTRYPOINT</title>
-    <url>/2017/09/13/docker-CMD-ENTRYPOINT/</url>
-    <content><![CDATA[<p>一张图解释Dockerfile中CMD和ENTRYPOINT的关系,<br>另外使用’docker run’新建容器时, 镜像后面跟的命令会覆盖Dockerfile中的CMD.<br><img src="docker.png" alt="docker"></p>
-]]></content>
-      <categories>
-        <category>docker</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>cmd</tag>
-        <tag>entrypoint</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>dde-dock插件开发入门</title>
     <url>/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>最近公司需要补充一些项目的文档，我负责的几个项目中比较有实用价值的是这个 dde-dock 插件的开发入门教程，这里是转载，<a href="https://github.com/linuxdeepin/dde-dock/blob/master/plugins/plugin-guide/plugins-developer-guide.md">原发</a>在 dde-dock 项目源码中。</p>
@@ -2053,6 +2039,20 @@
       </tags>
   </entry>
   <entry>
+    <title>docker-CMD-ENTRYPOINT</title>
+    <url>/2017/09/13/docker-CMD-ENTRYPOINT/</url>
+    <content><![CDATA[<p>一张图解释Dockerfile中CMD和ENTRYPOINT的关系,<br>另外使用’docker run’新建容器时, 镜像后面跟的命令会覆盖Dockerfile中的CMD.<br><img src="docker.png" alt="docker"></p>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>cmd</tag>
+        <tag>entrypoint</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docker 容器起不来怎么办</title>
     <url>/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
     <content><![CDATA[<p>有时 docker 容器会由于错误修改了某些配置文件而无法启动，如 <code>entrypoint</code> 脚本或服务程序的配置文件等等，如果容器内没有什么有价值的数据，那么重新创建容器自然是首选，本文讨论的是容器不能被删除，该如何修复这种情况。</p>
@@ -2107,6 +2107,43 @@
         <tag>ddms</tag>
         <tag>logcat</tag>
         <tag>不显示</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>edge 实现 ctrl tab 切换最近标签页</title>
+    <url>/2021/08/13/edge-%E5%AE%9E%E7%8E%B0-ctrl-tab-%E5%88%87%E6%8D%A2%E6%9C%80%E8%BF%91%E6%A0%87%E7%AD%BE%E9%A1%B5/</url>
+    <content><![CDATA[<p>以前一直在用 firefox 火狐浏览器作为主力浏览器，主要是因为它可以做到不翻墙就实现全平台（linux/mac/windows/android/ios）数据同步，只是 firefox 在 linux 下长时间运行后会变得打开新网页速度很慢，必须要退出程序重新打开才能恢复正常访问速度，给我这种感觉已经很长一段时间了，搜索不到解决方法，自己也没有摸索出来根本原因，但苦于没有更好的选择，只能一直将就下去。</p>
+<p>不久前巨硬为 linux 版 edge 浏览器增加了账户同步功能，我终于等来了一个新的，不翻墙全平台数据同步浏览器，虽然是测试版，但巨硬维护很积极，bug 修复更新很及时，相信很快就会发布正式版。</p>
+<p>对我来说 edge 浏览器在各个平台上的使用体验都很符合需求，唯独有一点让我很不舒服，就是 ctrl-tab 切换标签页的方式，firefox 浏览器按一下 ctrl-tab 默认会在最近使用的两个标签页中切换，而 edge 则是循环得朝着右边的标签页切换，chrome 也是同样的行为。在搜索这个问题相关的内容时发现，有一部分人觉得这种方式很好，当然也有一部分人和我有同样的感觉，所以这个问题比较主观，并不是说 edge 或 chrome 的切换模式就一定是不好用的。当然 edge 或 chrome 能够像 firefox 一样对这个行为在设置里提供一个修改选项自然是最好的结果。</p>
+<p>经过一段时间的摸索，最终找到了一个满足需求的扩展程序，在 edge 和 chrome 的官方扩展仓库中都能找到，链接分别是：</p>
+<p><a href="https://microsoftedge.microsoft.com/addons/detail/quickey-%E2%80%93-the-quick-tab-s/mcjciddpjefdpndgllejgcekmajmehnd">https://microsoftedge.microsoft.com/addons/detail/quickey-%E2%80%93-the-quick-tab-s/mcjciddpjefdpndgllejgcekmajmehnd</a></p>
+<p><a href="https://chrome.google.com/webstore/detail/quickey-%E2%80%93-the-quick-tab-s/ldlghkoiihaelfnggonhjnfiabmaficg">https://chrome.google.com/webstore/detail/quickey-%E2%80%93-the-quick-tab-s/ldlghkoiihaelfnggonhjnfiabmaficg</a></p>
+<p>扩展程序代码仓库是： <a href="https://github.com/fwextensions/QuicKey">https://github.com/fwextensions/QuicKey</a></p>
+<p>QuickKey 扩展程序提供了很多丰富的功能，感兴趣的可以自行探索。</p>
+<p>针对修改 ctrl-tab 行为的功能并不是默认启用的，需要手动修改一些浏览器配置，官方有详细的文档：<a href="https://fwextensions.github.io/QuicKey/ctrl-tab/">https://fwextensions.github.io/QuicKey/ctrl-tab/</a></p>
+<p>下面我筛选出适合我的步骤，并翻译如下，此方法适用于 edge 和 chrome。</p>
+<h2 id="使用-ctrl-tab-切换最近标签页"><a href="#使用-ctrl-tab-切换最近标签页" class="headerlink" title="使用 ctrl-tab 切换最近标签页"></a>使用 ctrl-tab 切换最近标签页</h2><p>正常情况下 edge/chrome 不允许设置 ctrl-tab 作为切换标签页的快捷键，但是可以使用开发者工具打破这一限制。（相对于其他方法这是最简单有效的一个方法）</p>
+<ol>
+<li>根据上面的链接安装 QuickKey 扩展程序</li>
+<li>右键点击工具栏上 QuickKey 扩展程序图标，在弹出的菜单中选择“扩展选项”</li>
+<li>向下滚动至 <code>Browser keyboard shortcuts</code> 或 <code>Chrome keyboard shortcuts</code></li>
+<li>点击 <code>Change browser shortcuts</code> 或 <code>Change Chrome shortcuts</code> 按钮</li>
+<li>在打开的新标签页中按 <code>ctrl-shift-J</code>（Windows/Linux）或 <code>cmd-opt-J</code>（macOS）打开开发者工具面板</li>
+<li>复制以下代码粘贴到开发者工具面板中，按回车键执行：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chrome.developerPrivate.updateExtensionCommand(&#123;</span><br><span class="line">    extensionId: &quot;mcjciddpjefdpndgllejgcekmajmehnd&quot;,</span><br><span class="line">    commandName: &quot;30-toggle-recent-tabs&quot;,</span><br><span class="line">    keybinding: &quot;Ctrl+Tab&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>到这里就完成了，且已经生效了，可以按 ctrl-tab 快捷键测试下。</p>
+<p>注意：如果你使用 edge 浏览器，但却是从 Chrome 扩展程序商店安装的 QuickKey 扩展，那么你需要将上面代码中的 <code>mcjciddpjefdpndgllejgcekmajmehnd</code> 替换为 <code>ldlghkoiihaelfnggonhjnfiabmaficg</code> 也就是修改以下 <code>extensionId</code> 的值。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>chrome</tag>
+        <tag>edge</tag>
+        <tag>ctrl-tab</tag>
       </tags>
   </entry>
   <entry>
