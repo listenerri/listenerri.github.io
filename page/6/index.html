@@ -15,35 +15,10 @@
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    hostname: new URL('http://listenerri.com').hostname,
-    root: '/',
-    scheme: 'Gemini',
-    version: '7.6.0',
-    exturl: false,
-    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: 'search.xml',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="学的越多越发现会的越少 : )">
 <meta property="og:type" content="website">
@@ -62,10 +37,9 @@
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
-    isPage: false,
-    isArchive: false
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -117,19 +91,6 @@
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">listenerri's blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-        <h1 class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</h1>
-      
-  </div>
-
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
@@ -137,11 +98,28 @@
       <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
 </div>
 
 
+
+
 <nav class="site-nav">
-  
   <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
@@ -178,29 +156,34 @@
         </a>
       </li>
   </ul>
-
 </nav>
-  <div class="site-search">
+
+
+
+  <div class="search-pop-overlay">
     <div class="popup search-popup">
-    <div class="search-header">
+        <div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+    <input autocomplete="off" autocapitalize="off"
            placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+           type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
   </div>
+</div>
+
+    </div>
+  </div>
+
 </div>
     </header>
 
@@ -212,14 +195,12 @@
         <div class="content-wrap">
           
 
-          <div class="content">
+          <div class="content index posts-expand">
             
-
-  <div class="posts-expand">
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -259,9 +240,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vim/" itemprop="url" rel="index">
-                    <span itemprop="name">vim</span>
-                  </a>
+                  <a href="/categories/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
                 </span>
             </span>
 
@@ -281,7 +260,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -323,10 +302,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -366,9 +345,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/osx/" itemprop="url" rel="index">
-                    <span itemprop="name">osx</span>
-                  </a>
+                  <a href="/categories/osx/" itemprop="url" rel="index"><span itemprop="name">osx</span></a>
                 </span>
             </span>
 
@@ -388,7 +365,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -432,10 +409,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -475,9 +452,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
                 </span>
             </span>
 
@@ -497,7 +472,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -545,10 +520,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -588,9 +563,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
                 </span>
             </span>
 
@@ -610,7 +583,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -662,10 +635,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/09/13/docker-CMD-ENTRYPOINT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -705,9 +678,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
-                  </a>
+                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
                 </span>
             </span>
 
@@ -727,7 +698,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/09/13/docker-CMD-ENTRYPOINT/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/09/13/docker-CMD-ENTRYPOINT/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/09/13/docker-CMD-ENTRYPOINT/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -759,10 +730,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -802,9 +773,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
-                  </a>
+                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
                 </span>
             </span>
 
@@ -824,7 +793,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -865,10 +834,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -908,9 +877,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
             </span>
 
@@ -930,7 +897,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -978,10 +945,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1021,9 +988,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/cocos2d/" itemprop="url" rel="index">
-                    <span itemprop="name">cocos2d</span>
-                  </a>
+                  <a href="/categories/cocos2d/" itemprop="url" rel="index"><span itemprop="name">cocos2d</span></a>
                 </span>
             </span>
 
@@ -1043,7 +1008,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -1081,10 +1046,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/02/25/miui-%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87usb%E5%AE%89%E8%A3%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1124,9 +1089,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
                 </span>
             </span>
 
@@ -1146,7 +1109,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/02/25/miui-%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87usb%E5%AE%89%E8%A3%85/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/02/25/miui-%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87usb%E5%AE%89%E8%A3%85/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/02/25/miui-%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87usb%E5%AE%89%E8%A3%85/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -1193,10 +1156,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://listenerri.com/2017/02/12/vim%E4%B8%ADjavacomplete2%E4%B8%8Esyntastic%E4%B8%80%E7%82%B9%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1236,9 +1199,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vim/" itemprop="url" rel="index">
-                    <span itemprop="name">vim</span>
-                  </a>
+                  <a href="/categories/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
                 </span>
             </span>
 
@@ -1258,7 +1219,7 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/02/12/vim%E4%B8%ADjavacomplete2%E4%B8%8Esyntastic%E4%B8%80%E7%82%B9%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/02/12/vim%E4%B8%ADjavacomplete2%E4%B8%8Esyntastic%E4%B8%80%E7%82%B9%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/02/12/vim%E4%B8%ADjavacomplete2%E4%B8%8Esyntastic%E4%B8%80%E7%82%B9%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -1310,7 +1271,6 @@
   
   
 
-  </div>
 
   
   <nav class="pagination">
@@ -1321,6 +1281,28 @@
 
           </div>
           
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
         </div>
           
@@ -1424,6 +1406,8 @@
       <div class="footer-inner">
         
 
+        
+
 <div class="copyright">
   
   &copy; 2016 – 
@@ -1433,10 +1417,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">listenerri</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v5.0.2
-  </div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
         
@@ -1448,7 +1429,6 @@
 
 
 
-        
       </div>
     </footer>
   </div>
@@ -1500,36 +1480,37 @@
 
 
 
-
   
 
   
 
 
 <script>
-NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(item => {
-    return GUEST.includes(item);
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: true,
-    appId: 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
-    appKey: 'CLyVWqSO30mL4Hg34jCGTheF',
-    placeholder: "I have something to say",
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: true,
-    lang: 'zh-cn' || 'zh-cn',
-    path: location.pathname,
-    recordIP: false,
-    serverURLs: ''
-  });
-}, window.Valine);
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
 </script>
 
 </body>
