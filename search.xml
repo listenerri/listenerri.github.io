@@ -2753,6 +2753,27 @@
       </tags>
   </entry>
   <entry>
+    <title>macvim 图形界面无法显示中文</title>
+    <url>/2020/02/17/macvim-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87/</url>
+    <content><![CDATA[<p>使用 brew cask 安装的 macvim，版本为：<code>8.1.2234,161</code></p>
+<p>macvim 图形界面中文显示成问号，但在终端下面却可以正常显示，网上搜了很久都在说编码问题，其实不是，正解如下：</p>
+<ol>
+<li>打开 macvim GUI</li>
+<li>点击菜单栏-Preferences</li>
+<li>点击 Advanced</li>
+<li>取消选中 <code>Use Core Text renderer</code> 选项</li>
+<li>重启 macvim GUI</li>
+</ol>
+]]></content>
+      <categories>
+        <category>osx</category>
+      </categories>
+      <tags>
+        <tag>osx</tag>
+        <tag>macvim</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>minikube 启动失败</title>
     <url>/2020/04/07/minikube-%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/</url>
     <content><![CDATA[<p>首先：</p>
@@ -2801,27 +2822,6 @@
       </categories>
       <tags>
         <tag>minikube</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>macvim 图形界面无法显示中文</title>
-    <url>/2020/02/17/macvim-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87/</url>
-    <content><![CDATA[<p>使用 brew cask 安装的 macvim，版本为：<code>8.1.2234,161</code></p>
-<p>macvim 图形界面中文显示成问号，但在终端下面却可以正常显示，网上搜了很久都在说编码问题，其实不是，正解如下：</p>
-<ol>
-<li>打开 macvim GUI</li>
-<li>点击菜单栏-Preferences</li>
-<li>点击 Advanced</li>
-<li>取消选中 <code>Use Core Text renderer</code> 选项</li>
-<li>重启 macvim GUI</li>
-</ol>
-]]></content>
-      <categories>
-        <category>osx</category>
-      </categories>
-      <tags>
-        <tag>osx</tag>
-        <tag>macvim</tag>
       </tags>
   </entry>
   <entry>
@@ -2883,28 +2883,6 @@
       </tags>
   </entry>
   <entry>
-    <title>mysql 获取表结构</title>
-    <url>/2020/06/11/mysql-%E8%8E%B7%E5%8F%96%E8%A1%A8%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<p>获取建表语句：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW CREATE TABLE table_name</span><br></pre></td></tr></table></figure>
-
-<p>获取表结构：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># DESC 是 DESCRIBE 的缩写</span><br><span class="line">DESC table_name</span><br><span class="line">SHOW COLUMNS FROM table_name</span><br></pre></td></tr></table></figure>
-
-<p>筛选字段：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># field_name 可以包括通配符</span><br><span class="line">DESC table_name &quot;field_name&quot;</span><br><span class="line">SHOW COLUMNS FROM table_name LIKE &quot;field_name&quot;</span><br></pre></td></tr></table></figure>
-
-<p>另外，经过测试，<code>SHOW COLUMNS FROM</code> 语句除了可以使用 LIKE 关键字，还可以使用 WHERE 子句，但 <code>DESCRIBE</code> 语句不支持。</p>
-]]></content>
-      <categories>
-        <category>mysql</category>
-      </categories>
-      <tags>
-        <tag>表结构</tag>
-        <tag>字段</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>mysql 索引学习小结</title>
     <url>/2020/08/24/mysql-%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<h1 id="mysql-索引"><a href="#mysql-索引" class="headerlink" title="mysql 索引"></a>mysql 索引</h1><p>学习了《MySQL 是怎样运行的：从根儿上理解 MySQL》中的索引一节，收获颇丰，总结如下。</p>
@@ -2927,6 +2905,28 @@
       </categories>
       <tags>
         <tag>索引</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql 获取表结构</title>
+    <url>/2020/06/11/mysql-%E8%8E%B7%E5%8F%96%E8%A1%A8%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<p>获取建表语句：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW CREATE TABLE table_name</span><br></pre></td></tr></table></figure>
+
+<p>获取表结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># DESC 是 DESCRIBE 的缩写</span><br><span class="line">DESC table_name</span><br><span class="line">SHOW COLUMNS FROM table_name</span><br></pre></td></tr></table></figure>
+
+<p>筛选字段：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># field_name 可以包括通配符</span><br><span class="line">DESC table_name &quot;field_name&quot;</span><br><span class="line">SHOW COLUMNS FROM table_name LIKE &quot;field_name&quot;</span><br></pre></td></tr></table></figure>
+
+<p>另外，经过测试，<code>SHOW COLUMNS FROM</code> 语句除了可以使用 LIKE 关键字，还可以使用 WHERE 子句，但 <code>DESCRIBE</code> 语句不支持。</p>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>表结构</tag>
+        <tag>字段</tag>
       </tags>
   </entry>
   <entry>
@@ -3108,6 +3108,22 @@
         <tag>fakevim</tag>
         <tag>vim</tag>
         <tag>fcitx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>qtcreator qDebug 没有打印输出</title>
+    <url>/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/</url>
+    <content><![CDATA[<p>前段时间遇到个奇怪的问题，在 qtcreator 中 <code>qDebug</code> 语句的打印内容一直出不来，解决方法是在构建工具链设置中新增一个环境变量：<code>QT_ASSUME_STDERR_HAS_CONSOLE=1</code></p>
+<p>具体步骤（英文菜单）：<br>点击 qtcreator 工具栏，依次点击 <code>Tools</code> &gt; <code>Options</code> &gt; <code>Kits</code>，之后选择正在使用的 <code>Kits</code>，滚动找到 <code>Environment</code>, 点击 <code>Change</code> 然后新增上面提到的环境变量即可。</p>
+<p>参考链接：<a href="https://stackoverflow.com/questions/41425530/qtcreator-qdebug-messages-not-shown">https://stackoverflow.com/questions/41425530/qtcreator-qdebug-messages-not-shown</a></p>
+]]></content>
+      <categories>
+        <category>qt</category>
+      </categories>
+      <tags>
+        <tag>qt</tag>
+        <tag>qtcreator</tag>
+        <tag>qdebug</tag>
       </tags>
   </entry>
   <entry>
@@ -5134,6 +5150,24 @@
       </tags>
   </entry>
   <entry>
+    <title>解决 gradle 下载不下来</title>
+    <url>/2021/08/13/%E8%A7%A3%E5%86%B3-gradle-%E4%B8%8B%E8%BD%BD%E4%B8%8D%E4%B8%8B%E6%9D%A5/</url>
+    <content><![CDATA[<p>有时候由于网络问题，会发现 android-studio 或 idea 下载不懂 gradle，可以修改 <code>gradle-wrapper.properties</code> 配置文件中的 <code>distributionUrl</code> 选项来解决这个问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">distributionUrl&#x3D;https\:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;gradle&#x2F;gradle-5.1.1-all.zip</span><br></pre></td></tr></table></figure>
+
+<p>这个选项表示从腾讯提供的 gradle 镜像服务下载数据，注意替换上面示例链接末尾的具体文件名。</p>
+<p>可以访问此链接查看有哪些版本的 gradle 可以下载：<a href="https://mirrors.cloud.tencent.com/gradle/">https://mirrors.cloud.tencent.com/gradle/</a></p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>gradle</tag>
+        <tag>android-studio</tag>
+        <tag>idea</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自定义bash终端提示符</title>
     <url>/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/</url>
     <content><![CDATA[<blockquote>
@@ -5178,24 +5212,6 @@
         <tag>bash</tag>
         <tag>提示符</tag>
         <tag>终端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决 gradle 下载不下来</title>
-    <url>/2021/08/13/%E8%A7%A3%E5%86%B3-gradle-%E4%B8%8B%E8%BD%BD%E4%B8%8D%E4%B8%8B%E6%9D%A5/</url>
-    <content><![CDATA[<p>有时候由于网络问题，会发现 android-studio 或 idea 下载不懂 gradle，可以修改 <code>gradle-wrapper.properties</code> 配置文件中的 <code>distributionUrl</code> 选项来解决这个问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">distributionUrl&#x3D;https\:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;gradle&#x2F;gradle-5.1.1-all.zip</span><br></pre></td></tr></table></figure>
-
-<p>这个选项表示从腾讯提供的 gradle 镜像服务下载数据，注意替换上面示例链接末尾的具体文件名。</p>
-<p>可以访问此链接查看有哪些版本的 gradle 可以下载：<a href="https://mirrors.cloud.tencent.com/gradle/">https://mirrors.cloud.tencent.com/gradle/</a></p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>gradle</tag>
-        <tag>android-studio</tag>
-        <tag>idea</tag>
       </tags>
   </entry>
   <entry>
