@@ -1519,6 +1519,27 @@
       </tags>
   </entry>
   <entry>
+    <title>cocos2d-x-3.15缺少libfmod.so.6</title>
+    <url>/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/</url>
+    <content><![CDATA[<p>cocos2d-x v3.15版, 在linux下编译之后执行test里的demo时报错:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;cpp-tests </span><br><span class="line">.&#x2F;cpp-tests: error while loading shared libraries: libfmod.so.6:</span><br><span class="line">cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>从报错可以看出缺少<code>libfmod.so.6</code>这个库文件, 网上搜索后得知这个文件在:<br><code>$COCOS2D_HOME/external/linux-specific/fmod/prebuilt/64-bit</code>目录下,<br>而且是在执行<code>$COCOS2D_HOME/build/install-deps-linux.sh</code>时发生报错的,</p>
+<p>他们的解决办法是将上述目录下的两个库文件<code>libfmod.so</code>和<code>libfmodL.so</code>,<br>复制到<code>/usr/local/lib/</code>目录下, 并创建链接文件, 然后接着执行<code>install-deps-linux.sh</code>,<br>但是这个方法对我没有作用, 可能是因为我是用的系统的缘故<code>(deepin linux)</code>.</p>
+<p><font color=red>如果上述方法对你也没用就试试下面的方法:</font><br>复制两个库文件到<code>/usr/lib/</code>目录下, 然后创建链接文件:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#在cocos2d目录下执行</span><br><span class="line">cp external&#x2F;linux-specific&#x2F;fmod&#x2F;prebuilt&#x2F;64-bit&#x2F;* &#x2F;usr&#x2F;lib&#x2F;</span><br><span class="line">cd &#x2F;usr&#x2F;lib</span><br><span class="line">ln -s libfmod.so libfmod.so.6</span><br></pre></td></tr></table></figure>
+<p>然后就可以直接测试demo了, 不用重新编译</p>
+]]></content>
+      <categories>
+        <category>cocos2d</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>deepin</tag>
+        <tag>cocos2d</tag>
+        <tag>libfmod</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>clickhouse 部署集群</title>
     <url>/2019/10/25/clickhouse-%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4/</url>
     <content><![CDATA[<blockquote>
@@ -1570,27 +1591,6 @@
         <tag>cluster</tag>
         <tag>集群</tag>
         <tag>clickhouse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>cocos2d-x-3.15缺少libfmod.so.6</title>
-    <url>/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/</url>
-    <content><![CDATA[<p>cocos2d-x v3.15版, 在linux下编译之后执行test里的demo时报错:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;cpp-tests </span><br><span class="line">.&#x2F;cpp-tests: error while loading shared libraries: libfmod.so.6:</span><br><span class="line">cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
-<p>从报错可以看出缺少<code>libfmod.so.6</code>这个库文件, 网上搜索后得知这个文件在:<br><code>$COCOS2D_HOME/external/linux-specific/fmod/prebuilt/64-bit</code>目录下,<br>而且是在执行<code>$COCOS2D_HOME/build/install-deps-linux.sh</code>时发生报错的,</p>
-<p>他们的解决办法是将上述目录下的两个库文件<code>libfmod.so</code>和<code>libfmodL.so</code>,<br>复制到<code>/usr/local/lib/</code>目录下, 并创建链接文件, 然后接着执行<code>install-deps-linux.sh</code>,<br>但是这个方法对我没有作用, 可能是因为我是用的系统的缘故<code>(deepin linux)</code>.</p>
-<p><font color=red>如果上述方法对你也没用就试试下面的方法:</font><br>复制两个库文件到<code>/usr/lib/</code>目录下, 然后创建链接文件:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#在cocos2d目录下执行</span><br><span class="line">cp external&#x2F;linux-specific&#x2F;fmod&#x2F;prebuilt&#x2F;64-bit&#x2F;* &#x2F;usr&#x2F;lib&#x2F;</span><br><span class="line">cd &#x2F;usr&#x2F;lib</span><br><span class="line">ln -s libfmod.so libfmod.so.6</span><br></pre></td></tr></table></figure>
-<p>然后就可以直接测试demo了, 不用重新编译</p>
-]]></content>
-      <categories>
-        <category>cocos2d</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>deepin</tag>
-        <tag>cocos2d</tag>
-        <tag>libfmod</tag>
       </tags>
   </entry>
   <entry>
@@ -5150,24 +5150,6 @@
       </tags>
   </entry>
   <entry>
-    <title>解决 gradle 下载不下来</title>
-    <url>/2021/08/13/%E8%A7%A3%E5%86%B3-gradle-%E4%B8%8B%E8%BD%BD%E4%B8%8D%E4%B8%8B%E6%9D%A5/</url>
-    <content><![CDATA[<p>有时候由于网络问题，会发现 android-studio 或 idea 下载不懂 gradle，可以修改 <code>gradle-wrapper.properties</code> 配置文件中的 <code>distributionUrl</code> 选项来解决这个问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">distributionUrl&#x3D;https\:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;gradle&#x2F;gradle-5.1.1-all.zip</span><br></pre></td></tr></table></figure>
-
-<p>这个选项表示从腾讯提供的 gradle 镜像服务下载数据，注意替换上面示例链接末尾的具体文件名。</p>
-<p>可以访问此链接查看有哪些版本的 gradle 可以下载：<a href="https://mirrors.cloud.tencent.com/gradle/">https://mirrors.cloud.tencent.com/gradle/</a></p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>gradle</tag>
-        <tag>android-studio</tag>
-        <tag>idea</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自定义bash终端提示符</title>
     <url>/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/</url>
     <content><![CDATA[<blockquote>
@@ -5212,6 +5194,24 @@
         <tag>bash</tag>
         <tag>提示符</tag>
         <tag>终端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决 gradle 下载不下来</title>
+    <url>/2021/08/13/%E8%A7%A3%E5%86%B3-gradle-%E4%B8%8B%E8%BD%BD%E4%B8%8D%E4%B8%8B%E6%9D%A5/</url>
+    <content><![CDATA[<p>有时候由于网络问题，会发现 android-studio 或 idea 下载不懂 gradle，可以修改 <code>gradle-wrapper.properties</code> 配置文件中的 <code>distributionUrl</code> 选项来解决这个问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">distributionUrl&#x3D;https\:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;gradle&#x2F;gradle-5.1.1-all.zip</span><br></pre></td></tr></table></figure>
+
+<p>这个选项表示从腾讯提供的 gradle 镜像服务下载数据，注意替换上面示例链接末尾的具体文件名。</p>
+<p>可以访问此链接查看有哪些版本的 gradle 可以下载：<a href="https://mirrors.cloud.tencent.com/gradle/">https://mirrors.cloud.tencent.com/gradle/</a></p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>gradle</tag>
+        <tag>android-studio</tag>
+        <tag>idea</tag>
       </tags>
   </entry>
   <entry>
