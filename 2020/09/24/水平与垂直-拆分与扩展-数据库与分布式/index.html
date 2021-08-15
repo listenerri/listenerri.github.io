@@ -24,7 +24,7 @@
   <meta name="description" content="标题写出来后发现覆盖面有点大，其实要说的只是字面意义上的一点学习小结： 数据库优化：水平分库，水平分表，使各个库&#x2F;表的结构相同，但内容不同垂直分库，垂直分表，使各个库&#x2F;表的结构不同，且内容不同库的结构可以理解为包含了哪些表表的结构可以理解为包含了哪些字段在垂直拆分的基础上，可以进一步水平拆分 分布式优化：水平扩展，增加更多节点以达到整体性能增强垂直扩展，增强单机配置以达到单点性能增强，进而达到整体">
 <meta property="og:type" content="article">
 <meta property="og:title" content="水平与垂直 拆分与扩展 数据库与分布式">
-<meta property="og:url" content="http://listenerri.com/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/index.html">
+<meta property="og:url" content="https://listenerri.com/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
 <meta property="og:description" content="标题写出来后发现覆盖面有点大，其实要说的只是字面意义上的一点学习小结： 数据库优化：水平分库，水平分表，使各个库&#x2F;表的结构相同，但内容不同垂直分库，垂直分表，使各个库&#x2F;表的结构不同，且内容不同库的结构可以理解为包含了哪些表表的结构可以理解为包含了哪些字段在垂直拆分的基础上，可以进一步水平拆分 分布式优化：水平扩展，增加更多节点以达到整体性能增强垂直扩展，增强单机配置以达到单点性能增强，进而达到整体">
 <meta property="og:locale" content="zh_CN">
@@ -34,7 +34,7 @@
 <meta property="article:tag" content="others">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://listenerri.com/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/">
+<link rel="canonical" href="https://listenerri.com/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -206,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/09/24/%E6%B0%B4%E5%B9%B3%E4%B8%8E%E5%9E%82%E7%9B%B4-%E6%8B%86%E5%88%86%E4%B8%8E%E6%89%A9%E5%B1%95-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">

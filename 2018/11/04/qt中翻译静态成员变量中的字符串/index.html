@@ -24,7 +24,7 @@
   <meta name="description" content="在 qt 中要翻译一个字符串很简单，只需要使用 tr 函数包裹住字符串即可。后来发现这一方法对于静态变量无效，经同事提醒原来静态数据初始化时，程序还没有加载翻译数据，也就是一般写在 main 函数中的 QTranslator::load() &#x2F; app.installTranslator() 类似代码。 经过一番搜索和阅读 qt 文档，找到了解决方法，原来 qt 早已有应对之策：QT_TR_NOO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="qt中翻译静态成员变量中的字符串">
-<meta property="og:url" content="http://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
+<meta property="og:url" content="https://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
 <meta property="og:description" content="在 qt 中要翻译一个字符串很简单，只需要使用 tr 函数包裹住字符串即可。后来发现这一方法对于静态变量无效，经同事提醒原来静态数据初始化时，程序还没有加载翻译数据，也就是一般写在 main 函数中的 QTranslator::load() &#x2F; app.installTranslator() 类似代码。 经过一番搜索和阅读 qt 文档，找到了解决方法，原来 qt 早已有应对之策：QT_TR_NOO">
 <meta property="og:locale" content="zh_CN">
@@ -37,7 +37,7 @@
 <meta property="article:tag" content="翻译">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+<link rel="canonical" href="https://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
 
 
 <script id="page-configurations">
@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">

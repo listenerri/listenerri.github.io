@@ -24,12 +24,12 @@
   <meta name="description" content="只要能通过ip地址找到虚拟机中的系统，那么就可以干很多事，比如：adb调试，或者使用nc命令传输一些文件或文件夹，等等。。下面以adb连接virtualbox中的android-x86进行调试为例： 安装android-x86首先你要安装好android-x86，这个就不多说了，网上很多教程不过值得一提的是，在安装好之后，进入系统时，如果没有点技巧会卡在欢迎界面，安装时没有截图，就不上图了解决方法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通过ip地址连接virtualbox虚拟机android-x86">
-<meta property="og:url" content="http://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/index.html">
+<meta property="og:url" content="https://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
 <meta property="og:description" content="只要能通过ip地址找到虚拟机中的系统，那么就可以干很多事，比如：adb调试，或者使用nc命令传输一些文件或文件夹，等等。。下面以adb连接virtualbox中的android-x86进行调试为例： 安装android-x86首先你要安装好android-x86，这个就不多说了，网上很多教程不过值得一提的是，在安装好之后，进入系统时，如果没有点技巧会卡在欢迎界面，安装时没有截图，就不上图了解决方法">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/guize.png">
-<meta property="og:image" content="http://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/shell.png">
+<meta property="og:image" content="https://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/guize.png">
+<meta property="og:image" content="https://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/shell.png">
 <meta property="article:published_time" content="2016-05-04T09:35:25.000Z">
 <meta property="article:modified_time" content="2020-08-23T01:23:50.054Z">
 <meta property="article:author" content="listenerri">
@@ -39,9 +39,9 @@
 <meta property="article:tag" content="android-x86">
 <meta property="article:tag" content="调试">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/guize.png">
+<meta name="twitter:image" content="https://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/guize.png">
 
-<link rel="canonical" href="http://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/">
+<link rel="canonical" href="https://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/">
 
 
 <script id="page-configurations">
@@ -213,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">

@@ -24,13 +24,13 @@
   <meta name="description" content="最近 coding 的 pages 服务越来越没法用了，不是自动部署失败就是博客无法访问，而且访问速度很慢，估计再过段时间 coding 就不再提供免费的 pages 服务了。但是如果将域名解析到 github 上，百度又无法抓取(github 不允许)，思来想去还是放在自己的服务器上吧。 不过放在自己的服务器上有两个问题：  没有备案不能使用 dnspod 的 301 重定向把 www 的域名重">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在自己的服务器上搭建静态博客">
-<meta property="og:url" content="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:url" content="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
 <meta property="og:description" content="最近 coding 的 pages 服务越来越没法用了，不是自动部署失败就是博客无法访问，而且访问速度很慢，估计再过段时间 coding 就不再提供免费的 pages 服务了。但是如果将域名解析到 github 上，百度又无法抓取(github 不允许)，思来想去还是放在自己的服务器上吧。 不过放在自己的服务器上有两个问题：  没有备案不能使用 dnspod 的 301 重定向把 www 的域名重">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/webhooks.png">
-<meta property="og:image" content="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/add-webhooks.png">
-<meta property="og:image" content="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/recent-activity.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/webhooks.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/add-webhooks.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/recent-activity.png">
 <meta property="article:published_time" content="2019-03-31T08:05:12.000Z">
 <meta property="article:modified_time" content="2020-08-23T01:23:50.051Z">
 <meta property="article:author" content="listenerri">
@@ -38,9 +38,9 @@
 <meta property="article:tag" content="nginx">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/webhooks.png">
+<meta name="twitter:image" content="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/webhooks.png">
 
-<link rel="canonical" href="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
+<link rel="canonical" href="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
 
 
 <script id="page-configurations">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
