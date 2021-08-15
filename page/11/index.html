@@ -202,6 +202,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" class="post-title-link" itemprop="url">同步安卓源码:Cannot fetch CyanogenMod/android external svox</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-04-23 22:34:28" itemprop="dateCreated datePublished" datetime="2016-04-23T22:34:28+08:00">2016-04-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" class="post-meta-item leancloud_visitors" data-flag-title="同步安卓源码:Cannot fetch CyanogenMod/android external svox" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>同步CM10.1到99%出现错误：<br><code>error: Cannot fetch CyanogenMod/</code><font color=red><strong>Android</strong></font> <code>external svox</code></p>
+<p>或者是这样的提示：<br><code>repo sync Repository unavailable due to DMCA takedown</code></p>
+<p>解决办法：</p>
+<p>repo init后<br>修改 <code>.repo/manifests/default.xml</code><br>把<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;CyanogenMod/android_external_svox&quot;/&gt;</code><br>替换修改为<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;platform/external/svox&quot; remote=&quot;aosp&quot; revision=&quot;refs/tags/android-4.4.4_r2&quot;/&gt;</code></p>
+<p>注意红色文字部分、那是你同步的版本号</p>
+<p>如果不确定应该改为多少、就搜索aosp、会发现每一个搜索结果中的行里都有一个类似的语句、</p>
+<p>把这句里的版本号改为你搜索到的那些版本号就行了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/jsp-android%E4%BD%BF%E7%94%A8http/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1097,20 +1198,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-count">236</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

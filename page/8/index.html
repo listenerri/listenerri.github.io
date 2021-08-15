@@ -202,6 +202,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/" class="post-title-link" itemprop="url">测试网站是否能被百度蜘蛛抓取</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-07-01 23:48:34" itemprop="dateCreated datePublished" datetime="2016-07-01T23:48:34+08:00">2016-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/" class="post-meta-item leancloud_visitors" data-flag-title="测试网站是否能被百度蜘蛛抓取" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>只需要使用curl命令配合一些参数就可以测试了,看返回内容就知道能否抓取了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用PC的UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;</span> http://listenerri.com</span><br><span class="line"><span class="comment"># 用移动UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (Linux;u;Android 4.2.2;zh-cn;) AppleWebKit/534.46 (KHTML,like Gecko) Version/5.1 Mobile Safari/10600.6.3 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）&quot;</span> http://listenerri.com</span><br></pre></td></tr></table></figure>
+<p>下面两张图是我测试正常的,第一张是上述命令返回的开始部分,第二张是上述命令返回的结束部分:<br><img src="spider1.png" alt="开始"><br><img src="spider2.png" alt="结束"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/06/30/%E8%A7%A3%E5%86%B3%E5%AE%89%E5%8D%93%E5%B1%8F%E5%B9%95%E6%97%8B%E8%BD%AC%E6%89%80%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1151,102 +1248,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/" class="post-title-link" itemprop="url">getDuration()获取媒体总长度值为-1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 19:55:38" itemprop="dateCreated datePublished" datetime="2016-05-04T19:55:38+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/" class="post-meta-item leancloud_visitors" data-flag-title="getDuration()获取媒体总长度值为-1" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>例如VideoView获取视频总长度：<br>在视频播放前获取到的视频总长度都为-1<br>想要在视频播放前获取到总长度的话:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">videoView.setOnPreparedListener(<span class="keyword">new</span> MyOnPreparedListener());</span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyOnPreparedListener</span> <span class="keyword">implements</span> <span class="title">OnPreparedListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPrepared</span><span class="params">(MediaPlayer mp)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line"></span><br><span class="line">            video.getDuration();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1318,20 +1319,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-count">236</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

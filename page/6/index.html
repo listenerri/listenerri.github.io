@@ -202,6 +202,123 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/10/04/hides-overloaded-virtual-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/04/hides-overloaded-virtual-function/" class="post-title-link" itemprop="url">hides overloaded virtual function</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-04 15:13:39" itemprop="dateCreated datePublished" datetime="2018-10-04T15:13:39+08:00">2018-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cpp/" itemprop="url" rel="index"><span itemprop="name">cpp</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/10/04/hides-overloaded-virtual-function/" class="post-meta-item leancloud_visitors" data-flag-title="hides overloaded virtual function" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/10/04/hides-overloaded-virtual-function/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/10/04/hides-overloaded-virtual-function/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在<code>重载</code>父类的同名虚函数时会出现<code>hides overloaded virtual function</code>编译警告。<br>从字面上的意思其实就可以理解：重载的虚函数被隐藏了。</p>
+<p>三个关键点：</p>
+<ul>
+<li>重载</li>
+<li>虚函数</li>
+<li>隐藏</li>
+</ul>
+<p>这个编译警告之所以出现，是因为上面三个关键点，首先是发生了<code>重载</code>，子类重载了父类的函数，其次被重载的是虚函数，这时这个被重载的父类的虚函数将会被隐藏。<br>何为隐藏呢，应该是不能使用子类实例直接调用父类被隐藏的函数，调用时必须指定父类命名空间，往深了说也就是编译器如果在子类中发现了要使用的函数的名字，注意，是名字不包含函数签名，只要名字匹配上，就不会再去父类中去寻找这个名字的函数，即便子类中的函数参数不匹配，也不会再去父类中寻找。</p>
+<p>其实去掉<code>虚函数</code>这个关键点，在c++中当重载了父类的函数时，隐藏同样会发生，举个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> B();</span><br><span class="line">    b-&gt;foo(); <span class="comment">//编译报错</span></span><br><span class="line">    b-&gt;A::foo(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;foo(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当重载的父类函数为虚函数时，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123; <span class="comment">//将父类函数声明为虚函数</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="comment">//此处会有编译警告：&quot;&#x27;B::foo&#x27; hides overloaded virtual function&quot;</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> B();</span><br><span class="line">    b-&gt;foo(); <span class="comment">//编译报错依旧</span></span><br><span class="line">    b-&gt;A::foo(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;foo(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译错误依旧，但多了一个编译警告，关于这个编译警告，有种解释说是为了避免书写错误，这就要说到多态，上面的例子没有应用多态有些不合适，修改一下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookA</span>;</span> <span class="comment">//改动处</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookB</span>;</span> <span class="comment">//改动处</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookA *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A *b = <span class="keyword">new</span> B(); <span class="comment">//改动处</span></span><br><span class="line">    b-&gt;foo(<span class="keyword">new</span> BookB());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/04/hides-overloaded-virtual-function/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1117,117 +1234,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" class="post-title-link" itemprop="url">python的库文件在哪儿</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-07-20 22:06:56" itemprop="dateCreated datePublished" datetime="2017-07-20T22:06:56+08:00">2017-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" class="post-meta-item leancloud_visitors" data-flag-title="python的库文件在哪儿" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>当前操作系统: deepin基于debian</p>
-</blockquote>
-<h1 id="模块管理器pip"><a href="#模块管理器pip" class="headerlink" title="模块管理器pip"></a>模块管理器pip</h1><p>默认的命令pip可能是来自pip2也可能是pip3, 这取决于安装pip2和pip3的顺序,<br>安装pip2或pip3时会覆盖原有pip可执行文件, 所以在使用pip安装python模块时,<br>最好明确指出使用pip2还是pip3, 而不是直接使用pip命令, 这样可以避免明明要安装python3的模块库, 下载安装的却是python2的模块库.</p>
-<h1 id="安装模块-库"><a href="#安装模块-库" class="headerlink" title="安装模块(库)"></a>安装模块(库)</h1><p>使用pip命令安装模块时, 是否使用sudo提权会影响安装路径.</p>
-<h2 id="使用sudo提权"><a href="#使用sudo提权" class="headerlink" title="使用sudo提权"></a>使用sudo提权</h2><p>会安装模块到以下路径:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># python自带的一些模块文件在这个路径下.</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># 用户自行安装的模块一般在这个路径下.</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="没有使用sudo提权"><a href="#没有使用sudo提权" class="headerlink" title="没有使用sudo提权"></a>没有使用sudo提权</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1299,20 +1305,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-count">236</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
