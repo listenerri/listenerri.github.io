@@ -202,6 +202,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/11/05/byte-%E5%AD%97%E8%8A%82-%E4%B8%8E-%E4%BA%8C%E8%BF%9B%E5%88%B6-%E4%B8%8E-%E7%BC%96%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/05/byte-%E5%AD%97%E8%8A%82-%E4%B8%8E-%E4%BA%8C%E8%BF%9B%E5%88%B6-%E4%B8%8E-%E7%BC%96%E7%A0%81/" class="post-title-link" itemprop="url">byte 字节 与 二进制 与 编码</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-05 18:52:37" itemprop="dateCreated datePublished" datetime="2020-11-05T18:52:37+08:00">2020-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-10 16:24:21" itemprop="dateModified" datetime="2021-08-10T16:24:21+08:00">2021-08-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/11/05/byte-%E5%AD%97%E8%8A%82-%E4%B8%8E-%E4%BA%8C%E8%BF%9B%E5%88%B6-%E4%B8%8E-%E7%BC%96%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="byte 字节 与 二进制 与 编码" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/05/byte-%E5%AD%97%E8%8A%82-%E4%B8%8E-%E4%BA%8C%E8%BF%9B%E5%88%B6-%E4%B8%8E-%E7%BC%96%E7%A0%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/05/byte-%E5%AD%97%E8%8A%82-%E4%B8%8E-%E4%BA%8C%E8%BF%9B%E5%88%B6-%E4%B8%8E-%E7%BC%96%E7%A0%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>先扯一堆：byte（字节），bytes（字节流），二进制，十六进制，编码<br>今天跟同事讨论起了上面一堆名词之间的定义和关系到底是什么，不啦不啦个把小时之后得出了以下结论。</p>
+<h1 id="byte-与-二进制"><a href="#byte-与-二进制" class="headerlink" title="byte 与 二进制"></a>byte 与 二进制</h1><p><strong>byte 是二进制的长度单位</strong>（位数，为了便于理解后面使用长度一词），一个 byte 表示长度为 8 的二进制，即通常所说的：一个 byte 是 八个 bit（位）</p>
+<p>既然 byte 是二进制的长度单位，那么编程语言里的其他类型呢？</p>
+<p>它们其实也是二进制的长度单位，但是表示的长度不同，比如 int 表示 4 个字节（通常）也就是说 int 其实表示长度为 4 * 8 = 32 的二进制，其他类型以此类推，注意，char 类型表示一个 byte，也表示长度为 8 的二进制。</p>
+<p><strong>byte 是长度单位为什么能表示数值大小？</strong></p>
+<p>一个二进制数既然确定了其长度，那么也就确定了其能表示的数值范围，因此一个 byte 也就能表示出长度为 8 的二进制数所能表示的任何数值。</p>
+<p>要注意，byte 是先确定了二进制长度，然后才确定了数值大小，具体的数值大小要看这固定长度的二进制每一位都是什么内容。</p>
+<h1 id="编码又是什么？"><a href="#编码又是什么？" class="headerlink" title="编码又是什么？"></a>编码又是什么？</h1><p>我们将编码分为狭义和广义两种。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/05/byte-%E5%AD%97%E8%8A%82-%E4%B8%8E-%E4%BA%8C%E8%BF%9B%E5%88%B6-%E4%B8%8E-%E7%BC%96%E7%A0%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/10/29/%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96-vs-%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E5%99%A8%E5%88%97%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1164,114 +1273,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" class="post-title-link" itemprop="url">python 中函数传参是值传递还是引用传递</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-29 09:27:47" itemprop="dateCreated datePublished" datetime="2020-05-29T09:27:47+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" class="post-meta-item leancloud_visitors" data-flag-title="python 中函数传参是值传递还是引用传递" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这个问题网上众说纷纭，有的答案不完全正确，有的答案没有解释清楚。</p>
-<p>这里先说我认为正确的答案：</p>
-<p>如果学习过 cpp 的话,说传值或者传引用都不准确，直接理解为传地址（指针）就好了，不管可变对象还是不可变对象都是传地址。</p>
-<p>详细解释，在函数内：</p>
-<ul>
-<li>对传入参数的赋值操作，是创建新的对象，可以理解为声明新的变量，自然不会影响到函数外变量</li>
-<li>对传入参数所指对象的修改操作，如 list 的 append，由于是指针，因此修改了函数外变量，注意在 python 中不可变对象类型是不包含可以修改对象的接口的，即便有些接口看起来像修改了，也是返回了新的对象，而不是对原对象的修改，即不是原地修改</li>
-<li>这也解释了当传递复杂类型参数：a = tuple(b = list(), 1, 2, 3) 这种数据时，虽然 a 是不可变类型，但通过 a[0].append() 依然可以成功修改 b，也意味着修改了 a，且函数外变量会也会被修改的原因</li>
-</ul>
-<p>综上所述，也可以理解为传引用，但要注意，这里的“引用”二字是广义的，不要狭义得理解为是 cpp 中的引用，两者是不同的，在 cpp 中对函数内传入的引用参数执行赋值操作，将会影响到函数外的变量。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1339,7 +1344,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

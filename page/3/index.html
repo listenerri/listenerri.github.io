@@ -202,6 +202,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" class="post-title-link" itemprop="url">python 中函数传参是值传递还是引用传递</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-29 09:27:47" itemprop="dateCreated datePublished" datetime="2020-05-29T09:27:47+08:00">2020-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" class="post-meta-item leancloud_visitors" data-flag-title="python 中函数传参是值传递还是引用传递" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这个问题网上众说纷纭，有的答案不完全正确，有的答案没有解释清楚。</p>
+<p>这里先说我认为正确的答案：</p>
+<p>如果学习过 cpp 的话,说传值或者传引用都不准确，直接理解为传地址（指针）就好了，不管可变对象还是不可变对象都是传地址。</p>
+<p>详细解释，在函数内：</p>
+<ul>
+<li>对传入参数的赋值操作，是创建新的对象，可以理解为声明新的变量，自然不会影响到函数外变量</li>
+<li>对传入参数所指对象的修改操作，如 list 的 append，由于是指针，因此修改了函数外变量，注意在 python 中不可变对象类型是不包含可以修改对象的接口的，即便有些接口看起来像修改了，也是返回了新的对象，而不是对原对象的修改，即不是原地修改</li>
+<li>这也解释了当传递复杂类型参数：a = tuple(b = list(), 1, 2, 3) 这种数据时，虽然 a 是不可变类型，但通过 a[0].append() 依然可以成功修改 b，也意味着修改了 a，且函数外变量会也会被修改的原因</li>
+</ul>
+<p>综上所述，也可以理解为传引用，但要注意，这里的“引用”二字是广义的，不要狭义得理解为是 cpp 中的引用，两者是不同的，在 cpp 中对函数内传入的引用参数执行赋值操作，将会影响到函数外的变量。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/04/15/k8s-dashboard-%E6%97%A0%E6%B3%95%E7%99%BB%E9%99%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1194,124 +1298,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" class="post-title-link" itemprop="url">linux下为两个网卡调整路由规则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-26 08:46:00" itemprop="dateCreated datePublished" datetime="2019-11-26T08:46:00+08:00">2019-11-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" class="post-meta-item leancloud_visitors" data-flag-title="linux下为两个网卡调整路由规则" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>公司有线网是电信的，访问境外的服务器会间歇性得无法访问，但有一个无线网是移动的，用手机测试发现一直没什么问题，所以搞了个无线网卡连无线网。</p>
-<p>但电脑的数据默认只走有线网，只有关了有线网才能用无线网，但是公司内部的服务只能通过有线网访问，所以就尝试了以下方案：</p>
-<ul>
-<li>192.168.1.0/24 网段走有线网，其他走无线网</li>
-<li>只在访问境外服务器的时候走无线网</li>
-</ul>
-<p>经过测试确定这两个方案都能满足我的需求，但是由于无线不如有限稳定，所以最后确定使用第二种方案。</p>
-<p>调整路由的工具使用 ip 命令的子命令 route，除了路由子命令还有很多其他网络相关的功能，具体可以查看 ip 命令的 man 手册。</p>
-<p>linux 下当连接无线网和有线网之后使用 <code>ip route</code>，可以简写为 <code>ip r</code> 可以列出当前所有的路由规则：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default via 192.168.1.1 dev enp2s0 proto static metric 100</span><br><span class="line">default via 192.168.1.1 dev wlx200db012a6be proto dhcp metric 600</span><br><span class="line">172.17.0.0&#x2F;16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown</span><br><span class="line">192.168.1.0&#x2F;24 dev enp2s0 proto kernel scope link src 192.168.1.208 metric 100</span><br><span class="line">192.168.1.0&#x2F;24 dev wlx200db012a6be proto kernel scope link src 192.168.1.74 metric 600</span><br><span class="line">192.168.252.0&#x2F;24 dev xdroid0 proto kernel scope link src 192.168.252.1</span><br></pre></td></tr></table></figure>
-<p>其中 enp2s0 是有线网相关的路由，wlx200db012a6be 是无线网相关的路由，此外还有 docker 和 xdroid 相关的，后面这两个不用管，没有安装这两个程序的机器也不会有这两种路由。</p>
-<p>从上面的路由规则可以看到 enp2s0 相关的 metric 值为 100 而 wlx200db012a6be 相关的 metric 值为 600，这就表示 enp2s0 相关的路由规则比 wlx200db012a6be 相关的路由规则优先级高。在相同的条件下，如相同的 prefix（IP 地址段）时系统将优先使用 enp2s0。</p>
-<p>例如以下这两条规则，就表示访问 192.168.1.* 就会走 enp2s0：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1379,7 +1369,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
