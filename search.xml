@@ -3197,25 +3197,6 @@
       </tags>
   </entry>
   <entry>
-    <title>osx bash completion 补全</title>
-    <url>/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/</url>
-    <content><![CDATA[<p>在 linux 下补全的配置一般发行版都给默认配了，原本以为在 OSX 下用 brew 装个 bash-completion 包，再在 bashrc 下贴两行配置也就搞定了，没想到不行，OSX 下 bash-completion 包有两个，另一个是 <code>bash-completion@2</code>，这两个包分别对应 bash 的两个版本，具体可以用 brew info <code>bash-completion@2</code> 来看。</p>
-<p>而且 <code>bash-completion@2</code> 跟 <code>bash-completion</code> 相比还要多一行配置，总之就是需要下面两行配置才行，原因是大多软件包都只提供了旧版本的 completion 文件，新版的没有提供支持，所以下面的第一行就是声明要兼容下旧的补全文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export BASH_COMPLETION_COMPAT_DIR&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;bash_completion.d&quot;</span><br><span class="line">[[ -r &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;profile.d&#x2F;bash_completion.sh&quot; ]] &amp;&amp; . &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;profile.d&#x2F;bash_completion.sh&quot;</span><br></pre></td></tr></table></figure>
-
-<p>除此之外还有个问题，我自己设置了很多别名 alias，但是这些自定义的别名默认是不支持参数补全的，想要如丝般顺滑就要用另一个项目：<a href="https://github.com/cykerway/complete-alias">https://github.com/cykerway/complete-alias</a>，具体的使用方法就不赘述了，可以去项目里看看怎么配置。</p>
-<p>经过实践发现这个项目也不支持旧版的 <code>bash-completion</code> 包，会提示 _completion_loader 找不到的错误，改装 <code>bash-completion@2</code> 就好了。</p>
-]]></content>
-      <categories>
-        <category>osx</category>
-      </categories>
-      <tags>
-        <tag>bash</tag>
-        <tag>completion</tag>
-        <tag>_completion_loader</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>nextcloud 部署后没有日历邮件等应用</title>
     <url>/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<p>在公司内部服务器上搭了一个 <a href="https://nextcloud.com/">Nextcloud</a> 服务，跑起来之后发现没有日历、邮件等应用，且不能打开应用商店，分析了服务日志发现是由于网络问题。</p>
@@ -3233,6 +3214,25 @@
       </categories>
       <tags>
         <tag>nextcloud</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>osx bash completion 补全</title>
+    <url>/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/</url>
+    <content><![CDATA[<p>在 linux 下补全的配置一般发行版都给默认配了，原本以为在 OSX 下用 brew 装个 bash-completion 包，再在 bashrc 下贴两行配置也就搞定了，没想到不行，OSX 下 bash-completion 包有两个，另一个是 <code>bash-completion@2</code>，这两个包分别对应 bash 的两个版本，具体可以用 brew info <code>bash-completion@2</code> 来看。</p>
+<p>而且 <code>bash-completion@2</code> 跟 <code>bash-completion</code> 相比还要多一行配置，总之就是需要下面两行配置才行，原因是大多软件包都只提供了旧版本的 completion 文件，新版的没有提供支持，所以下面的第一行就是声明要兼容下旧的补全文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export BASH_COMPLETION_COMPAT_DIR&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;bash_completion.d&quot;</span><br><span class="line">[[ -r &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;profile.d&#x2F;bash_completion.sh&quot; ]] &amp;&amp; . &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;profile.d&#x2F;bash_completion.sh&quot;</span><br></pre></td></tr></table></figure>
+
+<p>除此之外还有个问题，我自己设置了很多别名 alias，但是这些自定义的别名默认是不支持参数补全的，想要如丝般顺滑就要用另一个项目：<a href="https://github.com/cykerway/complete-alias">https://github.com/cykerway/complete-alias</a>，具体的使用方法就不赘述了，可以去项目里看看怎么配置。</p>
+<p>经过实践发现这个项目也不支持旧版的 <code>bash-completion</code> 包，会提示 _completion_loader 找不到的错误，改装 <code>bash-completion@2</code> 就好了。</p>
+]]></content>
+      <categories>
+        <category>osx</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>completion</tag>
+        <tag>_completion_loader</tag>
       </tags>
   </entry>
   <entry>
@@ -4020,27 +4020,26 @@
     <url>/2020/10/29/%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96-vs-%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E5%99%A8%E5%88%97%E8%A1%A8/</url>
     <content><![CDATA[<p>列表初始化，成员初始化器列表，初始化列表，傻傻搞不清楚</p>
 <p>唉，为什么总有刁民乱起名</p>
-<h2 id="std-initializer-list"><a href="#std-initializer-list" class="headerlink" title="std::initializer_list"></a>std::initializer_list</h2><p>(无中文翻译)</p>
-<p>简介：<br>(无)</p>
-<p>备注：<br>这表示一种花括号数据类型{*,….}<br>当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">std::initializer_list&lt;int&gt; foo &#x3D; &#123;1, 2, 3, 4&#125;</span><br><span class="line">auto foo &#x3D; &#123;1, 2, 3, 4&#125;</span><br><span class="line">void func_bar(std::initializer_list&lt;int&gt; arg_var) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="std-initializer-list"><a href="#std-initializer-list" class="headerlink" title="std::initializer_list"></a>std::initializer_list</h2><p>(译：<code>花括号初始化器列表</code>)</p>
+<p>简介：<br>可以将其理解为类/模板类</p>
+<p>备注：<br>这表示一种花括号数据类型 <code>&#123;x, y, ...&#125;</code><br>当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">std::initializer_list&lt;int&gt; foo &#x3D; &#123;1, 2, 3, 4&#125; &#x2F;&#x2F; 声明此类型数据并赋值</span><br><span class="line">auto foo &#x3D; &#123;1, 2, 3, 4&#125; &#x2F;&#x2F; 同上</span><br><span class="line">void func_bar(std::initializer_list&lt;int&gt; arg_var) &#123;&#125; &#x2F;&#x2F; 声明此类型数据为形参</span><br></pre></td></tr></table></figure>
 
 <p>中英文链接：<br><a href="https://zh.cppreference.com/w/cpp/utility/initializer_list">https://zh.cppreference.com/w/cpp/utility/initializer_list</a><br><a href="https://en.cppreference.com/w/cpp/utility/initializer_list">https://en.cppreference.com/w/cpp/utility/initializer_list</a></p>
-<h2 id="List-initialization"><a href="#List-initialization" class="headerlink" title="List initialization"></a>List initialization</h2><p>(译：列表初始化)</p>
-<p>简介：<br>Initializes an object from braced-init-list<br>(译：从花括号数据初始化对象)</p>
-<p>备注：<br>一种初始化<code>变量</code>的写法，如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">std::vector&lt;int&gt; mem &#x3D; &#123;1,2,3&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="List-initialization"><a href="#List-initialization" class="headerlink" title="List initialization"></a>List initialization</h2><p>(译：<code>列表初始化</code>)</p>
+<p>简介：<br>Initializes an object from braced-init-list<br>(译：从 <code>花括号初始化器列表</code> 初始化对象)</p>
+<p>备注：<br>这是一种语法，一种使用花括号数据初始化 <code>变量</code> 的 <code>语法</code> ，如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">std::vector&lt;int&gt; mem&#123;1,2,3&#125;; &#x2F;&#x2F; 直接列表初始化</span><br><span class="line">std::vector&lt;int&gt; mem &#x3D; &#123;1,2,3&#125;; &#x2F;&#x2F; 赋值列表初始化</span><br></pre></td></tr></table></figure>
 
 <p>中英文链接：<br><a href="https://zh.cppreference.com/w/cpp/language/list_initialization">https://zh.cppreference.com/w/cpp/language/list_initialization</a><br><a href="https://en.cppreference.com/w/cpp/language/list_initialization">https://en.cppreference.com/w/cpp/language/list_initialization</a></p>
-<h2 id="member-initializer-lists"><a href="#member-initializer-lists" class="headerlink" title="member initializer lists"></a>member initializer lists</h2><p>(译：成员初始化器列表)</p>
-<p>简介：<br>In the definition of a constructor of a class, member initializer list specifies the initializers for direct and virtual bases and non-static data members<br>(译：在类的构造函数定义中，成员初始化器列表指定各个直接和虚基类和各个非静态数据成员的初始化器)</p>
-<p>备注：<br>一种初始化<code>成员变量</code>的写法，如：</p>
+<h2 id="member-initializer-lists"><a href="#member-initializer-lists" class="headerlink" title="member initializer lists"></a>member initializer lists</h2><p>(译：<code>成员初始化器列表</code>)</p>
+<p>简介：<br>In the definition of a constructor of a class, member initializer list specifies the initializers for direct and virtual bases and non-static data members<br>(译：在类的构造函数定义中，<code>成员初始化器列表</code> 指定各个直接和虚基类和各个非静态数据成员的初始化器)</p>
+<p>备注：<br>这是一种语法，一种使用花括号数据初始化 <code>成员变量</code> 的 <code>语法</code>，如：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Foo</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    &#x2F;&#x2F; 也可以将 列表初始化 应用到 成员初始化器列表中</span><br><span class="line">    &#x2F;&#x2F;Foo(int i, int j) : m_data_i&#123;i&#125;, m_data_j&#123;j&#125;</span><br><span class="line">    Foo(int i, int j) : m_data_i(i), m_data_j(j)</span><br><span class="line">    &#123;</span><br><span class="line">        m_data_k &#x3D; m_data_i + m_data_j;</span><br><span class="line">    &#125;</span><br><span class="line">    int m_data_i;</span><br><span class="line">    int m_data_j;</span><br><span class="line">    int m_data_k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>似乎很多人都称其为：<code>初始化列表</code>，这很容易与上面提到的<code>列表初始化</code>搞混，我在中文网站 <a href="">https://zh.cppreference.com</a> 翻了很久也没有找到<code>初始化列表</code>这个名词，所以我认为这是对<code>成员初始化器列表</code>的无脑简写</p>
+<p>似乎很多人都称其为：<code>初始化列表</code>，这很容易与上面提到的<code>列表初始化</code>搞混，我在中文网站 <a href="">https://zh.cppreference.com</a> 翻了很久也没有找到<code>初始化列表</code>这个名词，所以我认为这是对<code>成员初始化器列表</code>的无脑简写。</p>
 <p>中英文链接：<br><a href="https://zh.cppreference.com/w/cpp/language/constructor">https://zh.cppreference.com/w/cpp/language/constructor</a><br><a href="https://en.cppreference.com/w/cpp/language/constructor">https://en.cppreference.com/w/cpp/language/constructor</a></p>
-<h2 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h2><p>成员初始化器列表 &gt; 列表初始化 &gt; std::initializer_list</p>
-]]></content>
+<h2 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">                       列表初始化</span><br><span class="line">                     &#x2F;</span><br><span class="line">std::initializer_list</span><br><span class="line">                     \</span><br><span class="line">                       成员初始化器列表 </span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>cpp</category>
       </categories>

@@ -21,15 +21,15 @@
     var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="列表初始化，成员初始化器列表，初始化列表，傻傻搞不清楚 唉，为什么总有刁民乱起名 std::initializer_list(无中文翻译) 简介：(无) 备注：这表示一种花括号数据类型{*,….}当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如： 123std::initializer_list&lt;int&gt; foo &#x3D; &amp;#123;1, 2, 3, 4&amp;#12">
+  <meta name="description" content="列表初始化，成员初始化器列表，初始化列表，傻傻搞不清楚 唉，为什么总有刁民乱起名 std::initializer_list(译：花括号初始化器列表) 简介：可以将其理解为类&#x2F;模板类 备注：这表示一种花括号数据类型 &amp;#123;x, y, ...&amp;#125;当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如： 123std::initializer_list&lt;int&gt;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="列表初始化 vs 成员初始化器列表">
 <meta property="og:url" content="https://listenerri.com/2020/10/29/%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96-vs-%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E5%99%A8%E5%88%97%E8%A1%A8/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
-<meta property="og:description" content="列表初始化，成员初始化器列表，初始化列表，傻傻搞不清楚 唉，为什么总有刁民乱起名 std::initializer_list(无中文翻译) 简介：(无) 备注：这表示一种花括号数据类型{*,….}当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如： 123std::initializer_list&lt;int&gt; foo &#x3D; &amp;#123;1, 2, 3, 4&amp;#12">
+<meta property="og:description" content="列表初始化，成员初始化器列表，初始化列表，傻傻搞不清楚 唉，为什么总有刁民乱起名 std::initializer_list(译：花括号初始化器列表) 简介：可以将其理解为类&#x2F;模板类 备注：这表示一种花括号数据类型 &amp;#123;x, y, ...&amp;#125;当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如： 123std::initializer_list&lt;int&gt;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-29T05:43:36.000Z">
-<meta property="article:modified_time" content="2021-08-10T08:24:21.316Z">
+<meta property="article:published_time" content="2020-10-29T05:43:00.000Z">
+<meta property="article:modified_time" content="2021-08-31T16:00:44.075Z">
 <meta property="article:author" content="listenerri">
 <meta name="twitter:card" content="summary">
 
@@ -228,14 +228,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-29 13:43:36" itemprop="dateCreated datePublished" datetime="2020-10-29T13:43:36+08:00">2020-10-29</time>
+              <time title="创建时间：2020-10-29 13:43:00" itemprop="dateCreated datePublished" datetime="2020-10-29T13:43:00+08:00">2020-10-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-10 16:24:21" itemprop="dateModified" datetime="2021-08-10T16:24:21+08:00">2021-08-10</time>
+                <time title="修改时间：2021-09-01 00:00:44" itemprop="dateModified" datetime="2021-09-01T00:00:44+08:00">2021-09-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,27 +281,26 @@
       
         <p>列表初始化，成员初始化器列表，初始化列表，傻傻搞不清楚</p>
 <p>唉，为什么总有刁民乱起名</p>
-<h2 id="std-initializer-list"><a href="#std-initializer-list" class="headerlink" title="std::initializer_list"></a>std::initializer_list</h2><p>(无中文翻译)</p>
-<p>简介：<br>(无)</p>
-<p>备注：<br>这表示一种花括号数据类型{*,….}<br>当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::initializer_list&lt;int&gt; foo &#x3D; &#123;1, 2, 3, 4&#125;</span><br><span class="line">auto foo &#x3D; &#123;1, 2, 3, 4&#125;</span><br><span class="line">void func_bar(std::initializer_list&lt;int&gt; arg_var) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="std-initializer-list"><a href="#std-initializer-list" class="headerlink" title="std::initializer_list"></a>std::initializer_list</h2><p>(译：<code>花括号初始化器列表</code>)</p>
+<p>简介：<br>可以将其理解为类/模板类</p>
+<p>备注：<br>这表示一种花括号数据类型 <code>&#123;x, y, ...&#125;</code><br>当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::initializer_list&lt;int&gt; foo &#x3D; &#123;1, 2, 3, 4&#125; &#x2F;&#x2F; 声明此类型数据并赋值</span><br><span class="line">auto foo &#x3D; &#123;1, 2, 3, 4&#125; &#x2F;&#x2F; 同上</span><br><span class="line">void func_bar(std::initializer_list&lt;int&gt; arg_var) &#123;&#125; &#x2F;&#x2F; 声明此类型数据为形参</span><br></pre></td></tr></table></figure>
 
 <p>中英文链接：<br><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/utility/initializer_list">https://zh.cppreference.com/w/cpp/utility/initializer_list</a><br><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/initializer_list">https://en.cppreference.com/w/cpp/utility/initializer_list</a></p>
-<h2 id="List-initialization"><a href="#List-initialization" class="headerlink" title="List initialization"></a>List initialization</h2><p>(译：列表初始化)</p>
-<p>简介：<br>Initializes an object from braced-init-list<br>(译：从花括号数据初始化对象)</p>
-<p>备注：<br>一种初始化<code>变量</code>的写法，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;int&gt; mem &#x3D; &#123;1,2,3&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="List-initialization"><a href="#List-initialization" class="headerlink" title="List initialization"></a>List initialization</h2><p>(译：<code>列表初始化</code>)</p>
+<p>简介：<br>Initializes an object from braced-init-list<br>(译：从 <code>花括号初始化器列表</code> 初始化对象)</p>
+<p>备注：<br>这是一种语法，一种使用花括号数据初始化 <code>变量</code> 的 <code>语法</code> ，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;int&gt; mem&#123;1,2,3&#125;; &#x2F;&#x2F; 直接列表初始化</span><br><span class="line">std::vector&lt;int&gt; mem &#x3D; &#123;1,2,3&#125;; &#x2F;&#x2F; 赋值列表初始化</span><br></pre></td></tr></table></figure>
 
 <p>中英文链接：<br><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/list_initialization">https://zh.cppreference.com/w/cpp/language/list_initialization</a><br><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/list_initialization">https://en.cppreference.com/w/cpp/language/list_initialization</a></p>
-<h2 id="member-initializer-lists"><a href="#member-initializer-lists" class="headerlink" title="member initializer lists"></a>member initializer lists</h2><p>(译：成员初始化器列表)</p>
-<p>简介：<br>In the definition of a constructor of a class, member initializer list specifies the initializers for direct and virtual bases and non-static data members<br>(译：在类的构造函数定义中，成员初始化器列表指定各个直接和虚基类和各个非静态数据成员的初始化器)</p>
-<p>备注：<br>一种初始化<code>成员变量</code>的写法，如：</p>
+<h2 id="member-initializer-lists"><a href="#member-initializer-lists" class="headerlink" title="member initializer lists"></a>member initializer lists</h2><p>(译：<code>成员初始化器列表</code>)</p>
+<p>简介：<br>In the definition of a constructor of a class, member initializer list specifies the initializers for direct and virtual bases and non-static data members<br>(译：在类的构造函数定义中，<code>成员初始化器列表</code> 指定各个直接和虚基类和各个非静态数据成员的初始化器)</p>
+<p>备注：<br>这是一种语法，一种使用花括号数据初始化 <code>成员变量</code> 的 <code>语法</code>，如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Foo</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    &#x2F;&#x2F; 也可以将 列表初始化 应用到 成员初始化器列表中</span><br><span class="line">    &#x2F;&#x2F;Foo(int i, int j) : m_data_i&#123;i&#125;, m_data_j&#123;j&#125;</span><br><span class="line">    Foo(int i, int j) : m_data_i(i), m_data_j(j)</span><br><span class="line">    &#123;</span><br><span class="line">        m_data_k &#x3D; m_data_i + m_data_j;</span><br><span class="line">    &#125;</span><br><span class="line">    int m_data_i;</span><br><span class="line">    int m_data_j;</span><br><span class="line">    int m_data_k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>似乎很多人都称其为：<code>初始化列表</code>，这很容易与上面提到的<code>列表初始化</code>搞混，我在中文网站 <a href="">https://zh.cppreference.com</a> 翻了很久也没有找到<code>初始化列表</code>这个名词，所以我认为这是对<code>成员初始化器列表</code>的无脑简写</p>
+<p>似乎很多人都称其为：<code>初始化列表</code>，这很容易与上面提到的<code>列表初始化</code>搞混，我在中文网站 <a href="">https://zh.cppreference.com</a> 翻了很久也没有找到<code>初始化列表</code>这个名词，所以我认为这是对<code>成员初始化器列表</code>的无脑简写。</p>
 <p>中英文链接：<br><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/constructor">https://zh.cppreference.com/w/cpp/language/constructor</a><br><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/constructor">https://en.cppreference.com/w/cpp/language/constructor</a></p>
-<h2 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h2><p>成员初始化器列表 &gt; 列表初始化 &gt; std::initializer_list</p>
-
+<h2 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                       列表初始化</span><br><span class="line">                     &#x2F;</span><br><span class="line">std::initializer_list</span><br><span class="line">                     \</span><br><span class="line">                       成员初始化器列表 </span><br></pre></td></tr></table></figure>
     </div>
 
     
