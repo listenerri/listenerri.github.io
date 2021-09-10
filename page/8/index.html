@@ -202,6 +202,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/" class="post-title-link" itemprop="url">linux映射修饰键</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-10-24 13:32:33" itemprop="dateCreated datePublished" datetime="2016-10-24T13:32:33+08:00">2016-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/" class="post-meta-item leancloud_visitors" data-flag-title="linux映射修饰键" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>首先，先说一个并不好用的方法，请看链接：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Xmodmap">使用xmodmap命令映射按键</a><br>之所以说这是一个不好用的方法是因为它在大多数桌面环境下没法实现开机自动映射，<br>只能进入系统后手动执行命令才能实现映射，而且即便手动执行映射命令生效了，<br>也会由于未知原因，过一段时间后失效，所以要想安稳的实现映射还是看下面的方法吧。</p>
+<p>本方法基于X图形框架，也就是要实现按键映射必须启动X</p>
+<p>请留意文章标题，说的是修饰键(modified key)，也就是Ctrl,Alt,Shift,Esc,Super(windows)等键，<br>而是不键盘上的任意键，应该也可以实现任意键，但就需要深入学习X框架了，<br>推荐从这里入门： <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/X_KeyBoard_extension">Arch WiKi: X KeyBoard extension</a></p>
+<p>下面说简单的修饰键映射方法：<br>首先在X图形框架的配置文件夹<code>/etc/X11/xorg.conf.d/</code>下新建<code>90-custom-kbd.conf</code>文件，<br>然后将下面的代码粘贴到上面新建的文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Section &quot;InputClass&quot;</span><br><span class="line">    Identifier &quot;keyboard defaults&quot;</span><br><span class="line">    MatchIsKeyboard &quot;on&quot;</span><br><span class="line"></span><br><span class="line">    Option &quot;XKbOptions&quot; &quot;caps:escape&quot;</span><br><span class="line">EndSection</span><br></pre></td></tr></table></figure>
+
+<p>我们需要注意以及修改的地方只有“caps:escape”这个位置，<br>当前这段配置的作用是将caps（大写锁定）键映射到esc键，也就是说，<br>让大写锁定键的作用变成esc键，而不再是原有的大写锁定作用，同时esc键保留原有的作用。</p>
+<p>看到这里你可能以为so easy，这样看来只需要修改成”ctrl:alt”就可以实现，让ctrl键变成alt键了。</p>
+<p>然而，并不是。。<br>起初我也以为是这样，经过测试后无效，摸索了很久终于弄懂了，<br>原来”caps:escape”是一个已经定义好的选项，所以可以直接拿来用，而不是随便写的,<br>而”ctrl:alt”并不是以定义的选项所以无效。</p>
+<p>那么怎么定义选项呢，抱歉，我也没学会，就像文章开头所说的这就需要深入学习X框架了，<br>庆幸的是，已经有了大量以定义的选项，我们可以找到自己需要的并拿来使用，</p>
+<p>以定义的选项可以从系统的这个文件里找：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1155,118 +1267,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">vim+ycm+eclim+javacomplete解决冲突</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 20:12:12" itemprop="dateCreated datePublished" datetime="2016-05-04T20:12:12+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/" class="post-meta-item leancloud_visitors" data-flag-title="vim+ycm+eclim+javacomplete解决冲突" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>四个主角各自的作用:<br>vim:编辑器一枚<br>ycm:自动补全插件(也就是不用按ctrl+x ctrl+o来调用vim的omni全能补全)<br>eclim:让vim可以有部分eclipse的功能,也可以管理eclipse里的项目<br>javacomplete:一个java的补全插件(这里说的是增强版的)</p>
-<p>各自网址:<br><a target="_blank" rel="noopener" href="https://github.com/Valloric/YouCompleteMe">ycm:https://github.com/Valloric/YouCompleteMe</a><br><a target="_blank" rel="noopener" href="http://eclim.org/">eclim:http://eclim.org/</a><br><a target="_blank" rel="noopener" href="https://github.com/artur-shaik/vim-javacomplete2">javacomplete:https://github.com/artur-shaik/vim-javacomplete2</a></p>
-<p>这篇文章的主要目的不是如何安装和使用这些插件,而是解决eclim和javacomplete之间的冲突</p>
-<p>在说冲突之前先说下eclim和javacomplete的生效条件:<br>eclim:编辑的java类型的文件必须是eclipse中的一个项目中的文件<br>javacomplete:只要是java类型的文件都可以补全</p>
-<p>什么冲突呢?<br>ycm可以使用vim的omnifunc提供的数据来完成java的自动补全,主要依据在当前打开的java文件的buffer中,<br>执行:<code>set omnifunc</code>返回的结果来确认到底用eclim还是javacomplete提供的补全数据<br>冲突就是如果同时使用这两个插件,那么只要打开java类型的文件,那么就会被自动命令设置成javacomplete的<br>补全,即便是打开eclipse项目中的文件也不会是eclim的补全</p>
-<p>解决方法:<br>判断打开的java文件是否是eclipse项目中的文件就行了,判断方法是调用eclim插件的一个方法,<br>当是项目文件时,就不设置javacomplete的补全,如果不是,就设置omnifunc为javacomplete的补全,<br>讲下面的东西粘贴到vimrc中,另外不要在其他地方设置java的omnifunc:</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&quot; vim-javacomplete2</span></span><br><span class="line"><span class="comment">&quot; java的omni全能补全(insert模式下ctrl-x-ctrl-o调用),ycm将会自动调用</span></span><br><span class="line"><span class="comment">&quot; 与eclim的自动补全冲突,所以先判断当前文件是否是项目文件</span></span><br><span class="line"><span class="comment">&quot; 如果不是项目文件才使用vim-javacomplete2进行全能补全</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>! <span class="title">IsProjectFile</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">let</span> projectName = eclim#project#util#GetCurrentProjectName()</span><br><span class="line">    <span class="keyword">if</span> projectName == <span class="string">&#x27;&#x27;</span></span><br><span class="line">         <span class="keyword">setlocal</span> omnifunc=javacomplete#Complete</span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line"><span class="keyword">endfunction</span></span><br><span class="line"><span class="keyword">autocmd</span> FileType java <span class="keyword">call</span> IsProjectFile()</span><br><span class="line"></span><br><span class="line"><span class="comment">&quot; eclim/eclimd</span></span><br><span class="line"><span class="comment">&quot; 需要自行安装,不在vim-plug插件管理器管理列表之中</span></span><br><span class="line"><span class="comment">&quot; eclimd读取$ECLIPSE_HOME/configuration/config.ini</span></span><br><span class="line"><span class="comment">&quot; 还读取~/eclimrc配置文件</span></span><br><span class="line"><span class="comment">&quot; 日志级别,日志文件默认在workspace/eclimd.log</span></span><br><span class="line"><span class="comment">&quot; 除了默认的info,还有trace,debug,warning,error,off</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:EclimLogLevel</span> = <span class="string">&#x27;info&#x27;</span></span><br><span class="line"><span class="comment">&quot; 设置浏览器,firefox,mozilla,opera,iexplore</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:EclimBrowser</span> = <span class="string">&#x27;firefox&#x27;</span></span><br><span class="line"><span class="comment">&quot; 让eclim配合ycm实现java等语言的自动补全</span></span><br><span class="line"><span class="comment">&quot; 编辑的文件必须是eclipse的一个项目中的文件才会自动补全</span></span><br><span class="line"><span class="comment">&quot; 这个变量的作用是(仅举例java文件):set omnifunc=eclim#java#complete#CodeComplete</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:EclimCompletionMethod</span> = <span class="string">&#x27;omnifunc&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>javacomplete和eclim都需要自己安装具体如何安装可以去上面提供的网址去查看和下载,<br>不会因为添加了这几行配置就可以实现java的补全了,本文中使用的插件管理器是:<code>vim-plug</code></p>
-<p>另外推荐一份vim的配置,使用简单,配置文件结构清晰,注释明了,很适合不熟悉vim配置的人入手学习: <a target="_blank" rel="noopener" href="https://github.com/wklken/k-vim">k-vim</a></p>
-<p>再附上自己的一份配置,借鉴了上面的kvim,但后来觉得不舍和自己,就从零开始自己配置了: <a target="_blank" rel="noopener" href="https://github.com/listenerri/ri-vim">ri-vim</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1338,7 +1338,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1351,7 +1351,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">237</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

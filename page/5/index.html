@@ -202,6 +202,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/" class="post-title-link" itemprop="url">将数据从mysql导入到excel碰到的坑</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-10 19:31:17" itemprop="dateCreated datePublished" datetime="2019-10-10T19:31:17+08:00">2019-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/" class="post-meta-item leancloud_visitors" data-flag-title="将数据从mysql导入到excel碰到的坑" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>记录一些在 windows 下将数据从 mysql 导入到 excel 过程中遇到的坑。首先，这一操作有两种方案：</p>
+<ol>
+<li>在 navicat 中进行操作，将数据写入到 excel 文件中</li>
+<li>在 excel 中进行操作，将数据从 mysql 服务器写入文件</li>
+</ol>
+<p>第一种方案同事说在数据量很大的时候导出速度很慢，原因不明，我猜测是因为 navicat 使用的 POI 技术实现的功能，没有深究。第二种方案就我进行测试的方案，这种方案至少在速度方面有很明显的提升，下面列一下测试过程中遇到的坑：</p>
+<ol>
+<li>只能使用 windows 的 office excel，wps 的表格有奇怪的问题无法解决（后来发现是因为系统中没有安装 <code>Visual C++ Redistributable Packages for Visual Studio 2013</code>）</li>
+<li>安装 Mysql ODBC 驱动时要注意 excel 的软件位数，如果 excel 是 32 位的，那么 Mysql ODBC 驱动也必须是 32 位的</li>
+<li>64 位系统不显示 32 位的 ODBC 驱动，需要手动打开 <code>C:\\Windows\\sysWOW64\\odbcad32.exe</code> 程序添加连接</li>
+<li>导入数据时出现错误：<code>MySQL client ran out of memory</code>，调整系统中的数据源(ODBC)中的连接选项，找到并勾选”Do not cache result”之类的选项，应该可以解决</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/08/09/%E5%9B%BD%E9%99%85%E5%9F%9F%E5%90%8D%E7%BC%A9%E5%86%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2127,108 +2233,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-title-link" itemprop="url">qt中翻译静态成员变量中的字符串</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-04 20:20:51" itemprop="dateCreated datePublished" datetime="2018-11-04T20:20:51+08:00">2018-11-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-meta-item leancloud_visitors" data-flag-title="qt中翻译静态成员变量中的字符串" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 qt 中要翻译一个字符串很简单，只需要使用 <code>tr</code> 函数包裹住字符串即可。后来发现这一方法对于静态变量无效，经同事提醒原来静态数据初始化时，程序还没有加载翻译数据，也就是一般写在 main 函数中的 QTranslator::load() / app.installTranslator() 类似代码。</p>
-<p>经过一番搜索和阅读 qt 文档，找到了解决方法，原来 qt 早已有应对之策：<code>QT_TR_NOOP</code> 这个宏，或者说这类宏，因为类似的还有 <code>QT_TR_NOOP_UTF8</code> <code>QT_TRANSLATE_NOOP</code>，这里只是简要说一下其大概用法，想要了解更多可以查阅 qt 相关文档。下面只介绍 <code>QT_TR_NOOP</code> 这个宏的用法：</p>
-<p>这个宏跟 <code>tr</code> 函数的原理不同，<code>tr</code> 函数中的字符串会在程序加载时被替换为翻译后的文本，可以理解为这是一种类似宏展开的过程，因此这是一种静态的翻译，而 <code>QT_TR_NOOP</code> 这个宏则是动态翻译，传给这个宏的字符串将会被标记为需要动态翻译的内容，何为动态翻译，也就是说在程序加载时不会被修改/替换字符串( tr() 函数的过程)，而是在真正使用时再进行翻译，拿 qt 文档中的例子来看：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QString <span class="title">FriendlyConversation::greeting</span><span class="params">(<span class="keyword">int</span> type)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> *greeting_strings[] = &#123;</span><br><span class="line">  QT_TR_NOOP(<span class="string">&quot;Hello&quot;</span>),</span><br><span class="line">  QT_TR_NOOP(<span class="string">&quot;Goodbye&quot;</span>)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">return</span> tr(greeting_strings[type]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上述代码中数组 <code>greeting_strings</code> 的成员是两个被标记为需要动态翻译的字符串，下面 return 就是真正要使用的地方，同样是用到了 <code>tr</code> 函数，将数据的成员传入即可。</p>
-<p>如果静态字符串数据是一个 QMap 或者 QList 那使用时就要将成员转化为 c 风格的字符串或byte数组，还是上面的代码，稍加修改为 QList 类型的：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QString <span class="title">FriendlyConversation::greeting</span><span class="params">(<span class="keyword">int</span> type)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> QList *greeting_string_list = &#123;</span><br><span class="line">  QT_TR_NOOP(<span class="string">&quot;Hello&quot;</span>),</span><br><span class="line">  QT_TR_NOOP(<span class="string">&quot;Goodbye&quot;</span>)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">return</span> tr(greeting_string_list[type].toUtf8());</span><br><span class="line"><span class="comment">// 或者：greeting_string_list[type].toLocal8Bit() 之类的</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2300,7 +2304,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2313,7 +2317,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">237</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

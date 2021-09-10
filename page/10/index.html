@@ -202,6 +202,119 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/" class="post-title-link" itemprop="url">c语言修饰符static,extern,#define,const</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:19:19" itemprop="dateCreated datePublished" datetime="2016-05-04T19:19:19+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/" class="post-meta-item leancloud_visitors" data-flag-title="c语言修饰符static,extern,#define,const" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>写的比较乱，因为是刚开始学C，没有一个系统的概念，都是想到什么，测试到什么就添加什么，仅供参考<br>而且可能会有错误的地方，如果有请指出</p>
+</blockquote>
+<h1 id="static：静态"><a href="#static：静态" class="headerlink" title="static：静态"></a>static：静态</h1><h2 id="作用域以及声明方法："><a href="#作用域以及声明方法：" class="headerlink" title="作用域以及声明方法："></a>作用域以及声明方法：</h2><p>1、在函数中声明则仅作用于该函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、在函数外声明则作用于<font color="red">从声明开始到文件末尾</font></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> i;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>#extern：引用(其他c文件)</p>
+<p>##作用域以及声明方法：<br>1、可以声明变量或函数，并且不必变量初始化或函数定义实现，即可使用，因为引用变量或函数声明时，会同时引用被引用文件内的初始化语句<br>2、被引用的变量或函数不能被static修饰<br>3、相当与引用(复制？)其他文件中的声明和定义/初始化语句到本文件的声明位置<br>4、在本文件使用extern声明变量或函数时，变量或函数名以及函数返回类型和函数参数列表应与要引用的变量或方法一致(经测试，变量不一致时好像类似声明的指针类型变量，方法暂未测试)<br>5、在函数内声明则类似局部变量，作用域仅在本函数，在函数外，作用域从声明处到文件末尾<br>6、如果你是学习C语言的新手，而且暂时只是在使用文本编辑器在写C程序，那么需要注意，在编译有extern语句的C文件时，应该与被引用的文件一起编译(笔者表示在开始时一直在单独编译一个文件所以一直编译报错)<br>比如下面例子的a1.c和b.c，或者a2.c和b.c，编译的时候应该这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gcc a1.c b.c</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">gcc a2.c b.c</span><br><span class="line"><span class="comment">#这样编译器才能找到被extern的变量或函数</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1159,116 +1272,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/" class="post-title-link" itemprop="url">android关闭手机实体按键开启虚拟按键</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-04-23 23:50:09" itemprop="dateCreated datePublished" datetime="2016-04-23T23:50:09+08:00">2016-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 09:23:50" itemprop="dateModified" datetime="2020-08-23T09:23:50+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/" class="post-meta-item leancloud_visitors" data-flag-title="android关闭手机实体按键开启虚拟按键" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>注意实体按键和虚拟按键的区别<br>使用的是android4.2版本，硬件：mt6589<br><font color="red"><strong>以下操作都需要root权限！</strong></font></p>
-<h1 id="关闭实体按键功能"><a href="#关闭实体按键功能" class="headerlink" title="关闭实体按键功能"></a>关闭实体按键功能</h1><p>包括:菜单,返回,home,最近</p>
-<p>使用root文件管理器，如RE文件管理器<br>在<code>/system/usr/keylayout/Generic.kl</code>文件中搜索menu，<br>注意搜索结果应该是只有menu这一个单词，而不是包含menu的单词</p>
-<p>搜索到后在这一行的开头，添加上一个英文的符号：‘#’<br>也就是把这一行注释掉的意思！</p>
-<p>返回键：back<br>同理、同上</p>
-<p>我的手机菜单，home，返回键所对应的键值为(仅供参考)：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">139</span>    MENU</span><br><span class="line"><span class="number">158</span>    BACK</span><br><span class="line"><span class="number">172</span>    HOME</span><br></pre></td></tr></table></figure>
-<p>修改之后保存重启手机、被你注释掉的对应的实体功能键就失效了，点击没有任何反应<br>如果不成功可以尝试注释掉其他的行</p>
-<p>这只是关掉功能、但背光灯还是会亮的</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1340,7 +1343,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1353,7 +1356,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">237</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
