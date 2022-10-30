@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="近期工作接触到了些 linux 在 OSI 二层（数据链路层）使用 ethernet 协议收发数据包的内容，网上搜罗了一些有用的文档：  https:&#x2F;&#x2F;austinmarton.wordpress.com&#x2F;2011&#x2F;09&#x2F;14&#x2F;sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux&#x2F; https:&#x2F;&#x2F;www.bin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 原始套接字收发 packet">
+<meta property="og:url" content="https://listenerri.com/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="近期工作接触到了些 linux 在 OSI 二层（数据链路层）使用 ethernet 协议收发数据包的内容，网上搜罗了一些有用的文档：  https:&#x2F;&#x2F;austinmarton.wordpress.com&#x2F;2011&#x2F;09&#x2F;14&#x2F;sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux&#x2F; https:&#x2F;&#x2F;www.bin">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-16T08:10:31.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="raw socket">
+<meta property="article:tag" content="packet">
+<meta property="article:tag" content="ethernet">
+<meta property="article:tag" content="link layer">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>linux 原始套接字收发 packet | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux 原始套接字收发 packet
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-16 16:10:31" itemprop="dateCreated datePublished" datetime="2022-07-16T16:10:31+08:00">2022-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/" class="post-meta-item leancloud_visitors" data-flag-title="linux 原始套接字收发 packet" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>近期工作接触到了些 linux 在 OSI 二层（数据链路层）使用 ethernet 协议收发数据包的内容，网上搜罗了一些有用的文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://austinmarton.wordpress.com/2011/09/14/sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux/">https://austinmarton.wordpress.com/2011/09/14/sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.binarytides.com/raw-sockets-c-code-linux/">https://www.binarytides.com/raw-sockets-c-code-linux/</a></li>
+<li><a target="_blank" rel="noopener" href="https://squidarth.com/networking/systems/rc/2018/05/28/using-raw-sockets.html">https://squidarth.com/networking/systems/rc/2018/05/28/using-raw-sockets.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/14774668/what-is-raw-socket-in-socket-programming">https://stackoverflow.com/questions/14774668/what-is-raw-socket-in-socket-programming</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.tenouk.com/Module43a.html">https://www.tenouk.com/Module43a.html</a></li>
+<li>推荐： <a target="_blank" rel="noopener" href="https://www.opensourceforu.com/2015/03/a-guide-to-using-raw-sockets/">https://www.opensourceforu.com/2015/03/a-guide-to-using-raw-sockets/</a></li>
+<li>推荐： <a target="_blank" rel="noopener" href="https://github.com/xgfone/snippet/blob/master/snippet/docs/linux/program/raw-socket.md">https://github.com/xgfone/snippet/blob/master/snippet/docs/linux/program/raw-socket.md</a></li>
+<li>推荐： <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man7/packet.7.html">https://man7.org/linux/man-pages/man7/packet.7.html</a></li>
+<li>推荐(上面链接的中文翻译)： <a target="_blank" rel="noopener" href="https://manpages.debian.org/unstable/manpages-zh/packet.7.zh_CN.html">https://manpages.debian.org/unstable/manpages-zh/packet.7.zh_CN.html</a></li>
+</ul>
+<p>另外有一些第三方库也可以做到处理链路层数据：</p>
+<ul>
+<li>libpcap 第三方 c 开发文档： <a target="_blank" rel="noopener" href="https://www.devdungeon.com/content/using-libpcap-c">https://www.devdungeon.com/content/using-libpcap-c</a></li>
+<li>libpcap 官方 c 开发文档： <a target="_blank" rel="noopener" href="https://www.tcpdump.org/pcap.html">https://www.tcpdump.org/pcap.html</a></li>
+<li>libpcap： <a target="_blank" rel="noopener" href="https://ruofeng.me/2018/04/23/use-libpcap-to-send-and-capture/">https://ruofeng.me/2018/04/23/use-libpcap-to-send-and-capture/</a></li>
+<li>libnet 库： <a target="_blank" rel="noopener" href="https://github.com/libnet/libnet">https://github.com/libnet/libnet</a></li>
+<li>libnet 库： <a target="_blank" rel="noopener" href="https://codedocs.xyz/libnet/libnet/globals.html">https://codedocs.xyz/libnet/libnet/globals.html</a></li>
+</ul>
+<p>下面是我对 linux man 手册 packet(7) 的翻译，虽然上面已有相关中文翻译的链接，但我个人认为有部分相关术语使用得不太合适，另外我自己再翻译一边也可以加深我个人理解。</p>
+<h1 id="NAME"><a href="#NAME" class="headerlink" title="NAME"></a>NAME</h1><p>packet - 设备层的 packet 接口</p>
+<h1 id="SYNOPSIS-概要"><a href="#SYNOPSIS-概要" class="headerlink" title="SYNOPSIS 概要"></a>SYNOPSIS 概要</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">#include &lt;linux&#x2F;if_packet.h&gt;</span><br><span class="line">#include &lt;net&#x2F;ethernet.h&gt; &#x2F;* the L2 protocols *&#x2F;</span><br><span class="line"></span><br><span class="line">packet_socket &#x3D; socket(AF_PACKET, int socket_type, int protocol);</span><br></pre></td></tr></table></figure>
+
+<h1 id="DESCRIPTION-描述"><a href="#DESCRIPTION-描述" class="headerlink" title="DESCRIPTION 描述"></a>DESCRIPTION 描述</h1><p>如使用如下调用创建的 socket 被称为 packet socket：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packet_socket &#x3D; socket(AF_PACKET, int socket_type, int protocol);</span><br></pre></td></tr></table></figure>
+
+<p>packet sockets 被用来在设备驱动层（OSI 2 层 数据链路层）收发数据包（raw packets）。这允许用户在 OSI 1 层 物理层之上实现 linux 用户空间的协议模块。</p>
+<p>socket_type 参数可以使用 SOCK_RAW 或者 SOCK_DGRAM，使用 SOCK_RAW 时收发的数据包 包含 链路层的协议头（译者注：通常是以太网链路层协议头），使用 SOCK_DGRAM 时收发的原始数据包 不包含 链路层协议头。链路层协议头相关信息可以从结构体 sockaddr_ll 中获取到。</p>
+<p>protocol 参数是 网络字节序（大端） 的 IEEE 802.3 协议编号。相关定义可以在 &lt;linux/if_ether.h&gt; 头文件中查找。当 protocol 参数使用 htons(ETH_P_ALL) 时，相当于接收所有协议的数据包。protocol 参数指定的所有数据包会先给到用户创建的 socket，然后才由内核相关协议栈程序处理（译者注：也就是说用户实现的数据包处理程序，优先级高于内核，但不等于内核不再继续处理）。</p>
+<p>在用户空间创建这种类型的 socket 时，进程必须拥有 CAP_NET_RAW 的能力以便管理 network namespace（译者注：这里是在说运行程序时需要一定的权限，或者直接使用 root 账户运行）。</p>
+<p>使用 SOCK_RAW 参数时，数据包会从设备驱动不经任何修改得被程序接收和发送。当接收一个数据包时，address 仍被解析并设置到结构体 sockaddr_ll 中。当发送一个数据包时，用户提供的 buffer 需要包含物理层协议头（译者注：用户要发送的数据中需要包含以太网协议头，同时还需要在 sockaddr_ll 中设置以太网协议头中已经包含了的目标 MAC 地址）。数据包不经修改得被放网络接口的驱动队列中，网络接口由目标 address 定义（译者注：sockaddr_ll 结构体的一个成员）。SOCK_RAW 类似但不兼容 Linux 2.0 时使用的参数 AF_INET + SOCK_PACKET。</p>
+<p>使用 SOCK_DGRAM 参数时相当于处于一个较高层次。接收数据包时，以太网协议头将会被移除。发送数据包时，会自动从 sockaddr_ll 中提取的以太网协议头信息进行封包。 </p>
+<p>默认情况下，所有 protocol 参数指定的协议类型的数据包，都会给到用户创建的 socket。如果需要只获取某个网络接口上的数据包，可以使用 bind(2) 函数，将指定的 socket 和 sockaddr_ll 传入作为参数，sockaddr_ll 中需要设置的字段有 sll_family（使用 AF_PACKET），sll_protocol 和 sll_ifindex（指定的网络接口）。</p>
+<p>这种类型的 socket 不支持 connect 操作。</p>
+<p>当调用 recvmsg(2) recv(2) 或 recvfrom(2) 时，如果指定了 MSG_TRUNC flag，将会返回数据包的真实大小，即使数据包的大小比参数 buffer 要大。</p>
+<h2 id="Address-types"><a href="#Address-types" class="headerlink" title="Address types"></a>Address types</h2><p>结构体 sockaddr_ll 是设备无关的，其定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_ll &#123;</span><br><span class="line">   unsigned short sll_family;   &#x2F;* Always AF_PACKET *&#x2F;</span><br><span class="line">   unsigned short sll_protocol; &#x2F;* Physical-layer protocol *&#x2F;</span><br><span class="line">   int            sll_ifindex;  &#x2F;* Interface number *&#x2F;</span><br><span class="line">   unsigned short sll_hatype;   &#x2F;* ARP hardware type *&#x2F;</span><br><span class="line">   unsigned char  sll_pkttype;  &#x2F;* Packet type *&#x2F;</span><br><span class="line">   unsigned char  sll_halen;    &#x2F;* Length of address *&#x2F;</span><br><span class="line">   unsigned char  sll_addr[8];  &#x2F;* Physical-layer address *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结构体成员相关含义如下（译者注：并非在所有使用场景下，都需要给所有的成员变量赋值，比如上面提到的调用 bind(2) 函数时，只需要设置 3 个成员即可）：</p>
+<ul>
+<li>sll_family 始终应该是 AF_PACKT</li>
+<li>ssl_protocol 是 &lt;linux/if_ether.h&gt; 头文件中定义的标准的 ethernet protocol 类型，且使用网络序（大端），默认是 socket 的 protocol（译者注：这里的意思应该是每种 socket_type 都有其默认的 protocol，具体不清楚）（译者注：使用此头文件中未定义的值也可以，比如 Profinet 的 0x8892 就没有在头文件中定义，但仍可以使用）</li>
+<li>sll_ifindex 是网络接口的索引号，参见 netdevice(7)，值为 0 时表示 any 接口（只允许执行 bind 操作）。</li>
+<li>sll_hatype 是 ARP 类型，参见 &lt;linux/if_arp.h&gt; 头文件。</li>
+<li>sll_pkttype 是数据包类型，可选的值有：<ul>
+<li>PACKET_HOST 发送到 local host 的数据包</li>
+<li>PACKET_BROADCAST 以太网广播数据包（译者注：以太网协议头的目标 MAC 地址为全 0xFF）</li>
+<li>PACKET_MULTICAST 以太网多播数据包</li>
+<li>PACKET_OTHERHOST 发送到其他机器的数据包，且此数据包已经被设备驱动在 promiscuous 模式下捕获</li>
+<li>PACKET_OUTGOING 来自本地主机的数据包，该数据包被环回到数据包套接字</li>
+<li>这些类型都只在接收数据时有效（译者注：这个字段应该是只在接收数据时其作用）</li>
+</ul>
+</li>
+<li>sll_halen 地址数据的长度</li>
+<li>sll_addr 地址（译者注：以太网协议时，是 MAC 地址）</li>
+</ul>
+<p>当发送数据包时，只需要设置 sll_family + sll_protocol + sll_ifindex + sll_addr + sll_halen 即可，其他字段应该是 0。其他字段在接收数据时需要设置。</p>
+<blockquote>
+<p>后续内容未经过完整翻译</p>
+</blockquote>
+<h2 id="Socket-options"><a href="#Socket-options" class="headerlink" title="Socket options"></a>Socket options</h2><p>socket options 通过调用 setsockopt(2) 设置，level 参数应该是 SOL_PACKET</p>
+<ul>
+<li>PACKET_ADD_MEMBERSHIP / PACKET_DROP_MEMBERSHIP<br>  packet sockets 可以被用来设置物理层/链路层多播和 promiscuous 模式（传统的 ioctls SIOCSIFFLAGS SIOCADDMULTI  SIOCDELMULTI 也可以实现相同的目的）。PACKET_ADD_MEMBERSHIP 用来新增配置，相对应的 PACKET_DROP_MEMBERSHIP 则用来移除配置。它们都需要结构体 packet_mreq 作为参数，其定义如下：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct packet_mreq &#123;</span><br><span class="line">    int            mr_ifindex;    &#x2F;* interface index *&#x2F;</span><br><span class="line">    unsigned short mr_type;       &#x2F;* action *&#x2F;</span><br><span class="line">    unsigned short mr_alen;       &#x2F;* address length *&#x2F;</span><br><span class="line">    unsigned char  mr_address[8]; &#x2F;* physical-layer address *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+  此结构体成员含义如下：<ul>
+<li>mr_ifindex 根据网络接口索引号，指定将要修改哪个网络接口</li>
+<li>mr_type 执行要执行什么操作，其可选值如下：<ul>
+<li>PACKET_MR_PROMISC 表示允许接收共享介质上的所有数据包（即： promiscuous mode）</li>
+<li>PACKET_MR_MULTICAST 设置 multicast group</li>
+<li>PACKET_MR_ALLMULTI 表示接收此网络接口上的 all multicast packets</li>
+</ul>
+</li>
+<li>mr_alen / mr_address 用来在 mr_type 为 PACKET_MR_MULTICAST 时，设置 multicast group 相关信息</li>
+</ul>
+</li>
+<li>PACKET_AUXDATA (since Linux 2.6.21)<br>  If this binary option is enabled, the packet socket passes a metadata structure along with each packet in the recvmsg(2) control field.  The structure can be read with cmsg(3).  It is defined as  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct tpacket_auxdata &#123;</span><br><span class="line">  __u32 tp_status;</span><br><span class="line">  __u32 tp_len;      &#x2F;* packet length *&#x2F;</span><br><span class="line">  __u32 tp_snaplen;  &#x2F;* captured length *&#x2F;</span><br><span class="line">  __u16 tp_mac;</span><br><span class="line">  __u16 tp_net;</span><br><span class="line">  __u16 tp_vlan_tci;</span><br><span class="line">  __u16 tp_vlan_tpid; &#x2F;* Since Linux 3.14; earlier, these</span><br><span class="line">                         were unused padding bytes *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>PACKET_FANOUT (since Linux 3.1)</li>
+<li>PACKET_RESERVE (with PACKET_RX_RING)</li>
+<li>PACKET_RX_RING</li>
+<li>PACKET_STATISTICS</li>
+<li>PACKET_TIMESTAMP (with PACKET_RX_RING; since Linux 2.6.36)</li>
+<li>PACKET_TX_RING (since Linux 2.6.31)</li>
+<li>PACKET_VERSION (with PACKET_RX_RING; since Linux 2.6.27)</li>
+<li>PACKET_QDISC_BYPASS (since Linux 3.14)</li>
+</ul>
+<h2 id="ioctls"><a href="#ioctls" class="headerlink" title="ioctls"></a>ioctls</h2><p>SIOCGSTAMP 可以用来获取接收最后一个数据包的时间戳 timestamp。参数是结构体 timeval。</p>
+<p>另外，所有在 netdevice(7) 和 socket(7) 中定义的标准 ioctls 在 packet sockets 上都是有效的。</p>
+<h2 id="Error-handling"><a href="#Error-handling" class="headerlink" title="Error handling"></a>Error handling</h2><p>除了在将数据包传递给设备驱动程序时发生的错误之外，数据包套接字不进行错误处理。他们没有未决错误的概念。</p>
+<h1 id="ERRORS"><a href="#ERRORS" class="headerlink" title="ERRORS"></a>ERRORS</h1><ul>
+<li>EADDRNOTAVAIL Unknown multicast group address passed.</li>
+<li>EFAULT User passed invalid memory address.</li>
+<li>EINVAL Invalid argument.</li>
+<li>EMSGSIZE Packet is bigger than interface MTU.</li>
+<li>ENETDOWN Interface is not up.</li>
+<li>ENOBUFS Not enough memory to allocate the packet.</li>
+<li>ENODEV Unknown device name or interface index specified in interface address.</li>
+<li>ENOENT No packet received.</li>
+<li>ENOTCONN No interface address passed.</li>
+<li>ENXIO Interface address contained an invalid interface index.</li>
+<li>EPERM User has insufficient privileges to carry out this operation.</li>
+</ul>
+<p>In addition, other errors may be generated by the low-level driver.</p>
+<h1 id="VERSIONS"><a href="#VERSIONS" class="headerlink" title="VERSIONS"></a>VERSIONS</h1><p>AF_PACKET is a new feature in Linux 2.2.  Earlier Linux versions<br>supported only SOCK_PACKET.</p>
+<h1 id="NOTES"><a href="#NOTES" class="headerlink" title="NOTES"></a>NOTES</h1><p>对于可移植程序，建议通过 pcap(3) 使用 AF_PACKET；尽管这仅涵盖了 AF_PACKET 功能的一个子集。</p>
+<p>The SOCK_DGRAM packet sockets make no attempt to create or parse the IEEE 802.2 LLC header for a IEEE 802.3 frame.<br>SOCK_DGRAM 数据包套接字不会尝试为 IEEE 802.3 帧创建或解析 IEEE 802.2 LLC header。</p>
+<p>When ETH_P_802_3 is specified as protocol for sending the kernel creates the 802.3 frame and fills out the length field; the user has to supply the LLC header to get a fully conforming packet.<br>当 ETH_P_802_3 被指定为发送协议时，内核创建 802.3 帧并填写长度字段；用户必须自行提供 LLC header 才能获得完全符合要求的数据包。</p>
+<p>Incoming 802.3 packets are not multiplexed on the DSAP/SSAP protocol fields; instead they are supplied to the user as protocol ETH_P_802_2 with the LLC header prefixed.<br>传入的 802.3 数据包不会在 DSAP/SSAP 协议字段上复用；相反，它们作为带有 LLC 标头前缀的协议 ETH_P_802_2 提供给用户。</p>
+<p>It is thus not possible to bind to ETH_P_802_3; bind to ETH_P_802_2 instead and do the protocol multiplex yourself.<br>因此无法绑定到 ETH_P_802_3；而是绑定到 ETH_P_802_2 并自己进行协议复用。</p>
+<p>The default for sending is the standard Ethernet DIX encapsulation with the protocol filled in.<br>发送的默认值是标准的以太网 DIX 封装，并填充了协议。</p>
+<p>Packet sockets are not subject to the input or output firewall<br>chains.</p>
+<h2 id="Compatibility"><a href="#Compatibility" class="headerlink" title="Compatibility"></a>Compatibility</h2><p>In Linux 2.0, the only way to get a packet socket was with the<br>call:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket(AF_INET, SOCK_PACKET, protocol)</span><br></pre></td></tr></table></figure>
+
+<p>This is still supported, but deprecated and strongly discouraged.<br>The main difference between the two methods is that SOCK_PACKET<br>uses the old struct sockaddr_pkt to specify an interface, which<br>doesn’t provide physical-layer independence.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_pkt &#123;</span><br><span class="line">   unsigned short spkt_family;</span><br><span class="line">   unsigned char  spkt_device[14];</span><br><span class="line">   unsigned short spkt_protocol;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>spkt_family contains the device type, spkt_protocol is the IEEE<br>802.3 protocol type as defined in &lt;sys/if_ether.h&gt; and<br>spkt_device is the device name as a null-terminated string, for<br>example, eth0.</p>
+<p>This structure is obsolete and should not be used in new code.</p>
+<h1 id="BUGS"><a href="#BUGS" class="headerlink" title="BUGS"></a>BUGS</h1><p>The IEEE 802.2/803.3 LLC handling could be considered as a bug.</p>
+<p>Socket filters are not documented.</p>
+<p>The MSG_TRUNC recvmsg(2) extension is an ugly hack and should be<br>replaced by a control message.  There is currently no way to get<br>the original destination address of packets via SOCK_DGRAM.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/raw-socket/" rel="tag"># raw socket</a>
+              <a href="/tags/packet/" rel="tag"># packet</a>
+              <a href="/tags/ethernet/" rel="tag"># ethernet</a>
+              <a href="/tags/link-layer/" rel="tag"># link layer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/10/Qtcreator-Fakevim-%E6%98%A0%E5%B0%84-%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8D%E7%94%9F%E6%95%88/" rel="prev" title="Qtcreator Fakevim 映射 + 寄存器不生效">
+      <i class="fa fa-chevron-left"></i> Qtcreator Fakevim 映射 + 寄存器不生效
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/30/wireshark-filter-Manual-Page/" rel="next" title="wireshark-filter-Manual-Page">
+      wireshark-filter-Manual-Page <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NAME"><span class="nav-number">1.</span> <span class="nav-text">NAME</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SYNOPSIS-%E6%A6%82%E8%A6%81"><span class="nav-number">2.</span> <span class="nav-text">SYNOPSIS 概要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DESCRIPTION-%E6%8F%8F%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">DESCRIPTION 描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Address-types"><span class="nav-number">3.1.</span> <span class="nav-text">Address types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket-options"><span class="nav-number">3.2.</span> <span class="nav-text">Socket options</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ioctls"><span class="nav-number">3.3.</span> <span class="nav-text">ioctls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-handling"><span class="nav-number">3.4.</span> <span class="nav-text">Error handling</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ERRORS"><span class="nav-number">4.</span> <span class="nav-text">ERRORS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VERSIONS"><span class="nav-number">5.</span> <span class="nav-text">VERSIONS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NOTES"><span class="nav-number">6.</span> <span class="nav-text">NOTES</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Compatibility"><span class="nav-number">6.1.</span> <span class="nav-text">Compatibility</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BUGS"><span class="nav-number">7.</span> <span class="nav-text">BUGS</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

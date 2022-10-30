@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="搜了点网上的资料、发现都是修复MBR分区的、我的电脑是GPT分区+UEFI、虽然不同、但也大同小异、出现grub rescue模式一般是硬盘分区出现变动、导致旧的grub找不到启动文件而出现的、 错误提示今天开机是出现了这样的提示： 123error:file&amp;#x27;&#x2F;grub&#x2F;x86_64-efi&#x2F;normal.mod&amp;#x27;not foundentering rescue mode..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="uefi-gpt-linux修复grub rescue">
+<meta property="og:url" content="https://listenerri.com/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="搜了点网上的资料、发现都是修复MBR分区的、我的电脑是GPT分区+UEFI、虽然不同、但也大同小异、出现grub rescue模式一般是硬盘分区出现变动、导致旧的grub找不到启动文件而出现的、 错误提示今天开机是出现了这样的提示： 123error:file&amp;#x27;&#x2F;grub&#x2F;x86_64-efi&#x2F;normal.mod&amp;#x27;not foundentering rescue mode..">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-04-23T14:58:11.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="grub">
+<meta property="article:tag" content="uefi">
+<meta property="article:tag" content="rescue">
+<meta property="article:tag" content="gpt">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>uefi-gpt-linux修复grub rescue | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          uefi-gpt-linux修复grub rescue
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-04-23 22:58:11" itemprop="dateCreated datePublished" datetime="2016-04-23T22:58:11+08:00">2016-04-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/" class="post-meta-item leancloud_visitors" data-flag-title="uefi-gpt-linux修复grub rescue" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>搜了点网上的资料、发现都是修复MBR分区的、我的电脑是GPT分区+UEFI、虽然不同、但也大同小异、<br>出现grub rescue模式一般是硬盘分区出现变动、导致旧的grub找不到启动文件而出现的、</p>
+<h1 id="错误提示"><a href="#错误提示" class="headerlink" title="错误提示"></a>错误提示</h1><p>今天开机是出现了这样的提示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error:file<span class="string">&#x27;/grub/x86_64-efi/normal.mod&#x27;</span>not found</span><br><span class="line">entering rescue mode...</span><br><span class="line">grub rescue&gt;</span><br></pre></td></tr></table></figure>
+
+<p>大概意思是那个路径下normal.mod文件找不到、从而进入了grub rescue模式<br>那么在grub rescue 模式下应该怎么修复呢？<br>首先使用set 命令只看当前错误的grub变量、下面是我的电脑的信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#返回信息是：</span></span><br><span class="line">cmdpath=(hd0,gpt1)/EFI/Deepin 2014.2</span><br><span class="line">prefix=(hd0,gpt10)/grub</span><br><span class="line">root=hd0,gpt10</span><br></pre></td></tr></table></figure>
+
+<h1 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h1><p>那么我们开分析下这些数据、首先cmdpath指向的是UEFI的启动文件、<br>这个应该不会错、因为硬盘第一分区一般都是EFI分区、并且目录“Deepin 2014.2”也不会出错</p>
+<p>所以就应该是prefix和root变量出错了、并且是”gpt10”这个指向的分区出错了、<br>这就好办了、只要找到并修改为正确的分区应该就行了</p>
+<p>接着使用ls命令来查看当前硬盘上有哪些分区：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br><span class="line"></span><br><span class="line">//返回信息是：</span><br><span class="line">hd0,gpt1 hd0,gpt2 hd0,gpt3 hd0,gpt4 hd0,gpt* .......</span><br></pre></td></tr></table></figure>
+<p>接下来就该测试到底那个分区才是正确的启动分区、<font color=red><strong>我的linux的boot分区是单独挂出来的</strong></font><br>我们先往上看那个prefix变量、它指向一个分区下的grub目录、<br>那么我们就用这个目录来测试看那个分区中包含grub目录、<br>只要包含这个目录那么基本上就可以确定那个分区就是正确的启动分区了、也就是boot分区</p>
+<h1 id="查找正确分区"><a href="#查找正确分区" class="headerlink" title="查找正确分区"></a>查找正确分区</h1><p>使用<code>ls (hd0,gpt*)/grub</code>这个命令来逐一查看分区、注意命令中的<code>*</code>号、要用数字来代替<br>因为我可以确定前几个分区是windows分区、所以我就从(hd0,gpt10)附近的分区开始测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls (hd0,gpt11)/grub</span><br></pre></td></tr></table></figure>
+<p>返回信息是提示错误、找不到、或者提示unknown systemfile也就是未知的文件系统<br>所以这个分区：gpt11并不是我们要找的分区</p>
+<p>接着:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls (hd0,gpt9)/grub</span><br></pre></td></tr></table></figure>
+<p>返回了一些找到的文件夹和文件、其中就包含<font color=red>**”x86_64-efi”**</font>目录、<br>所以这个”gpt9”应该就是正确的启动分区</p>
+<h1 id="设置正确变量"><a href="#设置正确变量" class="headerlink" title="设置正确变量"></a>设置正确变量</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> prefix=(hd0,gpt9)/grub</span><br><span class="line"><span class="built_in">set</span> root=hd0,gpt9</span><br></pre></td></tr></table></figure>
+
+<p>注意、这里我把原来错误的gpt10改为了gpt9<br>为什么不设置cmdpath呢？前面已经说了、这个变量一般是不会出错的<br>设置好了之后使用下面的命令来加载模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insmod  (hd0,gpt9)/grub/x86_64-efi/normal.mod</span><br></pre></td></tr></table></figure>
+<p>或者使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insmod normal</span><br></pre></td></tr></table></figure>
+<p>最好使用第一种方法、因为它使用的是完整的路径、<br>可以保证不出错、前提是你找对了分区、</p>
+<p>加载好之后<code>grub rescue&gt;</code>这个提示符应该就会发生变化了</p>
+<p>然后使用: <code>normal</code><br>这个命令、就出启动到正常的grub启动菜单并正常进入linux了</p>
+<h1 id="真正解决问题"><a href="#真正解决问题" class="headerlink" title="真正解决问题"></a>真正解决问题</h1><p>到这里并没有完全搞定、<br>如果你进入linux后重启的话就会发现又出现grub rescue模式了</p>
+<p>因为grub rescue模式只是应急、它并没有真正把grub修改为正确的数据</p>
+<p>所以要在终端中手动重新修改下grub</p>
+<p>进入终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo update-grub</span><br><span class="line"><span class="comment">#无错误返回、那么接着：</span></span><br><span class="line">sudo grub-install /dev/sda9</span><br></pre></td></tr></table></figure>
+<p>这里的sda9是你的boot分区、如果不确定可以再开一个终端<br>使用<code>mount</code>命令来查看你的boot分区挂载到了哪儿</p>
+<p>到这里才算是真正修复了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/grub/" rel="tag"># grub</a>
+              <a href="/tags/uefi/" rel="tag"># uefi</a>
+              <a href="/tags/rescue/" rel="tag"># rescue</a>
+              <a href="/tags/gpt/" rel="tag"># gpt</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" rel="prev" title="同步安卓源码:Cannot fetch CyanogenMod/android external svox">
+      <i class="fa fa-chevron-left"></i> 同步安卓源码:Cannot fetch CyanogenMod/android external svox
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/" rel="next" title="linux中oracle数据库的监听和EM的开启和关闭shell脚本">
+      linux中oracle数据库的监听和EM的开启和关闭shell脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">数据分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%AD%A3%E7%A1%AE%E5%88%86%E5%8C%BA"><span class="nav-number">3.</span> <span class="nav-text">查找正确分区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%AD%A3%E7%A1%AE%E5%8F%98%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">设置正确变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">真正解决问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

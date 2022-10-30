@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近公司需要补充一些项目的文档，我负责的几个项目中比较有实用价值的是这个 dde-dock 插件的开发入门教程，这里是转载，原发在 dde-dock 项目源码中。 插件的工作原理插件是一种在不需要改动并重新编译主程序本身的情况下去扩展主程序功能的一种机制。dde-dock 插件是根据 Qt 插件标准所开发的共享库文件(so)，通过实现 Qt 的插件标准和 dde-dock 提供的接口，共同完成 d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dde-dock插件开发入门">
+<meta property="og:url" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="最近公司需要补充一些项目的文档，我负责的几个项目中比较有实用价值的是这个 dde-dock 插件的开发入门教程，这里是转载，原发在 dde-dock 项目源码中。 插件的工作原理插件是一种在不需要改动并重新编译主程序本身的情况下去扩展主程序功能的一种机制。dde-dock 插件是根据 Qt 插件标准所开发的共享库文件(so)，通过实现 Qt 的插件标准和 dde-dock 提供的接口，共同完成 d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/central-widget.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/disable-plugin.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/tips-widget.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/applet-widget.png">
+<meta property="og:image" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/context-menu.png">
+<meta property="article:published_time" content="2019-03-16T04:45:42.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="deepin">
+<meta property="article:tag" content="dde-dock">
+<meta property="article:tag" content="plugin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/central-widget.png">
+
+<link rel="canonical" href="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>dde-dock插件开发入门 | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dde-dock插件开发入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-16 12:45:42" itemprop="dateCreated datePublished" datetime="2019-03-16T12:45:42+08:00">2019-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" class="post-meta-item leancloud_visitors" data-flag-title="dde-dock插件开发入门" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近公司需要补充一些项目的文档，我负责的几个项目中比较有实用价值的是这个 dde-dock 插件的开发入门教程，这里是转载，<a target="_blank" rel="noopener" href="https://github.com/linuxdeepin/dde-dock/blob/master/plugins/plugin-guide/plugins-developer-guide.md">原发</a>在 dde-dock 项目源码中。</p>
+<h1 id="插件的工作原理"><a href="#插件的工作原理" class="headerlink" title="插件的工作原理"></a>插件的工作原理</h1><p>插件是一种在不需要改动并重新编译主程序本身的情况下去扩展主程序功能的一种机制。<br>dde-dock 插件是根据 Qt 插件标准所开发的共享库文件(<code>so</code>)，通过实现 Qt 的插件标准和 dde-dock 提供的接口，共同完成 dde-dock 的功能扩展。<br>可以通过以下链接查看关于 Qt 插件更详细的介绍：</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.qt.io/Plugins">https://wiki.qt.io/Plugins</a><br><a target="_blank" rel="noopener" href="https://doc.qt.io/qt-5/plugins-howto.html">https://doc.qt.io/qt-5/plugins-howto.html</a></p>
+<h2 id="dde-dock-插件加载流程"><a href="#dde-dock-插件加载流程" class="headerlink" title="dde-dock 插件加载流程"></a>dde-dock 插件加载流程</h2><p>在 dde-dock 启动时会跑一个线程去检测目录<code>/usr/lib/dde-dock/plugins</code>下的所有文件，并检测是否是一个正常的动态库文件，如果是则尝试加载。尝试加载即检测库文件的元数据，插件的元数据定义在一个 JSON 文件中，这个后文会介绍，如果元数据检测通过就开始检查插件是否实现了 dde-dock 指定的接口，这一步也通过之后就会开始初始化插件，获取插件提供的控件，进而将控件显示在任务栏上。</p>
+<h2 id="接口列表"><a href="#接口列表" class="headerlink" title="接口列表"></a>接口列表</h2><p>这里先列出 dde-dock 都提供了哪些接口，可作为一个手册查看，注意，为 dde-dock 编写插件并不是要实现所有接口，这些接口提供了 dde-dock 允许各种可能的功能，插件开发者可以根据自己的需求去实现自己需要的接口。后续的插件示例也将会用到这里列出的部分接口。</p>
+<p>接口定义的文件一般在系统的如下位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;include&#x2F;dde-dock&#x2F;pluginproxyinterface.h</span><br><span class="line">&#x2F;usr&#x2F;include&#x2F;dde-dock&#x2F;pluginsiteminterface.h</span><br></pre></td></tr></table></figure>
+
+<h3 id="PluginItemInterface"><a href="#PluginItemInterface" class="headerlink" title="PluginItemInterface"></a>PluginItemInterface</h3><p><strong><em>只有标明<code>必须实现</code>的接口是必须要由插件开发者实现的接口，其他接口如果不需要对应功能可不实现。</em></strong></p>
+<p>PluginsItemInterface 中定义的接口除了displayMode 和 position（历史遗留），从插件的角度来看都是被动的，只能等待被任务栏的插件机制调用。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pluginName</td>
+<td>返回插件名称，用于在 dde-dock 内部管理插件时使用 <code>必须实现</code></td>
+</tr>
+<tr>
+<td>pluginDisplayName</td>
+<td>返回插件名称，用于在界面上显示</td>
+</tr>
+<tr>
+<td>init</td>
+<td>插件初始化入口函数，参数 proxyInter 可认为是主程序的进程 <code>必须实现</code></td>
+</tr>
+<tr>
+<td>itemWidget</td>
+<td>返回插件主控件，用于显示在 dde-dock 面板上 <code>必须实现</code></td>
+</tr>
+<tr>
+<td>itemTipsWidget</td>
+<td>返回鼠标悬浮在插件主控件上时显示的提示框控件</td>
+</tr>
+<tr>
+<td>itemPopupApplet</td>
+<td>返回鼠标左键点击插件主控件后弹出的控件</td>
+</tr>
+<tr>
+<td>itemCommand</td>
+<td>返回鼠标左键点击插件主控件后要执行的命令数据</td>
+</tr>
+<tr>
+<td>itemContextMenu</td>
+<td>返回鼠标右键点击插件主控件后要显示的菜单数据</td>
+</tr>
+<tr>
+<td>invokedMenuItem</td>
+<td>菜单项被点击后的回调函数</td>
+</tr>
+<tr>
+<td>itemSortKey</td>
+<td>返回插件主控件的排序位置</td>
+</tr>
+<tr>
+<td>setSortKey</td>
+<td>重新设置主控件新的排序位置（用户拖动了插件控件后）</td>
+</tr>
+<tr>
+<td>itemAllowContainer</td>
+<td>返回插件控件是否允许被收纳</td>
+</tr>
+<tr>
+<td>itemIsInContainer</td>
+<td>返回插件是否处于收纳模式（仅在 itemAllowContainer 为 true 时有作用）</td>
+</tr>
+<tr>
+<td>setItemIsInContainer</td>
+<td>更新插件是否处于收纳模式的状态（仅在 itemAllowContainer 主 true 时有作用）</td>
+</tr>
+<tr>
+<td>pluginIsAllowDisable</td>
+<td>返回插件是否允许被禁用（默认不允许被禁用）</td>
+</tr>
+<tr>
+<td>pluginIsDisable</td>
+<td>返回插件当前是否处于被禁用状态</td>
+</tr>
+<tr>
+<td>pluginStateSwitched</td>
+<td>当插件的禁用状态被用户改变时此接口被调用</td>
+</tr>
+<tr>
+<td>displayModeChanged</td>
+<td>dde-dock 显示模式发生改变时此接口被调用</td>
+</tr>
+<tr>
+<td>positionChanged</td>
+<td>dde-dock 位置变化时时此接口被调用</td>
+</tr>
+<tr>
+<td>refreshIcon</td>
+<td>当插件控件的图标需要更新时此接口被调用</td>
+</tr>
+<tr>
+<td>displayMode</td>
+<td>用于插件主动获取 dde-dock 当前的显示模式</td>
+</tr>
+<tr>
+<td>position</td>
+<td>用于插件主动获取 dde-dock 当前的位置</td>
+</tr>
+</tbody></table>
+<h3 id="PluginProxyInterface"><a href="#PluginProxyInterface" class="headerlink" title="PluginProxyInterface"></a>PluginProxyInterface</h3><p>由于上面的接口对于插件来说都是被动的，即插件本身无法确定这些接口什么时刻会被调用，很明显这对于插件机制来说是不完整的，因此便有了 PluginProxyInterface，它定义了一些让插件主动调用以控制 dde-dock 的一些行为的接口。PluginProxyInterface 的具体实例可以认为是抽象了的 dde-dock 主程序，或者是 dde-dock 中所有插件的管理员，这个实例将会通过 PluginItemInterface 中的 <code>init</code> 接口传递给插件，因此在上述 <code>init</code> 接口中总是会先把这个传入的对象保存起来以供后续使用。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>itemAdded</td>
+<td>向 dde-dock 添加新的主控件（一个插件可以添加多个主控件它们之间使用<code>ItemKey</code>区分）</td>
+</tr>
+<tr>
+<td>itemUpdate</td>
+<td>通知 dde-dock 有主控件需要更新</td>
+</tr>
+<tr>
+<td>itemRemoved</td>
+<td>从 dde-dock 移除主控件</td>
+</tr>
+<tr>
+<td>requestWindowAutoHide</td>
+<td>设置 dde-dock 是否允许隐藏，通常被用在任务栏被设置为智能隐藏或始终隐藏而插件又需要让 dde-dock 保持显示状态来显示一些重要信息的场景下</td>
+</tr>
+<tr>
+<td>requestRefreshWindowVisible</td>
+<td>通知 dde-dock 更新隐藏状态</td>
+</tr>
+<tr>
+<td>requestSetAppletVisible</td>
+<td>通知 dde-dock 显示或隐藏插件的弹出面板（鼠标左键点击后弹出的控件）</td>
+</tr>
+<tr>
+<td>saveValue</td>
+<td>统一的配置保存函数</td>
+</tr>
+<tr>
+<td>getValue</td>
+<td>统一的配置读取函数</td>
+</tr>
+</tbody></table>
+<h1 id="构建一个-dde-dock-插件"><a href="#构建一个-dde-dock-插件" class="headerlink" title="构建一个 dde-dock 插件"></a>构建一个 dde-dock 插件</h1><p>接下来将介绍一个简单的 dde-dock 插件的开发过程，插件开发者可跟随此步骤熟悉为 dde-dock 开发插件的步骤，以便创造出更多具有丰富功能的插件。</p>
+<h2 id="预期功能"><a href="#预期功能" class="headerlink" title="预期功能"></a>预期功能</h2><p>首先来确定下这个插件所需要的功能：</p>
+<ul>
+<li>实时显示 HOME 分区可使用的剩余大小百分比</li>
+<li>允许禁用插件</li>
+<li>鼠标悬浮在插件上显示 HOME 分区总容量和可用容量</li>
+<li>鼠标左键点击插件显示一个提示框显示关于 HOME 分区更详细的信息</li>
+<li>鼠标右键点击插件显示一个菜单用于刷新缓存和启动 gparted 程序</li>
+</ul>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>下面以 Qt + cmake 为例进行说明，以 Deepin 15.9 环境为基础，安装如下的包：</p>
+<ul>
+<li>dde-dock-dev</li>
+<li>cmake</li>
+<li>qtbase5-dev-tools</li>
+<li>pkg-config</li>
+</ul>
+<h2 id="项目基本结构"><a href="#项目基本结构" class="headerlink" title="项目基本结构"></a>项目基本结构</h2><p>创建必需的项目目录与文件，插件名称叫做<code>home_monitor</code>，所以创建以下的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">home_monitor</span><br><span class="line">├── home_monitor.json</span><br><span class="line">├── homemonitorplugin.cpp</span><br><span class="line">├── homemonitorplugin.h</span><br><span class="line">└── CMakeLists.txt</span><br></pre></td></tr></table></figure>
+
+<p>接着来依次分析各个文件的作用。</p>
+<h3 id="cmake-配置文件"><a href="#cmake-配置文件" class="headerlink" title="cmake 配置文件"></a>cmake 配置文件</h3><p><code>CMakeLists.txt</code> 是 cmake 命令要读取的配置文件，用于管理整个项目的源文件，依赖，构建等等，其内容如下：</p>
+<blockquote>
+<p>以<code>#</code>开头的行是注释，用于介绍相关命令，对创建一份新的 CMakeLists.txt 文件会有所帮助，目前可以简单地过一遍</p>
+</blockquote>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 学习 cmake 时建议直接从命令列表作为入口，遇到不清楚意思的命令都可以在此处查阅：</span></span><br><span class="line"><span class="comment"># https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html</span></span><br><span class="line"><span class="comment"># 另外下面时完整的文档入口：</span></span><br><span class="line"><span class="comment"># https://cmake.org/cmake/help/latest/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置运行被配置所需的 cmake 最低版本</span></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.11</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 set 命令设置一个变量</span></span><br><span class="line"><span class="keyword">set</span>(PLUGIN_NAME <span class="string">&quot;home_monitor&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置项目名称</span></span><br><span class="line"><span class="keyword">project</span>(<span class="variable">$&#123;PLUGIN_NAME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用 qt moc 的支持</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_AUTOMOC <span class="keyword">ON</span>)</span><br><span class="line"><span class="comment"># 启用 qrc 资源文件的支持</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_AUTORCC <span class="keyword">ON</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定所有源码文件</span></span><br><span class="line"><span class="comment"># 使用了 cmake 的 file 命令，递归查找项目目录下所有头文件和源码文件，</span></span><br><span class="line"><span class="comment"># 并将结果放入 SRCS 变量中，SRCS 变量可用于后续使用</span></span><br><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SRCS <span class="string">&quot;*.h&quot;</span> <span class="string">&quot;*.cpp&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定要用到的库</span></span><br><span class="line"><span class="comment"># 使用了 cmake 的 find_package 命令，查找库 Qt5Widgets 等，</span></span><br><span class="line"><span class="comment"># REQUIRED 参数表示如果没有找到则报错</span></span><br><span class="line"><span class="comment"># find_package 命令在找到并加载指定的库之后会设置一些变量，</span></span><br><span class="line"><span class="comment"># 常用的有：</span></span><br><span class="line"><span class="comment"># &lt;库名&gt;_FOUND          是否找到（Qt5Widgets_FOUND）</span></span><br><span class="line"><span class="comment"># &lt;库名&gt;_DIR            在哪个目录下找到的（Qt5Widgets_DIR）</span></span><br><span class="line"><span class="comment"># &lt;库名&gt;_INCLUDE_DIRS   有哪些头文件目录（Qt5Widgets_INCLUDE_DIRS）</span></span><br><span class="line"><span class="comment"># &lt;库名&gt;_LIBRARIES      有哪些库文件（Qt5Widgets_LIBRARIES）</span></span><br><span class="line"><span class="keyword">find_package</span>(Qt5Widgets REQUIRED)</span><br><span class="line"><span class="keyword">find_package</span>(DtkWidget REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># find_package 命令还可以用来加载 cmake 的功能模块</span></span><br><span class="line"><span class="comment"># 并不是所有的库都直接支持 cmake 查找的，但大部分都支持了 pkg-config 这个标准，</span></span><br><span class="line"><span class="comment"># 因此 cmake 提供了间接加载库的模块：FindPkgConfig， 下面这行命令表示加载 FindPkgConfig 模块，</span></span><br><span class="line"><span class="comment"># 这个 cmake 模块提供了额外的基于 “pkg-config” 加载库的能力</span></span><br><span class="line"><span class="comment"># 执行下面的命令后后会设置如下变量，不过一般用不到：</span></span><br><span class="line"><span class="comment"># PKG_CONFIG_FOUND            pkg-config 可执行文件是否找到了</span></span><br><span class="line"><span class="comment"># PKG_CONFIG_EXECUTABLE       pkg-config 可执行文件的路径</span></span><br><span class="line"><span class="comment"># PKG_CONFIG_VERSION_STRING   pkg-config 的版本信息</span></span><br><span class="line"><span class="keyword">find_package</span>(PkgConfig REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载 FindPkgConfig 模块后就可以使用 pkg_check_modules 命令加载需要的库</span></span><br><span class="line"><span class="comment"># pkg_check_modules 命令是由 FindPkgConfig 模块提供的，因此要使用这个命令必须先加载 FindPkgConfig 模块。</span></span><br><span class="line"><span class="comment"># 执行 pkg_check_modules 命令加载库也会设置一些类似执行 find_package 加载库后设置的变量：</span></span><br><span class="line"><span class="comment"># DdeDockInterface_FOUND</span></span><br><span class="line"><span class="comment"># DdeDockInterface_INCLUDE_DIRS</span></span><br><span class="line"><span class="comment"># DdeDockInterface_LIBRARIES</span></span><br><span class="line"><span class="comment"># 还有有另外的一些变量以及更灵活的用法，比如一次性查找多个库，这些请自行查找 cmake 文档学习。</span></span><br><span class="line">pkg_check_modules(DdeDockInterface REQUIRED dde-dock)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add_definitions 命令用于声明/定义一些编译/预处理参数</span></span><br><span class="line"><span class="comment"># 根据 cmake 文档描述此命令已经有另外几个功能划分的更为细致的命令所取代，具体请查阅文档</span></span><br><span class="line"><span class="comment"># 在我们这里的例子应该使用较新的 add_compile_definitions 命令，不过为了保持与 dock 已有插件一致，</span></span><br><span class="line"><span class="comment"># 暂时仍然使用 add_definitions，add_definitions 的语法很简单就是直接写要定义的 flag 并在前面加上 &quot;-D&quot; 即可</span></span><br><span class="line"><span class="comment"># 括号中的 $&#123;QT_DEFINITIONS&#125; 变量会在执行 cmake 时展开为它的值，这个变量属于历史遗留，应该是在 qt3/qt4 时有用，</span></span><br><span class="line"><span class="comment"># 基于 qt5 或更高版本的新插件不必使用此变量。要查看 qt5 的库定义了哪些变量应该查看变量：$&#123;Qt5Widgets_DEFINITIONS&#125;</span></span><br><span class="line"><span class="keyword">add_definitions</span>(<span class="string">&quot;$&#123;QT_DEFINITIONS&#125; -DQT_PLUGIN&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增一个编译目标</span></span><br><span class="line"><span class="comment"># 这里使用命令 add_library 来表示本项目要生成一个库文件目标，</span></span><br><span class="line"><span class="comment"># 类似的还有命令 add_executable 添加一个可执行二进制目标，甚至 add_custom_target(使用较少) 添加自定义目标</span></span><br><span class="line"><span class="comment"># SHARED 表示生成的库应该是动态库，</span></span><br><span class="line"><span class="comment"># 变量 $&#123;PLUGIN_NAME&#125; 和 $&#123;SRCS&#125; 都是前面处理好的，</span></span><br><span class="line"><span class="comment"># 另外 qrc 资源文件也应该追加在后面以编译进目标中。</span></span><br><span class="line"><span class="keyword">add_library</span>(<span class="variable">$&#123;PLUGIN_NAME&#125;</span> SHARED <span class="variable">$&#123;SRCS&#125;</span> home_monitor.qrc)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目标的生成位置，这里表示生成在执行 make 的目录,</span></span><br><span class="line"><span class="comment"># 另外还有很多可用于设置的属性，可查阅 cmake 文档。</span></span><br><span class="line"><span class="keyword">set_target_properties</span>(<span class="variable">$&#123;PLUGIN_NAME&#125;</span> PROPERTIES LIBRARY_OUTPUT_DIRECTORY ./)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目标要使用的 include 目录，即头文件目录</span></span><br><span class="line"><span class="comment"># 变量 $&#123;DtkWidget_INCLUDE_DIRS&#125; 是在前面执行 find_package 命令时引入的</span></span><br><span class="line"><span class="comment"># 当出现编译失败提示找不到某些库的头文件时应该检查此处是否将所有需要的头文件都包含了</span></span><br><span class="line"><span class="keyword">target_include_directories</span>(<span class="variable">$&#123;PLUGIN_NAME&#125;</span> PUBLIC</span><br><span class="line">    <span class="variable">$&#123;Qt5Widgets_INCLUDE_DIRS&#125;</span></span><br><span class="line">    <span class="variable">$&#123;DtkWidget_INCLUDE_DIRS&#125;</span></span><br><span class="line">    <span class="variable">$&#123;DdeDockInterface_INCLUDE_DIRS&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目标要使用的链接库</span></span><br><span class="line"><span class="comment"># 变量 $&#123;DtkWidget_LIBRARIES&#125; 和 $&#123;Qt5Widgets_LIBRARIES&#125; 是在前面执行 find_package 命令时引入的</span></span><br><span class="line"><span class="comment"># 当出现运行时错误提示某些符号没有定义时应该检查此处是否将所有用的库都写在了这里</span></span><br><span class="line"><span class="keyword">target_link_libraries</span>(<span class="variable">$&#123;PLUGIN_NAME&#125;</span> PRIVATE</span><br><span class="line">    <span class="variable">$&#123;Qt5Widgets_LIBRARIES&#125;</span></span><br><span class="line">    <span class="variable">$&#123;DtkWidget_LIBRARIES&#125;</span></span><br><span class="line">    <span class="variable">$&#123;DdeDockInterface_LIBRARIES&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置安装路径的前缀(默认为&quot;/usr/local&quot;)</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_INSTALL_PREFIX <span class="string">&quot;/usr&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置执行 make install 时哪个目标应该被 install 到哪个位置</span></span><br><span class="line"><span class="keyword">install</span>(TARGETS <span class="variable">$&#123;PLUGIN_NAME&#125;</span> LIBRARY DESTINATION lib/dde-dock/plugins)</span><br></pre></td></tr></table></figure>
+
+<h3 id="元数据文件"><a href="#元数据文件" class="headerlink" title="元数据文件"></a>元数据文件</h3><p><code>home_monitor.json</code>文件是插件的元数据文件，指明了当前插件所使用的 dde-dock 的接口版本，dde-dock 在加载此插件时，会检测自己的接口版本是否与插件的接口版本一致，当双方的接口版本不一致或者不兼容时，dde-dock 为了安全将阻止加载对应的插件。另外，元数据文件是在源代码中使用特定的宏加载到插件中的。</p>
+<p>在 dde-dock 内建的插件代码中，可以找到当前具体的接口版本，目前最新的版本是 <code>1.2</code> 。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;api&quot;</span>: <span class="string">&quot;1.2&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外（可选的）还支持指定一个 dbus 服务，dock 在加载插件时会检查此插件所依赖的 dbus 服务，如果服务没有启动则不会初始化这个插件，直到服务启动，如下表示依赖 dbus 地址为 “com.deepin.daemon.Network” 的 dbus 服务。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;api&quot;</span>: <span class="string">&quot;1.2&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;depends-daemon-dbus-service&quot;</span>: <span class="string">&quot;com.deepin.daemon.Network&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件核心类"><a href="#插件核心类" class="headerlink" title="插件核心类"></a>插件核心类</h3><p><code>homemonitorplugin.h</code> 声明了类 <code>HomeMonitorPlugin</code>，它继承（实现）了前面提到的 <code>PluginItemInterface</code>，这代表了它是一个实现了 dde-dock 接口的插件。</p>
+<p>下面是最小化实现了一个 dock 插件的源码，只实现了必须实现的接口，请注意，下文的代码只是为了简述开发一个插件的主要过程，详细的示例代码应该查看 <code>home-monitor</code> 目录下的内容。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HOMEMONITORPLUGIN_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HOMEMONITORPLUGIN_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dde-dock/pluginsiteminterface.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QObject&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeMonitorPlugin</span> :</span> <span class="keyword">public</span> QObject, PluginsItemInterface</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line">    <span class="comment">// 声明实现了的接口</span></span><br><span class="line">    Q_INTERFACES(PluginsItemInterface)</span><br><span class="line">    <span class="comment">// 插件元数据</span></span><br><span class="line">    Q_PLUGIN_METADATA(IID <span class="string">&quot;com.deepin.dock.PluginsItemInterface&quot;</span> FILE <span class="string">&quot;home_monitor.json&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">HomeMonitorPlugin</span><span class="params">(QObject *parent = <span class="literal">nullptr</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回插件的名称，必须是唯一值，不可以和其它插件冲突</span></span><br><span class="line">    <span class="function"><span class="keyword">const</span> QString <span class="title">pluginName</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 插件初始化函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(PluginProxyInterface *proxyInter)</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回插件的 widget</span></span><br><span class="line">    <span class="function">QWidget *<span class="title">itemWidget</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// HOMEMONITORPLUGIN_H</span></span></span><br></pre></td></tr></table></figure>
+
+<p><code>homemonitorplugin.cpp</code> 中包含对应接口的实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;homemonitorplugin.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">HomeMonitorPlugin::HomeMonitorPlugin(QObject *parent)</span><br><span class="line">    : QObject(parent)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> QString <span class="title">HomeMonitorPlugin::pluginName</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> QStringLiteral(<span class="string">&quot;home_monitor&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::init</span><span class="params">(PluginProxyInterface *proxyInter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_proxyInter = proxyInter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">QWidget *<span class="title">HomeMonitorPlugin::itemWidget</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Q_UNUSED(itemKey);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里暂时返回空指针，这意味着插件会被 dde-dock 加载</span></span><br><span class="line">    <span class="comment">// 但是不会有任何东西被添加到 dde-dock 上</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试插件加载"><a href="#测试插件加载" class="headerlink" title="测试插件加载"></a>测试插件加载</h2><p>当插件的基本结构搭建好之后应该测试下这个插件能否被 dde-dock 正确的加载，这时候测试如果有问题也可以及时处理。</p>
+<h3 id="从源码构建"><a href="#从源码构建" class="headerlink" title="从源码构建"></a>从源码构建</h3><p>为了不污染源码目录，推荐在源码目录中创建 <code>build</code> 目录用于构建：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> home_monitor</span><br><span class="line"></span><br><span class="line">mkdir build</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"></span><br><span class="line">cmake ..</span><br><span class="line"></span><br><span class="line">make -j4</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>执行下面的命令即可将插件安装到系统中，也是 CMakeList.txt 文件指定的安装位置：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<p>可以看到有<code>home_monitor.so</code>文件被安装在了 dde-dock 的插件目录。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install -m 755 -p ./home_monitor/libhome_monitor.so /usr/lib/dde-dock/plugins/libhome_monitor.so</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试加载"><a href="#测试加载" class="headerlink" title="测试加载"></a>测试加载</h3><p>执行 <code>pkill dde-dock; dde-dock</code> 来重新运行 dde-dock，在终端输出中如果出现以下的输出，说明插件的加载已经正常：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">init plugin:  <span class="string">&quot;home_monitor&quot;</span></span><br><span class="line"></span><br><span class="line">init plugin finished:  <span class="string">&quot;home_monitor&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建插件主控件"><a href="#创建插件主控件" class="headerlink" title="创建插件主控件"></a>创建插件主控件</h2><p>创建新文件 informationwidget.h 和 informationwidget.cpp，用于创建控件类：InformationWidget，这个控件用于显示在 dde-dock 上。</p>
+<p>此时的目录结构为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">home_monitor</span><br><span class="line"></span><br><span class="line">├── build&#x2F;</span><br><span class="line">├── home_monitor.json</span><br><span class="line">├── homemonitorplugin.cpp</span><br><span class="line">├── homemonitorplugin.h</span><br><span class="line">├── informationwidget.cpp</span><br><span class="line">├── informationwidget.h</span><br><span class="line">└── CMakeLists.txt</span><br></pre></td></tr></table></figure>
+
+<p>informationwidget.h 文件内容如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> INFORMATIONWIDGET_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INFORMATIONWIDGET_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QWidget&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QTimer&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QStorageInfo&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InformationWidget</span> :</span> <span class="keyword">public</span> QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">InformationWidget</span><span class="params">(QWidget *parent = <span class="literal">nullptr</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> QStorageInfo * <span class="title">storageInfo</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_storageInfo; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="comment">// 用于更新数据的槽函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">refreshInfo</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 真正的数据显示在这个 Label 上</span></span><br><span class="line">    QLabel *m_infoLabel;</span><br><span class="line">    <span class="comment">// 处理时间间隔的计时器</span></span><br><span class="line">    QTimer *m_refreshTimer;</span><br><span class="line">    <span class="comment">// 分区数据的来源</span></span><br><span class="line">    QStorageInfo *m_storageInfo;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// INFORMATIONWIDGET_H</span></span></span><br></pre></td></tr></table></figure>
+
+<p>informationwidget.cpp 文件包含了对类 InformationWidget 的实现，内容如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;informationwidget.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QVBoxLayout&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QTimer&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"></span><br><span class="line">InformationWidget::InformationWidget(QWidget *parent)</span><br><span class="line">    : QWidget(parent)</span><br><span class="line">    , m_infoLabel(<span class="keyword">new</span> QLabel)</span><br><span class="line">    , m_refreshTimer(<span class="keyword">new</span> QTimer(<span class="keyword">this</span>))</span><br><span class="line">    <span class="comment">// 使用 &quot;/home&quot; 初始化 QStorageInfo</span></span><br><span class="line">    <span class="comment">// 如果 &quot;/home&quot; 没有挂载到一个单独的分区上，QStorageInfo 收集的数据将会是根分区的</span></span><br><span class="line">    , m_storageInfo(<span class="keyword">new</span> QStorageInfo(<span class="string">&quot;/home&quot;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    m_infoLabel-&gt;setStyleSheet(<span class="string">&quot;QLabel &#123;&quot;</span></span><br><span class="line">                               <span class="string">&quot;color: white;&quot;</span></span><br><span class="line">                               <span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">    m_infoLabel-&gt;setAlignment(Qt::AlignCenter);</span><br><span class="line"></span><br><span class="line">    QVBoxLayout *centralLayout = <span class="keyword">new</span> QVBoxLayout;</span><br><span class="line">    centralLayout-&gt;addWidget(m_infoLabel);</span><br><span class="line">    centralLayout-&gt;setSpacing(<span class="number">0</span>);</span><br><span class="line">    centralLayout-&gt;setMargin(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    setLayout(centralLayout);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接 Timer 超时的信号到更新数据的槽上</span></span><br><span class="line">    <span class="built_in">connect</span>(m_refreshTimer, &amp;QTimer::timeout, <span class="keyword">this</span>, &amp;InformationWidget::refreshInfo);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置 Timer 超时为 10s，即每 10s 更新一次控件上的数据，并启动这个定时器</span></span><br><span class="line">    m_refreshTimer-&gt;start(<span class="number">10000</span>);</span><br><span class="line"></span><br><span class="line">    refreshInfo();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InformationWidget::refreshInfo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 获取分区总容量</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> total = m_storageInfo-&gt;bytesTotal();</span><br><span class="line">    <span class="comment">// 获取可用总容量</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> <span class="built_in">available</span> = m_storageInfo-&gt;bytesAvailable();</span><br><span class="line">    <span class="comment">// 得到可用百分比</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> percent = qRound(<span class="built_in">available</span> / total * <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更新内容</span></span><br><span class="line">    m_infoLabel-&gt;setText(QString(<span class="string">&quot;Home:\n%1\%&quot;</span>).arg(percent));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在主控件类已经完成了，回到插件的核心类，将主控件类添加到核心类中。</p>
+<p>在 <code>homemonitorplugin.h</code> 中相应位置添加成员声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;informationwidget.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeMonitorPlugin</span> :</span> <span class="keyword">public</span> QObject, PluginsItemInterface</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    InformationWidget *m_pluginWidget;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>homemonitorplugin.cpp</code> 中将添加成员的初始化，比如在 <code>init</code> 接口中初始化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::init</span><span class="params">(PluginProxyInterface *proxyInter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_proxyInter = proxyInter;</span><br><span class="line"></span><br><span class="line">    m_pluginWidget = <span class="keyword">new</span> InformationWidget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加主控件到-dde-dock-面板上"><a href="#添加主控件到-dde-dock-面板上" class="headerlink" title="添加主控件到 dde-dock 面板上"></a>添加主控件到 dde-dock 面板上</h2><p>在插件核心类的 <code>init</code> 方法中获取到了 <code>PluginProxyInterface</code> 对象，调用此对象的 <code>itemAdded</code> 接口即可实现向 dde-dock 面板上添加项目。</p>
+<p>第二个 <code>QString</code> 类型的参数代表了本插件所提供的主控件的 id，当一个插件提供多个主控件时，不同主控件之间的 id 要保证唯一。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::init</span><span class="params">(PluginProxyInterface *proxyInter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_proxyInter = proxyInter;</span><br><span class="line"></span><br><span class="line">    m_pluginWidget = <span class="keyword">new</span> InformationWidget;</span><br><span class="line"></span><br><span class="line">    m_proxyInter-&gt;itemAdded(<span class="keyword">this</span>, pluginName());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在调用 <code>itemAdded</code> 之后，dde-dock 会在合适的时机调用插件的<code>itemWidget</code>接口以获取需要显示的控件。如果插件提供了多个主控件到 dde-dock 上，那么插件核心类应该在 itemWidget 接口中分析参数 itemKey，并返回与之对应的控件对象，当插件只有一个可显示项目时，itemKey 可以忽略 (但不建议忽略)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QWidget *<span class="title">HomeMonitorPlugin::itemWidget</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Q_UNUSED(itemKey);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> m_pluginWidget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在再根据“测试插件加载”一节中的步骤，编译、安装、重启 dde-dock，就可以看到主控件在 dde-dock 面板上出现了，如下图所示：</p>
+<p><img src="central-widget.png" alt="central-widget"></p>
+<h2 id="支持禁用插件"><a href="#支持禁用插件" class="headerlink" title="支持禁用插件"></a>支持禁用插件</h2><p>与插件禁用和启用相关的接口有如下三个：</p>
+<ul>
+<li>pluginIsAllowDisable</li>
+<li>pluginIsDisable</li>
+<li>pluginStateSwitched</li>
+</ul>
+<p>故而在插件的核心类头文件中增加这三个接口的声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">pluginIsAllowDisable</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">pluginIsDisable</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pluginStateSwitched</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>同时在插件的核心类实现类中增加这三个接口的定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HomeMonitorPlugin::pluginIsAllowDisable</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 告诉 dde-dock 本插件允许禁用</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HomeMonitorPlugin::pluginIsDisable</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 第二个参数 “disabled” 表示存储这个值的键（所有配置都是以键值对的方式存储的）</span></span><br><span class="line">    <span class="comment">// 第三个参数表示默认值，即默认不禁用</span></span><br><span class="line">    <span class="keyword">return</span> m_proxyInter-&gt;getValue(<span class="keyword">this</span>, <span class="string">&quot;disabled&quot;</span>, <span class="literal">false</span>).toBool();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::pluginStateSwitched</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 获取当前禁用状态的反值作为新的状态值</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">bool</span> disabledNew = !pluginIsDisable();</span><br><span class="line">    <span class="comment">// 存储新的状态值</span></span><br><span class="line">    m_proxyInter-&gt;saveValue(<span class="keyword">this</span>, <span class="string">&quot;disabled&quot;</span>, disabledNew);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据新的禁用状态值处理主控件的加载和卸载</span></span><br><span class="line">    <span class="keyword">if</span> (disabledNew) &#123;</span><br><span class="line">        m_proxyInter-&gt;itemRemoved(<span class="keyword">this</span>, pluginName());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        m_proxyInter-&gt;itemAdded(<span class="keyword">this</span>, pluginName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时就会引入一个新的问题，插件允许被禁用，那么在 dde-dock 启动时，插件有可能处于禁用状态，那么在初始化插件时就不能直接将主控件添加到 dde-dock 中，而是应该判断当前是否是禁用状态，修改接口 init 的实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::init</span><span class="params">(PluginProxyInterface *proxyInter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_proxyInter = proxyInter;</span><br><span class="line"></span><br><span class="line">    m_pluginWidget = <span class="keyword">new</span> InformationWidget;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果插件没有被禁用则在初始化插件时才添加主控件到面板上</span></span><br><span class="line">    <span class="keyword">if</span> (!pluginIsDisable()) &#123;</span><br><span class="line">        m_proxyInter-&gt;itemAdded(<span class="keyword">this</span>, pluginName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重新编译、安装、重启 dde-dock，然后 dde-dock 面板上点击鼠标右键查看“插件”子菜单就会看到空白项，点击它将禁用插件，再次点击则启用插件。</p>
+<p>不过为什么是空白项呢？是因为有一个接口还没有实现：pluginDisplayName</p>
+<p>在相应文件中分别添加如下内容，来修复这个问题：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.h</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> QString <span class="title">pluginDisplayName</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> QString <span class="title">HomeMonitorPlugin::pluginDisplayName</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> QString(<span class="string">&quot;Home Monitor&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="disable-plugin.png" alt="disable-plugin"></p>
+<h2 id="支持-hover-tip"><a href="#支持-hover-tip" class="headerlink" title="支持 hover tip"></a>支持 hover tip</h2><p>“hover tip” 就是鼠标移动到插件主控件上并悬浮一小段时间后弹出的一个提示框，可以用于显示一些状态信息等待，当然具体用来显示什么完全由插件开发者自己决定，要实现这个功能需要接口：</p>
+<ul>
+<li>itemTipsWidget</li>
+</ul>
+<p>首先在插件核心类中添加一个文本控件作为 tip 控件：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.h</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    InformationWidget *m_pluginWidget;</span><br><span class="line">    QLabel *m_tipsWidget; <span class="comment">// new</span></span><br></pre></td></tr></table></figure>
+
+<p>在 init 函数中初始化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::init</span><span class="params">(PluginProxyInterface *proxyInter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_proxyInter = proxyInter;</span><br><span class="line"></span><br><span class="line">    m_pluginWidget = <span class="keyword">new</span> InformationWidget;</span><br><span class="line">    m_tipsWidget = <span class="keyword">new</span> QLabel; <span class="comment">// new</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果插件没有被禁用则在初始化插件时才添加主控件到面板上</span></span><br><span class="line">    <span class="keyword">if</span> (!pluginIsDisable()) &#123;</span><br><span class="line">        m_proxyInter-&gt;itemAdded(<span class="keyword">this</span>, pluginName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面在插件核心类中实现接口 itemTipsWidget：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.h</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">QWidget *<span class="title">itemTipsWidget</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="function">QWidget *<span class="title">HomeMonitorPlugin::itemTipsWidget</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Q_UNUSED(itemKey);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置/刷新 tips 中的信息</span></span><br><span class="line">    m_tipsWidget-&gt;setText(QString(<span class="string">&quot;Total: %1G\nAvailable: %2G&quot;</span>)</span><br><span class="line">                          .arg(qRound(m_pluginWidget-&gt;storageInfo()-&gt;bytesTotal() / qPow(<span class="number">1024</span>, <span class="number">3</span>)))</span><br><span class="line">                          .arg(qRound(m_pluginWidget-&gt;storageInfo()-&gt;bytesAvailable() / qPow(<span class="number">1024</span>, <span class="number">3</span>))));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> m_tipsWidget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>dde-dock 在发现鼠标悬停在插件的控件上时就会调用这个接口拿到相应的控件并显示出来。</p>
+<p><img src="tips-widget.png" alt="tips-widget"></p>
+<h2 id="支持-applet"><a href="#支持-applet" class="headerlink" title="支持 applet"></a>支持 applet</h2><p>上面的 tips 显示的控件在鼠标移开之后就会消失，如果插件需要长时间显示一个窗体及时鼠标离开也会保持显示状态来做一些提示或功能的话那就需要使用 applet，applet 控件在左键点击后显示，点击控件以外的其他地方后消失。</p>
+<p>applet 控件其实跟 tip 控件一样都是一个普通的 widget，但是可以在 applet 控件中显示交互性的内容，比如按钮，输入框等等。出于篇幅的原因这里 applet 控件就添加交互性的特性了，只用来显示一些文字，所以依然使用一个 lable 控件。</p>
+<p>在插件核心类中添加一个文本控件作为 applet 控件：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.h</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    InformationWidget *m_pluginWidget;</span><br><span class="line">    QLabel *m_tipsWidget;</span><br><span class="line">    QLabel *m_appletWidget; <span class="comment">// new</span></span><br></pre></td></tr></table></figure>
+
+<p>在 init 函数中初始化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::init</span><span class="params">(PluginProxyInterface *proxyInter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_proxyInter = proxyInter;</span><br><span class="line"></span><br><span class="line">    m_pluginWidget = <span class="keyword">new</span> InformationWidget;</span><br><span class="line">    m_tipsWidget = <span class="keyword">new</span> QLabel;</span><br><span class="line">    m_appletWidget = <span class="keyword">new</span> QLabel; <span class="comment">// new</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果插件没有被禁用则在初始化插件时才添加主控件到面板上</span></span><br><span class="line">    <span class="keyword">if</span> (!pluginIsDisable()) &#123;</span><br><span class="line">        m_proxyInter-&gt;itemAdded(<span class="keyword">this</span>, pluginName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着实现 applet 相关的接口 itemPopupApplet：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.h</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">QWidget *<span class="title">itemPopupApplet</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.cpp</span></span><br><span class="line"><span class="function">QWidget *<span class="title">HomeMonitorPlugin::itemPopupApplet</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Q_UNUSED(itemKey);</span><br><span class="line"></span><br><span class="line">    m_appletWidget-&gt;setText(QString(<span class="string">&quot;Total: %1G\nAvailable: %2G\nDevice: %3\nVolume: %4\nLabel: %5\nFormat: %6\nAccess: %7&quot;</span>)</span><br><span class="line">                            .arg(qRound(m_pluginWidget-&gt;storageInfo()-&gt;bytesTotal() / qPow(<span class="number">1024</span>, <span class="number">3</span>)))</span><br><span class="line">                            .arg(qRound(m_pluginWidget-&gt;storageInfo()-&gt;bytesAvailable() / qPow(<span class="number">1024</span>, <span class="number">3</span>)))</span><br><span class="line">                            .arg(QString(m_pluginWidget-&gt;storageInfo()-&gt;device()))</span><br><span class="line">                            .arg(m_pluginWidget-&gt;storageInfo()-&gt;displayName())</span><br><span class="line">                            .arg(m_pluginWidget-&gt;storageInfo()-&gt;name())</span><br><span class="line">                            .arg(QString(m_pluginWidget-&gt;storageInfo()-&gt;fileSystemType()))</span><br><span class="line">                            .arg(m_pluginWidget-&gt;storageInfo()-&gt;isReadOnly() ? <span class="string">&quot;ReadOnly&quot;</span> : <span class="string">&quot;ReadWrite&quot;</span>)</span><br><span class="line">                            );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> m_appletWidget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译，安装，重启 dde-dock 之后点击主控件即可看到弹出的 applet 控件。</p>
+<p><img src="applet-widget.png" alt="applet-widget"></p>
+<h2 id="支持右键菜单"><a href="#支持右键菜单" class="headerlink" title="支持右键菜单"></a>支持右键菜单</h2><p>增减右键菜单功能需要实现以下两个接口：</p>
+<ul>
+<li>itemContextMenu</li>
+<li>invokedMenuItem</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.h</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">const</span> QString <span class="title">itemContextMenu</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span> <span class="keyword">override</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">invokedMenuItem</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey, <span class="keyword">const</span> QString &amp;menuId, <span class="keyword">const</span> <span class="keyword">bool</span> checked)</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// homemonitorplugin.cpp</span></span><br><span class="line"><span class="function"><span class="keyword">const</span> QString <span class="title">HomeMonitorPlugin::itemContextMenu</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Q_UNUSED(itemKey);</span><br><span class="line"></span><br><span class="line">    QList&lt;QVariant&gt; items;</span><br><span class="line">    items.reserve(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    QMap&lt;QString, QVariant&gt; refresh;</span><br><span class="line">    refresh[<span class="string">&quot;itemId&quot;</span>] = <span class="string">&quot;refresh&quot;</span>;</span><br><span class="line">    refresh[<span class="string">&quot;itemText&quot;</span>] = <span class="string">&quot;Refresh&quot;</span>;</span><br><span class="line">    refresh[<span class="string">&quot;isActive&quot;</span>] = <span class="literal">true</span>;</span><br><span class="line">    items.push_back(refresh);</span><br><span class="line"></span><br><span class="line">    QMap&lt;QString, QVariant&gt; <span class="built_in">open</span>;</span><br><span class="line">    <span class="built_in">open</span>[<span class="string">&quot;itemId&quot;</span>] = <span class="string">&quot;open&quot;</span>;</span><br><span class="line">    <span class="built_in">open</span>[<span class="string">&quot;itemText&quot;</span>] = <span class="string">&quot;Open Gparted&quot;</span>;</span><br><span class="line">    <span class="built_in">open</span>[<span class="string">&quot;isActive&quot;</span>] = <span class="literal">true</span>;</span><br><span class="line">    items.push_back(<span class="built_in">open</span>);</span><br><span class="line"></span><br><span class="line">    QMap&lt;QString, QVariant&gt; menu;</span><br><span class="line">    menu[<span class="string">&quot;items&quot;</span>] = items;</span><br><span class="line">    menu[<span class="string">&quot;checkableMenu&quot;</span>] = <span class="literal">false</span>;</span><br><span class="line">    menu[<span class="string">&quot;singleCheck&quot;</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回 JSON 格式的菜单数据</span></span><br><span class="line">    <span class="keyword">return</span> QJsonDocument::fromVariant(menu).toJson();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HomeMonitorPlugin::invokedMenuItem</span><span class="params">(<span class="keyword">const</span> QString &amp;itemKey, <span class="keyword">const</span> QString &amp;menuId, <span class="keyword">const</span> <span class="keyword">bool</span> checked)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Q_UNUSED(itemKey);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据上面接口设置的 id 执行不同的操作</span></span><br><span class="line">    <span class="keyword">if</span> (menuId == <span class="string">&quot;refresh&quot;</span>) &#123;</span><br><span class="line">        m_pluginWidget-&gt;storageInfo()-&gt;refresh();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;open&quot;</span>) &#123;</span><br><span class="line">        QProcess::startDetached(<span class="string">&quot;gparted&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译，安装，重启 dde-dock 之后右键点击主控件即可看到弹出右键菜单。</p>
+<p><img src="context-menu.png" alt="context-menu"></p>
+<p>至此，一个包含基本功能的插件就完成了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/deepin/" rel="tag"># deepin</a>
+              <a href="/tags/dde-dock/" rel="tag"># dde-dock</a>
+              <a href="/tags/plugin/" rel="tag"># plugin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/24/%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BAqtcreator%E8%AE%B0%E5%BD%95/" rel="prev" title="源码构建qtcreator记录">
+      <i class="fa fa-chevron-left"></i> 源码构建qtcreator记录
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/" rel="next" title="QThread 的两种用法">
+      QThread 的两种用法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">插件的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dde-dock-%E6%8F%92%E4%BB%B6%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">dde-dock 插件加载流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%88%97%E8%A1%A8"><span class="nav-number">1.2.</span> <span class="nav-text">接口列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PluginItemInterface"><span class="nav-number">1.2.1.</span> <span class="nav-text">PluginItemInterface</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PluginProxyInterface"><span class="nav-number">1.2.2.</span> <span class="nav-text">PluginProxyInterface</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA-dde-dock-%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">构建一个 dde-dock 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E6%9C%9F%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">预期功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="nav-number">2.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">项目基本结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cmake-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.1.</span> <span class="nav-text">cmake 配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.2.</span> <span class="nav-text">元数据文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E6%A0%B8%E5%BF%83%E7%B1%BB"><span class="nav-number">2.3.3.</span> <span class="nav-text">插件核心类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%8F%92%E4%BB%B6%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.4.</span> <span class="nav-text">测试插件加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BA"><span class="nav-number">2.4.1.</span> <span class="nav-text">从源码构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.4.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.4.3.</span> <span class="nav-text">测试加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%8F%92%E4%BB%B6%E4%B8%BB%E6%8E%A7%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">创建插件主控件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%8E%A7%E4%BB%B6%E5%88%B0-dde-dock-%E9%9D%A2%E6%9D%BF%E4%B8%8A"><span class="nav-number">2.6.</span> <span class="nav-text">添加主控件到 dde-dock 面板上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E7%A6%81%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">2.7.</span> <span class="nav-text">支持禁用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81-hover-tip"><span class="nav-number">2.8.</span> <span class="nav-text">支持 hover tip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81-applet"><span class="nav-number">2.9.</span> <span class="nav-text">支持 applet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95"><span class="nav-number">2.10.</span> <span class="nav-text">支持右键菜单</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="注意:android3.0以及之后的版本支持fragment技术，低版本要想使用fragment技术需要android.support.v4.app包获取fragmentManager的方法不同：3.0以下：getSupportFragmentManager()3.0以上：getFragmentManager()  fragment以及activity生命周期附上图片一张: 学习fragment">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些关于Fragment的笔记">
+<meta property="og:url" content="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="注意:android3.0以及之后的版本支持fragment技术，低版本要想使用fragment技术需要android.support.v4.app包获取fragmentManager的方法不同：3.0以下：getSupportFragmentManager()3.0以上：getFragmentManager()  fragment以及activity生命周期附上图片一张: 学习fragment">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/fragment-activity.jpg">
+<meta property="article:published_time" content="2016-05-04T11:36:22.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="FragmentPagerAdapter">
+<meta property="article:tag" content="fragment">
+<meta property="article:tag" content="FragmentActivity">
+<meta property="article:tag" content="ListFragment">
+<meta property="article:tag" content="DialogFragment">
+<meta property="article:tag" content="FragmentTabHost">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/fragment-activity.jpg">
+
+<link rel="canonical" href="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>一些关于Fragment的笔记 | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一些关于Fragment的笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:36:22" itemprop="dateCreated datePublished" datetime="2016-05-04T19:36:22+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="一些关于Fragment的笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>注意:<br>android3.0以及之后的版本支持fragment技术，低版本要想使用fragment技术需要android.support.v4.app包<br>获取fragmentManager的方法不同：<br>3.0以下：getSupportFragmentManager()<br>3.0以上：getFragmentManager()</p>
+</blockquote>
+<h1 id="fragment以及activity生命周期"><a href="#fragment以及activity生命周期" class="headerlink" title="fragment以及activity生命周期"></a>fragment以及activity生命周期</h1><p>附上图片一张:<br><img src="fragment-activity.jpg" alt="fragment-activity"></p>
+<h1 id="学习fragment时碰到的几个名词："><a href="#学习fragment时碰到的几个名词：" class="headerlink" title="学习fragment时碰到的几个名词："></a>学习fragment时碰到的几个名词：</h1><h2 id="FragmentActivity："><a href="#FragmentActivity：" class="headerlink" title="FragmentActivity："></a>FragmentActivity：</h2><p>一个android.support.v4.app中的一个继承了Activity的类，如果你要在3.0以下使用fragment就需要让页面继承FragmentActivity而不是Activity，FragmentActivity中包含了3.0以下操作fragment的方法，使用方法同3.0以上一样，只是获取Manager的方法不同</p>
+<h2 id="FragmentPagerAdapter"><a href="#FragmentPagerAdapter" class="headerlink" title="FragmentPagerAdapter"></a>FragmentPagerAdapter</h2><p>可以作为ViewPager的适配器</p>
+<h2 id="ListFragment"><a href="#ListFragment" class="headerlink" title="ListFragment"></a>ListFragment</h2><p>列表样式， 自带一个默认的包含ListView控件的布局文件，无需手动重写onCreateView()使用inflat()方法加载自定义布局文件，只需要重写onCreate()方法，在其中用setListAdapter()方法绑定适配器，在绑定适配器的时候给item设置一个布局文件就行了。<br>若想修改ListView，可以在onCreateView(LayoutInflater, ViewGroup, Bundle)中进行修改，需要注意在自定义的ListFragment对应的布局文件中，必须指定一个 android:id 为 “@android:id/list” 的ListView控件!<br>当然，用户也可以在ListFragment对应的布局中包含其它的控件。<br>显示：在主activity中使用new关键字获取对象的引用</p>
+<h2 id="DialogFragment"><a href="#DialogFragment" class="headerlink" title="DialogFragment"></a>DialogFragment</h2><p>Android官方推荐使用DialogFragment创建对话框，可以避免屏幕旋转导致的问题。<br>重写onCreateView()则用定义的xml布局文件展示Dialog或者重写onCreateDialog()则需要利用AlertDialog或者Dialog创建出Dialog，在主activity中使用DialogFragment对象的show()方法，显示对话框。<br>显示：在主activity中使用new关键字获取对象的引用</p>
+<h2 id="FragmentTabHost"><a href="#FragmentTabHost" class="headerlink" title="FragmentTabHost"></a>FragmentTabHost</h2><p>用来代替已废弃的TabHost，个人感觉和前两个ListFragment以及DialogFragment有些不同，你可以把FragmentTabHost看作是一个普通控件正常使用，也就是个TabHost使用方法一样。<br>需要主页面的布局文件中添加控件，然后通过findViewById()来获取控件，需要注意的是布局文件中控件使用的标记名称是<code>&lt;android.support.v4.app.FragmentTabHost&gt;</code>，id：<code>@android:id/tabhost</code>(id可以随便写)<br>需要包含三个子标记<font color=red>(经过测试，只用一个id：tabhost(也就是上面那个控件)和一个id：realtabconten也可以(真正的容器FrameLayout)</font>：<br>1、Tab标签容器TabWidget，id：<code>@android:id/tabs</code>(id必须是这个)<br>2、Tab内容容器FrameLayout，id：<code>@android:id/tabcontent</code>(id必须是这个)，注意：这里属性中宽高皆为0dp<br>3、Tab内容容器FrameLayout，id：<code>@+id/RealTabContent</code>(id可以随便写)，注意：这个才是真正的内容容器</p>
+<p>FragmentTabHost可以在布局文件中定义标签容器在内容容器的下面，调动RealTabContent的位置到tabhost的上面就行了，此时RealTabContent的属性最好是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">android:id&#x3D;&quot;@+id&#x2F;RealTabContent&quot;</span><br><span class="line">android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">android:layout_height&#x3D;&quot;0dp&quot;</span><br><span class="line">android:layout_weight&#x3D;&quot;1&quot;</span><br></pre></td></tr></table></figure>
+<p>相关链接：<a target="_blank" rel="noopener" href="http://blog.csdn.net/wklbeta/article/details/11329207">《关于FragmentTabHost中TabWidget不能移到屏幕下面的Bug》</a></p>
+<p>然后，在主activity中使用findViewById()获取控件后，必须先使用使用控件对象的setup()方法之后才能用addTab()方法来添加标签，这点和TabHost一样，不过使用的具体方法有区别，FragmentTabHost应该用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//setup():</span></span><br><span class="line">setup(Context context, FragmentManager manager, <span class="keyword">int</span> containerId)</span><br><span class="line"><span class="comment">//参数解释：</span></span><br><span class="line"><span class="comment">//context：上下文</span></span><br><span class="line"><span class="comment">//manager：使用getSupportFragmentManager()</span></span><br><span class="line"><span class="comment">//containerId:容器id</span></span><br><span class="line"><span class="comment">//×××××××××××××××××××××××××××××××××××××××××</span></span><br><span class="line"><span class="comment">//add()</span></span><br><span class="line">addTab(TabSpec arg0, Class&lt;?&gt; arg1, Bundle arg2)</span><br><span class="line"><span class="comment">//参数解释：</span></span><br><span class="line"><span class="comment">//arg0：FragmentTabHost对象的newTabSpec()方法获取，并且需要使用获取到的TabSpec对象的setIndicator()方法设置标题属性</span></span><br><span class="line"><span class="comment">//arg1：具体的fragment类(不是new出来的)</span></span><br><span class="line"><span class="comment">//arg2：null即可</span></span><br></pre></td></tr></table></figure>
+<p>详细的FragmentHostTab与HostTab之间的区别请看：<a target="_blank" rel="noopener" href="http://blog.csdn.net/listener_ri/article/details/46935601">TabHost 和 FragmentTabHost </a></p>
+<h1 id="笼统的Fragment的使用："><a href="#笼统的Fragment的使用：" class="headerlink" title="笼统的Fragment的使用："></a>笼统的Fragment的使用：</h1><blockquote>
+<p>只是单纯的Fragment，不含：ListFragment，DialogFragment，FragmentTabHost等，不过基本一样</p>
+</blockquote>
+<h2 id="fragment继承类和其布局文件"><a href="#fragment继承类和其布局文件" class="headerlink" title="fragment继承类和其布局文件"></a>fragment继承类和其布局文件</h2><p>一个fragment由一个布局文件和一个继承了fragment的子类组成，由这个子类处理布局文件产生的的各种事件</p>
+<p>使用时需要让子类关联到其布局文件，关联方法：<br>1、重写fragment类的onCreateView()生命周期方法，<br>2、然后在onCreateView()中调用方法的传入参数inflater的inflate()方法并返回获得的View对象来加载对应的布局文件</p>
+<p>当fragment继承类和其布局文件关联后就可以显示到页面上了，显示方法：<br><font color=red>注意：并不是直接把fragment的布局文件或其中的控件显示到页面上</font><br>而是在主页面的布局文件中使用fragment标记，要注意标记的android:name属性，由这个属性的值关联到fragment继承类，进而通过fragment继承类加载到相应的fragment布局文件</p>
+<h2 id="具体显示到页面上有两种方式："><a href="#具体显示到页面上有两种方式：" class="headerlink" title="具体显示到页面上有两种方式："></a>具体显示到页面上有两种方式：</h2><h3 id="静态"><a href="#静态" class="headerlink" title="静态"></a>静态</h3><p>也就是直接把一个或多个fragment显示到页面上，这样做就相当与把一个fragment看作是一个普通控件(由一个或多个控件组成的控件)来添加到页面上<br>只不过这个“控件“(fragment)产生的事件由对应的继承了fragment的类处理，<br>而不是像平时那样在主页面中为某个控件findViewById然后添加监听器，这一步写在了继承了fragment的类中</p>
+<p>具体步骤：<br>1、fragment的布局文件，就像平时的布局文件一样<br>2、继承了fragment的类，重写fragment类的onCreateView()生命周期方法，<br>在onCreateView()中调用方法的传入参数inflater的inflate()方法并返回获得的View对象来加载对应的布局文件<br>3、主页面布局文件中依次写入需要显示的fragment标记，通过标记的name属性关联到继承了fragment的类</p>
+<h3 id="动态"><a href="#动态" class="headerlink" title="动态"></a>动态</h3><p>动态的意思就是可以在不切换activity的前提下，通过某个点击事件，在同一个区域显示不同的fragment<br>要实现这个效果，需要一个FragmentManager管理类和一个FragmentTransaction事务类，还需要一个承载不同fragment的容器，一般是在主页面中使用一个FrameLayout帧布局来充当这个容器，<br>也就是让一个个fragment在FrameLayout中显示，<font color=red>但不需要在FrameLayout内写fragment子标记</font><br>如何切换不同的fragment的方法由事务类操作实现</p>
+<p>具体步骤：<br>前两步与静态一样，写几个fragment的布局文件和类并一一对应的关联起来<br>3、在主页面的布局文件中，需要动态显示fragment的地方，放一个FrameLayout帧布局<br>4、在主页面的activity类中，通过getFragmentManager()方法获取到FragmentManager<br>并通过FragmentManager的beginTransaction()开始并获取到一个事务FragmentTransaction<br>5、通过获取到的FragmentTransaction对象的就可以控制fragment显示显示或隐藏到FrameLayout帧布局</p>
+<p>部分控制方法有：<br>add(),hide(),remove(),replace(),show()等，这些方法都需要fragment对象，也就是要显示的fragment<br>通过addToBackStack()方法可以将当前fragment添加到FragmentManager的回退栈，当点击返回键时可以恢复状态<br>当操作完成后还必须使用commit()方法提交，提交之后才会真正生效</p>
+<blockquote>
+<p>总结：<br>个人表示刚接触fragment，不容易懂或者说不容易记的地方是fragment的类和对应的布局文件的关联，以及如何显示到页面</p>
+</blockquote>
+<blockquote>
+<p>大概记忆顺序(中间的连接符可以理解为关联、对应)：<br><strong>静态：</strong><font color=red>一个</font>主页面布局文件中的<code>&lt;fragment&gt;</code>标记——<font color=red>一个</font>fragment的继承类——<font color=red>一个</font>fragment布局文件<br><strong>动态：</strong><font color=red>一个</font>主页面布局文件中的<code>&lt;FrameLayout&gt;</code>标记——<font color=red>承载多个</font>fragment的继承类——<font color=red>各自对应的多个</font>fragment布局文件</p>
+<p>虽然理解时的顺序是这样的，但实际写代码的时候的顺序确实反过来的</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/FragmentPagerAdapter/" rel="tag"># FragmentPagerAdapter</a>
+              <a href="/tags/fragment/" rel="tag"># fragment</a>
+              <a href="/tags/FragmentActivity/" rel="tag"># FragmentActivity</a>
+              <a href="/tags/ListFragment/" rel="tag"># ListFragment</a>
+              <a href="/tags/DialogFragment/" rel="tag"># DialogFragment</a>
+              <a href="/tags/FragmentTabHost/" rel="tag"># FragmentTabHost</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/04/ListView%E7%9A%84Iterm%E6%97%A0%E6%B3%95%E7%82%B9%E5%87%BB/" rel="prev" title="ListView的Iterm无法点击">
+      <i class="fa fa-chevron-left"></i> ListView的Iterm无法点击
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" rel="next" title="ImageSwitcher和TextSwitcher使用笔记">
+      ImageSwitcher和TextSwitcher使用笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#fragment%E4%BB%A5%E5%8F%8Aactivity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">fragment以及activity生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0fragment%E6%97%B6%E7%A2%B0%E5%88%B0%E7%9A%84%E5%87%A0%E4%B8%AA%E5%90%8D%E8%AF%8D%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">学习fragment时碰到的几个名词：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FragmentActivity%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">FragmentActivity：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FragmentPagerAdapter"><span class="nav-number">2.2.</span> <span class="nav-text">FragmentPagerAdapter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ListFragment"><span class="nav-number">2.3.</span> <span class="nav-text">ListFragment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DialogFragment"><span class="nav-number">2.4.</span> <span class="nav-text">DialogFragment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FragmentTabHost"><span class="nav-number">2.5.</span> <span class="nav-text">FragmentTabHost</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%BC%E7%BB%9F%E7%9A%84Fragment%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">笼统的Fragment的使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fragment%E7%BB%A7%E6%89%BF%E7%B1%BB%E5%92%8C%E5%85%B6%E5%B8%83%E5%B1%80%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">fragment继承类和其布局文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%98%BE%E7%A4%BA%E5%88%B0%E9%A1%B5%E9%9D%A2%E4%B8%8A%E6%9C%89%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">具体显示到页面上有两种方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81"><span class="nav-number">3.2.1.</span> <span class="nav-text">静态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81"><span class="nav-number">3.2.2.</span> <span class="nav-text">动态</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

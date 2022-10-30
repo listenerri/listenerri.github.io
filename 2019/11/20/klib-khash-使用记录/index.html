@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="klib 的项目地址：https:&#x2F;&#x2F;github.com&#x2F;attractivechaos&#x2F;klib&#x2F; klib 官方文档：http:&#x2F;&#x2F;attractivechaos.github.io&#x2F;klib&#x2F; 总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="klib-khash 使用记录">
+<meta property="og:url" content="https://listenerri.com/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="klib 的项目地址：https:&#x2F;&#x2F;github.com&#x2F;attractivechaos&#x2F;klib&#x2F; klib 官方文档：http:&#x2F;&#x2F;attractivechaos.github.io&#x2F;klib&#x2F; 总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-20T09:47:05.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="klib">
+<meta property="article:tag" content="khash">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>klib-khash 使用记录 | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          klib-khash 使用记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-20 17:47:05" itemprop="dateCreated datePublished" datetime="2019-11-20T17:47:05+08:00">2019-11-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="post-meta-item leancloud_visitors" data-flag-title="klib-khash 使用记录" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>klib 的项目地址：<a target="_blank" rel="noopener" href="https://github.com/attractivechaos/klib/">https://github.com/attractivechaos/klib/</a></p>
+<p>klib 官方文档：<a target="_blank" rel="noopener" href="http://attractivechaos.github.io/klib/">http://attractivechaos.github.io/klib/</a></p>
+<p>总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中遇到的问题和使用过程中需要注意的点。</p>
+<p>上面的 klib 官方文档链接中有不少入门的小例子，但也只是简单的使用方法，很多接口并没有提及，不过也有可能作者没有及时更新文档中的例子。</p>
+<p>在使用过程中要时刻谨记 khash 中给出的接口都是宏，这也意味着在调试的时候很不方便，如果搞不懂一个接口的意思或者想知道这个接口都做了什么，最好还是看一下 khash.h 中的实现。</p>
+<p>就我个人来说，最想提出要注意的一点是 <code>内存释放</code>，在过去一段时间内，我手上依赖 klib 的程序一直都有内存泄漏，不过我始终没有找到原因，直到昨天我才终于定位到是 khash 相关的数据没有被彻底释放。导致这一问题出现的重要原因也在于我接手这个项目时，khash 相关的释放代码已经大量存在了，以至于先入为主，令我以为正确的释放操作就应该就那样，昨天定位到这个问题后我仔细分析了一下 khash 的源码，发现一直以来程序里关于销毁释放内存的操作，一直都是错误的。下面只会使用正确的方法（至少目前我认为是正确的:))，以免误导了其他人。</p>
+<p>khash 里面提供了两种数据结构：hashmap 和 hashset，两种结构的使用方法大致是一样的，可以把 hashset 结构看作是没有值的 hashmap。</p>
+<h1 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明 hashmap 名字和键值的类型</span></span><br><span class="line"><span class="comment">// 这个宏还定义了大量的函数，不过一般都不直接使用那些函数，而是使用通用的接口宏</span></span><br><span class="line"><span class="comment">// 这里声明了一个键值对是 int:int 的 map 类型，注意这里只是声明了一个 类型</span></span><br><span class="line"><span class="comment">// 这个 map 类型的名字是 MAP_int2int，map 的名字后面会经常用到</span></span><br><span class="line"><span class="comment">// 此外，这个宏是对宏 KHASH_INIT 的一个简单封装</span></span><br><span class="line"><span class="comment">// 如果有复杂需求要使用 KHASH_INIT，则需要提供两个 hash 函数，我没有用到就不举例了</span></span><br><span class="line"><span class="comment">// hash 函数的实现可以参考 khash 里已有的来实现</span></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_int2int) *map_int2int = kh_init(MAP_int2int); <span class="comment">// 使用上面声明的 map 类型声明并初始化一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>; <span class="comment">// 访问键、值都需要使用 iter</span></span><br><span class="line">iter = kh_get(MAP_int2int, map_int2int, <span class="number">100</span>); <span class="comment">// 查看 100 这个键是否在 map 中存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_int2int)) &#123; <span class="comment">// 不存在</span></span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>; <span class="comment">// 将 100 这个键放入 map，ret 是一个额外的返回值，用来表示放入操作的结果</span></span><br><span class="line">    iter = kh_put(MAP_int2int, map_int2int, <span class="number">100</span>, &amp;ret); <span class="comment">// 放入成功后返回值 iter 即表示为 100 这个键在 map 中的位置</span></span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_int2int, iter) = <span class="number">200</span>; <span class="comment">// 使用 iter 来存值，值为 200</span></span><br><span class="line"><span class="comment">/* 至此 map 中就有了 100:200 这一个数据 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历 map</span></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_int2int); iter != kh_end(map_int2int); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_int2int, iter)) &#123; <span class="comment">// 这里的判断一定要有</span></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_int2int, iter));</span><br><span class="line">    do_something_bar(kh_val(map_int2int, iter));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* khash 里还提供了更便利的遍历宏：kh_foreach 和 kh_foreach_value */</span></span><br><span class="line"></span><br><span class="line">kh_del(MAP_int2int, map_int2int, iter); <span class="comment">// 当确定一个 iter 之后，可以移除一个键值对</span></span><br><span class="line">kh_clear(MAP_int2int, map_int2int); <span class="comment">// 清空这个 map 的所有数据</span></span><br><span class="line"></span><br><span class="line">do_something_zzz(map_int2int); <span class="comment">// 清空后的 map 还可以继续使用，比如继续往里面存值</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_int2int, map_int2int); <span class="comment">// 销毁 map，销毁之后就不能再使用了</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 与 demo1 基本相同，但多了释放内存的操作，不再使用过多注释了</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">// 一些结构体变量</span></span><br><span class="line">&#125; <span class="keyword">struct_a_t</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct_a_t</span> *<span class="title">create_struct_a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个创建示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_struct_a</span><span class="params">(<span class="keyword">struct_a_t</span> *)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_str</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *c_str)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例字符串的函数</span></span><br><span class="line">    <span class="built_in">free</span>(c_str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建测试数据</span></span><br><span class="line"><span class="keyword">char</span> *test_key = <span class="string">&quot;test_key_data&quot;</span>;</span><br><span class="line"><span class="keyword">struct_a_t</span> *test_value = create_struct_a();</span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2struct_p, <span class="keyword">struct_a_t</span> *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2struct_p) *map_str2struct_p = kh_init(MAP_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>;</span><br><span class="line">iter = kh_get(MAP_str2struct_p, map_str2struct_p, test_key);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_str2struct_p)) &#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    iter = kh_put(MAP_str2struct_p, map_str2struct_p, test_key, &amp;ret);</span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_str2struct_p, iter) = test_value;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_str2struct_p); iter != kh_end(map_str2struct_p); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_str2struct_p, iter)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_str2struct_p, iter));</span><br><span class="line">    do_something_bar(kh_val(map_str2struct_p, iter));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">kh_del(MAP_str2struct_p, map_str2struct_p, iter);</span><br><span class="line">kh_clear(MAP_str2struct_p, map_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要注意的是，map 或 set 中不论键还是值，只要类型是指针，那么指针指向的内存就需要使用者自行释放</span></span><br><span class="line">kh_free_vals(MAP_str2struct_p, map_str2struct_p, free_struct_a); <span class="comment">// 销毁值的宏</span></span><br><span class="line">kh_free(MAP_str2struct_p, map_str2struct_p, free_str); <span class="comment">// 销毁键的宏</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_str2struct_p, map_str2struct_p);</span><br></pre></td></tr></table></figure>
+
+<h1 id="demo3"><a href="#demo3" class="headerlink" title="demo3"></a>demo3</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 还可以嵌套使用</span></span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2map_p, <span class="keyword">khash_t</span>(MAP_int2int) *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2map_p) *map_str2map_p = kh_init(MAP_str2map_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/klib/" rel="tag"># klib</a>
+              <a href="/tags/khash/" rel="tag"># khash</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/" rel="prev" title="osx bash completion 补全">
+      <i class="fa fa-chevron-left"></i> osx bash completion 补全
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" rel="next" title="linux下为两个网卡调整路由规则">
+      linux下为两个网卡调整路由规则 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#demo1"><span class="nav-number">1.</span> <span class="nav-text">demo1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#demo2"><span class="nav-number">2.</span> <span class="nav-text">demo2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#demo3"><span class="nav-number">3.</span> <span class="nav-text">demo3</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

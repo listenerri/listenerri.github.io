@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="更新：可以使用rdnetto&#x2F;YCM-Generator插件来自动生成.ycm_extra_conf.py   当前操作系统: osx 10.13使用brew安装的qt5  qt安装目录在哪里不需要管, 因为使用brew更新qt后安装目录会随着版本变动而变动, 但不管哪个版本brew都会在&#x2F;usr&#x2F;local&#x2F;opt&#x2F;创建一个链接指向真正的目录, 我只安装了qt5, 所以上述目录下有两个链接,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim-ycm-qt自动补全问题">
+<meta property="og:url" content="https://listenerri.com/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="更新：可以使用rdnetto&#x2F;YCM-Generator插件来自动生成.ycm_extra_conf.py   当前操作系统: osx 10.13使用brew安装的qt5  qt安装目录在哪里不需要管, 因为使用brew更新qt后安装目录会随着版本变动而变动, 但不管哪个版本brew都会在&#x2F;usr&#x2F;local&#x2F;opt&#x2F;创建一个链接指向真正的目录, 我只安装了qt5, 所以上述目录下有两个链接,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-21T09:17:50.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="qt">
+<meta property="article:tag" content="vim">
+<meta property="article:tag" content="ycm">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>vim-ycm-qt自动补全问题 | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vim-ycm-qt自动补全问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-21 17:17:50" itemprop="dateCreated datePublished" datetime="2017-12-21T17:17:50+08:00">2017-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/" class="post-meta-item leancloud_visitors" data-flag-title="vim-ycm-qt自动补全问题" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>更新：<br>可以使用<a target="_blank" rel="noopener" href="https://github.com/rdnetto/YCM-Generator">rdnetto/YCM-Generator</a>插件来自动生成<code>.ycm_extra_conf.py</code></p>
+</blockquote>
+<blockquote>
+<p>当前操作系统: osx 10.13<br/><br>使用brew安装的qt5</p>
+</blockquote>
+<p>qt安装目录在哪里不需要管, 因为使用brew更新qt后安装目录会随着版本变动而变动, 但不管哪个版本brew都会在<code>/usr/local/opt/</code>创建一个链接指向真正的目录, 我只安装了qt5, 所以上述目录下有两个链接, qt和qt5, 这两个目录都指向qt5的安装目录, 任选一个路径用于下面的命令即可, 这里使用这个路径:<code>/usr/local/opt/qt</code>.</p>
+<p>执行一个命令来找到所有需要的库的路径:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find &#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F; -name &quot;Headers&quot; | grep &quot;framework\&#x2F;Headers&quot; &gt; ~&#x2F;headers</span><br></pre></td></tr></table></figure>
+<p>执行完毕后会在HOME下生成<code>headers</code>文件, 文件的内容就是qt5所有的库的路径(头文件), 接下来就是将这些路径添加到ycm的配置文件<code>.ycm_extra_conf.py</code>里了, 下面是我修改好的, 保存为:<code>.ycm_extra_conf.py</code>放到项目目录下(或上级目录), ycm就会自动读取了.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br></pre></td><td class="code"><pre><span class="line">from distutils.sysconfig import get_python_inc</span><br><span class="line">import platform</span><br><span class="line">import os</span><br><span class="line">import ycm_core</span><br><span class="line"></span><br><span class="line"># These are the compilation flags that will be used in case there&#39;s no</span><br><span class="line"># compilation database set (by default, one is not set).</span><br><span class="line"># CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.</span><br><span class="line">flags &#x3D; [</span><br><span class="line">&#39;-Wall&#39;,</span><br><span class="line">&#39;-Wextra&#39;,</span><br><span class="line">&#39;-Werror&#39;,</span><br><span class="line">&#39;-Wno-long-long&#39;,</span><br><span class="line">&#39;-Wno-variadic-macros&#39;,</span><br><span class="line">&#39;-fexceptions&#39;,</span><br><span class="line">&#39;-DNDEBUG&#39;,</span><br><span class="line"># You 100% do NOT need -DUSE_CLANG_COMPLETER in your flags; only the YCM</span><br><span class="line"># source code needs it.</span><br><span class="line">&#39;-DUSE_CLANG_COMPLETER&#39;,</span><br><span class="line"># THIS IS IMPORTANT! Without the &#39;-x&#39; flag, Clang won&#39;t know which language to</span><br><span class="line"># use when compiling headers. So it will guess. Badly. So C++ headers will be</span><br><span class="line"># compiled as C headers. You don&#39;t want that so ALWAYS specify the &#39;-x&#39; flag.</span><br><span class="line"># For a C project, you would set this to &#39;c&#39; instead of &#39;c++&#39;.</span><br><span class="line">&#39;-x&#39;,</span><br><span class="line">&#39;c++&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;BoostParts&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">get_python_inc(),</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;llvm&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;..&#x2F;llvm&#x2F;tools&#x2F;clang&#x2F;include&#39;,</span><br><span class="line">&#39;-I&#39;,</span><br><span class="line">&#39;.&#39;,</span><br><span class="line">&#39;-I&#39;,</span><br><span class="line">&#39;.&#x2F;ClangCompleter&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;gtest&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;gtest&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;tests&#x2F;gmock&#x2F;include&#39;,</span><br><span class="line">&#39;-isystem&#39;,</span><br><span class="line">&#39;.&#x2F;benchmarks&#x2F;benchmark&#x2F;include&#39;,</span><br><span class="line"># for qt5 which installed by brew in mac</span><br><span class="line">&#39;-I&#39;, &#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;include&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DAnimation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DInput.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DLogic.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuick.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickAnimation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickInput.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickRender.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DQuickScene2D.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;Qt3DRender.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtBluetooth.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtCharts.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtConcurrent.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDataVisualization.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDBus.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDesigner.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtDesignerComponents.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtGamepad.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtGui.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtHelp.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtLocation.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMacExtras.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimedia.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimediaQuick_p.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtMultimediaWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNetwork.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNetworkAuth.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtNfc.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtOpenGL.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPositioning.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPrintSupport.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtPurchasing.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuick.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickControls2.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickParticles.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickTemplates2.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickTest.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtQuickWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtRemoteObjects.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtRepParser.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScript.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScriptTools.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtScxml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSensors.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSerialBus.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSerialPort.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSql.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtSvg.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtTest.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtTextToSpeech.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtUiPlugin.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebChannel.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngine.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngineCore.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebEngineWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebSockets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWebView.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtWidgets.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtXml.framework&#x2F;Headers&#39;,</span><br><span class="line">&#39;-I&#39;,&#39;&#x2F;usr&#x2F;local&#x2F;opt&#x2F;qt&#x2F;lib&#x2F;QtXmlPatterns.framework&#x2F;Headers&#39;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"># Clang automatically sets the &#39;-std&#x3D;&#39; flag to &#39;c++14&#39; for MSVC 2015 or later,</span><br><span class="line"># which is required for compiling the standard library, and to &#39;c++11&#39; for older</span><br><span class="line"># versions.</span><br><span class="line">if platform.system() !&#x3D; &#39;Windows&#39;:</span><br><span class="line">  flags.append( &#39;-std&#x3D;c++11&#39; )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Set this to the absolute path to the folder (NOT the file!) containing the</span><br><span class="line"># compile_commands.json file to use that instead of &#39;flags&#39;. See here for</span><br><span class="line"># more details: http:&#x2F;&#x2F;clang.llvm.org&#x2F;docs&#x2F;JSONCompilationDatabase.html</span><br><span class="line">#</span><br><span class="line"># You can get CMake to generate this file for you by adding:</span><br><span class="line">#   set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )</span><br><span class="line"># to your CMakeLists.txt file.</span><br><span class="line">#</span><br><span class="line"># Most projects will NOT need to set this to anything; you can just change the</span><br><span class="line"># &#39;flags&#39; list of compilation flags. Notice that YCM itself uses that approach.</span><br><span class="line">compilation_database_folder &#x3D; &#39;&#39;</span><br><span class="line"></span><br><span class="line">if os.path.exists( compilation_database_folder ):</span><br><span class="line">  database &#x3D; ycm_core.CompilationDatabase( compilation_database_folder )</span><br><span class="line">else:</span><br><span class="line">  database &#x3D; None</span><br><span class="line"></span><br><span class="line">SOURCE_EXTENSIONS &#x3D; [ &#39;.cpp&#39;, &#39;.cxx&#39;, &#39;.cc&#39;, &#39;.c&#39;, &#39;.m&#39;, &#39;.mm&#39; ]</span><br><span class="line"></span><br><span class="line">def DirectoryOfThisScript():</span><br><span class="line">  return os.path.dirname( os.path.abspath( __file__ ) )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def IsHeaderFile( filename ):</span><br><span class="line">  extension &#x3D; os.path.splitext( filename )[ 1 ]</span><br><span class="line">  return extension in [ &#39;.h&#39;, &#39;.hxx&#39;, &#39;.hpp&#39;, &#39;.hh&#39; ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def GetCompilationInfoForFile( filename ):</span><br><span class="line">  # The compilation_commands.json file generated by CMake does not have entries</span><br><span class="line">  # for header files. So we do our best by asking the db for flags for a</span><br><span class="line">  # corresponding source file, if any. If one exists, the flags for that file</span><br><span class="line">  # should be good enough.</span><br><span class="line">  if IsHeaderFile( filename ):</span><br><span class="line">    basename &#x3D; os.path.splitext( filename )[ 0 ]</span><br><span class="line">    for extension in SOURCE_EXTENSIONS:</span><br><span class="line">      replacement_file &#x3D; basename + extension</span><br><span class="line">      if os.path.exists( replacement_file ):</span><br><span class="line">        compilation_info &#x3D; database.GetCompilationInfoForFile(</span><br><span class="line">          replacement_file )</span><br><span class="line">        if compilation_info.compiler_flags_:</span><br><span class="line">          return compilation_info</span><br><span class="line">    return None</span><br><span class="line">  return database.GetCompilationInfoForFile( filename )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def FlagsForFile( filename, **kwargs ):</span><br><span class="line">  if not database:</span><br><span class="line">    return &#123;</span><br><span class="line">      &#39;flags&#39;: flags,</span><br><span class="line">      &#39;include_paths_relative_to_dir&#39;: DirectoryOfThisScript()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  compilation_info &#x3D; GetCompilationInfoForFile( filename )</span><br><span class="line">  if not compilation_info:</span><br><span class="line">    return None</span><br><span class="line"></span><br><span class="line">  # Bear in mind that compilation_info.compiler_flags_ does NOT return a</span><br><span class="line">  # python list, but a &quot;list-like&quot; StringVec object.</span><br><span class="line">  final_flags &#x3D; list( compilation_info.compiler_flags_ )</span><br><span class="line"></span><br><span class="line">  # NOTE: This is just for YouCompleteMe; it&#39;s highly likely that your project</span><br><span class="line">  # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR</span><br><span class="line">  # ycm_extra_conf IF YOU&#39;RE NOT 100% SURE YOU NEED IT.</span><br><span class="line">  try:</span><br><span class="line">    final_flags.remove( &#39;-stdlib&#x3D;libc++&#39; )</span><br><span class="line">  except ValueError:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    &#39;flags&#39;: final_flags,</span><br><span class="line">    &#39;include_paths_relative_to_dir&#39;: compilation_info.compiler_working_dir_</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/qt/" rel="tag"># qt</a>
+              <a href="/tags/vim/" rel="tag"># vim</a>
+              <a href="/tags/ycm/" rel="tag"># ycm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/" rel="prev" title="增大osx启动分区大小">
+      <i class="fa fa-chevron-left"></i> 增大osx启动分区大小
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/06/the-menu-is-gone-in-qt-on-mac-osx/" rel="next" title="the menu is gone in qt on mac osx">
+      the menu is gone in qt on mac osx <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

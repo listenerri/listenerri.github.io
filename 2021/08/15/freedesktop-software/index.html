@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="与 freedesktop.org 相关的软件下面是一个与 freedesktop.org 相关的不完全软件列表。 你可以去我们的 Gitlab 服务查看和下载它们的代码、Bugs、提交合并请求。 freedesktop.org 本身并不每天运行这些项目：我们为自己运行项目的社区提供托管和基础设施。 All projects hosted by us are available under ope">
+<meta property="og:type" content="article">
+<meta property="og:title" content="freedesktop software">
+<meta property="og:url" content="https://listenerri.com/2021/08/15/freedesktop-software/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="与 freedesktop.org 相关的软件下面是一个与 freedesktop.org 相关的不完全软件列表。 你可以去我们的 Gitlab 服务查看和下载它们的代码、Bugs、提交合并请求。 freedesktop.org 本身并不每天运行这些项目：我们为自己运行项目的社区提供托管和基础设施。 All projects hosted by us are available under ope">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-15T08:27:00.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="freedesktop">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2021/08/15/freedesktop-software/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>freedesktop software | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2021/08/15/freedesktop-software/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          freedesktop software
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-15 16:27:00" itemprop="dateCreated datePublished" datetime="2021-08-15T16:27:00+08:00">2021-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/08/15/freedesktop-software/" class="post-meta-item leancloud_visitors" data-flag-title="freedesktop software" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/08/15/freedesktop-software/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/15/freedesktop-software/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="与-freedesktop-org-相关的软件"><a href="#与-freedesktop-org-相关的软件" class="headerlink" title="与 freedesktop.org 相关的软件"></a>与 freedesktop.org 相关的软件</h2><p>下面是一个与 freedesktop.org 相关的不完全软件列表。</p>
+<p>你可以去我们的 <a target="_blank" rel="noopener" href="https://gitlab.freedesktop.org/">Gitlab 服务</a>查看和下载它们的代码、Bugs、提交合并请求。</p>
+<p>freedesktop.org 本身并不每天运行这些项目：我们为自己运行项目的社区提供托管和基础设施。</p>
+<p>All projects hosted by us are available under open-source licenses under equitable terms to all parties. These projects do not require Contributor License Agreements which assign more rights to one party than another. They may require an assertion like the Developer’s Certificate of Origin which is simply a more formal document to state that you are leally permitted to contribute under the project’s license; you do not, however, need to assign anyone rights that you do not yourself receive to others’ contributions.</p>
+<h2 id="桌面中间件和框架"><a href="#桌面中间件和框架" class="headerlink" title="桌面中间件和框架"></a>桌面中间件和框架</h2><p>这些项目提供了桌面的基础服务。</p>
+<ul>
+<li>AccountsService 提供本地账户的信息。</li>
+<li>D-Bus 是一个详细系统，提供了进程间和服务间通讯。</li>
+<li>GeoClue 提供地理位置信息。</li>
+<li>PolicyKit 是一个允许非特权应用配置和请求特权服务和接口的工具。</li>
+<li>NetworkManager 允许应用发现，配置，连接有线和无线网络。</li>
+<li>realmd 允许客户端发现，认证和加入网络（如 Active Directory）。</li>
+<li>upower 提供了关于电源设备，如电池和充电状态的信息。</li>
+<li>Zeitgeist 是一个桌面事件日志框架。</li>
+</ul>
+<h2 id="桌面规范和工具"><a href="#桌面规范和工具" class="headerlink" title="桌面规范和工具"></a>桌面规范和工具</h2><p>这些规范和工具定义了跨桌面标准和互通性。</p>
+<ul>
+<li>desktop-file-utils 提供了一些命令行工具用来处理 .desktop 和 .menu 文件。</li>
+<li>icon-theme 包含了一些关于图标主题的标准，还引用了一个叫 hicolor 的默认图标主题。</li>
+<li>pyxdg 是一个访问 freedesktop.org 标准的 python 库。</li>
+<li>shared-mime-info 是一个包含大量常见 MIME 类型的包，通过将现有的 KDE 和 GNOME 数据库转换为新格式并将它们合并在一起创建，以及基于 share-mime-info 规范的更新数据库的软件。</li>
+<li>startup-notification 是启动通知的示例实现（在应用程序完成启动时告诉桌面环境）。</li>
+<li>xdg-utils 是一套命令行实用程序，用于简化与自由桌面的整合。它具有创建菜单、打开文件、设置 mime 类型等简单功能。</li>
+<li>xdg-user-dirs 是一个处理用户 home 目录下一些标准目录的工具。</li>
+</ul>
+<h2 id="显卡驱动，窗口系统和支持库"><a href="#显卡驱动，窗口系统和支持库" class="headerlink" title="显卡驱动，窗口系统和支持库"></a>显卡驱动，窗口系统和支持库</h2><p>这些项目允许应用程序在屏幕上渲染图形，包括对 GPU 加速的支持。</p>
+<ul>
+<li>Beignet 是针对老式英特尔 GPU 的 OpenCL 实现，现在被 NEO 驱动所取代。</li>
+<li>Cairo 是一个具有跨设备输出支持的矢量图形库。</li>
+<li>DRM 是 Linux 内核图形子系统，在 dri-devel 列表中开发。</li>
+<li>drm_hwcomposer 是在 DRM/KMS 设备上运行的 Android HWComposer 的后端。</li>
+<li>Mesa 提供了 OpenGL、OpenGL ES、Vulkan、EGL 和 GLX 渲染 API 的硬件加速和软件实现。</li>
+<li>Monado 是用于虚拟和增强现实环境和设备的 OpenXR API 的实现。</li>
+<li>Nouveau 是 NVIDIA GPU 的逆向工程驱动程序。<ul>
+<li>Piglit 是用于 OpenGL 和 OpenGL ES 实现的测试套件。</li>
+<li>VirGL 为 VM 内的虚拟客户提供 OpenGL 和 OpenGL ES 加速。</li>
+</ul>
+</li>
+<li>Pixman 是一个低级的纯软件 2D 像素操作和合成库。</li>
+<li>Plymouth 在开机启动期间提供启动画面和进度更新。</li>
+<li>Wayland 是一个被各种桌面使用的窗口系统。</li>
+<li>X.Org 是 X Window 系统的一个实现，称为 X11。<ul>
+<li>XCB 为 X11 协议提供了一个低级客户端库。</li>
+<li>Xephyr 是一个嵌套的 X11 服务器，主要用于测试。</li>
+<li>xrestop 是一个 X Server 资源使用监视器像 “top” 命令一样，它使用 XRes 扩展。</li>
+<li>xsettings 提供了配置中心的功能。</li>
+<li>X Testing 提供有关用于测试 X 服务器和客户端的各种软件的信息。</li>
+<li>xwininfo 是一个窗口信息实用程序，适用于应用程序、工具包和窗口管理器的开发人员。</li>
+</ul>
+</li>
+</ul>
+<h2 id="输入、国际化-i18n-和字体渲染"><a href="#输入、国际化-i18n-和字体渲染" class="headerlink" title="输入、国际化 (i18n) 和字体渲染"></a>输入、国际化 (i18n) 和字体渲染</h2><p>这些项目为键盘、鼠标、手写板或其他输入和字体渲染提供了支持。</p>
+<ul>
+<li>fontconfig 是一个用于配置和自定义字体访问的库。<ul>
+<li>Xft 是一个用于客户端字体渲染的库。</li>
+</ul>
+</li>
+<li>libinput 是输入设备的高级包装库，提供对键盘、鼠标、触摸板、触摸屏和手写板的访问。<ul>
+<li>libevdev 是输入设备的高级包装库，提供对键盘、指针、触摸板、触摸屏和平板设备的访问。</li>
+</ul>
+</li>
+<li>uchardet 是一个编码检测器库，它从未知字符编码文件中提取字节序列并尝试确定文本的编码。</li>
+<li>UTF-8 是一个记录和宣传开源项目使用 UTF-8 编码的项目。</li>
+<li>xkeyboard-config 是 XKB 键盘布局的存储库，用于大多数桌面和窗口系统。</li>
+</ul>
+<h2 id="其他项目"><a href="#其他项目" class="headerlink" title="其他项目"></a>其他项目</h2><ul>
+<li>Bustle 记录并显示 D-Bus 流量的序列图。</li>
+<li>CppUnit 是著名的单元测试 JUnit 框架的 C++ 移植。</li>
+<li>kmscon 是一个基于 KMS/DRM 的系统控制台。</li>
+<li>libbsd 是一个提供 BSD 系统实用功能的库。</li>
+<li>pkg-config 是一个用于管理，开发库的编译/链接标志的系统，适用于大多数构建系统。</li>
+<li>Slirp 是一种通用 TCP-IP 仿真器，被虚拟机管理程序广泛用于提供虚拟网络服务。</li>
+<li>SPICE 提供对虚拟访客的远程访问。</li>
+<li>SyncEvolution 在设备和服务之间同步日历和联系人信息。</li>
+</ul>
+<h2 id="多媒体和图片支持"><a href="#多媒体和图片支持" class="headerlink" title="多媒体和图片支持"></a>多媒体和图片支持</h2><p>这些项目为音频、图像和视频的捕获、回放和流式传输提供支持。</p>
+<ul>
+<li>Farstream 允许基于网络远程传输多媒体流。</li>
+<li>GStreamer 是一个流媒体框架。</li>
+<li>libnice 在 NAT 之后使用 ICE 协议在各方之间建立对等连接。</li>
+<li>libopenraw 是一个用于 Camera RAW 文件解码和处理的开源库。</li>
+<li>libspectre 是 PostScript 渲染库。</li>
+<li>media-player-info 描述了外部媒体播放器设备。</li>
+<li>Poppler 是一个 PDF 渲染库。</li>
+<li>PulseAudio 是一个 sound 系统和API。</li>
+<li>VDPAU 提供视频解码加速和高质量视频呈现。</li>
+</ul>
+<h2 id="其他硬件支持"><a href="#其他硬件支持" class="headerlink" title="其他硬件支持"></a>其他硬件支持</h2><p>这些项目为硬件设备提供了高级支持。</p>
+<ul>
+<li>cups-pk-helper 供细粒度的 PolicyKit 身份验证集成，以允许用户配置 CUPS 打印服务。</li>
+<li>fprint 为各种指纹读取器提供硬件支持。</li>
+<li>ModemManager 是一个 DBus 系统服务，它为与移动宽带调制解调器的通信提供统一的高级 API。<ul>
+<li>libmbim 是一个较低级别的库，用于管理 MBIM-powered 驱动的移动宽带调制解调器。</li>
+<li>libqmi 是一个较低级别的库，用于管理 QMI-powered 驱动的移动宽带调制解调器。</li>
+</ul>
+</li>
+</ul>
+<h2 id="其他地方托管的项目"><a href="#其他地方托管的项目" class="headerlink" title="其他地方托管的项目"></a>其他地方托管的项目</h2><p>这些项目以前由 freedesktop.org 托管，但已转移到其他地方。</p>
+<ul>
+<li>AppStream 是几个主要的GNU/Linux提供者之间的协议（如红帽公司、Canonical公司、SUSE、Debian、Mandriva等），为了要创造Linux上的共同的软件安装程序以及一个统一的软件安装图形用户界面，还有分享元数据。</li>
+<li>at-spi2 是一个为应用程序提供可访问性工具信息的框架。</li>
+<li>Avahi 是一个多播 dns 网络服务发现库。</li>
+<li>Clipart 是一个开源剪贴画存储库。</li>
+<li>Cogl 是 OpenGL 和 OpenGL ES 之上的抽象</li>
+<li>colord 是一个颜色管理服务。</li>
+<li>epoxy 处理 OpenGL 函数指针。</li>
+<li>Flatpak 安装、管理和运行沙盒桌面应用程序。</li>
+<li>FreeType 是一个 TrueType 字体渲染库。</li>
+<li>Galago 是一个桌面状态框架，旨在在程序之间传输状态信息。</li>
+<li>FriBidi 是一个实现 Unicode Bidirectional Algorithm（双向算法）并处理了阿拉伯语的库。</li>
+<li>HarfBuzz 是通用的 OpenType 布局引擎，由 Pango、Qt 和可能的其他公司共享。</li>
+<li>intltool 提供了用于翻译 XML 文件的脚本。</li>
+<li>LDTP 是一个 Linux 桌面测试框架。</li>
+<li>libburn 是一个开源库套件，用于读取、制作和写入光盘。</li>
+<li>libminidump 是一种用于核心转储的压缩格式。</li>
+<li>LibreOffice 是一个跨桌面的办公套件。</li>
+<li>OHM 是温度和风扇传感器的监视器。</li>
+<li>OpenRaster 是一种用于分层光栅图像的文件格式。</li>
+<li>p11-glue 是一个 PKCS#11 支持库。</li>
+<li>PackageKit 允许用户发现和安装软件包（跨发行版）。</li>
+<li>SCIM (Smart Common Input Method) 是一个开发输入法服务的平台。</li>
+<li>systemd 是一个完整的系统管理器，包括服务和守护进程管理、日志记录、会话控制等。</li>
+<li>Telepathy 是一种实时通信框架（在线状态、消息传递、voice/video-over-IP等）。</li>
+<li>Tracker 是一个文件系统索引器、元数据存储系统和搜索工具</li>
+<li>udisks 提供一个守护程序、工具和库来访问和操作磁盘、存储设备和技术。</li>
+<li>uim 是一种支持多种语言的输入法，重点是中日韩。</li>
+<li>VA-API 为所有视频格式提供视频加速 API。</li>
+<li>xiccd 是一个X11颜色管理守护程序。</li>
+<li>XQuartz 是一个在 Apple MacOS 上运行的X11服务器。</li>
+</ul>
+<h2 id="不活跃的项目"><a href="#不活跃的项目" class="headerlink" title="不活跃的项目"></a>不活跃的项目</h2><p>这些项目以前托管在这里，但不再维护的。代码可能无法使用，并且可能无法为这些项目提供修复或更改。</p>
+<ul>
+<li>APOC 提供了配置和策略控制。</li>
+<li>CCSS 提供 CSS 解析.</li>
+<li>CJK-Unifonts 提供了CJK Unicode TrueType字体，包括Minnan和Hakka语言。</li>
+<li>ConsoleKit 提供了登录和会话管理，现在已被 Logind 替换。</li>
+<li>Desktop VFS 是针对GUI应用程序的虚拟文件系统。</li>
+<li>dolt 是 libtool（与 autoconf automake 一起使用的工具） 的包装器，提高其性能，现在是多余的。</li>
+<li>Enchant 是一个跨桌面拼写检查工具。</li>
+<li>Eventuality was an “application automation meets cron” type D-Bus based framework for creating a means to schedule arbitrary “actions” performed by conforming apps.</li>
+<li>glitz 是 OpenGL 2D 图形库，包括 GPU 加速的 Cairo 后端。</li>
+<li>GTK-Qt Theme Engine 旨在统一 GTK 和 Qt 的主题。</li>
+<li>Gypsy 是一个守护进程，提供对 GPS 设备的访问。</li>
+<li>HAL was an all-encompassing hardware abstraction layer.</li>
+<li>Hieroglyph 是一个 PostScript 渲染库。</li>
+<li>icon-slicer 是生成图标主题和 libXcursor 游标主题的实用程序。</li>
+<li>immodule for Qt 是 Qt 的模块化，可扩展的输入法子系统。</li>
+<li>libdlo 是一个用于 DisplayLink USB 图形适配器的用户空间库。</li>
+<li>liblazy 封装了一些常见的D-Bus提供了常见的 D-Bus 方法。</li>
+<li>liboil 是一个库，为了简化 MMX/SSE/Altivec 扩展的开发和代码维护。</li>
+<li>libxklavier 是一个工具库，X keyboard 相关的。</li>
+<li>Loudmouth 是一个 XMPP 工具库。</li>
+<li>OpenSync 是一个在设备之间提供标准化数据同步的项目。</li>
+<li>Papyon 支持 MSN Messenger 协议。</li>
+<li>pm-utils 发行版无关的一组管理睡眠和唤醒的脚本。</li>
+<li>Razor 试图替换基于 RPM 的系统的 yum 包管理器。</li>
+<li>Scratchbox2 是一个交叉汇编环境。</li>
+<li>shared-desktop-ontologies was an attempt to define standard NEPOMUK ontologies for the semantic desktop.</li>
+<li>Shave 使 AutoTools 构建输出不那么冗余。</li>
+<li>swfdec 为 Adobe Flash playback 提供支持。</li>
+<li>system-tools-backends 尝试提供发行版无关的系统配置工具。</li>
+<li>Tango 提供常见的图标和主题设计指南。</li>
+<li>unicode-translation 旨在将 Unicode 字符名称和其他数据翻译成多种语言。</li>
+<li>waimea 旨在成为 X 窗系统的标准窗口管理器，使用 Cairo 图形库进行所有渲染。</li>
+<li>wmctrl 是一个与兼容 EWMH 的窗口管理器交互的命令行工具。</li>
+<li>xfullscreen 是一个对支持全屏模式的应用程序或窗口管理器非常有用的模块。</li>
+<li>Xoo 是嵌套 X 服务器的包装器。</li>
+<li>xprint 试图为 X11 提供打印服务。</li>
+<li>xresponse 是一个测量鼠标点击事件响应时间的工具。</li>
+<li>Ytstenut 是一种允许在多个设备之间同步用户活动的协议。</li>
+</ul>
+<p>翻译自：<a target="_blank" rel="noopener" href="https://www.freedesktop.org/wiki/Software/">https://www.freedesktop.org/wiki/Software/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/freedesktop/" rel="tag"># freedesktop</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/15/bash-parameter-expansion-%E5%8F%82%E6%95%B0%E6%89%A9%E5%B1%95/" rel="prev" title="bash parameter expansion 参数扩展">
+      <i class="fa fa-chevron-left"></i> bash parameter expansion 参数扩展
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/30/%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%89%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E9%9D%9E%E5%8F%B6%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E5%BA%8F%E5%8F%B7%E6%98%AF-n-2-1-%E7%9A%84%E5%8E%9F%E5%9B%A0/" rel="next" title="堆排序（完全二叉树）最后一个非叶子节点（父节点）的序号是 n/2-1 的原因">
+      堆排序（完全二叉树）最后一个非叶子节点（父节点）的序号是 n/2-1 的原因 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E-freedesktop-org-%E7%9B%B8%E5%85%B3%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">与 freedesktop.org 相关的软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%8C%E9%9D%A2%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%92%8C%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">桌面中间件和框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%8C%E9%9D%A2%E8%A7%84%E8%8C%83%E5%92%8C%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">桌面规范和工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%EF%BC%8C%E7%AA%97%E5%8F%A3%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%94%AF%E6%8C%81%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">显卡驱动，窗口系统和支持库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E3%80%81%E5%9B%BD%E9%99%85%E5%8C%96-i18n-%E5%92%8C%E5%AD%97%E4%BD%93%E6%B8%B2%E6%9F%93"><span class="nav-number">5.</span> <span class="nav-text">输入、国际化 (i18n) 和字体渲染</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%A1%B9%E7%9B%AE"><span class="nav-number">6.</span> <span class="nav-text">其他项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%AA%92%E4%BD%93%E5%92%8C%E5%9B%BE%E7%89%87%E6%94%AF%E6%8C%81"><span class="nav-number">7.</span> <span class="nav-text">多媒体和图片支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%A1%AC%E4%BB%B6%E6%94%AF%E6%8C%81"><span class="nav-number">8.</span> <span class="nav-text">其他硬件支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%9C%B0%E6%96%B9%E6%89%98%E7%AE%A1%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="nav-number">9.</span> <span class="nav-text">其他地方托管的项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%B4%BB%E8%B7%83%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="nav-number">10.</span> <span class="nav-text">不活跃的项目</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

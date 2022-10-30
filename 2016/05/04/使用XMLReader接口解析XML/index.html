@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何获取XMLReader接口从JDK文档来看，有两种方法： 使用SAXParserFactory+SAXParser[以下简称a方法]1XMLReader aaa&#x3D;SAXParserFactory.newInstance().newSAXParser().getXMLReader();  使用XMLReaderFactory[以下简称b方法]1XMLReader bbb&#x3D;XMLReaderFac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用XMLReader接口解析XML">
+<meta property="og:url" content="https://listenerri.com/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="如何获取XMLReader接口从JDK文档来看，有两种方法： 使用SAXParserFactory+SAXParser[以下简称a方法]1XMLReader aaa&#x3D;SAXParserFactory.newInstance().newSAXParser().getXMLReader();  使用XMLReaderFactory[以下简称b方法]1XMLReader bbb&#x3D;XMLReaderFac">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-05-04T09:06:16.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="xmlReader">
+<meta property="article:tag" content="xml">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用XMLReader接口解析XML | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用XMLReader接口解析XML
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 17:06:16" itemprop="dateCreated datePublished" datetime="2016-05-04T17:06:16+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/" class="post-meta-item leancloud_visitors" data-flag-title="使用XMLReader接口解析XML" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何获取XMLReader接口"><a href="#如何获取XMLReader接口" class="headerlink" title="如何获取XMLReader接口"></a>如何获取XMLReader接口</h1><p>从JDK文档来看，有两种方法：</p>
+<h2 id="使用SAXParserFactory-SAXParser-以下简称a方法"><a href="#使用SAXParserFactory-SAXParser-以下简称a方法" class="headerlink" title="使用SAXParserFactory+SAXParser[以下简称a方法]"></a>使用SAXParserFactory+SAXParser<code>[以下简称a方法]</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLReader aaa=SAXParserFactory.newInstance().newSAXParser().getXMLReader();</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用XMLReaderFactory-以下简称b方法"><a href="#使用XMLReaderFactory-以下简称b方法" class="headerlink" title="使用XMLReaderFactory[以下简称b方法]"></a>使用XMLReaderFactory<code>[以下简称b方法]</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLReader bbb=XMLReaderFactory.createXMLReader();</span><br></pre></td></tr></table></figure>
+
+<h1 id="两种方法不同之处"><a href="#两种方法不同之处" class="headerlink" title="两种方法不同之处"></a>两种方法不同之处</h1><p>在JDK文档a方法中SAXParser类的getXMLReader()方法的注释:</p>
+<blockquote>
+<p>返回由<font color=red><strong>此类的实现封装</strong></font>的 XMLReader。</p>
+</blockquote>
+<p>SAXParser类又是由SAXParserFactory的newSAXParser()方法创建而来，其注释：</p>
+<blockquote>
+<p>使用当前配置的工厂参数创建 SAXParser 的一个新实例。</p>
+</blockquote>
+<p>而在JDK文档中b方法使用XMLReaderFactory类的createXMLReader()方法有这样一段注释：</p>
+<blockquote>
+<p>尝试从<font color=red><strong>系统默认值</strong></font>创建一个 XMLReader。</p>
+</blockquote>
+<p>可以发现，想要获取XMLReader，是需要环境支持的(能力有限，无法分析出具体是哪些环境，相询JDK文档的XMLReaderFactory类)，<br>在a方法中则是从由SAXParserFactory+SAXParser设置好的环境中创建XMLReader，其中主要环境设置工作由SAXParserFactory来做。<br>而在b方法中会直接使用系统默认的环境，但这个环境却不一定可以正常使用，除非你手动设置其创建环境(笔者表示还不会)</p>
+<h1 id="SAXParserFactory和SAXParser两个抽象类主要作用"><a href="#SAXParserFactory和SAXParser两个抽象类主要作用" class="headerlink" title="SAXParserFactory和SAXParser两个抽象类主要作用"></a>SAXParserFactory和SAXParser两个抽象类主要作用</h1><p>a方法中的SAXParserFactory在笔者看来，起主要作用应该就是根据当前系统环境，<br>设置一个可以正常创建出XMLReader解析器的环境，并提供创建SAXParser类对象的方法。<br>SAXParser的主要作用应该是根据SAXParserFactory工厂类提供的环境来创建XMLReader解析器，<br>并且它还有一些重要的作用：</p>
+<blockquote>
+<p>获取SAXParser类的实例之后，将可以从<font color=red><strong>各种输入源</strong></font>解析 XML。这些输入源为 InputStream、File、URL 和 SAX InputSource。<br>它包含一系列的parse(<em>,</em>)方法<br>也即是说SAXParser还定义了将各种源解析为XML并传递给继承自DefaultHandler或HandlerBase(不推荐使用)的对象，以提供给XMLReader解析器来解析</p>
+</blockquote>
+<p>那么如何获取这两个类呢<br>上文提到这两个类都是抽象类，虽然这两个类都有构造方法，但却都是受保护的protected修饰的<br>并且抽象类也都是无法直接实例化的，也就是无法通过new关键字来获取类的对象</p>
+<p>其突破口就在SAXParserFactory抽象类中的，这个类定义了两个静态方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">newInstance() </span><br><span class="line">newInstance(String factoryClassName, ClassLoader classLoader) </span><br></pre></td></tr></table></figure>
+<p>从名字就可以看出来是用来获取SAXParserFactory的实例化对象的，<br>有了SAXParserFactory的实例化对象就可以设置一些环境，或让其自动设置，<br>然后就可以用它来创建SAXParser抽象类的对象，使用newSAXParser()方法即可</p>
+<blockquote>
+<p>newSAXParser()这个方法不是静态方法，所以只能先通过newInstance()静态方法来实例化出SAXParserFactory，<br>然后才能使用SAXParserFactory的非静态方法newSAXParser()来获得SAXParser的对象，因为它们都是抽象类！</p>
+</blockquote>
+<p>获得了SAXParser的对象后就可以使用其getXMLReader()方法来获取XMLReader解析器了</p>
+<blockquote>
+<p>另外，XMLReader虽然名为解析器，但具体的解析工作却不是由它来做的，它只是一个框架，<br>具体的解析工作由继承自DefaultHandler或HandlerBase(不推荐使用)的对象来做:<br>XMLReader的setContentHandler(DefaultHandler的子类的对象);<br>DefaultHandler类可用作 SAX2 应用程序的有用基类：<br>它提供四个核心 SAX2 处理程序类中的所有回调的默认实现,也就是它实现了以下四个接口：<br>EntityResolver<br>DTDHandler<br>ContentHandler<br>ErrorHandler </p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/xmlReader/" rel="tag"># xmlReader</a>
+              <a href="/tags/xml/" rel="tag"># xml</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/04/U%E7%9B%98-GRUB2%E5%BC%95%E5%AF%BCPE%E6%88%96linux%E9%95%9C%E5%83%8F/" rel="prev" title="U盘+GRUB2引导PE或linux镜像">
+      <i class="fa fa-chevron-left"></i> U盘+GRUB2引导PE或linux镜像
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/04/%E9%80%9A%E8%BF%87ip%E5%9C%B0%E5%9D%80%E8%BF%9E%E6%8E%A5virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BAandroid-x86/" rel="next" title="通过ip地址连接virtualbox虚拟机android-x86">
+      通过ip地址连接virtualbox虚拟机android-x86 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96XMLReader%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">如何获取XMLReader接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8SAXParserFactory-SAXParser-%E4%BB%A5%E4%B8%8B%E7%AE%80%E7%A7%B0a%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">使用SAXParserFactory+SAXParser[以下简称a方法]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8XMLReaderFactory-%E4%BB%A5%E4%B8%8B%E7%AE%80%E7%A7%B0b%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">使用XMLReaderFactory[以下简称b方法]</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E4%B8%8D%E5%90%8C%E4%B9%8B%E5%A4%84"><span class="nav-number">2.</span> <span class="nav-text">两种方法不同之处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAXParserFactory%E5%92%8CSAXParser%E4%B8%A4%E4%B8%AA%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">SAXParserFactory和SAXParser两个抽象类主要作用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

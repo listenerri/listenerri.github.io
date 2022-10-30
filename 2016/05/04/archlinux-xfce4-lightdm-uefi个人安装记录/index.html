@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文篇幅较长，最好通过文章内容上面的目录进行查看，否则很容易迷失在一个又一个的步骤中    前言：在中文+英文arch-wiki的指导下，大概经过了将近十次的格式化+重装，终于满意了，这个过程中也了解了linux新的系统服务管理机制:systemd(systemclt)，不说废话了，开始安装步骤折腾日期为:2015-4-28到2015-5-??arch更新迅速，如果要参考本文，自行留意日期，也可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="archlinux+xfce4+lightdm+uefi个人安装记录">
+<meta property="og:url" content="https://listenerri.com/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="本文篇幅较长，最好通过文章内容上面的目录进行查看，否则很容易迷失在一个又一个的步骤中    前言：在中文+英文arch-wiki的指导下，大概经过了将近十次的格式化+重装，终于满意了，这个过程中也了解了linux新的系统服务管理机制:systemd(systemclt)，不说废话了，开始安装步骤折腾日期为:2015-4-28到2015-5-??arch更新迅速，如果要参考本文，自行留意日期，也可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20150504150348283">
+<meta property="article:published_time" content="2016-05-04T08:32:00.000Z">
+<meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="uefi">
+<meta property="article:tag" content="安装">
+<meta property="article:tag" content="archlinux">
+<meta property="article:tag" content="xfce4">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20150504150348283">
+
+<link rel="canonical" href="https://listenerri.com/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>archlinux+xfce4+lightdm+uefi个人安装记录 | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          archlinux+xfce4+lightdm+uefi个人安装记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 16:32:00" itemprop="dateCreated datePublished" datetime="2016-05-04T16:32:00+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" class="post-meta-item leancloud_visitors" data-flag-title="archlinux+xfce4+lightdm+uefi个人安装记录" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><strong><font color=red>本文篇幅较长，最好通过文章内容上面的目录进行查看，否则很容易迷失在一个又一个的步骤中</font></strong></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>前言：</strong><br>在中文+英文arch-wiki的指导下，大概经过了将近十次的格式化+重装，终于满意了，这个过程中也了解了linux新的系统服务管理机制:systemd(systemclt)，<br>不说废话了，开始安装步骤<br><font color=red>折腾日期为:2015-4-28到2015-5-??</font><br>arch更新迅速，如果要参考本文，自行留意日期，也可以自己去arch-wiki去看官方教程：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Beginners%27_guide_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E9.85.8D.E7.BD.AE.E7.BD.91.E7.BB.9C">arch-wiki-Beginners’guide</a></p>
+</blockquote>
+<blockquote>
+<p><font color=red>本文将简略的说一下步骤，主要说我在安装过程中出现的问题！<br>所以如果你是对大概的linux命令都不熟悉的新手，本文也许不适合你，<br>你应该先去看arch-wiki，然后再来这里看</font></p>
+</blockquote>
+<h1 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h1><blockquote>
+<p>安装arch，是不能没有网络的，毕竟官方提供的是最小化安装镜像，只有核心linux和官方修改配置的脚本，其他的都要靠联网下载安装<br>网络配置这一步骤<strong>需要进行两次！</strong><br><strong>第一次</strong>是刚刚启动安装镜像时，这一次的网络配置生效区域是安装镜像所在的系统，而非你安装到硬盘上的系统，这个配置将会随着安装镜像系统的退出而清除！<br><strong>第二次</strong>是使用arch-chroot命令后切换到到真实的，安装在了硬盘上的系统！这第二次的网络配置，将会写到你将来要用的系统所在的硬盘分区上的配置文件中，所以只要你以后不再修改，那么它的生效区域是永久的！<br><strong>自行理解上文所提到的安装镜像所在的系统和真实系统的区别！这个不好说，说不清</strong></p>
+</blockquote>
+<p>arch官方推荐使用他们自己的netctl来作为网络管理工具,但是经过使用后我还是<strong>推荐使用networkmanager</strong>来作为管理工具,因为networkmanager不论在命令行还是图形界面都有简单的使用方法！</p>
+<h2 id="使用netctl"><a href="#使用netctl" class="headerlink" title="使用netctl"></a>使用netctl</h2><p>如果你使用netctl那么将会有无线和有线两种大的联网方式，其中又各自细分出了几种不同的联网方式，**<font color=red>第一次配置安装镜像所在的系统时你只需要选择其中一种，让电脑能正常联网就行了！第二次为真实系统配置时再自行选择配置几种</font>**。具体配置方法看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Beginners%27_guide_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E9.85.8D.E7.BD.AE.E7.BD.91.E7.BB.9C">arch-wiki-Beginners’guide</a>这里不多说！<br>按照官方教程会启用dhcpcd守护进程、这会导致系统系统的DNS每次开机都被dhcpcd替换为自动获取的DNS配置文件：/etc/resolv.conf<br>如果按照官方教程配置netctl后，出现了能ping通域名(如：ping t.cn)，但使用pacman -Syy却无法联网时那么你就需要修改/etc/resolv.conf文件中的DNS：</p>
+<figure class="highlight bash"><figcaption><span>shell</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nameserver 8.8.4.4</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h2 id="使用networkmanager"><a href="#使用networkmanager" class="headerlink" title="使用networkmanager"></a>使用networkmanager</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装:"></a>安装:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pacman -S networkmanager <span class="comment">#主程序</span></span><br><span class="line">pacman -S networkmanager-openconnect <span class="comment">#支持VPN（也可选networkmanager-openvpn/networkmanager-pptp/networkmanager-vpnc任意一个）</span></span><br><span class="line">pacman -S rp-pppoe <span class="comment">#支持 PPPoE/DSL 连接</span></span><br><span class="line">pacman -S network-manager-applet xfce4-notifyd <span class="comment">#图形前端</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：这些包是在xfce4下工作的，其他桌面环境看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/NetworkManager_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E5.AE.89.E8.A3.85">arch-wiki-NetWorkManager</a></strong><br>在第一次配置的时候不需要安装图形前端！等arch-chroot切换到真实系统后，第二次配置网络时才安装所有！</p>
+<h3 id="查看是否有多个网络管理-systemctl简单使用"><a href="#查看是否有多个网络管理-systemctl简单使用" class="headerlink" title="查看是否有多个网络管理(systemctl简单使用)"></a>查看是否有多个网络管理(systemctl简单使用)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看所有已启动的service</span></span><br><span class="line">systemctl --<span class="built_in">type</span> service</span><br></pre></td></tr></table></figure>
+<p>查看是否有**<font color=red>netctl相关的</font>**守护进程存在，如果有则关闭并禁止自动启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop 进程名</span><br><span class="line">systemctl <span class="built_in">disable</span> 进程名</span><br><span class="line"><span class="comment">#比如：</span></span><br><span class="line">systemctl stop netctl.service</span><br><span class="line">systemctl <span class="built_in">disable</span> netctl.service</span><br><span class="line"><span class="comment">#查看所有已安装的service(未必已启动)</span></span><br><span class="line">systemctl list-unit-files</span><br><span class="line"><span class="comment">#查看进程状态</span></span><br><span class="line">systemctl status 进程名</span><br><span class="line"><span class="comment">#显示详细进程信息</span></span><br><span class="line">systemctl show 进程名</span><br><span class="line"><span class="comment">#查看某进程是否允许开机自启</span></span><br><span class="line">systemctl is-enabled 进程名</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动NetworkManager："><a href="#启动NetworkManager：" class="headerlink" title="启动NetworkManager："></a>启动NetworkManager：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start NetworkManager.service <span class="comment">#立即启动 NetworkManager</span></span><br><span class="line">systemctl <span class="built_in">enable</span> NetworkManager.service <span class="comment">#开机自动启用 NetworkManager</span></span><br><span class="line"><span class="comment">#配置安装镜像系统时只需要执行立即启动的命令</span></span><br><span class="line"><span class="comment">#真实系统最好都执行</span></span><br></pre></td></tr></table></figure>
+<h3 id="同步源："><a href="#同步源：" class="headerlink" title="同步源："></a>同步源：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syy</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><font color=red>启动NetworkManager之后才可以执行命令来连接网络！！</font></strong></p>
+</blockquote>
+<h3 id="命令行的使用方法："><a href="#命令行的使用方法：" class="headerlink" title="命令行的使用方法："></a>命令行的使用方法：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wifi操作举例：</span></span><br><span class="line">nmcli dev wifi connect &lt;name&gt; password &lt;password&gt; <span class="comment">#连接到 WiFi 网络</span></span><br><span class="line">nmcli dev wifi connect &lt;name&gt; password &lt;password&gt; iface wlan1 [profile name] <span class="comment">#通过接口 wlan1 连接到 WiFi 网络:</span></span><br><span class="line">nmcli dev disconnect iface eth0 <span class="comment">#断开 WiFi 连接:</span></span><br><span class="line">nmcli con up uuid &lt;uuid&gt; <span class="comment">#通过一个已断开连接的接口重新连接:</span></span><br><span class="line">nmcli con show <span class="comment">#获得一份 UUID 列表:</span></span><br><span class="line">nmcli dev <span class="comment">#查看网络设备及其状态:</span></span><br><span class="line">nmcli r wifi off <span class="comment">#关闭 WiFi:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他操作如有线网可以使用帮助命令查看：</span></span><br><span class="line">nmcli <span class="built_in">help</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#OBJECT和COMMAND可以用全称也可以用简称，最少可以只用一个字母，建议用头三个字母。</span></span><br><span class="line"><span class="comment">#OBJECT里面我们平时用的最多的就是connection和device，这里需要简单区分一下connection和device。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#device叫网络接口，是物理设备</span></span><br><span class="line"><span class="comment">#connection是连接，偏重于逻辑设置</span></span><br></pre></td></tr></table></figure>
+<h3 id="图形界面使用方法："><a href="#图形界面使用方法：" class="headerlink" title="图形界面使用方法："></a>图形界面使用方法：</h3><p>这个就没必要说了，等安装好xfce桌面环境后菜单和面板项目里都有</p>
+<h1 id="具体的安装步骤"><a href="#具体的安装步骤" class="headerlink" title="具体的安装步骤"></a>具体的安装步骤</h1><h2 id="u盘启动"><a href="#u盘启动" class="headerlink" title="u盘启动"></a>u盘启动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#linux下</span></span><br><span class="line"><span class="comment">#首先确定好u盘的设备名(不是分区)，我的是/dev/sdb</span></span><br><span class="line">lsblk <span class="comment">#查看所有连接到系统的设备和分区状况</span></span><br><span class="line">dd <span class="keyword">if</span>=你arch镜像的绝对路径 of=/dev/sdb <span class="comment">#将镜像写入u盘</span></span><br><span class="line"><span class="comment">#windows下自己百度吧</span></span><br></pre></td></tr></table></figure>
+<p>做好启动盘后以UEFI方式启动u盘即可</p>
+<h2 id="对硬盘分区"><a href="#对硬盘分区" class="headerlink" title="对硬盘分区"></a>对硬盘分区</h2><p>使用parted工具，我的硬盘的/dev/sda</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parted /dev/sda <span class="built_in">print</span> <span class="comment">#查看sda磁盘的分区表类型</span></span><br><span class="line">parted /dev/sda <span class="comment">#开始分区</span></span><br><span class="line"><span class="comment">#具体分区步骤不再赘述</span></span><br></pre></td></tr></table></figure>
+<h2 id="格式化分区为linux可用分区"><a href="#格式化分区为linux可用分区" class="headerlink" title="格式化分区为linux可用分区"></a>格式化分区为linux可用分区</h2><p>我的硬盘分区情况：<br>sda1：efi(esp)分区<br>sda11：/根分区<br>sda8：/boot<br>sda10：/home<br>sda9：/swap</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkfs.vfat -F32 /dev/sda1 <span class="comment">#格式化efi分区为fat32（如果是linux+windows双系统则不格式化此分区）</span></span><br><span class="line">mkfs.ext4 /dev/sda11 <span class="comment">#格式化根分区，下同</span></span><br><span class="line">mkfs.ext4 /dev/sda8</span><br><span class="line">mkfs.ext4 /dev/sda10</span><br><span class="line">mkswap /dev/sda9 <span class="comment">#格式化swap分区</span></span><br><span class="line">swapon /dev/sda9 <span class="comment">#启用swap分区</span></span><br></pre></td></tr></table></figure>
+<h2 id="挂载分区"><a href="#挂载分区" class="headerlink" title="挂载分区"></a>挂载分区</h2><blockquote>
+<p>注意: 不要在这里挂载 swap</p>
+</blockquote>
+<p>必须先挂载 / (root) 分区，其它目录都要在 / 分区中创建然后再挂载。<font color=red>在安装环境中用 /mnt 目录挂载根分区：</font></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda11 /mnt</span><br></pre></td></tr></table></figure>
+<p>接着挂载其他分区：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda10 /mnt/home</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda8 /mnt/boot</span><br><span class="line"><span class="comment">#在挂载好的/boot分区中创建efi文件夹并挂载efi分区</span></span><br><span class="line">mkdir /mnt/boot/efi</span><br><span class="line">mount /dev/sda1 /mnt/boot/efi</span><br></pre></td></tr></table></figure>
+<h2 id="选择镜像源"><a href="#选择镜像源" class="headerlink" title="选择镜像源"></a>选择镜像源</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<p>将我国的镜像源(速度快的放前面,可以有多个)反注释：<br>Server = <a target="_blank" rel="noopener" href="http://mirrors.163.com/archlinux/$repo/os/$arch">http://mirrors.163.com/archlinux/$repo/os/$arch</a><br>Server = <a target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch">http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</a></p>
+<h2 id="安装基本系统"><a href="#安装基本系统" class="headerlink" title="安装基本系统"></a>安装基本系统</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacstrap -i /mnt base base-devel </span><br><span class="line"><span class="comment">#“-i”选项是是否选择包的意思，去掉则自动全部安装</span></span><br></pre></td></tr></table></figure>
+<h2 id="生成-fstab"><a href="#生成-fstab" class="headerlink" title="生成 fstab"></a>生成 fstab</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U -p /mnt &gt;&gt; /mnt/etc/fstab #可以用 -L 代替 -U，及lable和uuid</span><br><span class="line">nano /mnt/etc/fstab #查看是否正确</span><br></pre></td></tr></table></figure>
+<h2 id="Chroot-并开始配置新系统"><a href="#Chroot-并开始配置新系统" class="headerlink" title="Chroot 并开始配置新系统"></a>Chroot 并开始配置新系统</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt /bin/bash</span><br></pre></td></tr></table></figure>
+<p>执行上面的命令后就会从安装镜像所在的系统切换到硬盘中的新系统（真实系统）</p>
+<h2 id="Locale本地"><a href="#Locale本地" class="headerlink" title="Locale本地"></a>Locale本地</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/locale.gen #反注释需要的本地化类型</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例如：<br>en_US.UTF-8 UTF-8 #英文<br>zh_CN.UTF-8 UTF-8 #中文</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">接着执行locale-gen以生成locale讯息</span></span><br><span class="line">locale-gen </span><br><span class="line"></span><br><span class="line">echo LANG=en_US.UTF-8 &gt; /etc/locale.conf #创建 locale.conf 并提交您的本地化选项</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>locale.gen文件中反注释的本地化选项为本系统所有的可选选项<br>执行locale-gen命令是提交并初始化<br>而locale.conf文件中的配置才是你真正为系统选中的选项</p>
+</blockquote>
+<h2 id="时区"><a href="#时区" class="headerlink" title="时区"></a>时区</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime #中国时区</span><br></pre></td></tr></table></figure>
+<h2 id="硬件时间"><a href="#硬件时间" class="headerlink" title="硬件时间"></a>硬件时间</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hwclock --systohc --utc #将硬件时间设置为 UTC </span><br><span class="line">hwclock --systohc --localtime #将硬件时间设置为 localtime</span><br><span class="line"><span class="meta">#</span><span class="bash">命令自动生成 /etc/adjtime</span></span><br></pre></td></tr></table></figure>
+<h2 id="Hostname主机名"><a href="#Hostname主机名" class="headerlink" title="Hostname主机名"></a>Hostname主机名</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo myhostname &gt; /etc/hostname</span><br><span class="line">nano /etc/hosts #修改hosts添加你的主机名</span><br></pre></td></tr></table></figure>
+<h2 id="为硬盘中的系统配置网络"><a href="#为硬盘中的系统配置网络" class="headerlink" title="为硬盘中的系统配置网络"></a>为硬盘中的系统配置网络</h2><p>这次的配置将会永久生效不会因为关机重启而失效<br>具体步骤看文章开始位置：networkmanager的安装和使用</p>
+<h2 id="设置-Root-密码"><a href="#设置-Root-密码" class="headerlink" title="设置 Root 密码"></a>设置 Root 密码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装并配置-GRUB"><a href="#安装并配置-GRUB" class="headerlink" title="安装并配置 GRUB"></a>安装并配置 GRUB</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pacman -S dosfstools efibootmgr grub os-prober #安装需要的包</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck </span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br><span class="line"><span class="meta">#</span><span class="bash">这一步：grub-mkconfig,可能会出错，不过不用管</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果你想手动编辑grub.cfg或了解更多的关于grub安装和配置的方法<br>可以去看：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/GRUB_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#UEFI.E7.B3.BB.E7.BB.9F">arch-wiki-GRUB</a></p>
+</blockquote>
+<h2 id="卸载分区并重启系统"><a href="#卸载分区并重启系统" class="headerlink" title="卸载分区并重启系统"></a>卸载分区并重启系统</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br><span class="line">umont -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<p>你应该重启到你安装的arch系统中，而不是u盘里的系统！</p>
+<h1 id="进一步配置硬盘中的新系统"><a href="#进一步配置硬盘中的新系统" class="headerlink" title="进一步配置硬盘中的新系统"></a>进一步配置硬盘中的新系统</h1><h2 id="再次安装GRUB"><a href="#再次安装GRUB" class="headerlink" title="再次安装GRUB"></a>再次安装GRUB</h2><p>如果你在安装系统时，在执行grub-mkconfig自动生成grub.conf文件时出现了错误<br>或者你的多系统，但第一次安装GRUB时只有arch系统的启动项<br>那么就在这里从新安装一边grub就行了<br>具体方法同上面第一次安装GRUB</p>
+<h2 id="新增日常使用的账户"><a href="#新增日常使用的账户" class="headerlink" title="新增日常使用的账户"></a>新增日常使用的账户</h2><p>添加一个名为：zhangsan的用户，并设置用户密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m -g users -G audio,video,floppy,network,rfkill,scanner,storage,optical,power,wheel,uucp -s /bin/bash zhangsan</span><br><span class="line">passwd zhangsan</span><br></pre></td></tr></table></figure>
+<p>选项含义：<br>-m：创建用户目录，本例中会创建/home/zhangsan文件夹<br>-g：设置用户的主组为users，也就是将用户添加到users组中，你可以先为自己创建一个组：<br>groupadd zhangsan<br>然后再执行添加用户的命令，users是默认已存在的组，如果你直接把users修改为zhangsan，而不新建zhangsan组，会提示组zhangsan不存在<br>-G：设置用户的附属组，也就是将用户添加到其他组，但这些组是附属组，如果不添加用户到相应的附属组，则用户没有附属组相应的权限<br>-s：设置用户的登录shell</p>
+<blockquote>
+<p><font color=red>注意：设置登录shell时，官方教程是这样的：<br>-s /usr/bin/bash<br>但是经过测试，设置为/usr/bin/bash是无法登录的！<br>害我搞了很久。。</font></p>
+</blockquote>
+<h2 id="安装xorg图形框架"><a href="#安装xorg图形框架" class="headerlink" title="安装xorg图形框架"></a>安装xorg图形框架</h2><p>详细看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Xorg_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E5.AE.89.E8.A3.85">arch-wiki-Xorg</a><br><strong>安装基本框架：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xorg-server xorg-twm xorg-xclock xterm xorg-xinit</span><br></pre></td></tr></table></figure>
+<p>xorg-xinit包提供了startx和xinti命令，startx和xinti命令的配置文件为：<br>**/etc/X11/xinit/xinitrc**<br>可以在此配置文件的末尾加上启动桌面环境或窗口管理器的命令，比如启动xfce4桌面环境：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec startxfce4</span><br></pre></td></tr></table></figure>
+<p>不过本文并没有采用startx的方式直接启动桌面环境，而是通过显示管理器(登录管理器)来启动桌面环境xfce4，具体后文再说。</p>
+<p>具体的Xorg图形界面可以通过 /etc/X11/xorg.conf 或 /etc/xorg.conf 和位于 /etc/X11/xorg.conf.d/ 的配置文件进行配置。<br>Arch 在 /etc/X11/xorg.conf.d 提供了默认的配置文件。<br>大部分系统不需要任何配置就能正常使用。<br>用户可以创建自己的配置文件，需要以 XX- 开头(XX 是数字)并以.conf 结尾(例如 10 在 20 之前读取)。 </p>
+<h2 id="笔记本安装触摸板驱动"><a href="#笔记本安装触摸板驱动" class="headerlink" title="笔记本安装触摸板驱动"></a>笔记本安装触摸板驱动</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xf86-input-synaptics</span><br></pre></td></tr></table></figure>
+<p>其配置文件为：/etc/X11/xorg.conf.d 目录下 10-synaptics.conf 文件</p>
+<h2 id="安装显卡驱动"><a href="#安装显卡驱动" class="headerlink" title="安装显卡驱动"></a>安装显卡驱动</h2><p>可以使用命令查看你的电脑的显卡信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lspci | grep VGA</span><br></pre></td></tr></table></figure>
+<p>然后查看官方源中有哪些**<font color=red>开源驱动：</font>**</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss xf86-video</span><br></pre></td></tr></table></figure>
+<p>这样是查看官方元中有哪些nvidia驱动：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss nvidia</span><br></pre></td></tr></table></figure>
+<p><strong>我的笔记本是双显卡：intel+nvidia</strong></p>
+<h3 id="安装intel显卡开源驱动"><a href="#安装intel显卡开源驱动" class="headerlink" title="安装intel显卡开源驱动"></a>安装intel显卡开源驱动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xf86-video-intel libva-intel-driver</span><br></pre></td></tr></table></figure>
+<p>这样就行了，intel挺简单，但也意味着不如nvidia强大</p>
+<p><strong><font color=red>开源和闭源驱动只能选择其中一个安装！！！</font></strong></p>
+<h3 id="安装nvidia显卡开源驱动"><a href="#安装nvidia显卡开源驱动" class="headerlink" title="安装nvidia显卡开源驱动"></a>安装nvidia显卡开源驱动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xf86-video-nouveau</span><br></pre></td></tr></table></figure>
+<h3 id="安装nvidia显卡闭源驱动"><a href="#安装nvidia显卡闭源驱动" class="headerlink" title="安装nvidia显卡闭源驱动"></a>安装nvidia显卡闭源驱动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S nvidia</span><br></pre></td></tr></table></figure>
+<h3 id="双显卡切换"><a href="#双显卡切换" class="headerlink" title="双显卡切换"></a>双显卡切换</h3><blockquote>
+<p><strong><font color=red>最好等安装完X框架和桌面环境后再来配置这个！</font></strong></p>
+</blockquote>
+<h4 id="安装bumblebee-bbswtich等："><a href="#安装bumblebee-bbswtich等：" class="headerlink" title="安装bumblebee,bbswtich等："></a>安装bumblebee,bbswtich等：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S bumblebee bbswitch mesa xf86-video-intel nvidia ib32-nvidia-utils lib32-mesa-libgl</span><br></pre></td></tr></table></figure>
+<h4 id="添加相关用户到-bumblebee-组："><a href="#添加相关用户到-bumblebee-组：" class="headerlink" title="添加相关用户到 bumblebee 组："></a>添加相关用户到 bumblebee 组：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gpasswd -a user bumblebee</span><br><span class="line"><span class="meta">#</span><span class="bash">其中 user 是要添加的用户登录名</span></span><br></pre></td></tr></table></figure>
+<h4 id="启动bumblebee服务-守护进程"><a href="#启动bumblebee服务-守护进程" class="headerlink" title="启动bumblebee服务(守护进程)"></a>启动bumblebee服务(守护进程)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> bumblebeed.service</span><br></pre></td></tr></table></figure>
+<p>重启，以使组变更生效</p>
+<h4 id="测试-Bumblebee-是否支持你的-Optimus-系统"><a href="#测试-Bumblebee-是否支持你的-Optimus-系统" class="headerlink" title="测试 Bumblebee 是否支持你的 Optimus 系统"></a>测试 Bumblebee 是否支持你的 Optimus 系统</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">optirun glxgears -info</span><br><span class="line"><span class="meta">#</span><span class="bash">或者：</span></span><br><span class="line">optirun glxspheres64</span><br><span class="line"><span class="meta">#</span><span class="bash">或者</span></span><br><span class="line">optirun glxspheres32</span><br><span class="line"><span class="meta">#</span><span class="bash">这三个只要任意一个能成功运行无报错中断即可证明bumblebee已经可以正常运行了</span></span><br></pre></td></tr></table></figure>
+<h4 id="Bumblebee用法："><a href="#Bumblebee用法：" class="headerlink" title="Bumblebee用法："></a>Bumblebee用法：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">optirun [options] application [application-parameters]</span><br><span class="line"><span class="comment">#例如，用 Optimus 启动Windows程序:</span></span><br><span class="line">optirun wine application.exe</span><br><span class="line"><span class="comment">#另外，用 Optimus 打开NVIDIA设置面板:</span></span><br><span class="line">optirun -b none nvidia-settings -c :8</span><br></pre></td></tr></table></figure>
+<h4 id="Bumblebee和optirun的关系"><a href="#Bumblebee和optirun的关系" class="headerlink" title="Bumblebee和optirun的关系"></a>Bumblebee和optirun的关系</h4><p>Bumblebee是管理独显的服务并不是命令，所以你不能直接执行“Bumblebee”来启动，并且上一步中它已经以服务方式启动了！<br>Bumblebee包中提供了optirun命令，optirun可以看作是Bumblebee这个服务对用户放出的接口！<br>用户通过<code>optirun 程序</code>来启动程序时可以让Bumblebee使用独显为启动的程序进行3D渲染！<br>其他不是通过optirum启动的程序则不使用独显！</p>
+<h4 id="Bumblebee和bbswtich的关系和使用"><a href="#Bumblebee和bbswtich的关系和使用" class="headerlink" title="Bumblebee和bbswtich的关系和使用"></a>Bumblebee和bbswtich的关系和使用</h4><p>Bumblebee它的作用只是试图模拟 Optimus 技术的行为：<font color=red>当需要的时候，使用独立显卡进行渲染，不使用的时候让独显空闲，但不会禁用独显</font></p>
+<p>这时就需要bbswtich了，bbswitch相当与是一种的电源管理，其目的是为了当bumblebee不再使用NVIDIA显卡时自动关闭NVIDIA显卡<br>如果已安装 bbswitch ，Bumblebee 守护进程启动时会自动检测到，不需要特别设置。<br>也可以这样做来确保系统加载bbswtich<br>在/etc/modules-load.d下新建bbswitch.conf，并修改为如下内容,这样每次启动都会加载bbswitch模块了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bbswitch</span><br></pre></td></tr></table></figure>
+<p>但是仅仅是加载是不够的，因为bbswitch的默认行为是保持显卡的开启状态， bumblebeed 启动时又并不禁用显卡，这就会导致开机后独显是开启状态，所以，在/etc/modprobe.d/下新建bbswitch.conf，并修改为如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这是bbswitch加载的参数，我们让其默认关闭独显</span></span><br><span class="line">options bbswitch load_state=0 unload_state=1</span><br></pre></td></tr></table></figure>
+<p>另外，有时候有时候即便加载了我们配置如上的bbswitch，但是bbswitch却不能自动关闭显卡，是因为有些模块正在占用着独显，因此要禁掉一些模块<br>再在/etc/modprobe.d/下新建nouveau_blacklist.conf，并修改为如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br></pre></td></tr></table></figure>
+<p>还有，bbswitch(系统)会在关机时关闭NVIDIA显卡，这可能可能会在下一次启动时初始化DVIDIA显卡异常或是在双系统的windows下识别不到nvidia显卡<br>有两种方法可以实现NVIDIA显卡总是在关机时被设置为启用状态：<br><strong>个人建议arch最好使用第一种</strong><br>第一种：添加如下systemd 服务: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#首先在系统服务库中创建nvidia-enable.service服务</span></span><br><span class="line">nano /usr/lib/systemd/system/nvidia-enable.service</span><br><span class="line"><span class="comment">#内容如下：</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Enable NVIDIA card</span><br><span class="line">DefaultDependencies=no</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=/bin/sh -c <span class="string">&#x27;echo ON &gt; /proc/acpi/bbswitch&#x27;</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=shutdown.target</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后将服务设置为自动启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nvidia-enable.service</span><br></pre></td></tr></table></figure>
+<p>第二种：使用关机脚本<br>在/usr/lib/systemd/system-shutdown/下新建nvidia_card_enable.sh，<br>并修改为以下内容，记得加运行权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash  </span></span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="keyword">in</span>  </span><br><span class="line">    reboot)  </span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Enabling NVIDIA GPU&quot;</span>  </span><br><span class="line">        <span class="built_in">echo</span> ON &gt; /proc/acpi/bbswitch  </span><br><span class="line">    ;;  </span><br><span class="line">    *)  </span><br><span class="line"><span class="keyword">esac</span>  </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="禁用独显nvidia"><a href="#禁用独显nvidia" class="headerlink" title="禁用独显nvidia"></a>禁用独显nvidia</h3><p>从上一步中可以了解到bumblebe的作用的控制独显的何时、给哪个应用渲染的功能，它并不控制独显的关闭和激活<br>而负责独显的关闭和激活的是：bbswtich<br>所以，如果你不需要使用独显的3D功能，那么你可以单独只安装一个bbswtich来控制独显即可，不要安装bumblebe等其他包<br>具体如何配置bbswitch，你可以从上一步中提取关于bbswtich的配置步骤，照着做就行了</p>
+<blockquote>
+<p>你也可以看我的另一片文章<a target="_blank" rel="noopener" href="http://blog.csdn.net/listener_ri/article/details/45290331">linux关闭nvidia独显的方法</a></p>
+</blockquote>
+<h2 id="测试Xorg是否正常启动"><a href="#测试Xorg是否正常启动" class="headerlink" title="测试Xorg是否正常启动"></a>测试Xorg是否正常启动</h2><p>安装玩xorg框架和显卡驱动后可以使用startx命令来测试图形框架是否可以正常启动<br><strong>只有图形框架正常后才能正常启动桌面环境xfce4和登录管理器lightdm</strong><br>首先重启，然后登录到tty命令行模式<br>执行startx命令<br>如果出现了画面：几个x终端还有x时钟和鼠标，那么就是安装成功了，可以接着安装桌面环境xfce4和登录管理器lightdm</p>
+<h2 id="安装xfce4桌面环境"><a href="#安装xfce4桌面环境" class="headerlink" title="安装xfce4桌面环境"></a>安装xfce4桌面环境</h2><p>详细安装和配置看：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Xfce_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29">arch-wiki-xfce4</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xfce4 xfce4-goodies</span><br></pre></td></tr></table></figure>
+<h2 id="安装LightDM登录管理器-显示管理器"><a href="#安装LightDM登录管理器-显示管理器" class="headerlink" title="安装LightDM登录管理器(显示管理器)"></a>安装LightDM登录管理器(显示管理器)</h2><p>详细安装和配置看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/LightDM_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E5.90.AF.E7.94.A8_LightDM">arch-wiki-lighdm</a><br>我没有通过startx的方式启动桌面环境，而是使用了登录管理器lightdm<br>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S lightdm lightdm-gtk-greeter</span><br></pre></td></tr></table></figure>
+<p>其配置文件为：<br>/etc/lightdm/lightdm.conf<br>安装好之后测试启动：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start lightdm.service</span><br></pre></td></tr></table></figure>
+<p>如果正常就会看到熟悉的登录界面了，不过不要登录，现在只是测试lightdm是否可以正常启动<br>点击画面上的关机小图标，弹出关机对话，选择**<font color=red>注销!</font>**<br>注销之后就回到之前的tty命令行模式了，可以看到相关的启动信息<br>一切正常，所以设置lightdm为开机自动启动，这样以后开机就不会出现tty命令行界面了，而是直接进入登录界面：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable lightdm.service</span><br></pre></td></tr></table></figure>
+<p>之后你可以重启进入xfce4图形界面，然后在图形界面中使用终端来继续以下配置步骤，也可以不重启，直接继续</p>
+<h2 id="安装alsa-utils配置声音"><a href="#安装alsa-utils配置声音" class="headerlink" title="安装alsa-utils配置声音"></a>安装alsa-utils配置声音</h2><p>arch系统默认已经安装了alsa-libs支持库，可以支持xfce4中的混音器来控制系统的音量或者静音<br>但是系统每次关机重启之后，默认的都是静音，你之前调的音量全部消失，解决方法：<br>安装alsa-utils:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S alsa-utils</span><br></pre></td></tr></table></figure>
+<p>编辑下alsa的服务(服务脚本有问题，不能由systemctl管理)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /lib/systemd/system/alsa-state.service</span><br></pre></td></tr></table></figure>
+<p>查看是否有”[Install]”(包含此字段)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>有的话就不用继续编辑了，没有的话在末尾加上上述字段，保存<br>然后启动服务，并允许其开机自启动：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start alsa-state.service</span><br><span class="line">systemctl enable alsa-state.service</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20150504150348283" alt="这里写图片描述"></p>
+<blockquote>
+<p>上图是我的设置，Internal Mic最好设置为静音</p>
+</blockquote>
+<h2 id="安装中文字体"><a href="#安装中文字体" class="headerlink" title="安装中文字体"></a>安装中文字体</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S wqy-microhei ttf-dejavu</span><br></pre></td></tr></table></figure>
+<h2 id="让系统使用中文"><a href="#让系统使用中文" class="headerlink" title="让系统使用中文"></a>让系统使用中文</h2><h3 id="全局性的汉化"><a href="#全局性的汉化" class="headerlink" title="全局性的汉化"></a>全局性的汉化</h3><p>不推荐全局汉化，这样可能会导致tty中无法汉化而出现乱码口口口<br>但我使用的是这种方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo LANG=zh_CN.UTF-8&gt;/etc/locale.conf</span><br></pre></td></tr></table></figure>
+<h3 id="单独在图形界面启用中文locale"><a href="#单独在图形界面启用中文locale" class="headerlink" title="单独在图形界面启用中文locale"></a>单独在图形界面启用中文locale</h3><p>在用户各自的家目录下的<del>/.bashrc、</del>/.profile、<del>/.xinitrc或</del>/.xprofile中设置自己的用户环境，若文件不存在可以新建</p>
+<blockquote>
+<p>.bashrc: 每次终端时读取并运用里面的设置<br>.profile：每次启动系统的读取并运用里面的配置<br>.xinitrc: 每次startx启动X界面时读取并运用里面的设置<br>.xprofile: 每次使用lightdm等图形登录管理器时读取并运用里面的设置</p>
+</blockquote>
+<p>从上面所说的文件中你认为合适的文件，然后将下面的命令添加到文件末尾即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=zh_CN.UTF-8</span><br><span class="line">export LANGUAGE=zh_CN:en_US</span><br></pre></td></tr></table></figure>
+<p>结合本文，如果你不用全局性的汉化，而用这第二种方式的话，我个人推荐你在~/.xprofile文件中添加</p>
+<h2 id="安装fcitx输入法"><a href="#安装fcitx输入法" class="headerlink" title="安装fcitx输入法"></a>安装fcitx输入法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S fcitx fcitx-im fcitx-cloudpinyin fcitx-configtool fcitx-googlepinyin fcitx-qt5</span><br></pre></td></tr></table></figure>
+<p>安装之后配置变量以确保系统使用fcitx、或者自行禁用其他输入法自动启动、如：ibus</p>
+<p>将下面的命令复制到下面说的三种情况中的文件的末尾：<br><font color=red><br>1：如果你使用显示管理器(如lightdm，gdm)进入桌面环境则使用家目录下的.xprofile文件，即：<del>/.xprofile<br>2：如果你使用startx命令进入桌面环境则使用家目录下的.xinitrc文件，即：</del>/.xinitrc<br>3：这种方法不推荐：使用/etc/profile文件，添加到此文件即意味着是系统级变量(上面两种情况是用户变量，不会影响到其他用户)，但这种方法可能会失败，导致部分应用无法启动fcitx，如gnome3.18中的gnome-terminal等<br>这三种情况任选其一，也可全部都配置上<br></font></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GTK_IM_MODULE=fcitx</span><br><span class="line">export QT_IM_MODULE=fcitx</span><br><span class="line">export XMODIFIERS=&quot;@im=fcitx&quot;</span><br></pre></td></tr></table></figure>
+<p>重启后就可以使用fcitx+谷歌输入法了，不过你也可以不现在重启接着往下配置</p>
+<h2 id="如果启动xfce4桌面环境后显示不正常"><a href="#如果启动xfce4桌面环境后显示不正常" class="headerlink" title="如果启动xfce4桌面环境后显示不正常"></a>如果启动xfce4桌面环境后显示不正常</h2><p>具体表现为：<br>窗口没有关闭按钮什么的框架<br>窗口无法移动<br>没有桌面背景（一片黑色）<br>在桌面上点击右键鼠标无反映<br>那么，解决方法是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xfwm4 --daemon</span><br><span class="line">xfwm4 --replace</span><br></pre></td></tr></table></figure>
+<h2 id="安装视频播放器mplayer-gnomeMplayer前端"><a href="#安装视频播放器mplayer-gnomeMplayer前端" class="headerlink" title="安装视频播放器mplayer+gnomeMplayer前端"></a>安装视频播放器mplayer+gnomeMplayer前端</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mplayer #主程序</span><br><span class="line">pacman -S gnome-mplayer #gnome图形前端</span><br><span class="line">pacman -S gecko-mediaplayer #控制firefox和chromium的影音播放(依赖gnome-mplayer)</span><br></pre></td></tr></table></figure>
+<p>全局配置：<br>/etc/mplayer/example.conf 配置模板<br>/etc/mplayer/input.conf 按键配置<br>/etc/mplayer/mplayer.conf 配置文件（没有的话自己新建）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> /etc/mplayer/mplayer.conf全局配置通用范例</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 应用于所有文件类型的默认设置</span></span><br><span class="line">[default]</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用X11输出影像</span></span><br><span class="line">vo=xv</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用alsa输出音频</span></span><br><span class="line">ao=alsa</span><br><span class="line"><span class="meta">#</span><span class="bash"> ao=oss <span class="comment"># 使用OSS</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用6声道</span></span><br><span class="line">channels = 6</span><br><span class="line"><span class="meta">#</span><span class="bash"> 字幕占据3%屏幕空间</span></span><br><span class="line">subfont-text-scale = 3</span><br><span class="line"><span class="meta">#</span><span class="bash"> 从不使用字体配置</span></span><br><span class="line">nofontconfig = 1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 当图像不适合屏幕长宽比时添加黑边</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 宽屏用户</span></span><br><span class="line">vf-add=expand=::::1:16/9:16</span><br><span class="line"><span class="meta">#</span><span class="bash"> 非宽屏用户</span></span><br><span class="line"><span class="meta">#</span><span class="bash">vf-add=expand=::::1:4/3:16</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">profile <span class="keyword">for</span> up-mixing two channels audio to six channels</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> use -profile 2chto6ch to activate</span></span><br><span class="line">[2chto6ch]</span><br><span class="line">af-add=pan=6:1:0:.4:0:.6:2:0:1:0:.4:.6:2</span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash">profile to down-mixing six channels audio to two channels</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> use -profile 6chto2ch to activate</span></span><br><span class="line">[6chto2ch]</span><br><span class="line">af-add=pan=2:0.7:0:0:0.7:0.5:0:0:0.5:0.6:0.6:0:0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 播放mp4和flv可能出现无图像</span></span><br><span class="line">[extension.mp4]</span><br><span class="line"> demuxer=mov</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 播放时禁用屏保</span></span><br><span class="line">heartbeat-cmd=&quot;xscreensaver-command -deactivate &amp;&quot; # stop xscreensaver</span><br><span class="line">stop-xscreensaver=&quot;yes&quot; # stop gnome-screensaver</span><br></pre></td></tr></table></figure>
+<p>用户配置：<br>~/.mplayer/config<br>其实gnome-mplayer前端也有配置</p>
+<h2 id="启用回收站和自动挂载"><a href="#启用回收站和自动挂载" class="headerlink" title="启用回收站和自动挂载"></a>启用回收站和自动挂载</h2><p>arch默认没有回收站机制，u盘也不会自动挂载，windows盘也不会自动挂载，都需要手动mount，解决方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S gvfs</span><br></pre></td></tr></table></figure>
+<p>会自动安装所需依赖，安装好之后，注销重启生效</p>
+<h2 id="时间同步"><a href="#时间同步" class="headerlink" title="时间同步"></a>时间同步</h2><p>按照arch官方的wiki安装好系统后时间不对<br>官方不提倡使用软件同步系统时间，但是没办法，只有同步时间最方便，方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pacman -S ntp</span><br><span class="line">systemctl start ntpd.service</span><br><span class="line">systemctl enable ntpd.service</span><br></pre></td></tr></table></figure>
+<p>等待几分钟之后系统时间就同步正确了</p>
+<p>然后将本机硬件时间设置为同步好的系统时间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hwclock --systohc --localtime</span><br></pre></td></tr></table></figure>
+<h2 id="安装pidgin-lwqq"><a href="#安装pidgin-lwqq" class="headerlink" title="安装pidgin-lwqq"></a>安装pidgin-lwqq</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S pidgin pidgin-lwqq</span><br></pre></td></tr></table></figure>
+<p>装好之后直接就能用了，不过里面有很多设置项，有些功能需要自己调整才能正常使用，具体看：<a target="_blank" rel="noopener" href="https://github.com/xiehuc/pidgin-lwqq/wiki/simple-user-guide">github-pidgin-lwqq简单教程</a><br>上面的链接是使用教程，不用按着上面的安装方法自己下载源码同步什么的，只需要用这个章节的命令从官方源安装就行了</p>
+<h2 id="bash命令补全"><a href="#bash命令补全" class="headerlink" title="bash命令补全"></a>bash命令补全</h2><h3 id="更快的命令补全操作"><a href="#更快的命令补全操作" class="headerlink" title="更快的命令补全操作"></a>更快的命令补全操作</h3><p>加入下面这句话到readline默认的初始化文件(~/.inputrc或者/etc/inputrc中): </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set show-all-if-ambiguous on</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在终端正常的补全是按两下tab键才会发生，上面的命令是将其改成按一次tab键就激活补全</p>
+</blockquote>
+<h3 id="高级的自动命令补全-方法一"><a href="#高级的自动命令补全-方法一" class="headerlink" title="高级的自动命令补全(方法一)"></a>高级的自动命令补全(方法一)</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S bash-completion</span><br></pre></td></tr></table></figure>
+
+<h3 id="高级的自动命令补全-方法二"><a href="#高级的自动命令补全-方法二" class="headerlink" title="高级的自动命令补全(方法二)"></a>高级的自动命令补全(方法二)</h3><p>你可以加入以下内容到~/.bashrc文件中以实现补全功能:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">complete -cf your_command</span><br><span class="line"><span class="meta">#</span><span class="bash">比如:</span></span><br><span class="line">complete -cf sudo</span><br><span class="line">complete -cf man</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>正常的sudo后的命令不会自动补全<br>我用的是方法一，简单，方便</p>
+</blockquote>
+<h2 id="安装压缩文件管理器"><a href="#安装压缩文件管理器" class="headerlink" title="安装压缩文件管理器"></a>安装压缩文件管理器</h2><p>也就是归档管理器：可以用file-roller</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S file-roller</span><br></pre></td></tr></table></figure>
+<p>或者用xarchiver</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S xarchiver</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>个人推荐file-roller，不少发行办都内置了这个管理器</p>
+</blockquote>
+<h2 id="ftp"><a href="#ftp" class="headerlink" title="ftp:"></a>ftp:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S filezilla</span><br></pre></td></tr></table></figure>
+<h2 id="安装办公软件libreoffice"><a href="#安装办公软件libreoffice" class="headerlink" title="安装办公软件libreoffice:"></a>安装办公软件libreoffice:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S libreoffice-still libreoffice-still-zh-CN libreoffice-still-en-GB</span><br></pre></td></tr></table></figure>
+<h2 id="安装音乐播放器rhythmbox"><a href="#安装音乐播放器rhythmbox" class="headerlink" title="安装音乐播放器rhythmbox"></a>安装音乐播放器rhythmbox</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S rhythmbox</span><br></pre></td></tr></table></figure>
+<h2 id="安装wine-QQ"><a href="#安装wine-QQ" class="headerlink" title="安装wine+QQ"></a>安装wine+QQ</h2><h3 id="安装主程序包，q4wine是图形菜单"><a href="#安装主程序包，q4wine是图形菜单" class="headerlink" title="安装主程序包，q4wine是图形菜单"></a>安装主程序包，q4wine是图形菜单</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S wine winetricks wine-mono wine_gecko q4wine</span><br></pre></td></tr></table></figure>
+<h3 id="安装缺少的32位包"><a href="#安装缺少的32位包" class="headerlink" title="安装缺少的32位包"></a>安装缺少的32位包</h3><p>使用regedit可能报错，则安装这个:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S lib32-ncurses</span><br></pre></td></tr></table></figure>
+<p>安装flash可能报错，则安装这个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S lib32-mpg123 lib32-lcms2</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/uefi/" rel="tag"># uefi</a>
+              <a href="/tags/%E5%AE%89%E8%A3%85/" rel="tag"># 安装</a>
+              <a href="/tags/archlinux/" rel="tag"># archlinux</a>
+              <a href="/tags/xfce4/" rel="tag"># xfce4</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" rel="prev" title="tilda开机启动不透明">
+      <i class="fa fa-chevron-left"></i> tilda开机启动不透明
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/04/U%E7%9B%98-GRUB2%E5%BC%95%E5%AF%BCPE%E6%88%96linux%E9%95%9C%E5%83%8F/" rel="next" title="U盘+GRUB2引导PE或linux镜像">
+      U盘+GRUB2引导PE或linux镜像 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">网络配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8netctl"><span class="nav-number">1.1.</span> <span class="nav-text">使用netctl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8networkmanager"><span class="nav-number">1.2.</span> <span class="nav-text">使用networkmanager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E6%9C%89%E5%A4%9A%E4%B8%AA%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86-systemctl%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">查看是否有多个网络管理(systemctl简单使用)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8NetworkManager%EF%BC%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">启动NetworkManager：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%BA%90%EF%BC%9A"><span class="nav-number">1.2.4.</span> <span class="nav-text">同步源：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.2.5.</span> <span class="nav-text">命令行的使用方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.2.6.</span> <span class="nav-text">图形界面使用方法：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E7%9A%84%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">具体的安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u%E7%9B%98%E5%90%AF%E5%8A%A8"><span class="nav-number">2.1.</span> <span class="nav-text">u盘启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA"><span class="nav-number">2.2.</span> <span class="nav-text">对硬盘分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%88%86%E5%8C%BA%E4%B8%BAlinux%E5%8F%AF%E7%94%A8%E5%88%86%E5%8C%BA"><span class="nav-number">2.3.</span> <span class="nav-text">格式化分区为linux可用分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BA"><span class="nav-number">2.4.</span> <span class="nav-text">挂载分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E9%95%9C%E5%83%8F%E6%BA%90"><span class="nav-number">2.5.</span> <span class="nav-text">选择镜像源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%9F%BA%E6%9C%AC%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.6.</span> <span class="nav-text">安装基本系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-fstab"><span class="nav-number">2.7.</span> <span class="nav-text">生成 fstab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chroot-%E5%B9%B6%E5%BC%80%E5%A7%8B%E9%85%8D%E7%BD%AE%E6%96%B0%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.8.</span> <span class="nav-text">Chroot 并开始配置新系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Locale%E6%9C%AC%E5%9C%B0"><span class="nav-number">2.9.</span> <span class="nav-text">Locale本地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%8C%BA"><span class="nav-number">2.10.</span> <span class="nav-text">时区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%97%B6%E9%97%B4"><span class="nav-number">2.11.</span> <span class="nav-text">硬件时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hostname%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="nav-number">2.12.</span> <span class="nav-text">Hostname主机名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E7%A1%AC%E7%9B%98%E4%B8%AD%E7%9A%84%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="nav-number">2.13.</span> <span class="nav-text">为硬盘中的系统配置网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-Root-%E5%AF%86%E7%A0%81"><span class="nav-number">2.14.</span> <span class="nav-text">设置 Root 密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE-GRUB"><span class="nav-number">2.15.</span> <span class="nav-text">安装并配置 GRUB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E5%88%86%E5%8C%BA%E5%B9%B6%E9%87%8D%E5%90%AF%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.16.</span> <span class="nav-text">卸载分区并重启系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%85%8D%E7%BD%AE%E7%A1%AC%E7%9B%98%E4%B8%AD%E7%9A%84%E6%96%B0%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">进一步配置硬盘中的新系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%8D%E6%AC%A1%E5%AE%89%E8%A3%85GRUB"><span class="nav-number">3.1.</span> <span class="nav-text">再次安装GRUB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E7%9A%84%E8%B4%A6%E6%88%B7"><span class="nav-number">3.2.</span> <span class="nav-text">新增日常使用的账户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85xorg%E5%9B%BE%E5%BD%A2%E6%A1%86%E6%9E%B6"><span class="nav-number">3.3.</span> <span class="nav-text">安装xorg图形框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%94%E8%AE%B0%E6%9C%AC%E5%AE%89%E8%A3%85%E8%A7%A6%E6%91%B8%E6%9D%BF%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.4.</span> <span class="nav-text">笔记本安装触摸板驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.5.</span> <span class="nav-text">安装显卡驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85intel%E6%98%BE%E5%8D%A1%E5%BC%80%E6%BA%90%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.5.1.</span> <span class="nav-text">安装intel显卡开源驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nvidia%E6%98%BE%E5%8D%A1%E5%BC%80%E6%BA%90%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.5.2.</span> <span class="nav-text">安装nvidia显卡开源驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nvidia%E6%98%BE%E5%8D%A1%E9%97%AD%E6%BA%90%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.5.3.</span> <span class="nav-text">安装nvidia显卡闭源驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E6%98%BE%E5%8D%A1%E5%88%87%E6%8D%A2"><span class="nav-number">3.5.4.</span> <span class="nav-text">双显卡切换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85bumblebee-bbswtich%E7%AD%89%EF%BC%9A"><span class="nav-number">3.5.4.1.</span> <span class="nav-text">安装bumblebee,bbswtich等：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%9B%B8%E5%85%B3%E7%94%A8%E6%88%B7%E5%88%B0-bumblebee-%E7%BB%84%EF%BC%9A"><span class="nav-number">3.5.4.2.</span> <span class="nav-text">添加相关用户到 bumblebee 组：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8bumblebee%E6%9C%8D%E5%8A%A1-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B"><span class="nav-number">3.5.4.3.</span> <span class="nav-text">启动bumblebee服务(守护进程)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95-Bumblebee-%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81%E4%BD%A0%E7%9A%84-Optimus-%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.5.4.4.</span> <span class="nav-text">测试 Bumblebee 是否支持你的 Optimus 系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bumblebee%E7%94%A8%E6%B3%95%EF%BC%9A"><span class="nav-number">3.5.4.5.</span> <span class="nav-text">Bumblebee用法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bumblebee%E5%92%8Coptirun%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.5.4.6.</span> <span class="nav-text">Bumblebee和optirun的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bumblebee%E5%92%8Cbbswtich%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">3.5.4.7.</span> <span class="nav-text">Bumblebee和bbswtich的关系和使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E7%94%A8%E7%8B%AC%E6%98%BEnvidia"><span class="nav-number">3.5.5.</span> <span class="nav-text">禁用独显nvidia</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95Xorg%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8%E5%90%AF%E5%8A%A8"><span class="nav-number">3.6.</span> <span class="nav-text">测试Xorg是否正常启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85xfce4%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83"><span class="nav-number">3.7.</span> <span class="nav-text">安装xfce4桌面环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85LightDM%E7%99%BB%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8-%E6%98%BE%E7%A4%BA%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-number">3.8.</span> <span class="nav-text">安装LightDM登录管理器(显示管理器)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85alsa-utils%E9%85%8D%E7%BD%AE%E5%A3%B0%E9%9F%B3"><span class="nav-number">3.9.</span> <span class="nav-text">安装alsa-utils配置声音</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93"><span class="nav-number">3.10.</span> <span class="nav-text">安装中文字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A9%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E4%B8%AD%E6%96%87"><span class="nav-number">3.11.</span> <span class="nav-text">让系统使用中文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%80%A7%E7%9A%84%E6%B1%89%E5%8C%96"><span class="nav-number">3.11.1.</span> <span class="nav-text">全局性的汉化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%8B%AC%E5%9C%A8%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E5%90%AF%E7%94%A8%E4%B8%AD%E6%96%87locale"><span class="nav-number">3.11.2.</span> <span class="nav-text">单独在图形界面启用中文locale</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85fcitx%E8%BE%93%E5%85%A5%E6%B3%95"><span class="nav-number">3.12.</span> <span class="nav-text">安装fcitx输入法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E5%90%AF%E5%8A%A8xfce4%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83%E5%90%8E%E6%98%BE%E7%A4%BA%E4%B8%8D%E6%AD%A3%E5%B8%B8"><span class="nav-number">3.13.</span> <span class="nav-text">如果启动xfce4桌面环境后显示不正常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8mplayer-gnomeMplayer%E5%89%8D%E7%AB%AF"><span class="nav-number">3.14.</span> <span class="nav-text">安装视频播放器mplayer+gnomeMplayer前端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E7%94%A8%E5%9B%9E%E6%94%B6%E7%AB%99%E5%92%8C%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="nav-number">3.15.</span> <span class="nav-text">启用回收站和自动挂载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5"><span class="nav-number">3.16.</span> <span class="nav-text">时间同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85pidgin-lwqq"><span class="nav-number">3.17.</span> <span class="nav-text">安装pidgin-lwqq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8"><span class="nav-number">3.18.</span> <span class="nav-text">bash命令补全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%BF%AB%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">3.18.1.</span> <span class="nav-text">更快的命令补全操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%9A%84%E8%87%AA%E5%8A%A8%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8-%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">3.18.2.</span> <span class="nav-text">高级的自动命令补全(方法一)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%9A%84%E8%87%AA%E5%8A%A8%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8-%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">3.18.3.</span> <span class="nav-text">高级的自动命令补全(方法二)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-number">3.19.</span> <span class="nav-text">安装压缩文件管理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp"><span class="nav-number">3.20.</span> <span class="nav-text">ftp:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8A%9E%E5%85%AC%E8%BD%AF%E4%BB%B6libreoffice"><span class="nav-number">3.21.</span> <span class="nav-text">安装办公软件libreoffice:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8rhythmbox"><span class="nav-number">3.22.</span> <span class="nav-text">安装音乐播放器rhythmbox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85wine-QQ"><span class="nav-number">3.23.</span> <span class="nav-text">安装wine+QQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%BB%E7%A8%8B%E5%BA%8F%E5%8C%85%EF%BC%8Cq4wine%E6%98%AF%E5%9B%BE%E5%BD%A2%E8%8F%9C%E5%8D%95"><span class="nav-number">3.23.1.</span> <span class="nav-text">安装主程序包，q4wine是图形菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%BC%BA%E5%B0%91%E7%9A%8432%E4%BD%8D%E5%8C%85"><span class="nav-number">3.23.2.</span> <span class="nav-text">安装缺少的32位包</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="NAMEwireshark-filter - Wireshark display filter 显示过滤器语法手册 SYNOPSIS123wireshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]tsha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wireshark-filter-Manual-Page">
+<meta property="og:url" content="https://listenerri.com/2022/10/30/wireshark-filter-Manual-Page/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="NAMEwireshark-filter - Wireshark display filter 显示过滤器语法手册 SYNOPSIS123wireshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]tsha">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-29T17:16:51.000Z">
+<meta property="article:modified_time" content="2022-10-30T10:53:07.151Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="wireshark">
+<meta property="article:tag" content="filter">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2022/10/30/wireshark-filter-Manual-Page/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>wireshark-filter-Manual-Page | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2022/10/30/wireshark-filter-Manual-Page/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          wireshark-filter-Manual-Page
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-10-30 01:16:51 / 修改时间：18:53:07" itemprop="dateCreated datePublished" datetime="2022-10-30T01:16:51+08:00">2022-10-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/10/30/wireshark-filter-Manual-Page/" class="post-meta-item leancloud_visitors" data-flag-title="wireshark-filter-Manual-Page" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/10/30/wireshark-filter-Manual-Page/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/10/30/wireshark-filter-Manual-Page/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="NAME"><a href="#NAME" class="headerlink" title="NAME"></a>NAME</h1><p>wireshark-filter - Wireshark display filter 显示过滤器语法手册</p>
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS" class="headerlink" title="SYNOPSIS"></a>SYNOPSIS</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wireshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]</span><br><span class="line"></span><br><span class="line">tshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION" class="headerlink" title="DESCRIPTION"></a>DESCRIPTION</h1><p>Wireshark 和 TShark 共享一个强大的过滤引擎，有助于从数据包列表中去除“噪音”，只看到您感兴趣的数据包。如果一个数据包符合你的过滤器中表达的要求，那么它就会显示在数据包列表中。显示过滤器可让您将协议中的字段与特定值进行比较，将字段与字段进行比较，并检查指定字段或协议是否存在。</p>
+<p>过滤器也被其他功能所使用，如统计数据的生成和数据包列表的着色（后者只对Wireshark有效）。本手册页描述了它们的语法。可以在 Wireshark 和 <a target="_blank" rel="noopener" href="https://www.wireshark.org/docs/dfref/">https://www.wireshark.org/docs/dfref/</a> 的显示过滤器参考中找到过滤器字段的全部参考文档。</p>
+<h1 id="FILTER-语法"><a href="#FILTER-语法" class="headerlink" title="FILTER 语法"></a>FILTER 语法</h1><h2 id="判断一个字段或者协议是否存在"><a href="#判断一个字段或者协议是否存在" class="headerlink" title="判断一个字段或者协议是否存在"></a>判断一个字段或者协议是否存在</h2><p>最简单的过滤器允许您检查协议或字段是否存在。如果您想查看所有包含 IP 协议的数据包，过滤器将是 <code>ip</code>。要查看包含 Token-Ring RIF 字段的所有数据包，请使用 <code>tr.rif</code>。</p>
+<p>每当一个协议或字段作为过滤器中一个函数的参数出现时，该协议或字段的存在运算符就会隐含地出现。即该参数表示对应的协议或字段是否存在。</p>
+<h2 id="值和运算符"><a href="#值和运算符" class="headerlink" title="值和运算符"></a>值和运算符</h2><p>每个字段都有一个值，该值可用于具有可比性的操作（可能是字面值、其他字段或函数结果）。字段的值不一定在 Wireshark 中显示或在 TShark 的输出中。例如，一个协议在语义上等同于它所跨越的字节序列，而不是它在协议树中显示的文本。</p>
+<h2 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h2><p>比较运算符可以通过类似英语的缩写或类似 C 的符号来表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">eq, &#x3D;&#x3D;    相等</span><br><span class="line">ne, !&#x3D;    不等</span><br><span class="line">gt, &gt;     大于</span><br><span class="line">lt, &lt;     小于</span><br><span class="line">ge, &gt;&#x3D;    大于等于</span><br><span class="line">le, &lt;&#x3D;    小于等于</span><br></pre></td></tr></table></figure>
+
+<p>比较通常取决于值类型（例如，字符串的字典序和整数的算术。）一个字段可能在给定的帧中出现不止一次。在这种情况下，运算符是严格的，比如相等，则所有字段必须匹配条件，或不相等，任何字段都不匹配条件。不等式是等式的逻辑否定。下表包含所有相等运算符，它们的别名和含义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eq, any_eq, &#x3D;&#x3D;    Any field must be equal 任何字段都相等</span><br><span class="line">ne, all_ne, !&#x3D;    All fields must be not equal 所有字段都不等</span><br><span class="line">    all_eq, &#x3D;&#x3D;&#x3D;   All fields must be equal 所有字段都相等</span><br><span class="line">    any_ne, !&#x3D;&#x3D;   Any fields must be not equal 任何字段都不等</span><br></pre></td></tr></table></figure>
+
+<p>运算符 <code>any</code> 或 <code>all</code> 可以与任何比较运算符一起使用，以使测试匹配任何或所有字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">all tcp.port &gt; 1024</span><br><span class="line">any ip.addr !&#x3D; 1.1.1.1</span><br></pre></td></tr></table></figure>
+
+<p><code>any</code> 或 <code>all</code> 修饰符优先于比较运算符，例如 <code>===</code> 和 <code>any_eq</code> 。</p>
+<h2 id="搜索和匹配运算符"><a href="#搜索和匹配运算符" class="headerlink" title="搜索和匹配运算符"></a>搜索和匹配运算符</h2><p>其他运算符仅以英语表示，而不是类似 C 的语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">contains     协议、字段或切片是否包含某值</span><br><span class="line">matches, ~   字符串是否匹配给定的不区分大小写的 Perl 兼容正则表达式</span><br></pre></td></tr></table></figure>
+
+<p><code>contains</code> 运算符允许过滤器搜索以字符串表示的字符序列或以字节数组表示的字节。在任何隐式或显式转换之后，<code>contains</code> 运算符左侧的类型必须与右侧的类型相当。</p>
+<p>例如，要在捕获中搜索给定的 HTTP URL，可以使用以下过滤器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains &quot;https:&#x2F;&#x2F;www.wireshark.org&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>contains</code> 运算符不能用于原子字段，例如数字或 IP 地址。</p>
+<p><code>matches</code> 或 <code>~</code> 运算符允许过滤器应用于指定的 Perl 兼容正则表达式 (PCRE2)。正则表达式必须是双引号字符串。<code>matches</code> 运算符的左侧必须是字符串，可以是非字符串字段，可以隐式或显式转换为字符串。默认情况下，<code>matches</code> 不区分大小写。例如，要搜索给定的 WAP WSP User-Agent，您可以编写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsp.header.user_agent matches &quot;cldc&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这将匹配 cldc、CLDC、cLdC 或任何其他大小写字母组合。</p>
+<p>您可以使用强制区分大小写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsp.header.user_agent matches &quot;(?-i)cldc&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这是 PCRE2 的 <code>(?option)</code> 构造的一个示例。 <code>(?-i)</code> 执行区分大小写的模式匹配，但也可以指定其他选项。更多信息可以在 <a target="_blank" rel="noopener" href="https://www.pcre.org/current/doc/html/pcre2pattern.html">https://www.pcre.org/current/doc/html/pcre2pattern.html</a> 手册页中找到。</p>
+<h2 id="Functions-函数"><a href="#Functions-函数" class="headerlink" title="Functions 函数"></a>Functions 函数</h2><p>过滤器语言具有以下函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">upper(string-field) - 将参数（字符串字段）转为大写</span><br><span class="line">lower(string-field) - 将参数（字符串字段）转为小写</span><br><span class="line">len(field)          - 返回参数（字符串或字节字段）的长度</span><br><span class="line">count(field)        - 返回参数（字段）在一个 frame 帧中出现的次数</span><br><span class="line">string(field)       - 将参数（非字符串字段）转为字符串</span><br><span class="line">max(f1,...,fn)      - 返回参数（字段）中的最大值</span><br><span class="line">min(f1,...,fn)      - 返回参数（字段）中的最小值</span><br><span class="line">abs(field)          - 返回参数（数值字段）的绝对值</span><br></pre></td></tr></table></figure>
+
+<p><code>upper()</code> 和 <code>lower()</code> 可用于执行不区分大小写的字符串比较。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">upper(ncp.nds_stream_name) contains &quot;MACRO&quot;</span><br><span class="line">lower(mount.dump.hostname) &#x3D;&#x3D; &quot;angel&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>string()</code> 将字段值转换为字符串，适合与 <code>matches</code> 或 <code>contains</code> 等运算符一起使用。整数字段被转换为其十进制表示。它可以与 IP/Ethernet 地址（以及其他地址）一起使用，但不能与字符串或字节字段一起使用。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string(frame.number) matches &quot;[13579]$&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可以得到所有的序号为奇数的包。</p>
+<p><code>max()</code> 和 <code>min()</code> 接受任意数量的参数并返回一个值，分别为最大/最小。参数必须都具有相同的类型。</p>
+<h2 id="Protocol-field-types-协议字段类型"><a href="#Protocol-field-types-协议字段类型" class="headerlink" title="Protocol field types 协议字段类型"></a>Protocol field types 协议字段类型</h2><p>每个协议字段都有类型。类型有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ASN.1 object identifier, plain or relative</span><br><span class="line">AX.25 address</span><br><span class="line">Boolean</span><br><span class="line">Byte sequence</span><br><span class="line">Character string</span><br><span class="line">Character, 1 byte</span><br><span class="line">Date and time</span><br><span class="line">Ethernet or other MAC address</span><br><span class="line">EUI64 address</span><br><span class="line">Fibre Channel WWN</span><br><span class="line">Floating point, single or double precision</span><br><span class="line">Frame number</span><br><span class="line">Globally Unique Identifier</span><br><span class="line">IEEE-11073 floating point, 16 or 32 bits</span><br><span class="line">IPv4 address</span><br><span class="line">IPv6 address</span><br><span class="line">IPX network number</span><br><span class="line">Label</span><br><span class="line">OSI System-ID</span><br><span class="line">Protocol</span><br><span class="line">Signed integer, 1, 2, 3, 4, or 8 bytes</span><br><span class="line">Time offset</span><br><span class="line">Unsigned integer, 1, 2, 3, 4, or 8 bytes</span><br><span class="line">VINES address</span><br></pre></td></tr></table></figure>
+
+<p>整数可以用十进制、八进制、十六进制或二进制表示法表示，也可以表示为 C 风格的字符常量。以下七个显示过滤器是等效的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">frame.len &gt; 10</span><br><span class="line">frame.len &gt; 012</span><br><span class="line">frame.len &gt; 0xa</span><br><span class="line">frame.len &gt; 0b1010</span><br><span class="line">frame.len &gt; &#39;\n&#39;</span><br><span class="line">frame.len &gt; &#39;\x0a&#39;</span><br><span class="line">frame.len &gt; &#39;\012&#39;</span><br></pre></td></tr></table></figure>
+
+<p>Boolean 布尔值表示真或假。在使用布尔字段值的显示过滤器表达式中，真 表示为单词 True 或 TRUE 或任何非零数字。 假 表示为 False 或 FALSE 或数字零。例如，token-ring 数据包的 source route 字段是布尔值。要查找任何 source route 为 真 的数据包，显示过滤器将是以下任何一种：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tr.sr &#x3D;&#x3D; 1</span><br><span class="line">tr.sr &#x3D;&#x3D; True</span><br><span class="line">tr.sr &#x3D;&#x3D; TRUE</span><br></pre></td></tr></table></figure>
+
+<p>反之则是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tr.sr &#x3D;&#x3D; 0</span><br><span class="line">tr.sr &#x3D;&#x3D; False</span><br><span class="line">tr.sr &#x3D;&#x3D; FALSE</span><br></pre></td></tr></table></figure>
+
+<p>Ethernet 以太网地址和字节数组由十六进制数字表示。十六进制数字可以用冒号、句点或连字符分隔：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eth.dst eq ff:ff:ff:ff:ff:ff</span><br><span class="line">aim.data &#x3D;&#x3D; 0.1.0.d</span><br><span class="line">fddi.src &#x3D;&#x3D; aa-aa-aa-aa-aa-aa</span><br><span class="line">echo.data &#x3D;&#x3D; 7a</span><br></pre></td></tr></table></figure>
+
+<p>IPv4 地址可以用点分十进制表示法或使用主机名表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip.src &#x3D;&#x3D; 192.168.1.1</span><br><span class="line">ip.dst eq www.mit.edu</span><br></pre></td></tr></table></figure>
+
+<p>IPv4 地址可以用与数字相同的逻辑关系进行比较：eq、ne、gt、ge、lt 和 le。IPv4 地址按主机顺序存储，因此在显示过滤器中使用 IPv4 地址时不必担心它的字节顺序。</p>
+<p>无类域间路由 (CIDR) 表示法可用于测试 IPv4 地址是否在某个子网中。例如，此显示过滤器将查找 129.111 网络中的所有数据包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.addr &#x3D;&#x3D; 129.111.0.0&#x2F;16</span><br></pre></td></tr></table></figure>
+
+<p>斜线后面的数字表示用于表示网络的位数。 CIDR 表示法也可以与主机名一起使用，例如在与 sneezy 相同的网络上查找 IP 地址的示例中（要求 sneezy 解析为 IP 地址以使过滤器有效）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.addr eq sneezy&#x2F;24</span><br></pre></td></tr></table></figure>
+
+<p>CIDR 表示法只能用于 IP 地址或主机名，不能用于变量名。因此，像 <code>ip.src/24 == ip.dst/24</code> 这样的显示过滤器无效。</p>
+<p>Transaction 和其他 ID 通常由无符号 16 或 32 位整数表示，并格式化为带有“0x”前缀的十六进制字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(dhcp.id &#x3D;&#x3D; 0xfe089c15) || (ip.id &#x3D;&#x3D; 0x0373)</span><br></pre></td></tr></table></figure>
+
+<p>字符串要用双引号括起来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.request.method &#x3D;&#x3D; &quot;POST&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在双引号内，您可以使用反斜杠嵌入双引号或以八进制或十六进制表示的任意字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">browser.comment &#x3D;&#x3D; &quot;An embedded \&quot; double-quote&quot;</span><br></pre></td></tr></table></figure>
+
+<p>使用十六进制查找 “HEAD”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.request.method &#x3D;&#x3D; &quot;\x48EAD&quot;</span><br></pre></td></tr></table></figure>
+
+<p>使用八进制查找“HEAD”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.request.method &#x3D;&#x3D; &quot;\110EAD&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这意味着您必须在双引号内使用反斜杠转义反斜杠。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smb.path contains &quot;\\\\SERVER\\SHARE&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>smb.path</code> 中查找 ``\SERVER\SHARE`。这可以更方便地写成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smb.path contains r&quot;\\SERVER\SHARE&quot;</span><br></pre></td></tr></table></figure>
+
+<p>以 ‘r’ 为前缀的字符串文字称为“原始字符串”。此类字符串将反斜杠视为文字字符。双引号仍然可以用反斜杠转义，但请注意反斜杠始终保留在结果中。</p>
+<p>下表列出了字符串和字符常量支持的所有转义序列：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">\&#39;          single quote</span><br><span class="line">\&quot;          double quote</span><br><span class="line">\\          backslash</span><br><span class="line">\a          audible bell</span><br><span class="line">\b          backspace</span><br><span class="line">\f          form feed</span><br><span class="line">\n          line feed</span><br><span class="line">\r          carriage return</span><br><span class="line">\t          horizontal tab</span><br><span class="line">\v          vertical tab</span><br><span class="line">\NNN        arbitrary octal value</span><br><span class="line">\xNN        arbitrary hexadecimal value</span><br><span class="line">\uNNNN      Unicode codepoint U+NNNN</span><br><span class="line">\UNNNNNNNN  Unicode codepoint U+NNNNNNNN</span><br></pre></td></tr></table></figure>
+
+<p>日期和时间值可以采用 ISO 8601 格式或使用传统的格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;2020-07-04T12:34:56&quot;</span><br><span class="line">&quot;Sep 26, 2004 23:18:04.954975&quot;</span><br></pre></td></tr></table></figure>
+
+<p>ISO 8601 中的“T”分隔符可以省略。 ISO 8601 支持时区指示符为 UTC 或与 UTC 的偏移量。传统格式可以在末尾附加值“UTC”以指定协调世界时的时间。否则，日期和时间值将被解释为本地时间。</p>
+<h2 id="The-slice-operator-切片运算符"><a href="#The-slice-operator-切片运算符" class="headerlink" title="The slice operator 切片运算符"></a>The slice operator 切片运算符</h2><p>如果字段是文本字符串或字节数组，您可以获取字段的切片。例如，您可以过滤以太网地址的 vendor 部分（前三个字节），如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eth.src[0:3] &#x3D;&#x3D; 00:00:83</span><br></pre></td></tr></table></figure>
+
+<p>另一个例子是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.content_type[0:4] &#x3D;&#x3D; &quot;text&quot;</span><br></pre></td></tr></table></figure>
+
+<p>您也可以在协议名称上使用切片运算符。 <code>frame</code> 协议可能很有用，它包含 Wireshark 或 TShark 捕获的一个数据包的所有数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">token[0:5] ne 0.0.0.1.1</span><br><span class="line">llc[0] eq aa</span><br><span class="line">frame[100-199] contains &quot;wireshark&quot;</span><br></pre></td></tr></table></figure>
+
+<p>以下是切片语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[i:j]    i &#x3D; start_offset, j &#x3D; length</span><br><span class="line">[i-j]    i &#x3D; start_offset, j &#x3D; end_offset, inclusive. 包含 j 指定的位置</span><br><span class="line">[i]      i &#x3D; start_offset, length &#x3D; 1</span><br><span class="line">[:j]     start_offset &#x3D; 0, length &#x3D; j</span><br><span class="line">[i:]     start_offset &#x3D; i, end_offset &#x3D; end_of_field</span><br></pre></td></tr></table></figure>
+
+<p>Offsets 可以是负数，在这种情况下，它们表示距字段末尾的偏移量。倒数第一个字节的偏移量是 -1，倒数第二个字节的偏移量是 -2，依此类推。以下是检查帧的最后四个字节的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">frame[-4:4] &#x3D;&#x3D; 0.1.2.3</span><br><span class="line"></span><br><span class="line">frame[-4:] &#x3D;&#x3D; 0.1.2.3</span><br></pre></td></tr></table></figure>
+
+<p>切片可以与字符串或字节序列进行比较。上面 <code>0.1.2.3</code> 是字节序列的一种十六进制表示方法，还可以等价写为 <code>0:1:2:3</code> <code>0-1-2-3</code>。</p>
+<p>切片可以组合。您可以使用逗号运算符连接它们：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ftp[1,3-5,9:] &#x3D;&#x3D; 01:03:04:05:09:0a:0b</span><br></pre></td></tr></table></figure>
+
+<p>这会将偏移量 1、偏移量 3-5 和偏移量 9 到末尾 的数据连接在一起。</p>
+<h2 id="The-layer-operator-层运算符"><a href="#The-layer-operator-层运算符" class="headerlink" title="The layer operator 层运算符"></a>The layer operator 层运算符</h2><p>可以使用层运算符 (#) 将字段限制到协议栈中的某个层，后跟一个十进制数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.addr#2 &#x3D;&#x3D; 192.168.30.40</span><br></pre></td></tr></table></figure>
+
+<p>仅匹配数据包中的内（第二）层。层使用简单的堆叠语义，协议层从 1 开始顺序计数。例如，在包含两个 IPv4 标头的数据包中，外部（第一层）源地址可以与“ip.src#1”匹配，内部（第二层）源地址可以匹配“ip.src#2”。</p>
+<p>对于更复杂的范围，切片的语法是有效的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp.port#[2-4]</span><br></pre></td></tr></table></figure>
+
+<p>表示第 2、3 或 4 层（含）。注意需要使用中括号。</p>
+<h2 id="The-membership-operator-成员关系运算符"><a href="#The-membership-operator-成员关系运算符" class="headerlink" title="The membership operator 成员关系运算符"></a>The membership operator 成员关系运算符</h2><p>可以简单地使用 in 运算符检查字段是在一组值中。例如，您可能会使用以下过滤器在常见的 HTTP/HTTPS 端口上找到流量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp.port in &#123;80,443,8080&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而不是使用更冗长的格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp.port &#x3D;&#x3D; 80 or tcp.port &#x3D;&#x3D; 443 or tcp.port &#x3D;&#x3D; 8080</span><br></pre></td></tr></table></figure>
+
+<p>查找 HEAD 或 GET 方法的 HTTP 请求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.request.method in &#123;&quot;HEAD&quot;, &quot;GET&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>值集还可以包含范围：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tcp.port in &#123;443, 4430..4434&#125;</span><br><span class="line">ip.addr in &#123;10.0.0.5 .. 10.0.0.9, 192.168.1.1..192.168.1.9&#125;</span><br><span class="line">frame.time_delta in &#123;10 .. 10.5&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Implicit-type-conversions-隐式类型转换"><a href="#Implicit-type-conversions-隐式类型转换" class="headerlink" title="Implicit type conversions 隐式类型转换"></a>Implicit type conversions 隐式类型转换</h2><p>作为字节序列的字段（包括协议）被隐式转换为字符串，以便与（双引号）文字字符串和原始字符串进行比较。</p>
+<p>因此，例如，以下过滤器是等效的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tcp.payload contains &quot;GET&quot;</span><br><span class="line">tcp.payload contains 47.45.54</span><br></pre></td></tr></table></figure>
+
+<p>如上所述，切片也可以通过任何一种方式进行比较：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">frame[60:2] gt 50.51</span><br><span class="line">frame[60:2] gt &quot;PQ&quot;</span><br></pre></td></tr></table></figure>
+
+<p>不会发生相反的情况；类字符串字段不会隐式转换为字节数组。（一些运算符允许将类字符串的字段与不带引号的文字进行比较，然后将其视为字符串；这通常不推荐使用，并且 matches 运算符特别不允许。为清楚起见，文字字符串应使用双引号。）</p>
+<p>0xff 或更小的十六进制整数（这意味着它适合一个字节）可以隐式转换为字节字符串。这对于大于一个字节的十六进制整数是不允许的，因为这样需要指定多字节整数的字节顺序（端序）。此外，十进制或八进制数也不允许这样做，因为它们会与构成字节字符串文字的十六进制数字混淆。然而，单字节十六进制整数可能很方便：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">frame[4] &#x3D;&#x3D; 0xff</span><br><span class="line">frame[1:4] contains 0x02</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Bitwise-operators-位运算符"><a href="#Bitwise-operators-位运算符" class="headerlink" title="Bitwise operators 位运算符"></a>Bitwise operators 位运算符</h2><p>也可以使用按位运算定义测试。目前支持以下位运算符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitwise_and, &amp;    Bitwise AND</span><br></pre></td></tr></table></figure>
+
+<p>按位 AND 运算允许屏蔽位并测试是否设置了一个或多个位。按位 AND 对整数协议字段和切片进行操作。</p>
+<p>在测试 TCP SYN 数据包时，您可以编写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp.flags &amp; 0x02</span><br></pre></td></tr></table></figure>
+
+<p>该表达式将匹配所有包含 <code>tcp.flags</code> 字段且设置了 <code>0x02</code> 位（即 SYN 位）的数据包。</p>
+<p>要匹配本地管理的单播以太网地址，您可以使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eth.addr[0] &amp; 0x0f &#x3D;&#x3D; 2</span><br></pre></td></tr></table></figure>
+
+<p>使用切片时，位掩码必须指定为字节字符串，并且它必须具有与切片本身相同的字节数，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip[42:2] &amp; 40:ff</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Arithmetic-operators-算术运算符"><a href="#Arithmetic-operators-算术运算符" class="headerlink" title="Arithmetic operators 算术运算符"></a>Arithmetic operators 算术运算符</h2><p>通常的运算符术表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+   Addition</span><br><span class="line">-   Subtraction</span><br><span class="line">*   Multiplication</span><br><span class="line">&#x2F;   Division</span><br><span class="line">%   Modulo (integer remainder)</span><br></pre></td></tr></table></figure>
+
+<p>例如，可以使用如下表达式过滤大于或等于源端口加 1 的 UDP 目标端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">udp.dstport &gt;&#x3D; udp.srcport + 1</span><br></pre></td></tr></table></figure>
+
+<p>可以使用大括号对算术表达式进行分组（注意！！括号不适用于此）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp.dstport &gt;&#x3D; 4 * &#123;tcp.srcport + 3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不要将大括号的这种用法与集合成员资格混淆。</p>
+<p>注意！！过滤器语法中的一个不幸的怪癖是减法运算符必须以空格字符开头，因此 <code>A-B</code> 必须写为 <code>A -B</code> 或 <code>A - B</code>。</p>
+<h2 id="Protocol-field-references-协议字段引用"><a href="#Protocol-field-references-协议字段引用" class="headerlink" title="Protocol field references 协议字段引用"></a>Protocol field references 协议字段引用</h2><p>使用 <code>$&#123;some.proto.field&#125;</code> 形式的变量称为字段引用。字段引用是从 GUI 中当前选定的帧中读取的字段值。这对于构建动态过滤器很有用，例如从最后五分钟到所选帧的帧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frame.time_relative &gt;&#x3D; $&#123;frame.time_relative&#125; - 300</span><br></pre></td></tr></table></figure>
+
+<p>字段引用与宏共享类似的符号，但在过滤器语言中是不同的语法元素。</p>
+<h2 id="Logical-expressions-逻辑表达式"><a href="#Logical-expressions-逻辑表达式" class="headerlink" title="Logical expressions 逻辑表达式"></a>Logical expressions 逻辑表达式</h2><p>可以使用逻辑表达式组合测试。这些也可以用类似 C 的语法或类似英语的缩写来表达。下表列出了从最高到最低优先级的逻辑运算符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">not, !    Logical NOT   (right-associative)</span><br><span class="line">and, &amp;&amp;   Logical AND   (left-associative)</span><br><span class="line">or,  ||   Logical OR    (left-associative)</span><br></pre></td></tr></table></figure>
+
+<p>计算总是从左到右进行。表达式也可以按括号分组。表达式 <code>A and B or not C or D and not E or F</code> 被解释为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(A and B) or (not C) or (D and (not E)) or F</span><br></pre></td></tr></table></figure>
+
+<p>通常最好明确地使用括号进行分组。以下都是有效的显示过滤器表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tcp.port &#x3D;&#x3D; 80 and ip.src &#x3D;&#x3D; 192.168.2.1</span><br><span class="line">not llc</span><br><span class="line">http and frame[100-199] contains &quot;wireshark&quot;</span><br><span class="line">(ipx.src.net &#x3D;&#x3D; 0xbad &amp;&amp; ipx.src.node &#x3D;&#x3D; 0.0.0.0.0.1) || ip</span><br></pre></td></tr></table></figure>
+
+<p>请记住，每当表达式中出现协议或字段名称时，都会隐式调用 <code>exists</code> 运算符。 <code>exists</code> 运算符具有最高优先级。这意味着第一个过滤器表达式必须被读作“显示 tcp.port 存在且等于 80 且 ip.src 存在且等于 192.168.2.1 的数据包”。第二个过滤器表达式的意思是“显示不存在 llc 的数据包”，因此将匹配所有不包含 llc 协议的数据包。第三个过滤器表达式包含偏移量 199 必须存在的约束，也就是说帧长度最少也是 200。</p>
+<p>每个 比较 对任何字段值都有一个隐式 存在 测试。使用显示过滤器从数据包列表中去除不需要的数据包时必须小心。例如，你想过滤掉所有发送到 224.1.2.3 地址的 IP 组播数据包，使用如下表达式可能过于严格：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.dst ne 224.1.2.3</span><br></pre></td></tr></table></figure>
+
+<p>这和下面的写法一样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.dst and ip.dst ne 224.1.2.3</span><br></pre></td></tr></table></figure>
+
+<p>过滤器仅选择具有 <code>ip.dst</code> 字段的帧。不会显示任何其他帧，包括所有非 IP 数据包。要同时显示非 IP 数据包，您可以使用以下两个表达式之一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">not ip.dst or ip.dst ne 224.1.2.3</span><br><span class="line">not ip.dst eq 224.1.2.3</span><br></pre></td></tr></table></figure>
+
+<p>第一个过滤器使用 <code>not ip.dst</code> 来包含所有非 IP 数据包，然后让 <code>ip.dst ne 224.1.2.3</code> 过滤掉不需要的 IP 数据包。第二个过滤器也否定隐式存在测试，因此是第一个过滤器更短的方法。</p>
+<h1 id="FILTER-FIELD-REFERENCE-过滤器字段参考"><a href="#FILTER-FIELD-REFERENCE-过滤器字段参考" class="headerlink" title="FILTER FIELD REFERENCE 过滤器字段参考"></a>FILTER FIELD REFERENCE 过滤器字段参考</h1><p>显示过滤器的整个列表太大，无法在此处列出。您可以在以下位置找到参考资料和示例：</p>
+<ul>
+<li>在线显示过滤器参考：<a target="_blank" rel="noopener" href="https://www.wireshark.org/docs/dfref/">https://www.wireshark.org/docs/dfref/</a></li>
+<li>View:Internals:Supported Protocols in Wireshark</li>
+<li>tshark -G fields on the command line</li>
+<li>The Wireshark wiki: <a target="_blank" rel="noopener" href="https://gitlab.com/wireshark/wireshark/-/wikis/DisplayFilters">https://gitlab.com/wireshark/wireshark/-/wikis/DisplayFilters</a></li>
+</ul>
+<h1 id="NOTES"><a href="#NOTES" class="headerlink" title="NOTES"></a>NOTES</h1><p>The wireshark-filter(4) manpage is part of the Wireshark distribution. The latest version of Wireshark can be found at <a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org</a>.</p>
+<p>Regular expressions in the “matches” operator are provided by the PCRE2 library. See <a target="_blank" rel="noopener" href="https://www.pcre.org/">https://www.pcre.org/</a> for more information.</p>
+<p>This manpage does not describe the capture filter syntax, which is different. See the manual page of <a target="_blank" rel="noopener" href="https://www.tcpdump.org/manpages/pcap-filter.7.html">pcap-filter(7)</a> or, if that doesn’t exist, <a target="_blank" rel="noopener" href="https://www.tcpdump.org/manpages/tcpdump.1.html">tcpdump(8)</a>, or, if that doesn’t exist, <a target="_blank" rel="noopener" href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureFilters">https://gitlab.com/wireshark/wireshark/-/wikis/CaptureFilters</a> for a description of capture filters.</p>
+<p>Display Filters are also described in the User’s Guide: <a target="_blank" rel="noopener" href="https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html">https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html</a></p>
+<h1 id="SEE-ALSO"><a href="#SEE-ALSO" class="headerlink" title="SEE ALSO"></a>SEE ALSO</h1><p>wireshark(1), tshark(1), editcap(1), pcap(3), pcap-filter(7) or tcpdump(8) if it doesn’t exist.</p>
+<h1 id="AUTHORS"><a href="#AUTHORS" class="headerlink" title="AUTHORS"></a>AUTHORS</h1><p>See the list of authors in the Wireshark man page for a list of authors of that code.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/wireshark/" rel="tag"># wireshark</a>
+              <a href="/tags/filter/" rel="tag"># filter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/" rel="prev" title="linux 原始套接字收发 packet">
+      <i class="fa fa-chevron-left"></i> linux 原始套接字收发 packet
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NAME"><span class="nav-number">1.</span> <span class="nav-text">NAME</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SYNOPSIS"><span class="nav-number">2.</span> <span class="nav-text">SYNOPSIS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DESCRIPTION"><span class="nav-number">3.</span> <span class="nav-text">DESCRIPTION</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FILTER-%E8%AF%AD%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">FILTER 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E5%AD%97%E6%AE%B5%E6%88%96%E8%80%85%E5%8D%8F%E8%AE%AE%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="nav-number">4.1.</span> <span class="nav-text">判断一个字段或者协议是否存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%BC%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.2.</span> <span class="nav-text">值和运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.3.</span> <span class="nav-text">比较运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%92%8C%E5%8C%B9%E9%85%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.4.</span> <span class="nav-text">搜索和匹配运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Functions-%E5%87%BD%E6%95%B0"><span class="nav-number">4.5.</span> <span class="nav-text">Functions 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Protocol-field-types-%E5%8D%8F%E8%AE%AE%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.6.</span> <span class="nav-text">Protocol field types 协议字段类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-slice-operator-%E5%88%87%E7%89%87%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.7.</span> <span class="nav-text">The slice operator 切片运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-layer-operator-%E5%B1%82%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.8.</span> <span class="nav-text">The layer operator 层运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-membership-operator-%E6%88%90%E5%91%98%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.9.</span> <span class="nav-text">The membership operator 成员关系运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implicit-type-conversions-%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">4.10.</span> <span class="nav-text">Implicit type conversions 隐式类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwise-operators-%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.11.</span> <span class="nav-text">Bitwise operators 位运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Arithmetic-operators-%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.12.</span> <span class="nav-text">Arithmetic operators 算术运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Protocol-field-references-%E5%8D%8F%E8%AE%AE%E5%AD%97%E6%AE%B5%E5%BC%95%E7%94%A8"><span class="nav-number">4.13.</span> <span class="nav-text">Protocol field references 协议字段引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Logical-expressions-%E9%80%BB%E8%BE%91%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">4.14.</span> <span class="nav-text">Logical expressions 逻辑表达式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FILTER-FIELD-REFERENCE-%E8%BF%87%E6%BB%A4%E5%99%A8%E5%AD%97%E6%AE%B5%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">FILTER FIELD REFERENCE 过滤器字段参考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NOTES"><span class="nav-number">6.</span> <span class="nav-text">NOTES</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SEE-ALSO"><span class="nav-number">7.</span> <span class="nav-text">SEE ALSO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AUTHORS"><span class="nav-number">8.</span> <span class="nav-text">AUTHORS</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">245</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
