@@ -1342,6 +1342,38 @@
       </tags>
   </entry>
   <entry>
+    <title>c语言中的指针</title>
+    <url>/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<blockquote>
+<p>1、直接使用指针的表达式，表示使用指针代表的内存地址. <font color=red>(指针存放的数据为内存地址,如同int型变量存放的数据为整数)</font></p>
+</blockquote>
+<blockquote>
+<p>2、在指针表达式前加上符号:<code>*</code>，表示使用指针指向的值，也就是指针所代表的内存地址中存储的值. <font color=red>(<code>*</code>也叫取值运算符或间接运算符,与之对应<code>&amp;</code>为地址运算符,放于正常变量之前可获得变量在内存中的地址,也就是获得一个指向这个变量的指针)</font></p>
+</blockquote>
+<blockquote>
+<p>3、指针也有数据类型</p>
+</blockquote>
+<blockquote>
+<p>4、假设int *opt，那么<code>opt++</code>表示指向下一个整数位置的内存地址<br>，而不是让opt所代表的内存地址在数值上+1；</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> foo1=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> *foo2;</span><br><span class="line">foo2=&amp;foo1;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;*foo2:%d\n&quot;</span>,*foo2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;foo2:%d\n&quot;</span>,foo2);</span><br><span class="line">*foo2=<span class="number">11</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;*foo2:%d\n&quot;</span>,*foo2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;foo2:%d\n&quot;</span>,foo2);</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">*foo2:<span class="number">10</span></span><br><span class="line">foo2:<span class="number">559162276</span></span><br><span class="line">*foo2:<span class="number">11</span></span><br><span class="line">foo2:<span class="number">559162276</span></span><br></pre></td></tr></table></figure>
+<p>解释：<br>第一行，声明一个整型的变量foo1，其值为10<br>第二行，声明一个指针foo2，声明指针要使用<code>*</code>符号<br>第三行，获取变量foo1的内存地址，获取变量的地址要使用<code>&amp;</code>符号，并将内存地址赋给指针foo2，也就是让foo2代表(指向)foo1的值在内存中的存储位置<br>第四行，输出<code>*foo2</code>，也就是输出指针foo2所代表的内存地址中存储的值<br>第五行，输出<code>foo2</code>，也就是输出指针foo2所代表的内存地址<br>第六行，让指针foo2所代表的内存地址中存储的值，变为11(注意这里并没有修改指针foo2所代表的内存地址)<br>第七行，输出<code>*foo2</code>，也就是输出指针foo2所代表的内存地址中存储的值<br>第八行，输出<code>foo2</code>，也就是输出指针foo2所代表的内存地址</p>
+<blockquote>
+<p>注意执行结果，foo2所代表的内存地址中的值，通过<code>*foo2=11;</code>被修改后其内存地址并未发生改变，只是改变了该内存地址中存储的值，而指针foo2依然代表原来的内存地址</p>
+</blockquote>
+<p><font color=red>如有错误请指出</font></p>
+]]></content>
+      <categories>
+        <category>c</category>
+      </categories>
+      <tags>
+        <tag>指针</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c语言修饰符static,extern,#define,const</title>
     <url>/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/</url>
     <content><![CDATA[<blockquote>
@@ -1372,38 +1404,6 @@
         <tag>static</tag>
         <tag>extern</tag>
         <tag>const</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>c语言中的指针</title>
-    <url>/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<blockquote>
-<p>1、直接使用指针的表达式，表示使用指针代表的内存地址. <font color=red>(指针存放的数据为内存地址,如同int型变量存放的数据为整数)</font></p>
-</blockquote>
-<blockquote>
-<p>2、在指针表达式前加上符号:<code>*</code>，表示使用指针指向的值，也就是指针所代表的内存地址中存储的值. <font color=red>(<code>*</code>也叫取值运算符或间接运算符,与之对应<code>&amp;</code>为地址运算符,放于正常变量之前可获得变量在内存中的地址,也就是获得一个指向这个变量的指针)</font></p>
-</blockquote>
-<blockquote>
-<p>3、指针也有数据类型</p>
-</blockquote>
-<blockquote>
-<p>4、假设int *opt，那么<code>opt++</code>表示指向下一个整数位置的内存地址<br>，而不是让opt所代表的内存地址在数值上+1；</p>
-</blockquote>
-<p>示例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> foo1=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> *foo2;</span><br><span class="line">foo2=&amp;foo1;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;*foo2:%d\n&quot;</span>,*foo2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;foo2:%d\n&quot;</span>,foo2);</span><br><span class="line">*foo2=<span class="number">11</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;*foo2:%d\n&quot;</span>,*foo2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;foo2:%d\n&quot;</span>,foo2);</span><br></pre></td></tr></table></figure>
-<p>执行结果：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">*foo2:<span class="number">10</span></span><br><span class="line">foo2:<span class="number">559162276</span></span><br><span class="line">*foo2:<span class="number">11</span></span><br><span class="line">foo2:<span class="number">559162276</span></span><br></pre></td></tr></table></figure>
-<p>解释：<br>第一行，声明一个整型的变量foo1，其值为10<br>第二行，声明一个指针foo2，声明指针要使用<code>*</code>符号<br>第三行，获取变量foo1的内存地址，获取变量的地址要使用<code>&amp;</code>符号，并将内存地址赋给指针foo2，也就是让foo2代表(指向)foo1的值在内存中的存储位置<br>第四行，输出<code>*foo2</code>，也就是输出指针foo2所代表的内存地址中存储的值<br>第五行，输出<code>foo2</code>，也就是输出指针foo2所代表的内存地址<br>第六行，让指针foo2所代表的内存地址中存储的值，变为11(注意这里并没有修改指针foo2所代表的内存地址)<br>第七行，输出<code>*foo2</code>，也就是输出指针foo2所代表的内存地址中存储的值<br>第八行，输出<code>foo2</code>，也就是输出指针foo2所代表的内存地址</p>
-<blockquote>
-<p>注意执行结果，foo2所代表的内存地址中的值，通过<code>*foo2=11;</code>被修改后其内存地址并未发生改变，只是改变了该内存地址中存储的值，而指针foo2依然代表原来的内存地址</p>
-</blockquote>
-<p><font color=red>如有错误请指出</font></p>
-]]></content>
-      <categories>
-        <category>c</category>
-      </categories>
-      <tags>
-        <tag>指针</tag>
       </tags>
   </entry>
   <entry>
@@ -1458,19 +1458,6 @@
       </tags>
   </entry>
   <entry>
-    <title>docker 容器起不来怎么办</title>
-    <url>/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
-    <content><![CDATA[<p>有时 docker 容器会由于错误修改了某些配置文件而无法启动，如 <code>entrypoint</code> 脚本或服务程序的配置文件等等，如果容器内没有什么有价值的数据，那么重新创建容器自然是首选，本文讨论的是容器不能被删除，该如何修复这种情况。</p>
-<p>容器跑不起来，<code>docker exec</code> 命令就无法运行，这意味着无法进入容器，修正有问题的配置文件；此时可以使用 <code>docker cp</code> 命令，将容器内的出问题的配置文件复制出来到主机上，在主机上修正配置文件后，再使用 <code>docker cp</code> 命令将其复制回容器内，覆盖掉容器内的原文件，此时执行 <code>docker start</code> 命令启动容器就可以了。</p>
-]]></content>
-      <categories>
-        <category>docker</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>docker-CMD-ENTRYPOINT</title>
     <url>/2017/09/13/docker-CMD-ENTRYPOINT/</url>
     <content><![CDATA[<p>一张图解释Dockerfile中CMD和ENTRYPOINT的关系,<br>另外使用’docker run’新建容器时, 镜像后面跟的命令会覆盖Dockerfile中的CMD.<br><img src="docker.png" alt="docker"></p>
@@ -1482,6 +1469,19 @@
         <tag>docker</tag>
         <tag>cmd</tag>
         <tag>entrypoint</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker 容器起不来怎么办</title>
+    <url>/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+    <content><![CDATA[<p>有时 docker 容器会由于错误修改了某些配置文件而无法启动，如 <code>entrypoint</code> 脚本或服务程序的配置文件等等，如果容器内没有什么有价值的数据，那么重新创建容器自然是首选，本文讨论的是容器不能被删除，该如何修复这种情况。</p>
+<p>容器跑不起来，<code>docker exec</code> 命令就无法运行，这意味着无法进入容器，修正有问题的配置文件；此时可以使用 <code>docker cp</code> 命令，将容器内的出问题的配置文件复制出来到主机上，在主机上修正配置文件后，再使用 <code>docker cp</code> 命令将其复制回容器内，覆盖掉容器内的原文件，此时执行 <code>docker start</code> 命令启动容器就可以了。</p>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -1563,112 +1563,6 @@
         <tag>chrome</tag>
         <tag>edge</tag>
         <tag>ctrl-tab</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gdb调试qt程序时打印qt特有的类型数据</title>
-    <url>/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/</url>
-    <content><![CDATA[<p>如果没有使用 qtcreator 调试 qt 程序，而是手动或利用其他 IDE 使用 gdb 调试，会发现 qt 类型的数据如 QString QList QMap 等不能直接查看其值。其实 gdb 是提供了关于打印数据的接口的，叫做 <code>Pretty-Printer</code>，这是一种利用 python 代码更好的输出变量数据的机制，感兴趣的可以搜索下相关内容。qtcreator 之所以可以愉快的打印出 qt 相应的数据也是因为它使用了这种机制，下面的命令可以查看 qtcreator 的安装目录中的 python 文件，命令在 debian 系的 linux 系统上有效:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># apt-file show qtcreator-data | grep py</span></span><br><span class="line">qtcreator-data: /usr/share/doc/qtcreator-data/copyright</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/boosttypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/cdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/creatortypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/dumper.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/gdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/lldbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/misctypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/opencvtypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/pdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/personaltypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/qttypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/stdtypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/qml/qmlpuppet/qml2puppet/instances/nodeinstancesignalspy.cpp</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/qml/qmlpuppet/qml2puppet/instances/nodeinstancesignalspy.h</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/classes/python/file.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/classes/python/wizard.json</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/files/python/file.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/files/python/wizard.json</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 <code>/usr/share/qtcreator/debugger/</code> 目录下关于 qtcreator 对 debug 所做的优化，不过不知道为什么直接使用 qtcreator 提供的 qt 类型相关的脚本没有成功(有成功的可以在下面回复方法指点一下)。因此又在 github 上搜索相关内容找到了另一个 qt 相关的 Pretty-Print 脚本，项目地址为：<a href="https://github.com/Lekensteyn/qt5printers">https://github.com/Lekensteyn/qt5printers</a>，在 linux 系统下具体使用方法如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 克隆项目到~/.git/qt5printers目录下</span></span><br><span class="line">git <span class="built_in">clone</span> git@github.com:Lekensteyn/qt5printers.git ~/.git/qt5printers</span><br></pre></td></tr></table></figure>
-
-<p>复制以下内容到<code>~/.gdbinit</code>文件中，若文件不存在则手动创建：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">python</span><br><span class="line"><span class="keyword">import</span> sys, os.path</span><br><span class="line">sys.path.insert(<span class="number">0</span>, os.path.expanduser(<span class="string">&#x27;~/.gdb&#x27;</span>))</span><br><span class="line"><span class="keyword">import</span> qt5printers</span><br><span class="line">qt5printers.register_printers(gdb.current_objfile())</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>做完之后就可以 debug 一个 qt 程序测试了</p>
-]]></content>
-      <categories>
-        <category>qt</category>
-      </categories>
-      <tags>
-        <tag>qt</tag>
-        <tag>gdb</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>getDuration()获取媒体总长度值为-1</title>
-    <url>/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/</url>
-    <content><![CDATA[<p>例如VideoView获取视频总长度：<br>在视频播放前获取到的视频总长度都为-1<br>想要在视频播放前获取到总长度的话:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">videoView.setOnPreparedListener(<span class="keyword">new</span> MyOnPreparedListener());</span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyOnPreparedListener</span> <span class="keyword">implements</span> <span class="title">OnPreparedListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPrepared</span><span class="params">(MediaPlayer mp)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line"></span><br><span class="line">            video.getDuration();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>getDuration</tag>
-        <tag>视频总长度</tag>
-        <tag>videoview</tag>
-        <tag>mediaplayer</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git-找回已删除的分支</title>
-    <url>/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/</url>
-    <content><![CDATA[<p>手残总是难免的，有时候不小心删掉了一个还没有合并或者push的分支，等反应过来似乎已经找不到这个分支在仓库中存在的痕迹了。</p>
-<p>这时<code>git reflog</code>命令就体现出了它的价值，其实git会把我们在仓库里的所有操作都记录下来，<br>从<code>git reflog</code>命令的输出就可以看到，就算是从分支A切换到分支B也会被记录下来，那么假设，分支B被误删，<br>执行<code>git reflog</code>命令后就可以找到分支B的痕迹: “commit id”，不管是从其他分支切换到分支B，还是分支B的一个提交记录，<br>都会看到其”commit id”，复制这个”commit id”然后切换过去，此时仓库处于分离头指针状态，其实现在已经是在分支B了，<br>只需要从当前状态创建一个分支，那么分支B也就复活了： <code>git checkout -b B-reborn</code><br>这个分支<code>B-reborn</code>就是先前删除的分支B。</p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hides overloaded virtual function</title>
-    <url>/2018/10/04/hides-overloaded-virtual-function/</url>
-    <content><![CDATA[<p>在<code>重载</code>父类的同名虚函数时会出现<code>hides overloaded virtual function</code>编译警告。<br>从字面上的意思其实就可以理解：重载的虚函数被隐藏了。</p>
-<p>三个关键点：</p>
-<ul>
-<li>重载</li>
-<li>虚函数</li>
-<li>隐藏</li>
-</ul>
-<p>这个编译警告之所以出现，是因为上面三个关键点，首先是发生了<code>重载</code>，子类重载了父类的函数，其次被重载的是虚函数，这时这个被重载的父类的虚函数将会被隐藏。<br>何为隐藏呢，应该是不能使用子类实例直接调用父类被隐藏的函数，调用时必须指定父类命名空间，往深了说也就是编译器如果在子类中发现了要使用的函数的名字，注意，是名字不包含函数签名，只要名字匹配上，就不会再去父类中去寻找这个名字的函数，即便子类中的函数参数不匹配，也不会再去父类中寻找。</p>
-<p>其实去掉<code>虚函数</code>这个关键点，在c++中当重载了父类的函数时，隐藏同样会发生，举个例子：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> B();</span><br><span class="line">    b-&gt;foo(); <span class="comment">//编译报错</span></span><br><span class="line">    b-&gt;A::foo(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;foo(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>当重载的父类函数为虚函数时，代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123; <span class="comment">//将父类函数声明为虚函数</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="comment">//此处会有编译警告：&quot;&#x27;B::foo&#x27; hides overloaded virtual function&quot;</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> B();</span><br><span class="line">    b-&gt;foo(); <span class="comment">//编译报错依旧</span></span><br><span class="line">    b-&gt;A::foo(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;foo(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译错误依旧，但多了一个编译警告，关于这个编译警告，有种解释说是为了避免书写错误，这就要说到多态，上面的例子没有应用多态有些不合适，修改一下：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookA</span>;</span> <span class="comment">//改动处</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookB</span>;</span> <span class="comment">//改动处</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookA *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A *b = <span class="keyword">new</span> B(); <span class="comment">//改动处</span></span><br><span class="line">    b-&gt;foo(<span class="keyword">new</span> BookB());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>与之前的例子的区别是多声明了两个类：<code>BookA</code>和<code>BookB</code>，函数的参数类型换成了这两个类，<strong>最重要的一点是<code>main</code>函数中将实例B声明为了A类型</strong>，此时就可以比较清晰的看出为什么这个警告是为了书写错误：</p>
-<p>假设我们就是要在B类中重写父类A的<code>void foo(BookA *)</code>函数，以便在<code>main</code>函数中实现以类型A的实例去调用B对象的重写函数(多态调用)，但却因为书写错误，把B类行的函数的参数写成了<code>BookB *</code>，这就与初衷不符了，此时这个编译警告就是有价值的了。</p>
-<p>再假设，我们就是要在B类中声明<code>void foo(BookB *)</code>这么一个函数，且并不是为了重写父类中的函数，那么此时这个编译警告就是多余的，我们可以使用<code>using</code>来避免这个警告，例如在类B中做出如下声明：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> A::foo;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这样就是告诉编译器，我们明确要使用这两个函数，并不是为了重写，这样有一个可能不期望出现的情况，就是B的实例也可调用<code>void foo(BookA *)</code>函数，如果不想这个情况发生，可以把<code>using</code>放到私有的里面，这样既解决了编译警告，又不会暴露父类的这个函数出去：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">using</span> A::foo;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>参考了一个帖子：<br><a href="https://stackoverflow.com/questions/18515183/c-overloaded-virtual-function-warning-by-clang">https://stackoverflow.com/questions/18515183/c-overloaded-virtual-function-warning-by-clang</a></p>
-]]></content>
-      <categories>
-        <category>cpp</category>
-      </categories>
-      <tags>
-        <tag>cpp</tag>
-        <tag>virtual</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hybrid-sleep和sleep以及hibernate的区别</title>
-    <url>/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h1 id="bybrid-sleep"><a href="#bybrid-sleep" class="headerlink" title="bybrid-sleep"></a>bybrid-sleep</h1><p>混合休眠模式:<br>是指电脑sleep(睡眠模式)和hibernate(休眠模式)同时进行,即把信息保存到内存的同时也写入到系统主分区的hiberfil.sys文件中</p>
-<h1 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h1><p>睡眠模式,linux下也叫挂起(suspend):<br>把信息到存到内存中,但不能断电,断电后数据丢失,恢复最快</p>
-<h1 id="hibernate"><a href="#hibernate" class="headerlink" title="hibernate"></a>hibernate</h1><p>休眠模式:<br>把信息写入到文件中,也就是硬盘中,不会有断电丢失数据的问题,但恢复时最慢,和重新开机一样</p>
-<h1 id="对比图表"><a href="#对比图表" class="headerlink" title="对比图表:"></a>对比图表:</h1><p><img src="duibi.png" alt="duibi"></p>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>hybrid-slep</tag>
-        <tag>sleep</tag>
-        <tag>hibernate</tag>
       </tags>
   </entry>
   <entry>
@@ -1855,6 +1749,112 @@
       </tags>
   </entry>
   <entry>
+    <title>gdb调试qt程序时打印qt特有的类型数据</title>
+    <url>/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<p>如果没有使用 qtcreator 调试 qt 程序，而是手动或利用其他 IDE 使用 gdb 调试，会发现 qt 类型的数据如 QString QList QMap 等不能直接查看其值。其实 gdb 是提供了关于打印数据的接口的，叫做 <code>Pretty-Printer</code>，这是一种利用 python 代码更好的输出变量数据的机制，感兴趣的可以搜索下相关内容。qtcreator 之所以可以愉快的打印出 qt 相应的数据也是因为它使用了这种机制，下面的命令可以查看 qtcreator 的安装目录中的 python 文件，命令在 debian 系的 linux 系统上有效:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># apt-file show qtcreator-data | grep py</span></span><br><span class="line">qtcreator-data: /usr/share/doc/qtcreator-data/copyright</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/boosttypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/cdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/creatortypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/dumper.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/gdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/lldbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/misctypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/opencvtypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/pdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/personaltypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/qttypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/stdtypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/qml/qmlpuppet/qml2puppet/instances/nodeinstancesignalspy.cpp</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/qml/qmlpuppet/qml2puppet/instances/nodeinstancesignalspy.h</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/classes/python/file.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/classes/python/wizard.json</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/files/python/file.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/files/python/wizard.json</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>/usr/share/qtcreator/debugger/</code> 目录下关于 qtcreator 对 debug 所做的优化，不过不知道为什么直接使用 qtcreator 提供的 qt 类型相关的脚本没有成功(有成功的可以在下面回复方法指点一下)。因此又在 github 上搜索相关内容找到了另一个 qt 相关的 Pretty-Print 脚本，项目地址为：<a href="https://github.com/Lekensteyn/qt5printers">https://github.com/Lekensteyn/qt5printers</a>，在 linux 系统下具体使用方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 克隆项目到~/.git/qt5printers目录下</span></span><br><span class="line">git <span class="built_in">clone</span> git@github.com:Lekensteyn/qt5printers.git ~/.git/qt5printers</span><br></pre></td></tr></table></figure>
+
+<p>复制以下内容到<code>~/.gdbinit</code>文件中，若文件不存在则手动创建：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">python</span><br><span class="line"><span class="keyword">import</span> sys, os.path</span><br><span class="line">sys.path.insert(<span class="number">0</span>, os.path.expanduser(<span class="string">&#x27;~/.gdb&#x27;</span>))</span><br><span class="line"><span class="keyword">import</span> qt5printers</span><br><span class="line">qt5printers.register_printers(gdb.current_objfile())</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>做完之后就可以 debug 一个 qt 程序测试了</p>
+]]></content>
+      <categories>
+        <category>qt</category>
+      </categories>
+      <tags>
+        <tag>qt</tag>
+        <tag>gdb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>getDuration()获取媒体总长度值为-1</title>
+    <url>/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/</url>
+    <content><![CDATA[<p>例如VideoView获取视频总长度：<br>在视频播放前获取到的视频总长度都为-1<br>想要在视频播放前获取到总长度的话:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">videoView.setOnPreparedListener(<span class="keyword">new</span> MyOnPreparedListener());</span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyOnPreparedListener</span> <span class="keyword">implements</span> <span class="title">OnPreparedListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPrepared</span><span class="params">(MediaPlayer mp)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line"></span><br><span class="line">            video.getDuration();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>getDuration</tag>
+        <tag>视频总长度</tag>
+        <tag>videoview</tag>
+        <tag>mediaplayer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git-找回已删除的分支</title>
+    <url>/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/</url>
+    <content><![CDATA[<p>手残总是难免的，有时候不小心删掉了一个还没有合并或者push的分支，等反应过来似乎已经找不到这个分支在仓库中存在的痕迹了。</p>
+<p>这时<code>git reflog</code>命令就体现出了它的价值，其实git会把我们在仓库里的所有操作都记录下来，<br>从<code>git reflog</code>命令的输出就可以看到，就算是从分支A切换到分支B也会被记录下来，那么假设，分支B被误删，<br>执行<code>git reflog</code>命令后就可以找到分支B的痕迹: “commit id”，不管是从其他分支切换到分支B，还是分支B的一个提交记录，<br>都会看到其”commit id”，复制这个”commit id”然后切换过去，此时仓库处于分离头指针状态，其实现在已经是在分支B了，<br>只需要从当前状态创建一个分支，那么分支B也就复活了： <code>git checkout -b B-reborn</code><br>这个分支<code>B-reborn</code>就是先前删除的分支B。</p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hides overloaded virtual function</title>
+    <url>/2018/10/04/hides-overloaded-virtual-function/</url>
+    <content><![CDATA[<p>在<code>重载</code>父类的同名虚函数时会出现<code>hides overloaded virtual function</code>编译警告。<br>从字面上的意思其实就可以理解：重载的虚函数被隐藏了。</p>
+<p>三个关键点：</p>
+<ul>
+<li>重载</li>
+<li>虚函数</li>
+<li>隐藏</li>
+</ul>
+<p>这个编译警告之所以出现，是因为上面三个关键点，首先是发生了<code>重载</code>，子类重载了父类的函数，其次被重载的是虚函数，这时这个被重载的父类的虚函数将会被隐藏。<br>何为隐藏呢，应该是不能使用子类实例直接调用父类被隐藏的函数，调用时必须指定父类命名空间，往深了说也就是编译器如果在子类中发现了要使用的函数的名字，注意，是名字不包含函数签名，只要名字匹配上，就不会再去父类中去寻找这个名字的函数，即便子类中的函数参数不匹配，也不会再去父类中寻找。</p>
+<p>其实去掉<code>虚函数</code>这个关键点，在c++中当重载了父类的函数时，隐藏同样会发生，举个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> B();</span><br><span class="line">    b-&gt;foo(); <span class="comment">//编译报错</span></span><br><span class="line">    b-&gt;A::foo(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;foo(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当重载的父类函数为虚函数时，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123; <span class="comment">//将父类函数声明为虚函数</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="comment">//此处会有编译警告：&quot;&#x27;B::foo&#x27; hides overloaded virtual function&quot;</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> B();</span><br><span class="line">    b-&gt;foo(); <span class="comment">//编译报错依旧</span></span><br><span class="line">    b-&gt;A::foo(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;foo(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译错误依旧，但多了一个编译警告，关于这个编译警告，有种解释说是为了避免书写错误，这就要说到多态，上面的例子没有应用多态有些不合适，修改一下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookA</span>;</span> <span class="comment">//改动处</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookB</span>;</span> <span class="comment">//改动处</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookA *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A *b = <span class="keyword">new</span> B(); <span class="comment">//改动处</span></span><br><span class="line">    b-&gt;foo(<span class="keyword">new</span> BookB());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与之前的例子的区别是多声明了两个类：<code>BookA</code>和<code>BookB</code>，函数的参数类型换成了这两个类，<strong>最重要的一点是<code>main</code>函数中将实例B声明为了A类型</strong>，此时就可以比较清晰的看出为什么这个警告是为了书写错误：</p>
+<p>假设我们就是要在B类中重写父类A的<code>void foo(BookA *)</code>函数，以便在<code>main</code>函数中实现以类型A的实例去调用B对象的重写函数(多态调用)，但却因为书写错误，把B类行的函数的参数写成了<code>BookB *</code>，这就与初衷不符了，此时这个编译警告就是有价值的了。</p>
+<p>再假设，我们就是要在B类中声明<code>void foo(BookB *)</code>这么一个函数，且并不是为了重写父类中的函数，那么此时这个编译警告就是多余的，我们可以使用<code>using</code>来避免这个警告，例如在类B中做出如下声明：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> A::foo;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这样就是告诉编译器，我们明确要使用这两个函数，并不是为了重写，这样有一个可能不期望出现的情况，就是B的实例也可调用<code>void foo(BookA *)</code>函数，如果不想这个情况发生，可以把<code>using</code>放到私有的里面，这样既解决了编译警告，又不会暴露父类的这个函数出去：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">using</span> A::foo;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>参考了一个帖子：<br><a href="https://stackoverflow.com/questions/18515183/c-overloaded-virtual-function-warning-by-clang">https://stackoverflow.com/questions/18515183/c-overloaded-virtual-function-warning-by-clang</a></p>
+]]></content>
+      <categories>
+        <category>cpp</category>
+      </categories>
+      <tags>
+        <tag>cpp</tag>
+        <tag>virtual</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hybrid-sleep和sleep以及hibernate的区别</title>
+    <url>/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h1 id="bybrid-sleep"><a href="#bybrid-sleep" class="headerlink" title="bybrid-sleep"></a>bybrid-sleep</h1><p>混合休眠模式:<br>是指电脑sleep(睡眠模式)和hibernate(休眠模式)同时进行,即把信息保存到内存的同时也写入到系统主分区的hiberfil.sys文件中</p>
+<h1 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h1><p>睡眠模式,linux下也叫挂起(suspend):<br>把信息到存到内存中,但不能断电,断电后数据丢失,恢复最快</p>
+<h1 id="hibernate"><a href="#hibernate" class="headerlink" title="hibernate"></a>hibernate</h1><p>休眠模式:<br>把信息写入到文件中,也就是硬盘中,不会有断电丢失数据的问题,但恢复时最慢,和重新开机一样</p>
+<h1 id="对比图表"><a href="#对比图表" class="headerlink" title="对比图表:"></a>对比图表:</h1><p><img src="duibi.png" alt="duibi"></p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>hybrid-slep</tag>
+        <tag>sleep</tag>
+        <tag>hibernate</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>java中this和.this</title>
     <url>/2016/04/22/java%E4%B8%ADthis%E5%92%8C-this/</url>
     <content><![CDATA[<p>“this”是指(或者说:所代表的是)当前这段代码所在的类的对象,<br>而”类名.this”是指”类名”的对象(一般在匿名类或内部类中使用来调用外部类的方法或属性)</p>
@@ -1994,6 +1994,29 @@
       <tags>
         <tag>dashboard</tag>
         <tag>登录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>klib-khash 使用记录</title>
+    <url>/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>klib 的项目地址：<a href="https://github.com/attractivechaos/klib/">https://github.com/attractivechaos/klib/</a></p>
+<p>klib 官方文档：<a href="http://attractivechaos.github.io/klib/">http://attractivechaos.github.io/klib/</a></p>
+<p>总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中遇到的问题和使用过程中需要注意的点。</p>
+<p>上面的 klib 官方文档链接中有不少入门的小例子，但也只是简单的使用方法，很多接口并没有提及，不过也有可能作者没有及时更新文档中的例子。</p>
+<p>在使用过程中要时刻谨记 khash 中给出的接口都是宏，这也意味着在调试的时候很不方便，如果搞不懂一个接口的意思或者想知道这个接口都做了什么，最好还是看一下 khash.h 中的实现。</p>
+<p>就我个人来说，最想提出要注意的一点是 <code>内存释放</code>，在过去一段时间内，我手上依赖 klib 的程序一直都有内存泄漏，不过我始终没有找到原因，直到昨天我才终于定位到是 khash 相关的数据没有被彻底释放。导致这一问题出现的重要原因也在于我接手这个项目时，khash 相关的释放代码已经大量存在了，以至于先入为主，令我以为正确的释放操作就应该就那样，昨天定位到这个问题后我仔细分析了一下 khash 的源码，发现一直以来程序里关于销毁释放内存的操作，一直都是错误的。下面只会使用正确的方法（至少目前我认为是正确的:))，以免误导了其他人。</p>
+<p>khash 里面提供了两种数据结构：hashmap 和 hashset，两种结构的使用方法大致是一样的，可以把 hashset 结构看作是没有值的 hashmap。</p>
+<h1 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明 hashmap 名字和键值的类型</span></span><br><span class="line"><span class="comment">// 这个宏还定义了大量的函数，不过一般都不直接使用那些函数，而是使用通用的接口宏</span></span><br><span class="line"><span class="comment">// 这里声明了一个键值对是 int:int 的 map 类型，注意这里只是声明了一个 类型</span></span><br><span class="line"><span class="comment">// 这个 map 类型的名字是 MAP_int2int，map 的名字后面会经常用到</span></span><br><span class="line"><span class="comment">// 此外，这个宏是对宏 KHASH_INIT 的一个简单封装</span></span><br><span class="line"><span class="comment">// 如果有复杂需求要使用 KHASH_INIT，则需要提供两个 hash 函数，我没有用到就不举例了</span></span><br><span class="line"><span class="comment">// hash 函数的实现可以参考 khash 里已有的来实现</span></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_int2int) *map_int2int = kh_init(MAP_int2int); <span class="comment">// 使用上面声明的 map 类型声明并初始化一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>; <span class="comment">// 访问键、值都需要使用 iter</span></span><br><span class="line">iter = kh_get(MAP_int2int, map_int2int, <span class="number">100</span>); <span class="comment">// 查看 100 这个键是否在 map 中存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_int2int)) &#123; <span class="comment">// 不存在</span></span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>; <span class="comment">// 将 100 这个键放入 map，ret 是一个额外的返回值，用来表示放入操作的结果</span></span><br><span class="line">    iter = kh_put(MAP_int2int, map_int2int, <span class="number">100</span>, &amp;ret); <span class="comment">// 放入成功后返回值 iter 即表示为 100 这个键在 map 中的位置</span></span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_int2int, iter) = <span class="number">200</span>; <span class="comment">// 使用 iter 来存值，值为 200</span></span><br><span class="line"><span class="comment">/* 至此 map 中就有了 100:200 这一个数据 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历 map</span></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_int2int); iter != kh_end(map_int2int); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_int2int, iter)) &#123; <span class="comment">// 这里的判断一定要有</span></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_int2int, iter));</span><br><span class="line">    do_something_bar(kh_val(map_int2int, iter));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* khash 里还提供了更便利的遍历宏：kh_foreach 和 kh_foreach_value */</span></span><br><span class="line"></span><br><span class="line">kh_del(MAP_int2int, map_int2int, iter); <span class="comment">// 当确定一个 iter 之后，可以移除一个键值对</span></span><br><span class="line">kh_clear(MAP_int2int, map_int2int); <span class="comment">// 清空这个 map 的所有数据</span></span><br><span class="line"></span><br><span class="line">do_something_zzz(map_int2int); <span class="comment">// 清空后的 map 还可以继续使用，比如继续往里面存值</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_int2int, map_int2int); <span class="comment">// 销毁 map，销毁之后就不能再使用了</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 与 demo1 基本相同，但多了释放内存的操作，不再使用过多注释了</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">// 一些结构体变量</span></span><br><span class="line">&#125; <span class="keyword">struct_a_t</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct_a_t</span> *<span class="title">create_struct_a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个创建示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_struct_a</span><span class="params">(<span class="keyword">struct_a_t</span> *)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_str</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *c_str)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例字符串的函数</span></span><br><span class="line">    <span class="built_in">free</span>(c_str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建测试数据</span></span><br><span class="line"><span class="keyword">char</span> *test_key = <span class="string">&quot;test_key_data&quot;</span>;</span><br><span class="line"><span class="keyword">struct_a_t</span> *test_value = create_struct_a();</span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2struct_p, <span class="keyword">struct_a_t</span> *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2struct_p) *map_str2struct_p = kh_init(MAP_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>;</span><br><span class="line">iter = kh_get(MAP_str2struct_p, map_str2struct_p, test_key);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_str2struct_p)) &#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    iter = kh_put(MAP_str2struct_p, map_str2struct_p, test_key, &amp;ret);</span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_str2struct_p, iter) = test_value;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_str2struct_p); iter != kh_end(map_str2struct_p); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_str2struct_p, iter)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_str2struct_p, iter));</span><br><span class="line">    do_something_bar(kh_val(map_str2struct_p, iter));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">kh_del(MAP_str2struct_p, map_str2struct_p, iter);</span><br><span class="line">kh_clear(MAP_str2struct_p, map_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要注意的是，map 或 set 中不论键还是值，只要类型是指针，那么指针指向的内存就需要使用者自行释放</span></span><br><span class="line">kh_free_vals(MAP_str2struct_p, map_str2struct_p, free_struct_a); <span class="comment">// 销毁值的宏</span></span><br><span class="line">kh_free(MAP_str2struct_p, map_str2struct_p, free_str); <span class="comment">// 销毁键的宏</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_str2struct_p, map_str2struct_p);</span><br></pre></td></tr></table></figure>
+
+<h1 id="demo3"><a href="#demo3" class="headerlink" title="demo3"></a>demo3</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 还可以嵌套使用</span></span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2map_p, <span class="keyword">khash_t</span>(MAP_int2int) *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2map_p) *map_str2map_p = kh_init(MAP_str2map_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>c</category>
+      </categories>
+      <tags>
+        <tag>klib</tag>
+        <tag>khash</tag>
       </tags>
   </entry>
   <entry>
@@ -2226,29 +2249,6 @@
       </tags>
   </entry>
   <entry>
-    <title>klib-khash 使用记录</title>
-    <url>/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>klib 的项目地址：<a href="https://github.com/attractivechaos/klib/">https://github.com/attractivechaos/klib/</a></p>
-<p>klib 官方文档：<a href="http://attractivechaos.github.io/klib/">http://attractivechaos.github.io/klib/</a></p>
-<p>总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中遇到的问题和使用过程中需要注意的点。</p>
-<p>上面的 klib 官方文档链接中有不少入门的小例子，但也只是简单的使用方法，很多接口并没有提及，不过也有可能作者没有及时更新文档中的例子。</p>
-<p>在使用过程中要时刻谨记 khash 中给出的接口都是宏，这也意味着在调试的时候很不方便，如果搞不懂一个接口的意思或者想知道这个接口都做了什么，最好还是看一下 khash.h 中的实现。</p>
-<p>就我个人来说，最想提出要注意的一点是 <code>内存释放</code>，在过去一段时间内，我手上依赖 klib 的程序一直都有内存泄漏，不过我始终没有找到原因，直到昨天我才终于定位到是 khash 相关的数据没有被彻底释放。导致这一问题出现的重要原因也在于我接手这个项目时，khash 相关的释放代码已经大量存在了，以至于先入为主，令我以为正确的释放操作就应该就那样，昨天定位到这个问题后我仔细分析了一下 khash 的源码，发现一直以来程序里关于销毁释放内存的操作，一直都是错误的。下面只会使用正确的方法（至少目前我认为是正确的:))，以免误导了其他人。</p>
-<p>khash 里面提供了两种数据结构：hashmap 和 hashset，两种结构的使用方法大致是一样的，可以把 hashset 结构看作是没有值的 hashmap。</p>
-<h1 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明 hashmap 名字和键值的类型</span></span><br><span class="line"><span class="comment">// 这个宏还定义了大量的函数，不过一般都不直接使用那些函数，而是使用通用的接口宏</span></span><br><span class="line"><span class="comment">// 这里声明了一个键值对是 int:int 的 map 类型，注意这里只是声明了一个 类型</span></span><br><span class="line"><span class="comment">// 这个 map 类型的名字是 MAP_int2int，map 的名字后面会经常用到</span></span><br><span class="line"><span class="comment">// 此外，这个宏是对宏 KHASH_INIT 的一个简单封装</span></span><br><span class="line"><span class="comment">// 如果有复杂需求要使用 KHASH_INIT，则需要提供两个 hash 函数，我没有用到就不举例了</span></span><br><span class="line"><span class="comment">// hash 函数的实现可以参考 khash 里已有的来实现</span></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_int2int) *map_int2int = kh_init(MAP_int2int); <span class="comment">// 使用上面声明的 map 类型声明并初始化一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>; <span class="comment">// 访问键、值都需要使用 iter</span></span><br><span class="line">iter = kh_get(MAP_int2int, map_int2int, <span class="number">100</span>); <span class="comment">// 查看 100 这个键是否在 map 中存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_int2int)) &#123; <span class="comment">// 不存在</span></span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>; <span class="comment">// 将 100 这个键放入 map，ret 是一个额外的返回值，用来表示放入操作的结果</span></span><br><span class="line">    iter = kh_put(MAP_int2int, map_int2int, <span class="number">100</span>, &amp;ret); <span class="comment">// 放入成功后返回值 iter 即表示为 100 这个键在 map 中的位置</span></span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_int2int, iter) = <span class="number">200</span>; <span class="comment">// 使用 iter 来存值，值为 200</span></span><br><span class="line"><span class="comment">/* 至此 map 中就有了 100:200 这一个数据 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历 map</span></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_int2int); iter != kh_end(map_int2int); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_int2int, iter)) &#123; <span class="comment">// 这里的判断一定要有</span></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_int2int, iter));</span><br><span class="line">    do_something_bar(kh_val(map_int2int, iter));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* khash 里还提供了更便利的遍历宏：kh_foreach 和 kh_foreach_value */</span></span><br><span class="line"></span><br><span class="line">kh_del(MAP_int2int, map_int2int, iter); <span class="comment">// 当确定一个 iter 之后，可以移除一个键值对</span></span><br><span class="line">kh_clear(MAP_int2int, map_int2int); <span class="comment">// 清空这个 map 的所有数据</span></span><br><span class="line"></span><br><span class="line">do_something_zzz(map_int2int); <span class="comment">// 清空后的 map 还可以继续使用，比如继续往里面存值</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_int2int, map_int2int); <span class="comment">// 销毁 map，销毁之后就不能再使用了</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 与 demo1 基本相同，但多了释放内存的操作，不再使用过多注释了</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">// 一些结构体变量</span></span><br><span class="line">&#125; <span class="keyword">struct_a_t</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct_a_t</span> *<span class="title">create_struct_a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个创建示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_struct_a</span><span class="params">(<span class="keyword">struct_a_t</span> *)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例结构体的函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_str</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *c_str)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一个销毁示例字符串的函数</span></span><br><span class="line">    <span class="built_in">free</span>(c_str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建测试数据</span></span><br><span class="line"><span class="keyword">char</span> *test_key = <span class="string">&quot;test_key_data&quot;</span>;</span><br><span class="line"><span class="keyword">struct_a_t</span> *test_value = create_struct_a();</span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2struct_p, <span class="keyword">struct_a_t</span> *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2struct_p) *map_str2struct_p = kh_init(MAP_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khiter_t</span> iter = <span class="number">0</span>;</span><br><span class="line">iter = kh_get(MAP_str2struct_p, map_str2struct_p, test_key);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_str2struct_p)) &#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    iter = kh_put(MAP_str2struct_p, map_str2struct_p, test_key, &amp;ret);</span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_str2struct_p, iter) = test_value;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_str2struct_p); iter != kh_end(map_str2struct_p); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_str2struct_p, iter)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_str2struct_p, iter));</span><br><span class="line">    do_something_bar(kh_val(map_str2struct_p, iter));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">kh_del(MAP_str2struct_p, map_str2struct_p, iter);</span><br><span class="line">kh_clear(MAP_str2struct_p, map_str2struct_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要注意的是，map 或 set 中不论键还是值，只要类型是指针，那么指针指向的内存就需要使用者自行释放</span></span><br><span class="line">kh_free_vals(MAP_str2struct_p, map_str2struct_p, free_struct_a); <span class="comment">// 销毁值的宏</span></span><br><span class="line">kh_free(MAP_str2struct_p, map_str2struct_p, free_str); <span class="comment">// 销毁键的宏</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_str2struct_p, map_str2struct_p);</span><br></pre></td></tr></table></figure>
-
-<h1 id="demo3"><a href="#demo3" class="headerlink" title="demo3"></a>demo3</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 还可以嵌套使用</span></span><br><span class="line"></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="keyword">int</span>);</span><br><span class="line">KHASH_MAP_INIT_STR(MAP_str2map_p, <span class="keyword">khash_t</span>(MAP_int2int) *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">khash_t</span>(MAP_str2map_p) *map_str2map_p = kh_init(MAP_str2map_p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>c</category>
-      </categories>
-      <tags>
-        <tag>klib</tag>
-        <tag>khash</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>linux下控制风扇转速</title>
     <url>/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/</url>
     <content><![CDATA[<p>本文不一定适用于所有电脑，需要自己找到对应的设备文件</p>
@@ -2372,6 +2372,55 @@
       <tags>
         <tag>linux</tag>
         <tag>目录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux创建wifi热点</title>
+    <url>/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/</url>
+    <content><![CDATA[<p><strong><font color=red>本文中使用的系统是archlinux,其他系统应该只有安装方法不同</font></strong></p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yaourt -S archlinuxcn/create_ap</span><br><span class="line"><span class="comment">#或者：</span></span><br><span class="line">yaourt -S aur/create_ap</span><br></pre></td></tr></table></figure>
+<h1 id="终端下创建热点"><a href="#终端下创建热点" class="headerlink" title="终端下创建热点"></a>终端下创建热点</h1><p>首先执行ifconfig命令查看网卡端口<br>下面是我的：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">        ...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        ...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">        ...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<ul>
+<li>ap0：是我用create_ap命令创建出来的ap</li>
+<li>enp4s0f2：有线网卡</li>
+<li>lo：暂时不清楚</li>
+<li>ppp0：这个用ADSL上网的话就会出现</li>
+<li>wlp3s0：无线网卡</li>
+</ul>
+<p>当你没有使用create_ap创建ap时，ifconfig命令不会返回ap0，当你没有使用ADSL上网时(路由器LAN口直连)不会有ppp0</p>
+<h2 id="路由器LAN口直连"><a href="#路由器LAN口直连" class="headerlink" title="路由器LAN口直连"></a>路由器LAN口直连</h2><p>所以，如果你没有使用ADSL上网时：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 enp4s0f2 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
+
+<h2 id="ADSL"><a href="#ADSL" class="headerlink" title="ADSL"></a>ADSL</h2><p>如果你用的是ADSL上网的:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 ppp0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
+
+<h2 id="wifi"><a href="#wifi" class="headerlink" title="wifi"></a>wifi</h2><p>如果你使用wifi上网的:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建没有密码的热点"><a href="#创建没有密码的热点" class="headerlink" title="创建没有密码的热点"></a>创建没有密码的热点</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，没有密码的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName</span><br></pre></td></tr></table></figure>
+<p>也就是不写密码就行了</p>
+<blockquote>
+<p>上面几种方法根据自己的情况任选一种，创建好之后执行ifconfig命令就会发现多出来了一个ap0的接口信息</p>
+</blockquote>
+<h1 id="使用systemctl创建后台热点-服务"><a href="#使用systemctl创建后台热点-服务" class="headerlink" title="使用systemctl创建后台热点(服务)"></a>使用systemctl创建后台热点(服务)</h1><p>安装create_ap时，会自动生成一个wifi.service文件到/usr/lib/systemd/system目录下<br>里面也是调用了create_ap命令来创建热点，可以打开这个文件，按需编辑，<br>编辑好内容之后，就可执行systemctl来启动创建热点的服务了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">systemctl start wifi.service</span><br><span class="line"><span class="comment">#停止</span></span><br><span class="line">systemctl stop wifi.service</span><br></pre></td></tr></table></figure>
+
+<p>也可以开机自动运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#允许开机自动执行</span></span><br><span class="line">systemctl <span class="built_in">enable</span> wifi.service</span><br><span class="line"><span class="comment">#禁止开机自动执行</span></span><br><span class="line">systemctl <span class="built_in">disable</span> wifi.service</span><br></pre></td></tr></table></figure>
+
+<p>可以修改wifi.service文件为你想要的文件名，比如修改成create_ap.service，那么启动服务时的命令就要改成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">systemctl start create_ap.service</span><br><span class="line"><span class="comment">#停止</span></span><br><span class="line">systemctl stop create_ap.service</span><br></pre></td></tr></table></figure>
+<p>开机自动启动同上</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>wifi</tag>
+        <tag>热点</tag>
       </tags>
   </entry>
   <entry>
@@ -2597,6 +2646,28 @@
       </tags>
   </entry>
   <entry>
+    <title>mysql 获取表结构</title>
+    <url>/2020/06/11/mysql-%E8%8E%B7%E5%8F%96%E8%A1%A8%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<p>获取建表语句：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW CREATE TABLE table_name</span><br></pre></td></tr></table></figure>
+
+<p>获取表结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># DESC 是 DESCRIBE 的缩写</span><br><span class="line">DESC table_name</span><br><span class="line">SHOW COLUMNS FROM table_name</span><br></pre></td></tr></table></figure>
+
+<p>筛选字段：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># field_name 可以包括通配符</span><br><span class="line">DESC table_name &quot;field_name&quot;</span><br><span class="line">SHOW COLUMNS FROM table_name LIKE &quot;field_name&quot;</span><br></pre></td></tr></table></figure>
+
+<p>另外，经过测试，<code>SHOW COLUMNS FROM</code> 语句除了可以使用 LIKE 关键字，还可以使用 WHERE 子句，但 <code>DESCRIBE</code> 语句不支持。</p>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>表结构</tag>
+        <tag>字段</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>nextcloud 部署后没有日历邮件等应用</title>
     <url>/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<p>在公司内部服务器上搭了一个 <a href="https://nextcloud.com/">Nextcloud</a> 服务，跑起来之后发现没有日历、邮件等应用，且不能打开应用商店，分析了服务日志发现是由于网络问题。</p>
@@ -2667,55 +2738,6 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pop, push, shift, unshift # 移除或新增 array 的开头或结尾</span><br><span class="line">splice # 修改 array 任意位置</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
-    <title>linux创建wifi热点</title>
-    <url>/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/</url>
-    <content><![CDATA[<p><strong><font color=red>本文中使用的系统是archlinux,其他系统应该只有安装方法不同</font></strong></p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yaourt -S archlinuxcn/create_ap</span><br><span class="line"><span class="comment">#或者：</span></span><br><span class="line">yaourt -S aur/create_ap</span><br></pre></td></tr></table></figure>
-<h1 id="终端下创建热点"><a href="#终端下创建热点" class="headerlink" title="终端下创建热点"></a>终端下创建热点</h1><p>首先执行ifconfig命令查看网卡端口<br>下面是我的：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">        ...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        ...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">        ...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br></pre></td></tr></table></figure>
-<p>解释：</p>
-<ul>
-<li>ap0：是我用create_ap命令创建出来的ap</li>
-<li>enp4s0f2：有线网卡</li>
-<li>lo：暂时不清楚</li>
-<li>ppp0：这个用ADSL上网的话就会出现</li>
-<li>wlp3s0：无线网卡</li>
-</ul>
-<p>当你没有使用create_ap创建ap时，ifconfig命令不会返回ap0，当你没有使用ADSL上网时(路由器LAN口直连)不会有ppp0</p>
-<h2 id="路由器LAN口直连"><a href="#路由器LAN口直连" class="headerlink" title="路由器LAN口直连"></a>路由器LAN口直连</h2><p>所以，如果你没有使用ADSL上网时：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 enp4s0f2 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
-
-<h2 id="ADSL"><a href="#ADSL" class="headerlink" title="ADSL"></a>ADSL</h2><p>如果你用的是ADSL上网的:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 ppp0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
-
-<h2 id="wifi"><a href="#wifi" class="headerlink" title="wifi"></a>wifi</h2><p>如果你使用wifi上网的:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
-
-<h2 id="创建没有密码的热点"><a href="#创建没有密码的热点" class="headerlink" title="创建没有密码的热点"></a>创建没有密码的热点</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">创建一个名字是wifiName，没有密码的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName</span><br></pre></td></tr></table></figure>
-<p>也就是不写密码就行了</p>
-<blockquote>
-<p>上面几种方法根据自己的情况任选一种，创建好之后执行ifconfig命令就会发现多出来了一个ap0的接口信息</p>
-</blockquote>
-<h1 id="使用systemctl创建后台热点-服务"><a href="#使用systemctl创建后台热点-服务" class="headerlink" title="使用systemctl创建后台热点(服务)"></a>使用systemctl创建后台热点(服务)</h1><p>安装create_ap时，会自动生成一个wifi.service文件到/usr/lib/systemd/system目录下<br>里面也是调用了create_ap命令来创建热点，可以打开这个文件，按需编辑，<br>编辑好内容之后，就可执行systemctl来启动创建热点的服务了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">systemctl start wifi.service</span><br><span class="line"><span class="comment">#停止</span></span><br><span class="line">systemctl stop wifi.service</span><br></pre></td></tr></table></figure>
-
-<p>也可以开机自动运行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#允许开机自动执行</span></span><br><span class="line">systemctl <span class="built_in">enable</span> wifi.service</span><br><span class="line"><span class="comment">#禁止开机自动执行</span></span><br><span class="line">systemctl <span class="built_in">disable</span> wifi.service</span><br></pre></td></tr></table></figure>
-
-<p>可以修改wifi.service文件为你想要的文件名，比如修改成create_ap.service，那么启动服务时的命令就要改成：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启动</span></span><br><span class="line">systemctl start create_ap.service</span><br><span class="line"><span class="comment">#停止</span></span><br><span class="line">systemctl stop create_ap.service</span><br></pre></td></tr></table></figure>
-<p>开机自动启动同上</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>wifi</tag>
-        <tag>热点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python 中函数传参是值传递还是引用传递</title>
     <url>/2020/05/29/python-%E4%B8%AD%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/</url>
     <content><![CDATA[<p>这个问题网上众说纷纭，有的答案不完全正确，有的答案没有解释清楚。</p>
@@ -2736,28 +2758,6 @@
         <tag>传参</tag>
         <tag>传值</tag>
         <tag>传引用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mysql 获取表结构</title>
-    <url>/2020/06/11/mysql-%E8%8E%B7%E5%8F%96%E8%A1%A8%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<p>获取建表语句：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW CREATE TABLE table_name</span><br></pre></td></tr></table></figure>
-
-<p>获取表结构：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># DESC 是 DESCRIBE 的缩写</span><br><span class="line">DESC table_name</span><br><span class="line">SHOW COLUMNS FROM table_name</span><br></pre></td></tr></table></figure>
-
-<p>筛选字段：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># field_name 可以包括通配符</span><br><span class="line">DESC table_name &quot;field_name&quot;</span><br><span class="line">SHOW COLUMNS FROM table_name LIKE &quot;field_name&quot;</span><br></pre></td></tr></table></figure>
-
-<p>另外，经过测试，<code>SHOW COLUMNS FROM</code> 语句除了可以使用 LIKE 关键字，还可以使用 WHERE 子句，但 <code>DESCRIBE</code> 语句不支持。</p>
-]]></content>
-      <categories>
-        <category>mysql</category>
-      </categories>
-      <tags>
-        <tag>表结构</tag>
-        <tag>字段</tag>
       </tags>
   </entry>
   <entry>
@@ -2797,6 +2797,29 @@
       <tags>
         <tag>生成器</tag>
         <tag>协程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python的库文件在哪儿</title>
+    <url>/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/</url>
+    <content><![CDATA[<blockquote>
+<p>当前操作系统: deepin基于debian</p>
+</blockquote>
+<h1 id="模块管理器pip"><a href="#模块管理器pip" class="headerlink" title="模块管理器pip"></a>模块管理器pip</h1><p>默认的命令pip可能是来自pip2也可能是pip3, 这取决于安装pip2和pip3的顺序,<br>安装pip2或pip3时会覆盖原有pip可执行文件, 所以在使用pip安装python模块时,<br>最好明确指出使用pip2还是pip3, 而不是直接使用pip命令, 这样可以避免明明要安装python3的模块库, 下载安装的却是python2的模块库.</p>
+<h1 id="安装模块-库"><a href="#安装模块-库" class="headerlink" title="安装模块(库)"></a>安装模块(库)</h1><p>使用pip命令安装模块时, 是否使用sudo提权会影响安装路径.</p>
+<h2 id="使用sudo提权"><a href="#使用sudo提权" class="headerlink" title="使用sudo提权"></a>使用sudo提权</h2><p>会安装模块到以下路径:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># python自带的一些模块文件在这个路径下.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># 用户自行安装的模块一般在这个路径下.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="没有使用sudo提权"><a href="#没有使用sudo提权" class="headerlink" title="没有使用sudo提权"></a>没有使用sudo提权</h2><p>会安装模块到以下路径:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">~/.local/lib/python*(版本不同,具体目录不同)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
@@ -2878,23 +2901,6 @@
       </tags>
   </entry>
   <entry>
-    <title>the menu is gone in qt on mac osx</title>
-    <url>/2018/01/06/the-menu-is-gone-in-qt-on-mac-osx/</url>
-    <content><![CDATA[<p>在osx系统下, qt程序菜单项的名字如果是“quit”,”about”(不区分大小写), 这个菜单项就会消失, 如果这个菜单只包含这些会消失的菜单项, 那么这个菜单也会消失.<br>猜测: 这应该是由于跟osx系统默认给程序提供了一些菜单项有冲突的关系.</p>
-<p>问题示例代码:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">SimpleMenu::SimpleMenu(QWidget *parent)</span><br><span class="line">    : QMainWindow(parent) &#123;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 只要菜单项的名字不是“Quit”或“quit”就可以正常显示</span></span><br><span class="line">  QAction *quit = <span class="keyword">new</span> QAction(<span class="string">&quot;&amp;Quit&quot;</span>, <span class="keyword">this</span>);</span><br><span class="line">  <span class="comment">// 只要菜单项的名字不是“About”或“about”就可以正常显示</span></span><br><span class="line">  QAction *about = <span class="keyword">new</span> QAction(<span class="string">&quot;&amp;about&quot;</span>, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  QMenu *file;</span><br><span class="line">  file = menuBar()-&gt;addMenu(<span class="string">&quot;&amp;File&quot;</span>);</span><br><span class="line">  file-&gt;addAction(quit);</span><br><span class="line">  file-&gt;addAction(about);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">connect</span>(quit, &amp;QAction::triggered, qApp, QApplication::quit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>qt</category>
-      </categories>
-      <tags>
-        <tag>qt</tag>
-        <tag>menu</tag>
-        <tag>disappear</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>qt中翻译静态成员变量中的字符串</title>
     <url>/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
     <content><![CDATA[<p>在 qt 中要翻译一个字符串很简单，只需要使用 <code>tr</code> 函数包裹住字符串即可。后来发现这一方法对于静态变量无效，经同事提醒原来静态数据初始化时，程序还没有加载翻译数据，也就是一般写在 main 函数中的 QTranslator::load() / app.installTranslator() 类似代码。</p>
@@ -2914,6 +2920,23 @@
         <tag>qt</tag>
         <tag>tr</tag>
         <tag>翻译</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>the menu is gone in qt on mac osx</title>
+    <url>/2018/01/06/the-menu-is-gone-in-qt-on-mac-osx/</url>
+    <content><![CDATA[<p>在osx系统下, qt程序菜单项的名字如果是“quit”,”about”(不区分大小写), 这个菜单项就会消失, 如果这个菜单只包含这些会消失的菜单项, 那么这个菜单也会消失.<br>猜测: 这应该是由于跟osx系统默认给程序提供了一些菜单项有冲突的关系.</p>
+<p>问题示例代码:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">SimpleMenu::SimpleMenu(QWidget *parent)</span><br><span class="line">    : QMainWindow(parent) &#123;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 只要菜单项的名字不是“Quit”或“quit”就可以正常显示</span></span><br><span class="line">  QAction *quit = <span class="keyword">new</span> QAction(<span class="string">&quot;&amp;Quit&quot;</span>, <span class="keyword">this</span>);</span><br><span class="line">  <span class="comment">// 只要菜单项的名字不是“About”或“about”就可以正常显示</span></span><br><span class="line">  QAction *about = <span class="keyword">new</span> QAction(<span class="string">&quot;&amp;about&quot;</span>, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  QMenu *file;</span><br><span class="line">  file = menuBar()-&gt;addMenu(<span class="string">&quot;&amp;File&quot;</span>);</span><br><span class="line">  file-&gt;addAction(quit);</span><br><span class="line">  file-&gt;addAction(about);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">connect</span>(quit, &amp;QAction::triggered, qApp, QApplication::quit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>qt</category>
+      </categories>
+      <tags>
+        <tag>qt</tag>
+        <tag>menu</tag>
+        <tag>disappear</tag>
       </tags>
   </entry>
   <entry>
@@ -3015,29 +3038,6 @@
       <tags>
         <tag>linux</tag>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python的库文件在哪儿</title>
-    <url>/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/</url>
-    <content><![CDATA[<blockquote>
-<p>当前操作系统: deepin基于debian</p>
-</blockquote>
-<h1 id="模块管理器pip"><a href="#模块管理器pip" class="headerlink" title="模块管理器pip"></a>模块管理器pip</h1><p>默认的命令pip可能是来自pip2也可能是pip3, 这取决于安装pip2和pip3的顺序,<br>安装pip2或pip3时会覆盖原有pip可执行文件, 所以在使用pip安装python模块时,<br>最好明确指出使用pip2还是pip3, 而不是直接使用pip命令, 这样可以避免明明要安装python3的模块库, 下载安装的却是python2的模块库.</p>
-<h1 id="安装模块-库"><a href="#安装模块-库" class="headerlink" title="安装模块(库)"></a>安装模块(库)</h1><p>使用pip命令安装模块时, 是否使用sudo提权会影响安装路径.</p>
-<h2 id="使用sudo提权"><a href="#使用sudo提权" class="headerlink" title="使用sudo提权"></a>使用sudo提权</h2><p>会安装模块到以下路径:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># python自带的一些模块文件在这个路径下.</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># 用户自行安装的模块一般在这个路径下.</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="没有使用sudo提权"><a href="#没有使用sudo提权" class="headerlink" title="没有使用sudo提权"></a>没有使用sudo提权</h2><p>会安装模块到以下路径:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">~/.local/lib/python*(版本不同,具体目录不同)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
