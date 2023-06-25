@@ -202,6 +202,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">ImageSwitcher和TextSwitcher使用笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:44:54" itemprop="dateCreated datePublished" datetime="2016-05-04T19:44:54+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="ImageSwitcher和TextSwitcher使用笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>只有步骤，记录，备忘<br>只举ImageSwitcher的例子，TextSwitcher基本一样</p>
+<p>1、布局文件中添加ImageSwitcher控件<br>2、activity中findViewById()获取到ImageSwitcher对象<br>3、需要一个工厂来制造需要显示的ImageView，需要实现ViewFactory接口，并重写接口的makeView()方法，这里使用隐式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">imageSwitcher.setFactory(<span class="keyword">new</span> ViewFactory()&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> View <span class="title">makeView</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">//1、new一个ImageView</span></span><br><span class="line">            <span class="comment">//2、为ImageView设置一系列属性</span></span><br><span class="line">            <span class="comment">//3、return加工好的ImageView对象</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>4、使用ImageSwitcher对象的setInAnimation()和setOutAnimation()设置动画效果(可选)<br>5、使用ImageSwitcher对象setImageResource()切换要显示的图片</p>
+<p>结束</p>
+<blockquote>
+<p>TextSwitcher的方法和上面一样，都需要实现ViewFactory接口并重写makeView()方法，<br>在其中new出TextView对象并设置属性然后返回，最后切换视图的方法是setText()</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1157,117 +1259,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/" class="post-title-link" itemprop="url">使用XMLReader接口解析XML</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 17:06:16" itemprop="dateCreated datePublished" datetime="2016-05-04T17:06:16+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/" class="post-meta-item leancloud_visitors" data-flag-title="使用XMLReader接口解析XML" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="如何获取XMLReader接口"><a href="#如何获取XMLReader接口" class="headerlink" title="如何获取XMLReader接口"></a>如何获取XMLReader接口</h1><p>从JDK文档来看，有两种方法：</p>
-<h2 id="使用SAXParserFactory-SAXParser-以下简称a方法"><a href="#使用SAXParserFactory-SAXParser-以下简称a方法" class="headerlink" title="使用SAXParserFactory+SAXParser[以下简称a方法]"></a>使用SAXParserFactory+SAXParser<code>[以下简称a方法]</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLReader aaa=SAXParserFactory.newInstance().newSAXParser().getXMLReader();</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用XMLReaderFactory-以下简称b方法"><a href="#使用XMLReaderFactory-以下简称b方法" class="headerlink" title="使用XMLReaderFactory[以下简称b方法]"></a>使用XMLReaderFactory<code>[以下简称b方法]</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLReader bbb=XMLReaderFactory.createXMLReader();</span><br></pre></td></tr></table></figure>
-
-<h1 id="两种方法不同之处"><a href="#两种方法不同之处" class="headerlink" title="两种方法不同之处"></a>两种方法不同之处</h1><p>在JDK文档a方法中SAXParser类的getXMLReader()方法的注释:</p>
-<blockquote>
-<p>返回由<font color="red"><strong>此类的实现封装</strong></font>的 XMLReader。</p>
-</blockquote>
-<p>SAXParser类又是由SAXParserFactory的newSAXParser()方法创建而来，其注释：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/%E4%BD%BF%E7%94%A8XMLReader%E6%8E%A5%E5%8F%A3%E8%A7%A3%E6%9E%90XML/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1339,7 +1330,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">115</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1352,7 +1343,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">246</span>
+        <span class="site-state-item-count">248</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

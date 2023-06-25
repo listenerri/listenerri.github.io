@@ -202,6 +202,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/" class="post-title-link" itemprop="url">windows 下 vscode 使用 msys2 mingw64 作为默认 shell 时识别路径失败</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-25 23:28:50 / 修改时间：23:54:51" itemprop="dateCreated datePublished" datetime="2023-06-25T23:28:50+08:00">2023-06-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vscode/" itemprop="url" rel="index"><span itemprop="name">vscode</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/" class="post-meta-item leancloud_visitors" data-flag-title="windows 下 vscode 使用 msys2 mingw64 作为默认 shell 时识别路径失败" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这两天遇到一个 vscode 下 vim 插件的问题（另写一篇文章详述），按照 <a target="_blank" rel="noopener" href="https://github.com/VSCodeVim/Vim/blob/master/.github/CONTRIBUTING.md#first-time-setup">vscodevim</a> 扩展的构建文档尝试本地调试时，发现无法编译，报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">正在执行任务: node_modules\.bin\gulp.cmd build-dev</span><br><span class="line">bash: node_modules.bingulp.cmd: 未找到命令</span><br><span class="line">终端进程“C:\msys64\usr\bin\bash.exe &#39;--login&#39;, &#39;-i&#39;, &#39;-c&#39;, &#39;node_modules\.bin\gulp.cmd build-dev&#39;”已终止，退出代码: 127。</span><br></pre></td></tr></table></figure>
+
+<p>可以看出来是命令找不到，但第二行的报错很奇怪，丢失了 windows 风格路径分隔符 <code>\</code>，查看 vscode 的终端配置发现，我把默认集成终端设置成了 msys2，那么问题很明确了，是因为 msys2 中的 bash 命令不支持 windows 风格的路径分隔符，将其解析为了转义符导致的。</p>
+<p>在网上几番搜索皆无果，没有优雅的解决方案，还趁着这个机会认真学习了 vscode 的 launch.json, tasks.json, task provider 等文档，对问题有了一个更深入的了解。</p>
+<p>我目前遇到的问题是因为 vscode 自带的 gulp task provider 导致的，当其发现 vscode 在 windows 下运行时，就生成 windows 风格的 gulp 命令路径参数，这在 vscode 使用 cmd 或 powershell 作为默认集成终端时没有问题，但对使用了 bash 作为 shell 的情况就会导致出错了，vscode 的 github 仓库里有几个类似、相关的，已经被关闭并锁定了的 issues:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/35593">https://github.com/microsoft/vscode/issues/35593</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/48149">https://github.com/microsoft/vscode/issues/48149</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/40954">https://github.com/microsoft/vscode/issues/40954</a></p>
+<p>无意间从 <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/49779607/7059407">这篇回答中找到了灵感</a>，所以有了如下解决方案，修改 vscode 的配置文件 settings.json，在对集成终端的配置中添加一个自定义终端配置，并将其设置为默认终端：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&quot;terminal.integrated.profiles.windows&quot;: &#123;</span><br><span class="line">    &quot;bash (MINGW64-MSYS2)&quot;: &#123;</span><br><span class="line">        &quot;path&quot;: &quot;C:\\msys64\\usr\\bin\\bash.exe&quot;,</span><br><span class="line">        &quot;args&quot;: [</span><br><span class="line">            &quot;--login&quot;,</span><br><span class="line">            &quot;-i&quot;,</span><br><span class="line">            &quot;-c&quot;,</span><br><span class="line">            &quot;if [ -z \&quot;$@\&quot; ]; then bash; else eval \&quot;$(cygpath \&quot;$@\&quot;)\&quot;; fi&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;env&quot;: &#123;</span><br><span class="line">            &quot;CHERE_INVOKING&quot;: &quot;1&quot;,</span><br><span class="line">            &quot;MSYSTEM&quot;: &quot;MINGW64&quot;,</span><br><span class="line">            &quot;MSYS2_PATH_TYPE&quot;: &quot;inherit&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x2F;&#x2F; other terminal profiles</span><br><span class="line">    &#x2F;&#x2F; ....</span><br><span class="line">&#125;,</span><br><span class="line">&quot;terminal.integrated.defaultProfile.windows&quot;: &quot;bash (MINGW64-MSYS2)&quot;,</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1212,109 +1318,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">nextcloud 部署后没有日历邮件等应用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-08-13 22:46:00" itemprop="dateCreated datePublished" datetime="2021-08-13T22:46:00+08:00">2021-08-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="nextcloud 部署后没有日历邮件等应用" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/13/nextcloud-%E9%83%A8%E7%BD%B2%E5%90%8E%E6%B2%A1%E6%9C%89%E6%97%A5%E5%8E%86%E9%82%AE%E4%BB%B6%E7%AD%89%E5%BA%94%E7%94%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在公司内部服务器上搭了一个 <a target="_blank" rel="noopener" href="https://nextcloud.com/">Nextcloud</a> 服务，跑起来之后发现没有日历、邮件等应用，且不能打开应用商店，分析了服务日志发现是由于网络问题。</p>
-<p>启动服务时加上代理即可正常，比如使用 docker 跑的话：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nextcloud -p 8080:80 -e http_proxy&#x3D;http:&#x2F;&#x2F;192.168.1.100:1081 -e https_proxy&#x3D;http:&#x2F;&#x2F;192.168.1.100:1081 nextcloud</span><br></pre></td></tr></table></figure>
-
-<p>代理相关参数解释：</p>
-<ul>
-<li>-e http_proxy 为容器内 NC 服务设置 http 代理地址和端口</li>
-<li>-e https_proxy 同上</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1386,7 +1389,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">115</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1399,7 +1402,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">246</span>
+        <span class="site-state-item-count">248</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -202,6 +202,104 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80%E6%89%93%E5%8D%B0%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80%E5%92%8C%E4%B8%89%E8%A7%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E6%89%93%E5%8D%B0%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80%E5%92%8C%E4%B8%89%E8%A7%92/" class="post-title-link" itemprop="url">c语言打印乘法口诀和三角</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 20:27:58" itemprop="dateCreated datePublished" datetime="2016-05-04T20:27:58+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/c%E8%AF%AD%E8%A8%80%E6%89%93%E5%8D%B0%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80%E5%92%8C%E4%B8%89%E8%A7%92/" class="post-meta-item leancloud_visitors" data-flag-title="c语言打印乘法口诀和三角" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E6%89%93%E5%8D%B0%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80%E5%92%8C%E4%B8%89%E8%A7%92/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/c%E8%AF%AD%E8%A8%80%E6%89%93%E5%8D%B0%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80%E5%92%8C%E4%B8%89%E8%A7%92/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>打印乘法口诀和三角所用的算法跟java一样,直接上代码</p>
+<h1 id="打印乘法口诀"><a href="#打印乘法口诀" class="headerlink" title="打印乘法口诀:"></a>打印乘法口诀:</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">9</span>; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; ++j) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d*%d=%d\t&quot;</span>, j, i, i*j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行结果:</span></span><br><span class="line"><span class="number">1</span>*<span class="number">1</span>=<span class="number">1</span>   </span><br><span class="line"><span class="number">1</span>*<span class="number">2</span>=<span class="number">2</span>   <span class="number">2</span>*<span class="number">2</span>=<span class="number">4</span></span><br><span class="line"><span class="number">1</span>*<span class="number">3</span>=<span class="number">3</span>   <span class="number">2</span>*<span class="number">3</span>=<span class="number">6</span>   <span class="number">3</span>*<span class="number">3</span>=<span class="number">9</span></span><br><span class="line"><span class="number">1</span>*<span class="number">4</span>=<span class="number">4</span>   <span class="number">2</span>*<span class="number">4</span>=<span class="number">8</span>   <span class="number">3</span>*<span class="number">4</span>=<span class="number">12</span>  <span class="number">4</span>*<span class="number">4</span>=<span class="number">16</span></span><br><span class="line"><span class="number">1</span>*<span class="number">5</span>=<span class="number">5</span>   <span class="number">2</span>*<span class="number">5</span>=<span class="number">10</span>  <span class="number">3</span>*<span class="number">5</span>=<span class="number">15</span>  <span class="number">4</span>*<span class="number">5</span>=<span class="number">20</span>  <span class="number">5</span>*<span class="number">5</span>=<span class="number">25</span></span><br><span class="line"><span class="number">1</span>*<span class="number">6</span>=<span class="number">6</span>   <span class="number">2</span>*<span class="number">6</span>=<span class="number">12</span>  <span class="number">3</span>*<span class="number">6</span>=<span class="number">18</span>  <span class="number">4</span>*<span class="number">6</span>=<span class="number">24</span>  <span class="number">5</span>*<span class="number">6</span>=<span class="number">30</span>  <span class="number">6</span>*<span class="number">6</span>=<span class="number">36</span></span><br><span class="line"><span class="number">1</span>*<span class="number">7</span>=<span class="number">7</span>   <span class="number">2</span>*<span class="number">7</span>=<span class="number">14</span>  <span class="number">3</span>*<span class="number">7</span>=<span class="number">21</span>  <span class="number">4</span>*<span class="number">7</span>=<span class="number">28</span>  <span class="number">5</span>*<span class="number">7</span>=<span class="number">35</span>  <span class="number">6</span>*<span class="number">7</span>=<span class="number">42</span>  <span class="number">7</span>*<span class="number">7</span>=<span class="number">49</span></span><br><span class="line"><span class="number">1</span>*<span class="number">8</span>=<span class="number">8</span>   <span class="number">2</span>*<span class="number">8</span>=<span class="number">16</span>  <span class="number">3</span>*<span class="number">8</span>=<span class="number">24</span>  <span class="number">4</span>*<span class="number">8</span>=<span class="number">32</span>  <span class="number">5</span>*<span class="number">8</span>=<span class="number">40</span>  <span class="number">6</span>*<span class="number">8</span>=<span class="number">48</span>  <span class="number">7</span>*<span class="number">8</span>=<span class="number">56</span>  <span class="number">8</span>*<span class="number">8</span>=<span class="number">64</span></span><br><span class="line"><span class="number">1</span>*<span class="number">9</span>=<span class="number">9</span>   <span class="number">2</span>*<span class="number">9</span>=<span class="number">18</span>  <span class="number">3</span>*<span class="number">9</span>=<span class="number">27</span>  <span class="number">4</span>*<span class="number">9</span>=<span class="number">36</span>  <span class="number">5</span>*<span class="number">9</span>=<span class="number">45</span>  <span class="number">6</span>*<span class="number">9</span>=<span class="number">54</span>  <span class="number">7</span>*<span class="number">9</span>=<span class="number">63</span>  <span class="number">8</span>*<span class="number">9</span>=<span class="number">72</span>  <span class="number">9</span>*<span class="number">9</span>=<span class="number">81</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="三角-同时输出两个三角-一正一倒"><a href="#三角-同时输出两个三角-一正一倒" class="headerlink" title="三角,同时输出两个三角,一正一倒:"></a>三角,同时输出两个三角,一正一倒:</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* 正-倒</span></span><br><span class="line"><span class="comment">     * 1-9</span></span><br><span class="line"><span class="comment">     * 3-7</span></span><br><span class="line"><span class="comment">     * 5-5</span></span><br><span class="line"><span class="comment">     * 7-3</span></span><br><span class="line"><span class="comment">     * 9-1 */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">9</span>; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> ( i % <span class="number">2</span> != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= (<span class="number">9</span>-i)/<span class="number">2</span>; ++j) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, <span class="string">&#x27; &#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; ++j) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, <span class="string">&#x27;*&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j&lt;=(<span class="number">9</span>-i)/<span class="number">2</span>; ++j) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, <span class="string">&#x27; &#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\t&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>;  j&lt;= (<span class="number">9</span>-(<span class="number">10</span>-i))/<span class="number">2</span>; ++j) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, <span class="string">&#x27; &#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>;  j&lt;= (<span class="number">10</span>-i); ++j) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, <span class="string">&#x27;*&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>;  j&lt;= (<span class="number">9</span>-(<span class="number">10</span>-i))/<span class="number">2</span>; ++j) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, <span class="string">&#x27; &#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行结果:</span></span><br><span class="line">    *           *********</span><br><span class="line">   ***           *******</span><br><span class="line">  *****           *****</span><br><span class="line"> *******           ***</span><br><span class="line">*********           *</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1141,108 +1239,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">ImageSwitcher和TextSwitcher使用笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 19:44:54" itemprop="dateCreated datePublished" datetime="2016-05-04T19:44:54+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="ImageSwitcher和TextSwitcher使用笔记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/ImageSwitcher%E5%92%8CTextSwitcher%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>只有步骤，记录，备忘<br>只举ImageSwitcher的例子，TextSwitcher基本一样</p>
-<p>1、布局文件中添加ImageSwitcher控件<br>2、activity中findViewById()获取到ImageSwitcher对象<br>3、需要一个工厂来制造需要显示的ImageView，需要实现ViewFactory接口，并重写接口的makeView()方法，这里使用隐式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">imageSwitcher.setFactory(<span class="keyword">new</span> ViewFactory()&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> View <span class="title">makeView</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">//1、new一个ImageView</span></span><br><span class="line">            <span class="comment">//2、为ImageView设置一系列属性</span></span><br><span class="line">            <span class="comment">//3、return加工好的ImageView对象</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>4、使用ImageSwitcher对象的setInAnimation()和setOutAnimation()设置动画效果(可选)<br>5、使用ImageSwitcher对象setImageResource()切换要显示的图片</p>
-<p>结束</p>
-<blockquote>
-<p>TextSwitcher的方法和上面一样，都需要实现ViewFactory接口并重写makeView()方法，<br>在其中new出TextView对象并设置属性然后返回，最后切换视图的方法是setText()</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1314,7 +1310,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">115</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1327,7 +1323,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">246</span>
+        <span class="site-state-item-count">248</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
