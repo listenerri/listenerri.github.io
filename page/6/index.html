@@ -202,6 +202,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">QThread 的两种用法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-16 14:18:44" itemprop="dateCreated datePublished" datetime="2019-03-16T14:18:44+08:00">2019-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/" class="post-meta-item leancloud_visitors" data-flag-title="QThread 的两种用法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>QThread 官方文档中介绍了的两种用法：</p>
+<ul>
+<li>worker-object</li>
+<li>subclass</li>
+</ul>
+<h1 id="worker-object"><a href="#worker-object" class="headerlink" title="worker-object"></a>worker-object</h1><p>引用官方文档中的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// worker 类</span></span><br><span class="line"><span class="comment">// 声明了一个信号，一个槽</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doWork</span><span class="params">(<span class="keyword">const</span> QString &amp;parameter)</span> </span>&#123;</span><br><span class="line">        QString result;</span><br><span class="line">        <span class="comment">/* ... here is the expensive or blocking operation ... */</span></span><br><span class="line">        <span class="function">emit <span class="title">resultReady</span><span class="params">(result)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">signals:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">resultReady</span><span class="params">(<span class="keyword">const</span> QString &amp;result)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 控制器类</span></span><br><span class="line"><span class="comment">// 运行中主线程，用于管理 worker 对象和 QThread 对象</span></span><br><span class="line"><span class="comment">// 也声明了一个信号，一个槽</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line">    QThread workerThread;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Controller() &#123;</span><br><span class="line">        Worker *worker = <span class="keyword">new</span> Worker;</span><br><span class="line">        worker-&gt;moveToThread(&amp;workerThread);</span><br><span class="line">        <span class="built_in">connect</span>(&amp;workerThread, &amp;QThread::finished, worker, &amp;QObject::deleteLater);</span><br><span class="line">        <span class="built_in">connect</span>(<span class="keyword">this</span>, &amp;Controller::operate, worker, &amp;Worker::doWork);</span><br><span class="line">        <span class="built_in">connect</span>(worker, &amp;Worker::resultReady, <span class="keyword">this</span>, &amp;Controller::handleResults);</span><br><span class="line">        workerThread.start();</span><br><span class="line">    &#125;</span><br><span class="line">    ~Controller() &#123;</span><br><span class="line">        workerThread.quit();</span><br><span class="line">        workerThread.wait();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">handleResults</span><span class="params">(<span class="keyword">const</span> QString &amp;)</span></span>;</span><br><span class="line">signals:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operate</span><span class="params">(<span class="keyword">const</span> QString &amp;)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在 worker 类中的槽函数是真正在子线程中工作的内容，而 worker 那个信号被发出时则表示工作完成，控制器中与之连接的槽函数的作用就是处理 worker 对象在完成工作之后使用其信号发出来的数据，控制器中的那个信号被发出时则是命令 worker 对象开始工作。因此需要使用下面的代码让 worker 对象在线程中开始工作：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Note: 不要在主线程中以调用 worker-&gt;doWork() 函数的方式让 worker 开始工作</span></span><br><span class="line"><span class="comment">// 否则将会导致主线程阻塞在这个调用上，只能使用信号-槽的方式：</span></span><br><span class="line"></span><br><span class="line">Controller *controller = <span class="keyword">new</span> Controller;</span><br><span class="line">emit controller-&gt;operate(<span class="string">&quot;some string&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>看起来 worker 对象和 QThread 的对象并没有什么关系，那么 worker 对象是怎么在后台工作的呢？关键的一句代码是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">worker-&gt;moveToThread(&amp;workerThread);</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>moveToThread</code>方法是在 QObject 类中定义的，这意味着所有继承了 QObject 类的对象都可以调用这个方法来改变与自身关联的线程，使用下面的代码可以将 worker 对象再转移回主线程中：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/16/QThread-%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%94%A8%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1163,94 +1279,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/09/24/qprocess%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/24/qprocess%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE/" class="post-title-link" itemprop="url">qprocess参数设置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-09-24 16:03:48" itemprop="dateCreated datePublished" datetime="2018-09-24T16:03:48+08:00">2018-09-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-
-          
-            <span id="/2018/09/24/qprocess%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE/" class="post-meta-item leancloud_visitors" data-flag-title="qprocess参数设置" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2018/09/24/qprocess%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/09/24/qprocess%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>QProcess用于启动一个外部程序，并提供了与之通信的接口。<br>使用setProgram来设置要启动的外部程序，setArguments来设置要传递给这个外部程序的参数。<br>setArguments需要一个QStringList类型的参数，在构造这个参数的时候要注意不能把外部程序需要的参数作为一整个字符串。<br>举个例子：要用QProcess执行<code>find -name abc.txt</code></p>
-<figure class="highlight qt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">QProcess process;</span><br><span class="line">process.setProgram(<span class="string">&quot;find&quot;</span>);</span><br><span class="line">process.setArguments(QStringList(<span class="string">&quot;-name abc.txt&quot;</span>)); <span class="comment">// 这是错误的</span></span><br><span class="line">process.setArguments(QStringList() &lt;&lt; <span class="string">&quot;-name&quot;</span> &lt;&lt; <span class="string">&quot;abc.txt&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1322,7 +1350,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">116</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
