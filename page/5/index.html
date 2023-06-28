@@ -202,6 +202,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/" class="post-title-link" itemprop="url">为自己的网站启用 https</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-28 21:08:40" itemprop="dateCreated datePublished" datetime="2019-10-28T21:08:40+08:00">2019-10-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/" class="post-meta-item leancloud_visitors" data-flag-title="为自己的网站启用 https" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>使用 let’s encrypt 证书颁发机构的免费证书，如果想看官方的文档访问下面的链接，官方文档提供了各种方案来启用 https，我使用是推荐的 Certbot 方案。</p>
+<p><a target="_blank" rel="noopener" href="https://letsencrypt.org/zh-cn/getting-started/">https://letsencrypt.org/zh-cn/getting-started/</a></p>
+<p>本文摘自的 Certbot 官网的针对 Ubuntu+Nginx 方案的教程，原文链接如下。</p>
+<p><a target="_blank" rel="noopener" href="https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx">https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx</a></p>
+<p>如果你的系统不是 Ubuntu 16.04 或者使用的 web 服务不是 nginx 可以去下面的链接重新选择教程。</p>
+<p><a target="_blank" rel="noopener" href="https://certbot.eff.org/">https://certbot.eff.org</a></p>
+<p>正文开始：</p>
+<p>使用 ssh 或任何方法登陆到运行 web 服务的服务器，注意账户需要有 root 权限。</p>
+<p>使用下面的命令添加 Certbot PPA 到系统中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install software-properties-common</span><br><span class="line">sudo add-apt-repository universe</span><br><span class="line">sudo add-apt-repository ppa:certbot&#x2F;certbot</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/25/clickhouse-%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2116,116 +2227,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/" class="post-title-link" itemprop="url">使用 quilt 给软件包打补丁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-16 20:48:00" itemprop="dateCreated datePublished" datetime="2019-03-16T20:48:00+08:00">2019-03-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/" class="post-meta-item leancloud_visitors" data-flag-title="使用 quilt 给软件包打补丁" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>quilt 是一个管理补丁的工具，它使用了栈的概念来管理多个补丁，其管理的补丁一般被放在 <strong>patches</strong> 目录下，在这个目录下除了补丁文件还有一个 <strong>series</strong> 文件，这个文件中列出的补丁文件才是真正被打入项目的补丁文件，同时补丁文件在 series 文件中出现的顺序也是它们在栈中的顺序，没有包含在 series 文件中的补丁文件将不会被 quilt 管理，当新增或移除补丁时 quilt 会自动更新 series 文件不需要手动管理。</p>
-<p>接触到这个命令是因为要给一个 deb 软件包打上我自己的补丁，但是 quilt 命令的 man 手册比较混乱，没有将相关的子命令放在一起进行介绍，下面将根据子命令之间的相关性总结下用到的和与之相关的子命令。</p>
-<h2 id="applied-unapplied"><a href="#applied-unapplied" class="headerlink" title="applied-unapplied"></a>applied-unapplied</h2><ul>
-<li>applied：列出包含在 series 文件中且已经应用（生效）了的补丁</li>
-<li>unapplied：列出包含在 series 文件中但没有应用（生效）的补丁</li>
-</ul>
-<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><p>指定一个被打过补丁的项目文件并根据其变动生成一个 diff 文件，如果指定了补丁则只把指定补丁对项目文件的改动生成到 diff 文件，当同一个项目文件被多个补丁改动过，这个参数就有用了，如果不指定补丁则默认使用最顶层的补丁，如果被打过补丁的项目文件也没有指定，则将包含指定补丁或最顶层的补丁导致的所有项目文件变动。</p>
-<h2 id="files"><a href="#files" class="headerlink" title="files"></a>files</h2><p>列出最顶层的一个或指定的补丁改动了的所有项目文件</p>
-<h2 id="patches"><a href="#patches" class="headerlink" title="patches"></a>patches</h2><p>列出所有改动了指定的项目文件的补丁</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/16/%E4%BD%BF%E7%94%A8-quilt-%E7%BB%99%E8%BD%AF%E4%BB%B6%E5%8C%85%E6%89%93%E8%A1%A5%E4%B8%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2297,20 +2298,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">248</span>
+        <span class="site-state-item-count">249</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -3280,6 +3280,60 @@
       </tags>
   </entry>
   <entry>
+    <title>msys2 修改默认启动位置</title>
+    <url>/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>msys2 为 windows 平台提供了大量 unix 命令，其基于 cygwin 同时带来了更多更强大的特性，是个很赞的项目。</p>
+<p>msys2 默认提供了几个不同的环境：</p>
+<ul>
+<li>msys</li>
+<li>mingw64</li>
+<li>mingw32</li>
+<li>ucrt64</li>
+<li>clang64</li>
+<li>clangarm64</li>
+</ul>
+<p>其中 msys 环境是其他几个环境共用的基础环境，出于兼容性考虑，我一般使用 mingw64 环境，安装新的软件包时，也是找 <code>mingw-w64-x86_64-</code> 开头的包，这个软件包的前缀很重要，如果在 mingw64 环境下，安装了 <code>mingw-w64-ucrt-x86_64-</code> 开头的包，是找不到新装包的命令的，必须要到 ucrt64 环境下才能找到。</p>
+<p>关于各个环境的主要区别，可以阅读官方文档：<a href="https://www.msys2.org/docs/environments/">https://www.msys2.org/docs/environments/</a></p>
+<p>书回正传，这里先假设我的 windows 账户名称是 <code>ri</code>，那么我在 windows 系统中的账户主文件夹/主目录会是 <code>C:\Users\ri</code> 目录。后续出现 <code>ri</code> 时，请注意替换理解。</p>
+<p>msys2 使用了自己的 unix 风格目录结构，其 unix 根目录 <code>/</code> 默认是 msys2 在 windows 下载的安装目录，如果安装 msys2 过程中没有主动修改的话，那就是 <code>C:\msys64</code> 目录。</p>
+<p>另外，msys2 会把 windows 不同的本地磁盘，以盘符为名字，“挂载”到 unix 根目录 <code>/</code> 下，比如 windows 的 C 盘，会被挂载在 unix 的 <code>/c</code> 目录上，windows D 盘同理。</p>
+<p>而 msys2 默认的 unix 家(HOME)目录则是 <code>/home/ri</code>，注意这里的 <code>/home/ri</code> 并不是 <code>C:\Users\ri</code> 目录。</p>
+<p>启动 mingw64 环境时，默认是从 unix 家目录启动的，这对我来说有些不方便，我希望每次启动后所在目录都是 windows 账户的主目录  <code>C:\Users\ri</code>。同时还要保留 msys2 的 unix 家目录，以便将 msys2 相关的各种配置文件，独立放置在 msys2 自己的目录体系内。</p>
+<p>为此研究了以下几个方案：</p>
+<h2 id="使用-msys2-shell-cmd-启动-mingw64-环境（不推荐）"><a href="#使用-msys2-shell-cmd-启动-mingw64-环境（不推荐）" class="headerlink" title="使用 msys2_shell.cmd 启动 mingw64 环境（不推荐）"></a>使用 msys2_shell.cmd 启动 mingw64 环境（不推荐）</h2><p>msys2 安装后会生成各个环境的启动快捷方式到 windows 启动菜单里，在启动菜单里 mingw64 启动项上右键并点击“打开文件位置”就可以找到快捷方式所在的目录，然后在 mingw64 快捷方式上右键并点击属性，可以修改其启动命令，即“目标”输入框，默认是 C:\msys64\mingw64.exe</p>
+<p>msys2 有一个命令行工具，可以以指定参数的方式启动各个环境的终端，推荐使用终端 mintty（这里插句话，不要使用 windows 发布的 Terminal 终端程序启动 msys2 环境，某些情况下会有点问题，比如 msys2 下的 tmux 程序无法启动）。</p>
+<p>将 mingw64 快捷方式的启动命令修改为如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\msys64\msys2_shell.cmd -mingw64 -mintty -where &quot;C:\Users\ri&quot; -use-full-path</span><br></pre></td></tr></table></figure>
+
+<p>保存后双击快捷方式打开，嗯，工作如预期。</p>
+<p>但是将快捷方式拖拽固定到任务栏时，发现 windows 不允许放置，即使启动后右键任务栏图标进行固定，下次打开时也不能正常工作，具体原因没有深究，估计是因为 msys2_shell.cmd 这个命令行脚本不允许固定吧。</p>
+<h2 id="修改-msys2-bashrc-脚本（不推荐）"><a href="#修改-msys2-bashrc-脚本（不推荐）" class="headerlink" title="修改 msys2 bashrc 脚本（不推荐）"></a>修改 msys2 bashrc 脚本（不推荐）</h2><p>unix 家目录下的 .bashrc 文件是 bash 的启动初始化脚本，在最后一行添加 <code>cd /c/User/ri</code>，表示切换到 windows 账户主目录。</p>
+<p>可是这种方式对 msys2 的 bash 侵入性太强，如果后面以相对路径执行 bash 脚本时，会导致找不到脚本文件。</p>
+<h2 id="修改-msys2-账户的-unix-家目录（不推荐）"><a href="#修改-msys2-账户的-unix-家目录（不推荐）" class="headerlink" title="修改 msys2 账户的 unix 家目录（不推荐）"></a>修改 msys2 账户的 unix 家目录（不推荐）</h2><p>同样对 msys2 侵入性太强。</p>
+<h2 id="修改-msys2-mingw64-windows-下的配置文件（推荐）"><a href="#修改-msys2-mingw64-windows-下的配置文件（推荐）" class="headerlink" title="修改 msys2 mingw64 windows 下的配置文件（推荐）"></a>修改 msys2 mingw64 windows 下的配置文件（推荐）</h2><p>今天突然发现 msys2 的安装目录下，每个环境的启动 exe 都对应了一个 ini 配置文件，比如 mingw64.exe 就对应 mingw64.ini，路径默认为：<code>C:\msys64\mingw64.ini</code>，其默认内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#MSYS&#x3D;winsymlinks:nativestrict</span><br><span class="line">#MSYS&#x3D;error_start:mingw64&#x2F;bin&#x2F;qtcreator.exe|-debug|&lt;process-id&gt;</span><br><span class="line">#CHERE_INVOKING&#x3D;1</span><br><span class="line">#MSYS2_PATH_TYPE&#x3D;inherit</span><br><span class="line">MSYSTEM&#x3D;MINGW64</span><br></pre></td></tr></table></figure>
+
+<p>可以发现是几个环境变量：</p>
+<ul>
+<li>MSYS 暂且不管</li>
+<li>CHERE_INVOKING=1 表示以启动 mingw64 环境终端后，不自动切换到 unix 家目录（哈，要的这个配置）</li>
+<li>MSYS2_PATH_TYPE=inherit 表示继承 windows 的 PATH 环境变量（这样就可以在 mingw64 终端下直接执行很多 windows cmd 中的命令）</li>
+<li>MSYSTEM=MINGW64 表示启动 mingw64 环境</li>
+</ul>
+<p>将 CHERE_INVOKING 和 MSYS2_PATH_TYPE 前面的 # 号删除，以取消其注释，令其生效。</p>
+<p>然后再找到 mingw64 的快捷方式，右键并点击属性，修改“起始位置”项为 windows 账户主目录 <code>C:\Users\ri</code>，保存。</p>
+<p>双击打开修改后的快捷方式，工作如预期，将快捷方式固定到任务栏上，也正常工作，完美。</p>
+]]></content>
+      <categories>
+        <category>msys2</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>msys2</tag>
+        <tag>home</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>新博客的第一篇</title>
     <url>/2016/04/20/my-first-blog-on-hexo-github-pages/</url>
     <content><![CDATA[<p>本博客是使用hexo(一个静态网站生成框架)和github pages搭建的一个博客系统<br>主题使用的是: <a href="https://github.com/iissnan/hexo-theme-next">next</a></p>
@@ -3953,8 +4007,8 @@
       </categories>
       <tags>
         <tag>bash</tag>
-        <tag>vscode</tag>
         <tag>msys2</tag>
+        <tag>vscode</tag>
         <tag>mingw64</tag>
         <tag>terminal</tag>
       </tags>
