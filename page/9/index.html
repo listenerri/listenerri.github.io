@@ -202,6 +202,551 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">chrome adobe flash不是最新版本</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-02 20:05:43" itemprop="dateCreated datePublished" datetime="2016-11-02T20:05:43+08:00">2016-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/" class="post-meta-item leancloud_visitors" data-flag-title="chrome adobe flash不是最新版本" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>google-chrome最近更新后flash不能正常运行了, 好象是不再包含flash player了,<br>在看视频或者需要用到flash player的时候就会提示:<br><code>adobe flash player 不是最新版本</code></p>
+<p>解决方法也简单, 只是需要梯(fan)子(qiang), 如何找梯子本文就不提及了.<br>有了梯子之后, 设置好代理启动chrome, 在地址栏输入: <code>chrome://components/</code>, 回车,<br>然后找到flash player那一项, 点击更新就行了. </p>
+<p>下面详细说说linux下和windows下怎么设置代理:</p>
+<p>linux下在<code>终端</code>中设置好代理变量, 然后接着在同一个终端下以命令的方式启动chrome就行了,下面是具体命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export http_proxy=127.0.0.1:8787</span><br><span class="line">export https_proxy=127.0.0.1:8787</span><br><span class="line">google-chrome</span><br></pre></td></tr></table></figure>
+
+<p>命令解释, 前两行主要是指定代理地址和端口, 因为我是在本机运行的代理软件, 所以地址是127.0.0.1<br>而8787则是代理软件监听的端口, 第三行则是启动chrome</p>
+<p>windows下就十分简单了, 启动代理软件, 一般代理软件都有系统代理的选项, 选择启动系统代理,<br>然后运行chrome就行了. </p>
+<p>下面附上linux下的过程:<br><img src="update-flash.png" alt="update-flash"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/" class="post-title-link" itemprop="url">linux映射修饰键</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-10-24 13:32:33" itemprop="dateCreated datePublished" datetime="2016-10-24T13:32:33+08:00">2016-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/" class="post-meta-item leancloud_visitors" data-flag-title="linux映射修饰键" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>首先，先说一个并不好用的方法，请看链接：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Xmodmap">使用xmodmap命令映射按键</a><br>之所以说这是一个不好用的方法是因为它在大多数桌面环境下没法实现开机自动映射，<br>只能进入系统后手动执行命令才能实现映射，而且即便手动执行映射命令生效了，<br>也会由于未知原因，过一段时间后失效，所以要想安稳的实现映射还是看下面的方法吧。</p>
+<p>本方法基于X图形框架，也就是要实现按键映射必须启动X</p>
+<p>请留意文章标题，说的是修饰键(modified key)，也就是Ctrl,Alt,Shift,Esc,Super(windows)等键，<br>而是不键盘上的任意键，应该也可以实现任意键，但就需要深入学习X框架了，<br>推荐从这里入门： <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/X_KeyBoard_extension">Arch WiKi: X KeyBoard extension</a></p>
+<p>下面说简单的修饰键映射方法：<br>首先在X图形框架的配置文件夹<code>/etc/X11/xorg.conf.d/</code>下新建<code>90-custom-kbd.conf</code>文件，<br>然后将下面的代码粘贴到上面新建的文件中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Section &quot;InputClass&quot;</span><br><span class="line">    Identifier &quot;keyboard defaults&quot;</span><br><span class="line">    MatchIsKeyboard &quot;on&quot;</span><br><span class="line"></span><br><span class="line">    Option &quot;XKbOptions&quot; &quot;caps:escape&quot;</span><br><span class="line">EndSection</span><br></pre></td></tr></table></figure>
+
+<p>我们需要注意以及修改的地方只有“caps:escape”这个位置，<br>当前这段配置的作用是将caps（大写锁定）键映射到esc键，也就是说，<br>让大写锁定键的作用变成esc键，而不再是原有的大写锁定作用，同时esc键保留原有的作用。</p>
+<p>看到这里你可能以为so easy，这样看来只需要修改成”ctrl:alt”就可以实现，让ctrl键变成alt键了。</p>
+<p>然而，并不是。。<br>起初我也以为是这样，经过测试后无效，摸索了很久终于弄懂了，<br>原来”caps:escape”是一个已经定义好的选项，所以可以直接拿来用，而不是随便写的,<br>而”ctrl:alt”并不是以定义的选项所以无效。</p>
+<p>那么怎么定义选项呢，抱歉，我也没学会，就像文章开头所说的这就需要深入学习X框架了，<br>庆幸的是，已经有了大量以定义的选项，我们可以找到自己需要的并拿来使用，</p>
+<p>以定义的选项可以从系统的这个文件里找：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/10/24/linux%E6%98%A0%E5%B0%84%E4%BF%AE%E9%A5%B0%E9%94%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/" class="post-title-link" itemprop="url">抽象类与接口是否可以实例化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-08-08 21:23:16" itemprop="dateCreated datePublished" datetime="2016-08-08T21:23:16+08:00">2016-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/" class="post-meta-item leancloud_visitors" data-flag-title="抽象类与接口是否可以实例化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="抽象类与接口简介"><a href="#抽象类与接口简介" class="headerlink" title="抽象类与接口简介"></a>抽象类与接口简介</h1><p>具体的就不说了,直说一下二者的重要的相同点和区别:</p>
+<p>相同点:</p>
+<ul>
+<li>都是抽象的(不能正常实例化的)</li>
+<li>都可以有抽象方法</li>
+<li>都可以有成员变量</li>
+</ul>
+<p>区别:</p>
+<ul>
+<li>抽象类除了不能正常实例化和可以含有抽象方法外其他特性与普通类相同</li>
+<li>抽象类既可以有抽象方法也可以有普通的方法,而接口只能包含抽象方法</li>
+<li>抽象类可以只声明成员变量而不初始化,接口必须在声明成员方法时初始化</li>
+</ul>
+<h1 id="不能实例化"><a href="#不能实例化" class="headerlink" title="不能实例化"></a>不能实例化</h1><p>以前我一直认为抽象类和接口是不能被初始化的, 意思就是不能使用<code>new</code>关键字来获取类的实例(接口也算是一个类),如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">TestInterface</span> <span class="variable">inter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestInterface</span>();</span><br></pre></td></tr></table></figure>
+<p>当TestInterface是一个抽象类或者接口时,上述代码将会产生编译时错误.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/08/08/%E6%8A%BD%E8%B1%A1%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AE%9E%E4%BE%8B%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/07/25/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0UEFI%E5%90%AF%E5%8A%A8%E9%A1%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/25/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0UEFI%E5%90%AF%E5%8A%A8%E9%A1%B9/" class="post-title-link" itemprop="url">linux下添加UEFI启动项</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-07-25 18:30:22" itemprop="dateCreated datePublished" datetime="2016-07-25T18:30:22+08:00">2016-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/07/25/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0UEFI%E5%90%AF%E5%8A%A8%E9%A1%B9/" class="post-meta-item leancloud_visitors" data-flag-title="linux下添加UEFI启动项" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/07/25/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0UEFI%E5%90%AF%E5%8A%A8%E9%A1%B9/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/25/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0UEFI%E5%90%AF%E5%8A%A8%E9%A1%B9/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天突然发生了一件怪事,系统重启后没有了硬盘的uefi启动项, 吓了我一跳,我以为硬盘挂了,立即进livecd查看硬盘信息,好在一切正常.<br>我的电脑通常会自动添加应该第一分区(esp分区)里的一些启动项, 但这次重启几次之后依然不能自动添加,而我又是archlinux单系统,没得用easyuefi,<br>所以只能手动在linux下添加了,我没有在livecd中进行添加,而是进入硬盘中的archlinux后添加的.<br>有人会疑惑,没有启动项是怎么进入系统的??<br>详细的就不说了,本文主要说怎么添加uefi启动项,就只简单描述下如何在没有uefi启动项的情况下进入系统:<br><strong>进入BIOS,启动uefi的shell模式,在shell模式中找到archlinux的efi引导文件,直接回车就行了</strong></p>
+<h1 id="efibootmgr命令"><a href="#efibootmgr命令" class="headerlink" title="efibootmgr命令"></a>efibootmgr命令</h1><p>在windows下通常使用easyuefi软件来管理uefi启动项,linux下我还不知道有什么图形化的软件来管理uefi启动项,<br>只知道一个efibootmgr命令,在终端中进行操作,这个命令的参数选项有:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">usage: efibootmgr [options]</span><br><span class="line">	-a | --active         sets bootnum active</span><br><span class="line">	-A | --inactive       sets bootnum inactive</span><br><span class="line">	-b | --bootnum XXXX   modify BootXXXX (hex)</span><br><span class="line">	-B | --delete-bootnum delete bootnum (hex)</span><br><span class="line">	-c | --create         create new variable bootnum and add to bootorder</span><br><span class="line">	-C | --create-only	create new variable bootnum and do not add to bootorder</span><br><span class="line">	-D | --remove-dups	remove duplicate values from BootOrder</span><br><span class="line">	-d | --disk disk       (defaults to /dev/sda) containing loader</span><br><span class="line">	-e | --edd [1|3|-1]   force EDD 1.0 or 3.0 creation variables, or guess</span><br><span class="line">	-E | --device num      EDD 1.0 device number (defaults to 0x80)</span><br><span class="line">	-g | --gpt            force disk with invalid PMBR to be treated as GPT</span><br><span class="line">	-i | --iface name     create a netboot entry for the named interface</span><br><span class="line">	-l | --loader name     (defaults to \EFI\redhat\grub.efi)</span><br><span class="line">	-L | --label label     Boot manager display label (defaults to &quot;Linux&quot;)</span><br><span class="line">	-m | --mirror-below-4G t|f mirror memory below 4GB</span><br><span class="line">	-M | --mirror-above-4G X percentage memory to mirror above 4GB</span><br><span class="line">	-n | --bootnext XXXX   set BootNext to XXXX (hex)</span><br><span class="line">	-N | --delete-bootnext delete BootNext</span><br><span class="line">	-o | --bootorder XXXX,YYYY,ZZZZ,...     explicitly set BootOrder (hex)</span><br><span class="line">	-O | --delete-bootorder delete BootOrder</span><br><span class="line">	-p | --part part        (defaults to 1) containing loader</span><br><span class="line">	-q | --quiet            be quiet</span><br><span class="line">	-t | --timeout seconds  set boot manager timeout waiting for user input.</span><br><span class="line">	-T | --delete-timeout   delete Timeout.</span><br><span class="line">	-u | --unicode | --UCS-2  pass extra args as UCS-2 (default is ASCII)</span><br><span class="line">	-v | --verbose          print additional information</span><br><span class="line">	-V | --version          return version and exit</span><br><span class="line">	-w | --write-signature  write unique sig to MBR if needed</span><br><span class="line">	-@ | --append-binary-args file  append extra args from file (use &quot;-&quot; for stdin)</span><br><span class="line">	-h | --help             show help/usage</span><br></pre></td></tr></table></figure>
+<p>看起来复杂,其实只需要用到其中几个,下面说几个常用的:</p>
+<ul>
+<li>不加任何参数表示打印当前所有的启动项和启动顺序</li>
+<li>-b 修改</li>
+<li>-B 删除</li>
+<li>-c 添加</li>
+<li>-d 指定硬盘(默认是/dev/sda)<strong>[注意这里的根目录是相对于系统的根来说的]</strong></li>
+<li>-l 指定引导器(默认是\EFI\redhat\grub.efi)<strong>[注意这里的根目录是相对于你的esp分区来说的,而且用反斜杠<code>\</code>来表示目录级别]</strong></li>
+<li>-L 启动项的名字</li>
+</ul>
+<h1 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h1><p>下面说两个简单的例子:<br><font color="red"><strong><em>注意efibootmgr命令需要使用root权限!!</em></strong></font></p>
+<h2 id="添加一个名叫Arch的启动项"><a href="#添加一个名叫Arch的启动项" class="headerlink" title="添加一个名叫Arch的启动项"></a>添加一个名叫Arch的启动项</h2><p>背景描述:</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/07/25/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0UEFI%E5%90%AF%E5%8A%A8%E9%A1%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/" class="post-title-link" itemprop="url">测试网站是否能被百度蜘蛛抓取</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-07-01 23:48:34" itemprop="dateCreated datePublished" datetime="2016-07-01T23:48:34+08:00">2016-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/" class="post-meta-item leancloud_visitors" data-flag-title="测试网站是否能被百度蜘蛛抓取" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/01/%E6%B5%8B%E8%AF%95%E7%BD%91%E7%AB%99%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E7%99%BE%E5%BA%A6%E8%9C%98%E8%9B%9B%E6%8A%93%E5%8F%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>只需要使用curl命令配合一些参数就可以测试了,看返回内容就知道能否抓取了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用PC的UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;</span> http://listenerri.com</span><br><span class="line"><span class="comment"># 用移动UA来抓取</span></span><br><span class="line">curl -A <span class="string">&quot;Mozilla/5.0 (Linux;u;Android 4.2.2;zh-cn;) AppleWebKit/534.46 (KHTML,like Gecko) Version/5.1 Mobile Safari/10600.6.3 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html）&quot;</span> http://listenerri.com</span><br></pre></td></tr></table></figure>
+<p>下面两张图是我测试正常的,第一张是上述命令返回的开始部分,第二张是上述命令返回的结束部分:<br><img src="spider1.png" alt="开始"><br><img src="spider2.png" alt="结束"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/06/30/%E8%A7%A3%E5%86%B3%E5%AE%89%E5%8D%93%E5%B1%8F%E5%B9%95%E6%97%8B%E8%BD%AC%E6%89%80%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -726,531 +1271,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/eclipse%E4%B8%ADDDMS%E7%9A%84LOGcat%E5%8F%AA%E6%9C%89%E4%B8%80%E5%88%97level/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/eclipse%E4%B8%ADDDMS%E7%9A%84LOGcat%E5%8F%AA%E6%9C%89%E4%B8%80%E5%88%97level/" class="post-title-link" itemprop="url">eclipse中DDMS的LOGcat只有一列level</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 20:19:22" itemprop="dateCreated datePublished" datetime="2016-05-04T20:19:22+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/eclipse%E4%B8%ADDDMS%E7%9A%84LOGcat%E5%8F%AA%E6%9C%89%E4%B8%80%E5%88%97level/" class="post-meta-item leancloud_visitors" data-flag-title="eclipse中DDMS的LOGcat只有一列level" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/eclipse%E4%B8%ADDDMS%E7%9A%84LOGcat%E5%8F%AA%E6%9C%89%E4%B8%80%E5%88%97level/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/eclipse%E4%B8%ADDDMS%E7%9A%84LOGcat%E5%8F%AA%E6%9C%89%E4%B8%80%E5%88%97level/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>参考<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/25010393/eclipse-logcat-shows-only-the-first-letter-from-each-message">此贴</a>解决此问题。</p>
-<p>退出eclipse,打开下面的文件</p>
-<p>~/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs</p>
-<p>粘贴下面的东西到打开的文件</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ddms.logcat.auotmonitor.level=error  </span><br><span class="line">ddms.logcat.automonitor=<span class="literal">false</span>  </span><br><span class="line">ddms.logcat.automonitor.userprompt=<span class="literal">true</span>  </span><br><span class="line">eclipse.preferences.version=<span class="number">1</span></span><br><span class="line">logcat.view.colsize.Application=<span class="number">169</span></span><br><span class="line">logcat.view.colsize.Level=<span class="number">54</span></span><br><span class="line">logcat.view.colsize.PID=<span class="number">54</span></span><br><span class="line">logcat.view.colsize.Tag=<span class="number">198</span></span><br><span class="line">logcat.view.colsize.Text=<span class="number">619</span></span><br><span class="line">logcat.view.colsize.Time=<span class="number">182</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">vim+ycm+eclim+javacomplete解决冲突</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 20:12:12" itemprop="dateCreated datePublished" datetime="2016-05-04T20:12:12+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/" class="post-meta-item leancloud_visitors" data-flag-title="vim+ycm+eclim+javacomplete解决冲突" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>四个主角各自的作用:<br>vim:编辑器一枚<br>ycm:自动补全插件(也就是不用按ctrl+x ctrl+o来调用vim的omni全能补全)<br>eclim:让vim可以有部分eclipse的功能,也可以管理eclipse里的项目<br>javacomplete:一个java的补全插件(这里说的是增强版的)</p>
-<p>各自网址:<br><a target="_blank" rel="noopener" href="https://github.com/Valloric/YouCompleteMe">ycm:https://github.com/Valloric/YouCompleteMe</a><br><a target="_blank" rel="noopener" href="http://eclim.org/">eclim:http://eclim.org/</a><br><a target="_blank" rel="noopener" href="https://github.com/artur-shaik/vim-javacomplete2">javacomplete:https://github.com/artur-shaik/vim-javacomplete2</a></p>
-<p>这篇文章的主要目的不是如何安装和使用这些插件,而是解决eclim和javacomplete之间的冲突</p>
-<p>在说冲突之前先说下eclim和javacomplete的生效条件:<br>eclim:编辑的java类型的文件必须是eclipse中的一个项目中的文件<br>javacomplete:只要是java类型的文件都可以补全</p>
-<p>什么冲突呢?<br>ycm可以使用vim的omnifunc提供的数据来完成java的自动补全,主要依据在当前打开的java文件的buffer中,<br>执行:<code>set omnifunc</code>返回的结果来确认到底用eclim还是javacomplete提供的补全数据<br>冲突就是如果同时使用这两个插件,那么只要打开java类型的文件,那么就会被自动命令设置成javacomplete的<br>补全,即便是打开eclipse项目中的文件也不会是eclim的补全</p>
-<p>解决方法:<br>判断打开的java文件是否是eclipse项目中的文件就行了,判断方法是调用eclim插件的一个方法,<br>当是项目文件时,就不设置javacomplete的补全,如果不是,就设置omnifunc为javacomplete的补全,<br>讲下面的东西粘贴到vimrc中,另外不要在其他地方设置java的omnifunc:</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&quot; vim-javacomplete2</span></span><br><span class="line"><span class="comment">&quot; java的omni全能补全(insert模式下ctrl-x-ctrl-o调用),ycm将会自动调用</span></span><br><span class="line"><span class="comment">&quot; 与eclim的自动补全冲突,所以先判断当前文件是否是项目文件</span></span><br><span class="line"><span class="comment">&quot; 如果不是项目文件才使用vim-javacomplete2进行全能补全</span></span><br><span class="line"><span class="keyword">function!</span> <span class="title">IsProjectFile</span><span class="params">()</span></span><br><span class="line">    <span class="keyword">let</span> projectName = eclim#project#util#GetCurrentProjectName()</span><br><span class="line">    <span class="keyword">if</span> projectName == <span class="string">&#x27;&#x27;</span></span><br><span class="line">         <span class="keyword">setlocal</span> omnifunc=javacomplete#Complete</span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line"><span class="keyword">endfunction</span></span><br><span class="line"><span class="keyword">autocmd</span> FileType java <span class="keyword">call</span> IsProjectFile()</span><br><span class="line"></span><br><span class="line"><span class="comment">&quot; eclim/eclimd</span></span><br><span class="line"><span class="comment">&quot; 需要自行安装,不在vim-plug插件管理器管理列表之中</span></span><br><span class="line"><span class="comment">&quot; eclimd读取$ECLIPSE_HOME/configuration/config.ini</span></span><br><span class="line"><span class="comment">&quot; 还读取~/eclimrc配置文件</span></span><br><span class="line"><span class="comment">&quot; 日志级别,日志文件默认在workspace/eclimd.log</span></span><br><span class="line"><span class="comment">&quot; 除了默认的info,还有trace,debug,warning,error,off</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:EclimLogLevel</span> = <span class="string">&#x27;info&#x27;</span></span><br><span class="line"><span class="comment">&quot; 设置浏览器,firefox,mozilla,opera,iexplore</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:EclimBrowser</span> = <span class="string">&#x27;firefox&#x27;</span></span><br><span class="line"><span class="comment">&quot; 让eclim配合ycm实现java等语言的自动补全</span></span><br><span class="line"><span class="comment">&quot; 编辑的文件必须是eclipse的一个项目中的文件才会自动补全</span></span><br><span class="line"><span class="comment">&quot; 这个变量的作用是(仅举例java文件):set omnifunc=eclim#java#complete#CodeComplete</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:EclimCompletionMethod</span> = <span class="string">&#x27;omnifunc&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>javacomplete和eclim都需要自己安装具体如何安装可以去上面提供的网址去查看和下载,<br>不会因为添加了这几行配置就可以实现java的补全了,本文中使用的插件管理器是:<code>vim-plug</code></p>
-<p>另外推荐一份vim的配置,使用简单,配置文件结构清晰,注释明了,很适合不熟悉vim配置的人入手学习: <a target="_blank" rel="noopener" href="https://github.com/wklken/k-vim">k-vim</a></p>
-<p>再附上自己的一份配置,借鉴了上面的kvim,但后来觉得不舍和自己,就从零开始自己配置了: <a target="_blank" rel="noopener" href="https://github.com/listenerri/ri-vim">ri-vim</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/vim-ycm-eclim-javacomplete%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/" class="post-title-link" itemprop="url">java打印三角和乘法口诀</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 20:08:33" itemprop="dateCreated datePublished" datetime="2016-05-04T20:08:33+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/" class="post-meta-item leancloud_visitors" data-flag-title="java打印三角和乘法口诀" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印正三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">helloworld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打印倒三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">helloworld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> lines=<span class="number">9</span>; lines&gt;=<span class="number">1</span>; lines--) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打印乘法口诀</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">helloworld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> columns=<span class="number">1</span>; columns&lt;=lines; columns++) &#123;</span><br><span class="line">                System.out.print(columns+<span class="string">&quot;*&quot;</span>+lines+<span class="string">&quot;=&quot;</span>+columns*lines+<span class="string">&quot;\t&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>附上图片:<br><img src="zsanjiao.png" alt="正三角"><br><img src="dsanjiao.png" alt="倒三角"><br><img src="koujue.png" alt="乘法口诀"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/" class="post-title-link" itemprop="url">自定义bash终端提示符</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 19:58:10" itemprop="dateCreated datePublished" datetime="2016-05-04T19:58:10+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/" class="post-meta-item leancloud_visitors" data-flag-title="自定义bash终端提示符" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>新增第三种，推荐使用</p>
-</blockquote>
-<h1 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h1><p>可以提示上一条命令是否出错，如果出错，最左边绿色的笑脸就会变成红色的哭脸，可以显示当前所在路径，当切换到root用户时用户名变为红色，如图所示:</p>
-<p><img src="shell.png" alt="shell"></p>
-<p>使用方法，将下面的代码，复制粘贴到~/.bashrc中:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bash prompt by listenerri</span></span><br><span class="line">PS1=<span class="string">&quot;\$(if [[ \$? == 0 ]]; then echo \&quot;\[\e[1;32m\] :)\&quot;; else echo \&quot;\[\e[1;31m\] :(\&quot;; fi) <span class="subst">$(if [[ $&#123;EUID&#125; == 0 ]]; then echo <span class="string">&quot;\[\e[1;31m\]\u \[\e[1;32m\]\w \[\e[1;33m\]# &gt; &quot;</span>; else echo <span class="string">&quot;\[\e[1;36m\]\u \[\e[1;32m\]\w \[\e[1;33m\]$ &gt; &quot;</span>; fi)</span>\[\e[0m\]&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h1><p>与第一种不同的是去掉了最右边的箭头，并且’$’和’#’号会随着用户名的颜色变化(root时为红色)</p>
-<ul>
-<li>新增提示git仓库分支名称:</li>
-<li>如果当前目录是git仓库的根目录，则以黄色的文字显示当前仓库的分支，否则不显示</li>
-</ul>
-<p>如图所示:<br><img src="prompt.png" alt="prompt"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/%E8%87%AA%E5%AE%9A%E4%B9%89bash%E7%BB%88%E7%AB%AF%E6%8F%90%E7%A4%BA%E7%AC%A6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/" class="post-title-link" itemprop="url">getDuration()获取媒体总长度值为-1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 19:55:38" itemprop="dateCreated datePublished" datetime="2016-05-04T19:55:38+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/" class="post-meta-item leancloud_visitors" data-flag-title="getDuration()获取媒体总长度值为-1" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/getDuration-%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E6%80%BB%E9%95%BF%E5%BA%A6%E5%80%BC%E4%B8%BA-1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>例如VideoView获取视频总长度：<br>在视频播放前获取到的视频总长度都为-1<br>想要在视频播放前获取到总长度的话:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">videoView.setOnPreparedListener(<span class="keyword">new</span> <span class="title class_">MyOnPreparedListener</span>());</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">MyOnPreparedListener</span> <span class="keyword">implements</span> <span class="title class_">OnPreparedListener</span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onPrepared</span><span class="params">(MediaPlayer mp)</span> &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line"></span><br><span class="line">			video.getDuration();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1318,7 +1342,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1331,7 +1355,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">249</span>
+        <span class="site-state-item-count">255</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

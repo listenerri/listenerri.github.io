@@ -202,6 +202,556 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" class="post-title-link" itemprop="url">zookeeper 小记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-04 09:13:22" itemprop="dateCreated datePublished" datetime="2019-12-04T09:13:22+08:00">2019-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/zookeeper/" itemprop="url" rel="index"><span itemprop="name">zookeeper</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="zookeeper 小记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="zookeeper-崩溃恢复过程中两个关键性问题"><a href="#zookeeper-崩溃恢复过程中两个关键性问题" class="headerlink" title="zookeeper 崩溃恢复过程中两个关键性问题"></a>zookeeper 崩溃恢复过程中两个关键性问题</h1><p>Q1：leader 提交事务 A 后崩溃，follower 没有收到提交事务 A 的消息，再次选举 leader 时如何确保事务 A 被应用？</p>
+<p>A1：既然 leader 已经在本地提交了事务 A，那么说明事务 A 肯定已经经过了多数 follower 的确认，即多数 follower 上都有事务 A 的记录，leader 崩溃后，重新选举出的新 leader 肯定包含未提交的事务 A，因为事务 A 的事务 ID 最大，新 leader 会继续提交事务 A。</p>
+<hr>
+<p>Q2：leader 在还未将事务 B 广播到集群中时崩溃，在重新选举 leader 并在旧 leader 恢复正常后如何处理事务 B？</p>
+<p>A2：事务 B 将会被删除，不会被提交。leader 在接收到一个请求，并将其转化为事务 B 后崩溃，此时还没有将事务 B 广播到集群中，即此事务只存在于 leader 机器上，经过新一轮的 leader 选举后，旧 leader 恢复正常并加入集群，此时会发现事务 B 的事务 ID 所使用的 epoch 号与新 leader 的对不上，那么事务 B 就会被删除。</p>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><p>把握好 zookeeper 的主要特性就可以将其应用在多种多样的场景下。主要特性如下：</p>
+<ul>
+<li>节点<ul>
+<li>树结构</li>
+<li>持久节点</li>
+<li>持久顺序节点</li>
+<li>临时节点</li>
+<li>临时顺序节点</li>
+<li>节点只能被注册一次</li>
+</ul>
+</li>
+<li>watcher</li>
+</ul>
+<p>在《从 Paxos 到 Zookeeper》一书中提到的应用场景以及我认为场景所应用到的主要特性如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/04/zookeeper-%E5%B0%8F%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/11/27/caida-tools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/27/caida-tools/" class="post-title-link" itemprop="url">caida tools</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-27 15:57:46" itemprop="dateCreated datePublished" datetime="2019-11-27T15:57:46+08:00">2019-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/11/27/caida-tools/" class="post-meta-item leancloud_visitors" data-flag-title="caida tools" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/27/caida-tools/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/27/caida-tools/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>翻译自：<a target="_blank" rel="noopener" href="http://www.caida.org/tools/">http://www.caida.org/tools/</a></p>
+</blockquote>
+<p>主要翻译了工具列表中的“介绍”部分。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/27/caida-tools/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" class="post-title-link" itemprop="url">linux下为两个网卡调整路由规则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-26 08:46:00" itemprop="dateCreated datePublished" datetime="2019-11-26T08:46:00+08:00">2019-11-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" class="post-meta-item leancloud_visitors" data-flag-title="linux下为两个网卡调整路由规则" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>公司有线网是电信的，访问境外的服务器会间歇性得无法访问，但有一个无线网是移动的，用手机测试发现一直没什么问题，所以搞了个无线网卡连无线网。</p>
+<p>但电脑的数据默认只走有线网，只有关了有线网才能用无线网，但是公司内部的服务只能通过有线网访问，所以就尝试了以下方案：</p>
+<ul>
+<li>192.168.1.0/24 网段走有线网，其他走无线网</li>
+<li>只在访问境外服务器的时候走无线网</li>
+</ul>
+<p>经过测试确定这两个方案都能满足我的需求，但是由于无线不如有限稳定，所以最后确定使用第二种方案。</p>
+<p>调整路由的工具使用 ip 命令的子命令 route，除了路由子命令还有很多其他网络相关的功能，具体可以查看 ip 命令的 man 手册。</p>
+<p>linux 下当连接无线网和有线网之后使用 <code>ip route</code>，可以简写为 <code>ip r</code> 可以列出当前所有的路由规则：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default via 192.168.1.1 dev enp2s0 proto static metric 100</span><br><span class="line">default via 192.168.1.1 dev wlx200db012a6be proto dhcp metric 600</span><br><span class="line">172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown</span><br><span class="line">192.168.1.0/24 dev enp2s0 proto kernel scope link src 192.168.1.208 metric 100</span><br><span class="line">192.168.1.0/24 dev wlx200db012a6be proto kernel scope link src 192.168.1.74 metric 600</span><br><span class="line">192.168.252.0/24 dev xdroid0 proto kernel scope link src 192.168.252.1</span><br></pre></td></tr></table></figure>
+<p>其中 enp2s0 是有线网相关的路由，wlx200db012a6be 是无线网相关的路由，此外还有 docker 和 xdroid 相关的，后面这两个不用管，没有安装这两个程序的机器也不会有这两种路由。</p>
+<p>从上面的路由规则可以看到 enp2s0 相关的 metric 值为 100 而 wlx200db012a6be 相关的 metric 值为 600，这就表示 enp2s0 相关的路由规则比 wlx200db012a6be 相关的路由规则优先级高。在相同的条件下，如相同的 prefix（IP 地址段）时系统将优先使用 enp2s0。</p>
+<p>例如以下这两条规则，就表示访问 192.168.1.* 就会走 enp2s0：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/26/linux%E4%B8%8B%E4%B8%BA%E4%B8%A4%E4%B8%AA%E7%BD%91%E5%8D%A1%E8%B0%83%E6%95%B4%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">klib-khash 使用记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-20 17:47:05" itemprop="dateCreated datePublished" datetime="2019-11-20T17:47:05+08:00">2019-11-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" class="post-meta-item leancloud_visitors" data-flag-title="klib-khash 使用记录" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>klib 的项目地址：<a target="_blank" rel="noopener" href="https://github.com/attractivechaos/klib/">https://github.com/attractivechaos/klib/</a></p>
+<p>klib 官方文档：<a target="_blank" rel="noopener" href="http://attractivechaos.github.io/klib/">http://attractivechaos.github.io/klib/</a></p>
+<p>总的来说整个 klib 库小巧且功能强大，各种实现之间没有依赖，大多只需要 include 头文件即可使用，目前已经使用过的有 khash 和 klist，这里先说我个人在使用 khash 的过程中遇到的问题和使用过程中需要注意的点。</p>
+<p>上面的 klib 官方文档链接中有不少入门的小例子，但也只是简单的使用方法，很多接口并没有提及，不过也有可能作者没有及时更新文档中的例子。</p>
+<p>在使用过程中要时刻谨记 khash 中给出的接口都是宏，这也意味着在调试的时候很不方便，如果搞不懂一个接口的意思或者想知道这个接口都做了什么，最好还是看一下 khash.h 中的实现。</p>
+<p>就我个人来说，最想提出要注意的一点是 <code>内存释放</code>，在过去一段时间内，我手上依赖 klib 的程序一直都有内存泄漏，不过我始终没有找到原因，直到昨天我才终于定位到是 khash 相关的数据没有被彻底释放。导致这一问题出现的重要原因也在于我接手这个项目时，khash 相关的释放代码已经大量存在了，以至于先入为主，令我以为正确的释放操作就应该就那样，昨天定位到这个问题后我仔细分析了一下 khash 的源码，发现一直以来程序里关于销毁释放内存的操作，一直都是错误的。下面只会使用正确的方法（至少目前我认为是正确的:))，以免误导了其他人。</p>
+<p>khash 里面提供了两种数据结构：hashmap 和 hashset，两种结构的使用方法大致是一样的，可以把 hashset 结构看作是没有值的 hashmap。</p>
+<h1 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明 hashmap 名字和键值的类型</span></span><br><span class="line"><span class="comment">// 这个宏还定义了大量的函数，不过一般都不直接使用那些函数，而是使用通用的接口宏</span></span><br><span class="line"><span class="comment">// 这里声明了一个键值对是 int:int 的 map 类型，注意这里只是声明了一个 类型</span></span><br><span class="line"><span class="comment">// 这个 map 类型的名字是 MAP_int2int，map 的名字后面会经常用到</span></span><br><span class="line"><span class="comment">// 此外，这个宏是对宏 KHASH_INIT 的一个简单封装</span></span><br><span class="line"><span class="comment">// 如果有复杂需求要使用 KHASH_INIT，则需要提供两个 hash 函数，我没有用到就不举例了</span></span><br><span class="line"><span class="comment">// hash 函数的实现可以参考 khash 里已有的来实现</span></span><br><span class="line">KHASH_MAP_INIT_INT(MAP_int2int, <span class="type">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">khash_t</span>(MAP_int2int) *map_int2int = kh_init(MAP_int2int); <span class="comment">// 使用上面声明的 map 类型声明并初始化一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="type">khiter_t</span> iter = <span class="number">0</span>; <span class="comment">// 访问键、值都需要使用 iter</span></span><br><span class="line">iter = kh_get(MAP_int2int, map_int2int, <span class="number">100</span>); <span class="comment">// 查看 100 这个键是否在 map 中存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (iter == kh_end(map_int2int)) &#123; <span class="comment">// 不存在</span></span><br><span class="line">    <span class="type">int</span> ret = <span class="number">0</span>; <span class="comment">// 将 100 这个键放入 map，ret 是一个额外的返回值，用来表示放入操作的结果</span></span><br><span class="line">    iter = kh_put(MAP_int2int, map_int2int, <span class="number">100</span>, &amp;ret); <span class="comment">// 放入成功后返回值 iter 即表示为 100 这个键在 map 中的位置</span></span><br><span class="line">&#125;</span><br><span class="line">kh_value(map_int2int, iter) = <span class="number">200</span>; <span class="comment">// 使用 iter 来存值，值为 200</span></span><br><span class="line"><span class="comment">/* 至此 map 中就有了 100:200 这一个数据 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历 map</span></span><br><span class="line"><span class="keyword">for</span> (iter = kh_begin(map_int2int); iter != kh_end(map_int2int); iter++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!kh_exist(map_int2int, iter)) &#123; <span class="comment">// 这里的判断一定要有</span></span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    do_something_foo(kh_key(map_int2int, iter));</span><br><span class="line">    do_something_bar(kh_val(map_int2int, iter));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* khash 里还提供了更便利的遍历宏：kh_foreach 和 kh_foreach_value */</span></span><br><span class="line"></span><br><span class="line">kh_del(MAP_int2int, map_int2int, iter); <span class="comment">// 当确定一个 iter 之后，可以移除一个键值对</span></span><br><span class="line">kh_clear(MAP_int2int, map_int2int); <span class="comment">// 清空这个 map 的所有数据</span></span><br><span class="line"></span><br><span class="line">do_something_zzz(map_int2int); <span class="comment">// 清空后的 map 还可以继续使用，比如继续往里面存值</span></span><br><span class="line"></span><br><span class="line">kh_destroy(MAP_int2int, map_int2int); <span class="comment">// 销毁 map，销毁之后就不能再使用了</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/20/klib-khash-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/" class="post-title-link" itemprop="url">osx bash completion 补全</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-31 23:14:37" itemprop="dateCreated datePublished" datetime="2019-10-31T23:14:37+08:00">2019-10-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/osx/" itemprop="url" rel="index"><span itemprop="name">osx</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/" class="post-meta-item leancloud_visitors" data-flag-title="osx bash completion 补全" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/31/osx-bash-completion-%E8%A1%A5%E5%85%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 linux 下补全的配置一般发行版都给默认配了，原本以为在 OSX 下用 brew 装个 bash-completion 包，再在 bashrc 下贴两行配置也就搞定了，没想到不行，OSX 下 bash-completion 包有两个，另一个是 <code>bash-completion@2</code>，这两个包分别对应 bash 的两个版本，具体可以用 brew info <code>bash-completion@2</code> 来看。</p>
+<p>而且 <code>bash-completion@2</code> 跟 <code>bash-completion</code> 相比还要多一行配置，总之就是需要下面两行配置才行，原因是大多软件包都只提供了旧版本的 completion 文件，新版的没有提供支持，所以下面的第一行就是声明要兼容下旧的补全文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export BASH_COMPLETION_COMPAT_DIR=&quot;/usr/local/etc/bash_completion.d&quot;</span><br><span class="line">[[ -r &quot;/usr/local/etc/profile.d/bash_completion.sh&quot; ]] &amp;&amp; . &quot;/usr/local/etc/profile.d/bash_completion.sh&quot;</span><br></pre></td></tr></table></figure>
+
+<p>除此之外还有个问题，我自己设置了很多别名 alias，但是这些自定义的别名默认是不支持参数补全的，想要如丝般顺滑就要用另一个项目：<a target="_blank" rel="noopener" href="https://github.com/cykerway/complete-alias">https://github.com/cykerway/complete-alias</a>，具体的使用方法就不赘述了，可以去项目里看看怎么配置。</p>
+<p>经过实践发现这个项目也不支持旧版的 <code>bash-completion</code> 包，会提示 _completion_loader 找不到的错误，改装 <code>bash-completion@2</code> 就好了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -753,1484 +1303,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">通过打DSDT补丁让黑苹果显示电池状态信息</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-10-11 16:03:22" itemprop="dateCreated datePublished" datetime="2019-10-11T16:03:22+08:00">2019-10-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" class="post-meta-item leancloud_visitors" data-flag-title="通过打DSDT补丁让黑苹果显示电池状态信息" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>翻译自：<a target="_blank" rel="noopener" href="https://www.tonymacx86.com/threads/guide-how-to-patch-dsdt-for-working-battery-status.116102/">https://www.tonymacx86.com/threads/guide-how-to-patch-dsdt-for-working-battery-status.116102/</a></p>
-</blockquote>
-<blockquote>
-<p>转载请注明出处</p>
-</blockquote>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>因为电脑中的电池硬件与苹果的 SMbus 硬件不兼容，所以在笔记本电脑上运行 OS X 时，我们使用 ACPI 来访问电池状态。一般来说，我建议你使用 <code>ACPIBatteryManager.kext</code>，可在这里找到: <a target="_blank" rel="noopener" href="https://github.com/RehabMan/OS-X-ACPI-Battery-Driver">https://github.com/RehabMan/OS-X-ACPI-Battery-Driver</a></p>
-<p>AppleACPIPlatform 的更高版本无法正确访问 EC（嵌入式控制器）中的字段。由于各种 ACPI 方法（_BIF，_STA，_BST等）失效，这会导致 ACPIBatteryManager 获取电池数据出现问题。尽管可以使用较旧版本的 AppleACPIPlatform（来自 Snow Leopard），但还是希望使用最新版本的AppleACPIPlatform，因为对于具有 Ivy Bridge CPU 的计算机，它可以为这些计算机启用本机电源管理。要使用最新版本，必须更改 DSDT 以符合 Apple 的 AppleACPIPlatform 的限制。</p>
-<p>特别是，EC 中大于 8 位的任何字段都必须更改为 8 位。 这包括 16、32、64 甚至更大的字段。</p>
-<p>你应该先熟悉 DSDT/SSDT 打补丁的基本知识： <a target="_blank" rel="noopener" href="http://www.tonymacx86.com/yosemite-laptop-support/152573-guide-patching-laptop-dsdt-ssdts.html">http://www.tonymacx86.com/yosemite-laptop-support/152573-guide-patching-laptop-dsdt-ssdts.html</a></p>
-<h1 id="已存在的补丁"><a href="#已存在的补丁" class="headerlink" title="已存在的补丁"></a>已存在的补丁</h1><p>首先，你的笔记本电脑可能已经有补丁了。请看我的补丁仓库: <a target="_blank" rel="noopener" href="https://github.com/RehabMan/Laptop-DSDT-Patch">https://github.com/RehabMan/Laptop-DSDT-Patch</a></p>
-<p>为了使 DSDT 与补丁程序匹配，通常首先需要了解补丁程序的制作方式，以便你知道在 DSDT 中要查找的内容，并且可以将所看到的内容与现有补丁程序进行匹配。补丁集的更改比率很高，不会产生错误，并且似乎在补丁所有需要补丁的字段，这很可能是匹配的（本句原文：A patch set that has a high ratio of changes to patches, creates no errors, and appears to patch all fields that need to be patched is likely a match）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/" class="post-title-link" itemprop="url">将数据从mysql导入到excel碰到的坑</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-10-10 19:31:17" itemprop="dateCreated datePublished" datetime="2019-10-10T19:31:17+08:00">2019-10-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/" class="post-meta-item leancloud_visitors" data-flag-title="将数据从mysql导入到excel碰到的坑" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/10/%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BB%8Emysql%E5%AF%BC%E5%85%A5%E5%88%B0excel%E7%A2%B0%E5%88%B0%E7%9A%84%E5%9D%91/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>记录一些在 windows 下将数据从 mysql 导入到 excel 过程中遇到的坑。首先，这一操作有两种方案：</p>
-<ol>
-<li>在 navicat 中进行操作，将数据写入到 excel 文件中</li>
-<li>在 excel 中进行操作，将数据从 mysql 服务器写入文件</li>
-</ol>
-<p>第一种方案同事说在数据量很大的时候导出速度很慢，原因不明，我猜测是因为 navicat 使用的 POI 技术实现的功能，没有深究。第二种方案就我进行测试的方案，这种方案至少在速度方面有很明显的提升，下面列一下测试过程中遇到的坑：</p>
-<ol>
-<li>只能使用 windows 的 office excel，wps 的表格有奇怪的问题无法解决（后来发现是因为系统中没有安装 <code>Visual C++ Redistributable Packages for Visual Studio 2013</code>）</li>
-<li>安装 Mysql ODBC 驱动时要注意 excel 的软件位数，如果 excel 是 32 位的，那么 Mysql ODBC 驱动也必须是 32 位的</li>
-<li>64 位系统不显示 32 位的 ODBC 驱动，需要手动打开 <code>C:\\Windows\\sysWOW64\\odbcad32.exe</code> 程序添加连接</li>
-<li>导入数据时出现错误：<code>MySQL client ran out of memory</code>，调整系统中的数据源(ODBC)中的连接选项，找到并勾选”Do not cache result”之类的选项，应该可以解决</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/08/09/%E5%9B%BD%E9%99%85%E5%9F%9F%E5%90%8D%E7%BC%A9%E5%86%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/08/09/%E5%9B%BD%E9%99%85%E5%9F%9F%E5%90%8D%E7%BC%A9%E5%86%99/" class="post-title-link" itemprop="url">国际域名缩写</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-08-09 17:42:52" itemprop="dateCreated datePublished" datetime="2019-08-09T17:42:52+08:00">2019-08-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/08/09/%E5%9B%BD%E9%99%85%E5%9F%9F%E5%90%8D%E7%BC%A9%E5%86%99/" class="post-meta-item leancloud_visitors" data-flag-title="国际域名缩写" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/08/09/%E5%9B%BD%E9%99%85%E5%9F%9F%E5%90%8D%E7%BC%A9%E5%86%99/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/09/%E5%9B%BD%E9%99%85%E5%9F%9F%E5%90%8D%E7%BC%A9%E5%86%99/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>转自：<a href="">http://www.jctrans.com/tool/gjym.htm</a></p>
-</blockquote>
-<h1 id="国际域名缩写"><a href="#国际域名缩写" class="headerlink" title="国际域名缩写"></a>国际域名缩写</h1><table>
-<thead>
-<tr>
-<th>国际域名缩写</th>
-<th>国家或地区</th>
-<th>Countries and Regions</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>AD</td>
-<td>安道尔共和国</td>
-<td>Andorra</td>
-</tr>
-<tr>
-<td>AE</td>
-<td>阿拉伯联合酋长国</td>
-<td>United Arab Emirates</td>
-</tr>
-<tr>
-<td>AF</td>
-<td>阿富汗</td>
-<td>Afghanistan</td>
-</tr>
-<tr>
-<td>AG</td>
-<td>安提瓜和巴布达</td>
-<td>Antigua and Barbuda</td>
-</tr>
-<tr>
-<td>AI</td>
-<td>安圭拉岛</td>
-<td>Anguilla</td>
-</tr>
-<tr>
-<td>AL</td>
-<td>阿尔巴尼亚</td>
-<td>Albania</td>
-</tr>
-<tr>
-<td>AM</td>
-<td>亚美尼亚</td>
-<td>Armenia</td>
-</tr>
-<tr>
-<td>AO</td>
-<td>安哥拉</td>
-<td>Angola</td>
-</tr>
-<tr>
-<td>AR</td>
-<td>阿根廷</td>
-<td>Argentina</td>
-</tr>
-<tr>
-<td>AT</td>
-<td>奥地利</td>
-<td>Austria</td>
-</tr>
-<tr>
-<td>AU</td>
-<td>澳大利亚</td>
-<td>Australia</td>
-</tr>
-<tr>
-<td>AZ</td>
-<td>阿塞拜疆</td>
-<td>Azerbaijan</td>
-</tr>
-<tr>
-<td>BB</td>
-<td>巴巴多斯</td>
-<td>Barbados</td>
-</tr>
-<tr>
-<td>BD</td>
-<td>孟加拉国</td>
-<td>Bangladesh</td>
-</tr>
-<tr>
-<td>BE</td>
-<td>比利时</td>
-<td>Belgium</td>
-</tr>
-<tr>
-<td>BF</td>
-<td>布基纳法索</td>
-<td>Burkina-faso</td>
-</tr>
-<tr>
-<td>BG</td>
-<td>保加利亚</td>
-<td>Bulgaria</td>
-</tr>
-<tr>
-<td>BH</td>
-<td>巴林</td>
-<td>Bahrain</td>
-</tr>
-<tr>
-<td>BI</td>
-<td>布隆迪</td>
-<td>Burundi</td>
-</tr>
-<tr>
-<td>BJ</td>
-<td>贝宁</td>
-<td>Benin</td>
-</tr>
-<tr>
-<td>BL</td>
-<td>巴勒斯坦</td>
-<td>Palestine</td>
-</tr>
-<tr>
-<td>BM</td>
-<td>百慕大群岛</td>
-<td>Bermuda Is.</td>
-</tr>
-<tr>
-<td>BN</td>
-<td>文莱</td>
-<td>Brunei</td>
-</tr>
-<tr>
-<td>BO</td>
-<td>玻利维亚</td>
-<td>Bolivia</td>
-</tr>
-<tr>
-<td>BR</td>
-<td>巴西</td>
-<td>Brazil</td>
-</tr>
-<tr>
-<td>BS</td>
-<td>巴哈马</td>
-<td>Bahamas</td>
-</tr>
-<tr>
-<td>BW</td>
-<td>博茨瓦纳</td>
-<td>Botswana</td>
-</tr>
-<tr>
-<td>BY</td>
-<td>白俄罗斯</td>
-<td>Belarus</td>
-</tr>
-<tr>
-<td>BZ</td>
-<td>伯利兹</td>
-<td>Belize</td>
-</tr>
-<tr>
-<td>CA</td>
-<td>加拿大</td>
-<td>Canada</td>
-</tr>
-<tr>
-<td>CF</td>
-<td>中非共和国</td>
-<td>Central African Republic</td>
-</tr>
-<tr>
-<td>CG</td>
-<td>刚果</td>
-<td>Congo</td>
-</tr>
-<tr>
-<td>CH</td>
-<td>瑞士</td>
-<td>Switzerland</td>
-</tr>
-<tr>
-<td>CK</td>
-<td>库克群岛</td>
-<td>Cook Is.</td>
-</tr>
-<tr>
-<td>CL</td>
-<td>智利</td>
-<td>Chile</td>
-</tr>
-<tr>
-<td>CM</td>
-<td>喀麦隆</td>
-<td>Cameroon</td>
-</tr>
-<tr>
-<td>CN</td>
-<td>中国</td>
-<td>China</td>
-</tr>
-<tr>
-<td>CO</td>
-<td>哥伦比亚</td>
-<td>Colombia</td>
-</tr>
-<tr>
-<td>CR</td>
-<td>哥斯达黎加</td>
-<td>Costa Rica</td>
-</tr>
-<tr>
-<td>CS</td>
-<td>捷克</td>
-<td>Czech</td>
-</tr>
-<tr>
-<td>CU</td>
-<td>古巴</td>
-<td>Cuba</td>
-</tr>
-<tr>
-<td>CY</td>
-<td>塞浦路斯</td>
-<td>Cyprus</td>
-</tr>
-<tr>
-<td>CZ</td>
-<td>捷克</td>
-<td>Czech Republic</td>
-</tr>
-<tr>
-<td>DE</td>
-<td>德国</td>
-<td>Germany</td>
-</tr>
-<tr>
-<td>DJ</td>
-<td>吉布提</td>
-<td>Djibouti</td>
-</tr>
-<tr>
-<td>DK</td>
-<td>丹麦</td>
-<td>Denmark</td>
-</tr>
-<tr>
-<td>DO</td>
-<td>多米尼加共和国</td>
-<td>Dominica Rep.</td>
-</tr>
-<tr>
-<td>DZ</td>
-<td>阿尔及利亚</td>
-<td>Algeria</td>
-</tr>
-<tr>
-<td>EC</td>
-<td>厄瓜多尔</td>
-<td>Ecuador</td>
-</tr>
-<tr>
-<td>EE</td>
-<td>爱沙尼亚</td>
-<td>Estonia</td>
-</tr>
-<tr>
-<td>EG</td>
-<td>埃及</td>
-<td>Egypt</td>
-</tr>
-<tr>
-<td>ES</td>
-<td>西班牙</td>
-<td>Spain</td>
-</tr>
-<tr>
-<td>ET</td>
-<td>埃塞俄比亚</td>
-<td>Ethiopia</td>
-</tr>
-<tr>
-<td>FI</td>
-<td>芬兰</td>
-<td>Finland</td>
-</tr>
-<tr>
-<td>FJ</td>
-<td>斐济</td>
-<td>Fiji</td>
-</tr>
-<tr>
-<td>FR</td>
-<td>法国</td>
-<td>France</td>
-</tr>
-<tr>
-<td>GA</td>
-<td>加蓬</td>
-<td>Gabon</td>
-</tr>
-<tr>
-<td>GB</td>
-<td>英国</td>
-<td>United Kiongdom</td>
-</tr>
-<tr>
-<td>GD</td>
-<td>格林纳达</td>
-<td>Grenada</td>
-</tr>
-<tr>
-<td>GE</td>
-<td>格鲁吉亚</td>
-<td>Georgia</td>
-</tr>
-<tr>
-<td>GF</td>
-<td>法属圭亚那</td>
-<td>French Guiana</td>
-</tr>
-<tr>
-<td>GH</td>
-<td>加纳</td>
-<td>Ghana</td>
-</tr>
-<tr>
-<td>GI</td>
-<td>直布罗陀</td>
-<td>Gibraltar</td>
-</tr>
-<tr>
-<td>GM</td>
-<td>冈比亚</td>
-<td>Gambia</td>
-</tr>
-<tr>
-<td>GN</td>
-<td>几内亚</td>
-<td>Guinea</td>
-</tr>
-<tr>
-<td>GR</td>
-<td>希腊</td>
-<td>Greece</td>
-</tr>
-<tr>
-<td>GT</td>
-<td>危地马拉</td>
-<td>Guatemala</td>
-</tr>
-<tr>
-<td>GU</td>
-<td>关岛</td>
-<td>Guam</td>
-</tr>
-<tr>
-<td>GY</td>
-<td>圭亚那</td>
-<td>Guyana</td>
-</tr>
-<tr>
-<td>HK</td>
-<td>香港特别行政区</td>
-<td>Hongkong</td>
-</tr>
-<tr>
-<td>HN</td>
-<td>洪都拉斯</td>
-<td>Honduras</td>
-</tr>
-<tr>
-<td>HT</td>
-<td>海地</td>
-<td>Haiti</td>
-</tr>
-<tr>
-<td>HU</td>
-<td>匈牙利</td>
-<td>Hungary</td>
-</tr>
-<tr>
-<td>ID</td>
-<td>印度尼西亚</td>
-<td>Indonesia</td>
-</tr>
-<tr>
-<td>IE</td>
-<td>爱尔兰</td>
-<td>Ireland</td>
-</tr>
-<tr>
-<td>IL</td>
-<td>以色列</td>
-<td>Israel</td>
-</tr>
-<tr>
-<td>IN</td>
-<td>印度</td>
-<td>India</td>
-</tr>
-<tr>
-<td>IQ</td>
-<td>伊拉克</td>
-<td>Iraq</td>
-</tr>
-<tr>
-<td>IR</td>
-<td>伊朗</td>
-<td>Iran</td>
-</tr>
-<tr>
-<td>IS</td>
-<td>冰岛</td>
-<td>Iceland</td>
-</tr>
-<tr>
-<td>IT</td>
-<td>意大利</td>
-<td>Italy</td>
-</tr>
-<tr>
-<td>JM</td>
-<td>牙买加</td>
-<td>Jamaica</td>
-</tr>
-<tr>
-<td>JO</td>
-<td>约旦</td>
-<td>Jordan</td>
-</tr>
-<tr>
-<td>JP</td>
-<td>日本</td>
-<td>Japan</td>
-</tr>
-<tr>
-<td>KE</td>
-<td>肯尼亚</td>
-<td>Kenya</td>
-</tr>
-<tr>
-<td>KG</td>
-<td>吉尔吉斯坦</td>
-<td>Kyrgyzstan</td>
-</tr>
-<tr>
-<td>KH</td>
-<td>柬埔寨</td>
-<td>Kampuchea (Cambodia )</td>
-</tr>
-<tr>
-<td>KP</td>
-<td>朝鲜</td>
-<td>North Korea</td>
-</tr>
-<tr>
-<td>KR</td>
-<td>韩国</td>
-<td>Korea</td>
-</tr>
-<tr>
-<td>KT</td>
-<td>科特迪瓦共和国</td>
-<td>Republic of Ivory Coast</td>
-</tr>
-<tr>
-<td>KW</td>
-<td>科威特</td>
-<td>Kuwait</td>
-</tr>
-<tr>
-<td>KZ</td>
-<td>哈萨克斯坦</td>
-<td>Kazakstan</td>
-</tr>
-<tr>
-<td>LA</td>
-<td>老挝</td>
-<td>Laos</td>
-</tr>
-<tr>
-<td>LB</td>
-<td>黎巴嫩</td>
-<td>Lebanon</td>
-</tr>
-<tr>
-<td>LC</td>
-<td>圣卢西亚</td>
-<td>St.Lucia</td>
-</tr>
-<tr>
-<td>LI</td>
-<td>列支敦士登</td>
-<td>Liechtenstein</td>
-</tr>
-<tr>
-<td>LK</td>
-<td>斯里兰卡</td>
-<td>Sri Lanka</td>
-</tr>
-<tr>
-<td>LR</td>
-<td>利比里亚</td>
-<td>Liberia</td>
-</tr>
-<tr>
-<td>LS</td>
-<td>莱索托</td>
-<td>Lesotho</td>
-</tr>
-<tr>
-<td>LT</td>
-<td>立陶宛</td>
-<td>Lithuania</td>
-</tr>
-<tr>
-<td>LU</td>
-<td>卢森堡</td>
-<td>Luxembourg</td>
-</tr>
-<tr>
-<td>LV</td>
-<td>拉脱维亚</td>
-<td>Latvia</td>
-</tr>
-<tr>
-<td>LY</td>
-<td>利比亚</td>
-<td>Libya</td>
-</tr>
-<tr>
-<td>MA</td>
-<td>摩洛哥</td>
-<td>Morocco</td>
-</tr>
-<tr>
-<td>MC</td>
-<td>摩纳哥</td>
-<td>Monaco</td>
-</tr>
-<tr>
-<td>MD</td>
-<td>摩尔多瓦</td>
-<td>Moldova, Republic of</td>
-</tr>
-<tr>
-<td>MG</td>
-<td>马达加斯加</td>
-<td>Madagascar</td>
-</tr>
-<tr>
-<td>ML</td>
-<td>马里</td>
-<td>Mali</td>
-</tr>
-<tr>
-<td>MM</td>
-<td>缅甸</td>
-<td>Burma</td>
-</tr>
-<tr>
-<td>MN</td>
-<td>蒙古</td>
-<td>Mongolia</td>
-</tr>
-<tr>
-<td>MO</td>
-<td>澳门</td>
-<td>Macao</td>
-</tr>
-<tr>
-<td>MS</td>
-<td>蒙特塞拉特岛</td>
-<td>Montserrat Is</td>
-</tr>
-<tr>
-<td>MT</td>
-<td>马耳他</td>
-<td>Malta</td>
-</tr>
-<tr>
-<td>MU</td>
-<td>毛里求斯</td>
-<td>Mauritius</td>
-</tr>
-<tr>
-<td>MV</td>
-<td>马尔代夫</td>
-<td>Maldives</td>
-</tr>
-<tr>
-<td>MW</td>
-<td>马拉维</td>
-<td>Malawi</td>
-</tr>
-<tr>
-<td>MX</td>
-<td>墨西哥</td>
-<td>Mexico</td>
-</tr>
-<tr>
-<td>MY</td>
-<td>马来西亚</td>
-<td>Malaysia</td>
-</tr>
-<tr>
-<td>MZ</td>
-<td>莫桑比克</td>
-<td>Mozambique</td>
-</tr>
-<tr>
-<td>NA</td>
-<td>纳米比亚</td>
-<td>Namibia</td>
-</tr>
-<tr>
-<td>NE</td>
-<td>尼日尔</td>
-<td>Niger</td>
-</tr>
-<tr>
-<td>NG</td>
-<td>尼日利亚</td>
-<td>Nigeria</td>
-</tr>
-<tr>
-<td>NI</td>
-<td>尼加拉瓜</td>
-<td>Nicaragua</td>
-</tr>
-<tr>
-<td>NL</td>
-<td>荷兰</td>
-<td>Netherlands</td>
-</tr>
-<tr>
-<td>NO</td>
-<td>挪威</td>
-<td>Norway</td>
-</tr>
-<tr>
-<td>NP</td>
-<td>尼泊尔</td>
-<td>Nepal</td>
-</tr>
-<tr>
-<td>NR</td>
-<td>瑙鲁</td>
-<td>Nauru</td>
-</tr>
-<tr>
-<td>NZ</td>
-<td>新西兰</td>
-<td>New Zealand</td>
-</tr>
-<tr>
-<td>OM</td>
-<td>阿曼</td>
-<td>Oman</td>
-</tr>
-<tr>
-<td>PA</td>
-<td>巴拿马</td>
-<td>Panama</td>
-</tr>
-<tr>
-<td>PE</td>
-<td>秘鲁</td>
-<td>Peru</td>
-</tr>
-<tr>
-<td>PF</td>
-<td>法属玻利尼西亚</td>
-<td>French Polynesia</td>
-</tr>
-<tr>
-<td>PG</td>
-<td>巴布亚新几内亚</td>
-<td>Papua New Cuinea</td>
-</tr>
-<tr>
-<td>PH</td>
-<td>菲律宾</td>
-<td>Philippines</td>
-</tr>
-<tr>
-<td>PK</td>
-<td>巴基斯坦</td>
-<td>Pakistan</td>
-</tr>
-<tr>
-<td>PL</td>
-<td>波兰</td>
-<td>Poland</td>
-</tr>
-<tr>
-<td>PR</td>
-<td>波多黎各</td>
-<td>Puerto Rico</td>
-</tr>
-<tr>
-<td>PT</td>
-<td>葡萄牙</td>
-<td>Portugal</td>
-</tr>
-<tr>
-<td>PY</td>
-<td>巴拉圭</td>
-<td>Paraguay</td>
-</tr>
-<tr>
-<td>QA</td>
-<td>卡塔尔</td>
-<td>Qatar</td>
-</tr>
-<tr>
-<td>RO</td>
-<td>罗马尼亚</td>
-<td>Romania</td>
-</tr>
-<tr>
-<td>RU</td>
-<td>俄罗斯</td>
-<td>Russia</td>
-</tr>
-<tr>
-<td>SA</td>
-<td>沙特阿拉伯</td>
-<td>Saudi Arabia</td>
-</tr>
-<tr>
-<td>SB</td>
-<td>所罗门群岛</td>
-<td>Solomon Is</td>
-</tr>
-<tr>
-<td>SC</td>
-<td>塞舌尔</td>
-<td>Seychelles</td>
-</tr>
-<tr>
-<td>SD</td>
-<td>苏丹</td>
-<td>Sudan</td>
-</tr>
-<tr>
-<td>SE</td>
-<td>瑞典</td>
-<td>Sweden</td>
-</tr>
-<tr>
-<td>SG</td>
-<td>新加坡</td>
-<td>Singapore</td>
-</tr>
-<tr>
-<td>SI</td>
-<td>斯洛文尼亚</td>
-<td>Slovenia</td>
-</tr>
-<tr>
-<td>SK</td>
-<td>斯洛伐克</td>
-<td>Slovakia</td>
-</tr>
-<tr>
-<td>SL</td>
-<td>塞拉利昂</td>
-<td>Sierra Leone</td>
-</tr>
-<tr>
-<td>SM</td>
-<td>圣马力诺</td>
-<td>San Marino</td>
-</tr>
-<tr>
-<td>SN</td>
-<td>塞内加尔</td>
-<td>Senegal</td>
-</tr>
-<tr>
-<td>SO</td>
-<td>索马里</td>
-<td>Somali</td>
-</tr>
-<tr>
-<td>SR</td>
-<td>苏里南</td>
-<td>Suriname</td>
-</tr>
-<tr>
-<td>ST</td>
-<td>圣多美和普林西比</td>
-<td>Sao Tome and Principe</td>
-</tr>
-<tr>
-<td>SV</td>
-<td>萨尔瓦多</td>
-<td>EI Salvador</td>
-</tr>
-<tr>
-<td>SY</td>
-<td>叙利亚</td>
-<td>Syria</td>
-</tr>
-<tr>
-<td>SZ</td>
-<td>斯威士兰</td>
-<td>Swaziland</td>
-</tr>
-<tr>
-<td>TD</td>
-<td>乍得</td>
-<td>Chad</td>
-</tr>
-<tr>
-<td>TG</td>
-<td>多哥</td>
-<td>Togo</td>
-</tr>
-<tr>
-<td>TH</td>
-<td>泰国</td>
-<td>Thailand</td>
-</tr>
-<tr>
-<td>TJ</td>
-<td>塔吉克斯坦</td>
-<td>Tajikstan</td>
-</tr>
-<tr>
-<td>TM</td>
-<td>土库曼斯坦</td>
-<td>Turkmenistan</td>
-</tr>
-<tr>
-<td>TN</td>
-<td>突尼斯</td>
-<td>Tunisia</td>
-</tr>
-<tr>
-<td>TO</td>
-<td>汤加</td>
-<td>Tonga</td>
-</tr>
-<tr>
-<td>TR</td>
-<td>土耳其</td>
-<td>Turkey</td>
-</tr>
-<tr>
-<td>TT</td>
-<td>特立尼达和多巴哥</td>
-<td>Trinidad and Tobago</td>
-</tr>
-<tr>
-<td>TW</td>
-<td>台湾省</td>
-<td>Taiwan</td>
-</tr>
-<tr>
-<td>TZ</td>
-<td>坦桑尼亚</td>
-<td>Tanzania</td>
-</tr>
-<tr>
-<td>UA</td>
-<td>乌克兰</td>
-<td>Ukraine</td>
-</tr>
-<tr>
-<td>UG</td>
-<td>乌干达</td>
-<td>Uganda</td>
-</tr>
-<tr>
-<td>US</td>
-<td>美国</td>
-<td>United States of America</td>
-</tr>
-<tr>
-<td>UY</td>
-<td>乌拉圭</td>
-<td>Uruguay</td>
-</tr>
-<tr>
-<td>UZ</td>
-<td>乌兹别克斯坦</td>
-<td>Uzbekistan</td>
-</tr>
-<tr>
-<td>VC</td>
-<td>圣文森特岛</td>
-<td>Saint Vincent</td>
-</tr>
-<tr>
-<td>VE</td>
-<td>委内瑞拉</td>
-<td>Venezuela</td>
-</tr>
-<tr>
-<td>VN</td>
-<td>越南</td>
-<td>Vietnam</td>
-</tr>
-<tr>
-<td>YE</td>
-<td>也门</td>
-<td>Yemen</td>
-</tr>
-<tr>
-<td>YU</td>
-<td>南斯拉夫</td>
-<td>Yugoslavia</td>
-</tr>
-<tr>
-<td>ZA</td>
-<td>南非</td>
-<td>South Africa</td>
-</tr>
-<tr>
-<td>ZM</td>
-<td>赞比亚</td>
-<td>Zambia</td>
-</tr>
-<tr>
-<td>ZR</td>
-<td>扎伊尔</td>
-<td>Zaire</td>
-</tr>
-<tr>
-<td>ZW</td>
-<td>津巴布韦</td>
-<td>Zimbabwe</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">在自己的服务器上搭建静态博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-31 16:05:12" itemprop="dateCreated datePublished" datetime="2019-03-31T16:05:12+08:00">2019-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/" class="post-meta-item leancloud_visitors" data-flag-title="在自己的服务器上搭建静态博客" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近 coding 的 pages 服务越来越没法用了，不是自动部署失败就是博客无法访问，而且访问速度很慢，估计再过段时间 coding 就不再提供免费的 pages 服务了。但是如果将域名解析到 github 上，百度又无法抓取(github 不允许)，思来想去还是放在自己的服务器上吧。</p>
-<p>不过放在自己的服务器上有两个问题：</p>
-<ul>
-<li>没有备案不能使用 dnspod 的 301 重定向把 www 的域名重定向到顶级域名</li>
-<li>博客更新后不能自动部署</li>
-</ul>
-<p>我的博客是个基于 hexo 的静态博客，可以使用 nginx 来提供 web 服务，同时 nginx 可以配置根据域名来重定向，这样就解决了第一个问题，博客内容就使用 git 仓库，注意这个仓库不是 markdown 的原始文件，而是经过 hexo 根据生成后的 html 站点，如果之前在 github 上部署过，在 github 上的仓库的名字应该会是 <code>&lt;UserName&gt;.github.io</code> 或者在 coding 上部署过那仓库名则是 coding 下跟用户名相同的仓库。以后更新了博客依然推送到 github 或者 coding 上，在自己的服务器上 clone 下仓库，然后使用 github 或者 coding 的 webhooks 功能更新自己服务器上的仓库，这样就解决了自己服务器上的博客不能自动部署更新的问题。</p>
-<p>下面的例子是基于 github 的，coding 的操作类似，不过鉴于 coding 提供的服务不太稳定的问题，建议博客仓库托管也不要放在 coding 上了。</p>
-<h1 id="克隆博客仓库到服务器上"><a href="#克隆博客仓库到服务器上" class="headerlink" title="克隆博客仓库到服务器上"></a>克隆博客仓库到服务器上</h1><p>这一步很简单，跟克隆普通 git 仓库一样，我把仓库放在了 <code>/opt/hexo-blog</code> 下，如果不放在这个路径下，那后面的内容中的相应路径也要修改。</p>
-<p>以我在 github 下的博客仓库为例，注意执行命令的用户权限，后面的命令都假设服务器上的账户是 root：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:listenerri/listenerri.github.io.git /opt/hexo-blog</span><br></pre></td></tr></table></figure>
-
-<p>这里使用了 ssh 协议的仓库地址，这需要将服务器的 ssh public key 部署在自己的 github 账户中，如果不想部署使用 https 协议的地址也可以，不过可能会需要输入用户名和密码，这会影响到后面 python 脚本中的功能，建议还是用 ssh 协议的地址，部署个 key 又不麻烦。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/31/%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/23/%E6%8C%87%E5%AE%9A-git-%E4%BD%BF%E7%94%A8%E7%9A%84-ssh-%E7%A7%98%E9%92%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/23/%E6%8C%87%E5%AE%9A-git-%E4%BD%BF%E7%94%A8%E7%9A%84-ssh-%E7%A7%98%E9%92%A5/" class="post-title-link" itemprop="url">指定 git 使用的 ssh 秘钥</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-23 17:18:45" itemprop="dateCreated datePublished" datetime="2019-03-23T17:18:45+08:00">2019-03-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/03/23/%E6%8C%87%E5%AE%9A-git-%E4%BD%BF%E7%94%A8%E7%9A%84-ssh-%E7%A7%98%E9%92%A5/" class="post-meta-item leancloud_visitors" data-flag-title="指定 git 使用的 ssh 秘钥" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/03/23/%E6%8C%87%E5%AE%9A-git-%E4%BD%BF%E7%94%A8%E7%9A%84-ssh-%E7%A7%98%E9%92%A5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/23/%E6%8C%87%E5%AE%9A-git-%E4%BD%BF%E7%94%A8%E7%9A%84-ssh-%E7%A7%98%E9%92%A5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>目前我遇到的两种需要指定 git 使用的 ssh 秘钥的场景是：</p>
-<ul>
-<li>git 服务地址不同（一个公司，一个 github）</li>
-<li>同一个git 服务地址但账户不同</li>
-</ul>
-<p>下面分开介绍。</p>
-<h1 id="服务地址不同"><a href="#服务地址不同" class="headerlink" title="服务地址不同"></a>服务地址不同</h1><p>这估计是大多数人遇到的场景，同一个笔记本电脑，有时需要向公司的 git 服务推送代码，有时要向 github 推送代码，当然也可选择在两个不同的服务器上部署自己相同的公钥，但当无法做到这一情况时就要给 git 或者说给 ssh 命令指定哪个服务地址使用哪个秘钥。</p>
-<p>首先生成两套秘钥即四个文件，两对公、私秘钥，具体的生成方法这里就不赘述了，不过要注意在生成第二套私钥时需要指定文件名称，否则将覆盖默认秘钥，一般秘钥文件存储在 <code>~/.ssh</code> 目录下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id_rsa</span><br><span class="line">id_rsa.pub</span><br><span class="line">id_rsa_company</span><br><span class="line">id_rsa_company.pub</span><br></pre></td></tr></table></figure>
-
-<p>以 <code>.pub</code> 结尾的文件为公钥，需要将其部署在服务端，比如 <code>id_rsa.pub</code> 部署在 github 上，<code>id_rsa_company.pub</code> 部署在公司的服务上，<code>id_rsa</code> 则是 ssh 命令也是 git 命令使用的默认的私钥，当秘钥文件生成完成后使用以下命令将用于公司的<strong>私钥</strong>添加到 ssh-agent 中：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add ~/.ssh/id_ras_company</span><br></pre></td></tr></table></figure>
-
-<p>添加完成后可以查看已经添加过的私钥：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/23/%E6%8C%87%E5%AE%9A-git-%E4%BD%BF%E7%94%A8%E7%9A%84-ssh-%E7%A7%98%E9%92%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2298,7 +1374,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2311,7 +1387,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">249</span>
+        <span class="site-state-item-count">255</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

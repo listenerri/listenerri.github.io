@@ -202,6 +202,548 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">c语言中的指针</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:25:21" itemprop="dateCreated datePublished" datetime="2016-05-04T19:25:21+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/" class="post-meta-item leancloud_visitors" data-flag-title="c语言中的指针" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>1、直接使用指针的表达式，表示使用指针代表的内存地址. <font color="red">(指针存放的数据为内存地址,如同int型变量存放的数据为整数)</font></p>
+</blockquote>
+<blockquote>
+<p>2、在指针表达式前加上符号:<code>*</code>，表示使用指针指向的值，也就是指针所代表的内存地址中存储的值. <font color="red">(<code>*</code>也叫取值运算符或间接运算符,与之对应<code>&amp;</code>为地址运算符,放于正常变量之前可获得变量在内存中的地址,也就是获得一个指向这个变量的指针)</font></p>
+</blockquote>
+<blockquote>
+<p>3、指针也有数据类型</p>
+</blockquote>
+<blockquote>
+<p>4、假设int *opt，那么<code>opt++</code>表示指向下一个整数位置的内存地址<br>，而不是让opt所代表的内存地址在数值上+1；</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> foo1=<span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> *foo2;</span><br><span class="line">foo2=&amp;foo1;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;*foo2:%d\n&quot;</span>,*foo2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;foo2:%d\n&quot;</span>,foo2);</span><br><span class="line">*foo2=<span class="number">11</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;*foo2:%d\n&quot;</span>,*foo2);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;foo2:%d\n&quot;</span>,foo2);</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*foo2:<span class="number">10</span></span><br><span class="line">foo2:<span class="number">559162276</span></span><br><span class="line">*foo2:<span class="number">11</span></span><br><span class="line">foo2:<span class="number">559162276</span></span><br></pre></td></tr></table></figure>
+<p>解释：<br>第一行，声明一个整型的变量foo1，其值为10<br>第二行，声明一个指针foo2，声明指针要使用<code>*</code>符号<br>第三行，获取变量foo1的内存地址，获取变量的地址要使用<code>&amp;</code>符号，并将内存地址赋给指针foo2，也就是让foo2代表(指向)foo1的值在内存中的存储位置<br>第四行，输出<code>*foo2</code>，也就是输出指针foo2所代表的内存地址中存储的值<br>第五行，输出<code>foo2</code>，也就是输出指针foo2所代表的内存地址<br>第六行，让指针foo2所代表的内存地址中存储的值，变为11(注意这里并没有修改指针foo2所代表的内存地址)<br>第七行，输出<code>*foo2</code>，也就是输出指针foo2所代表的内存地址中存储的值<br>第八行，输出<code>foo2</code>，也就是输出指针foo2所代表的内存地址</p>
+<blockquote>
+<p>注意执行结果，foo2所代表的内存地址中的值，通过<code>*foo2=11;</code>被修改后其内存地址并未发生改变，只是改变了该内存地址中存储的值，而指针foo2依然代表原来的内存地址</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/" class="post-title-link" itemprop="url">c语言修饰符static,extern,#define,const</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:19:19" itemprop="dateCreated datePublished" datetime="2016-05-04T19:19:19+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/" class="post-meta-item leancloud_visitors" data-flag-title="c语言修饰符static,extern,#define,const" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>写的比较乱，因为是刚开始学C，没有一个系统的概念，都是想到什么，测试到什么就添加什么，仅供参考<br>而且可能会有错误的地方，如果有请指出</p>
+</blockquote>
+<h1 id="static：静态"><a href="#static：静态" class="headerlink" title="static：静态"></a>static：静态</h1><h2 id="作用域以及声明方法："><a href="#作用域以及声明方法：" class="headerlink" title="作用域以及声明方法："></a>作用域以及声明方法：</h2><p>1、在函数中声明则仅作用于该函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、在函数外声明则作用于<font color="red">从声明开始到文件末尾</font></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> i;</span><br><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">()</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>#extern：引用(其他c文件)</p>
+<p>##作用域以及声明方法：<br>1、可以声明变量或函数，并且不必变量初始化或函数定义实现，即可使用，因为引用变量或函数声明时，会同时引用被引用文件内的初始化语句<br>2、被引用的变量或函数不能被static修饰<br>3、相当与引用(复制？)其他文件中的声明和定义/初始化语句到本文件的声明位置<br>4、在本文件使用extern声明变量或函数时，变量或函数名以及函数返回类型和函数参数列表应与要引用的变量或方法一致(经测试，变量不一致时好像类似声明的指针类型变量，方法暂未测试)<br>5、在函数内声明则类似局部变量，作用域仅在本函数，在函数外，作用域从声明处到文件末尾<br>6、如果你是学习C语言的新手，而且暂时只是在使用文本编辑器在写C程序，那么需要注意，在编译有extern语句的C文件时，应该与被引用的文件一起编译(笔者表示在开始时一直在单独编译一个文件所以一直编译报错)<br>比如下面例子的a1.c和b.c，或者a2.c和b.c，编译的时候应该这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gcc a1.c b.c</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">gcc a2.c b.c</span><br><span class="line"><span class="comment">#这样编译器才能找到被extern的变量或函数</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%BF%AE%E9%A5%B0%E7%AC%A6static-extern-define-const/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/" class="post-title-link" itemprop="url">linux创建wifi热点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:00:02" itemprop="dateCreated datePublished" datetime="2016-05-04T19:00:02+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/" class="post-meta-item leancloud_visitors" data-flag-title="linux创建wifi热点" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong><font color="red">本文中使用的系统是archlinux,其他系统应该只有安装方法不同</font></strong></p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yaourt -S archlinuxcn/create_ap</span><br><span class="line"><span class="comment">#或者：</span></span><br><span class="line">yaourt -S aur/create_ap</span><br></pre></td></tr></table></figure>
+<h1 id="终端下创建热点"><a href="#终端下创建热点" class="headerlink" title="终端下创建热点"></a>终端下创建热点</h1><p>首先执行ifconfig命令查看网卡端口<br>下面是我的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">		...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">		...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">		...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">		...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">		...................</span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<ul>
+<li>ap0：是我用create_ap命令创建出来的ap</li>
+<li>enp4s0f2：有线网卡</li>
+<li>lo：暂时不清楚</li>
+<li>ppp0：这个用ADSL上网的话就会出现</li>
+<li>wlp3s0：无线网卡</li>
+</ul>
+<p>当你没有使用create_ap创建ap时，ifconfig命令不会返回ap0，当你没有使用ADSL上网时(路由器LAN口直连)不会有ppp0</p>
+<h2 id="路由器LAN口直连"><a href="#路由器LAN口直连" class="headerlink" title="路由器LAN口直连"></a>路由器LAN口直连</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/05/04/linux%E5%88%9B%E5%BB%BAwifi%E7%83%AD%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%B8%8D%E9%80%9A%E8%BF%87GooglePlay%E4%B8%8B%E8%BD%BD%E5%85%B6%E4%B8%AD%E7%9A%84app/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/%E4%B8%8D%E9%80%9A%E8%BF%87GooglePlay%E4%B8%8B%E8%BD%BD%E5%85%B6%E4%B8%AD%E7%9A%84app/" class="post-title-link" itemprop="url">不通过GooglePlay下载其中的app</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 18:54:05" itemprop="dateCreated datePublished" datetime="2016-05-04T18:54:05+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/%E4%B8%8D%E9%80%9A%E8%BF%87GooglePlay%E4%B8%8B%E8%BD%BD%E5%85%B6%E4%B8%AD%E7%9A%84app/" class="post-meta-item leancloud_visitors" data-flag-title="不通过GooglePlay下载其中的app" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/%E4%B8%8D%E9%80%9A%E8%BF%87GooglePlay%E4%B8%8B%E8%BD%BD%E5%85%B6%E4%B8%AD%E7%9A%84app/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/%E4%B8%8D%E9%80%9A%E8%BF%87GooglePlay%E4%B8%8B%E8%BD%BD%E5%85%B6%E4%B8%AD%E7%9A%84app/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>非常简单的一个方法：<a target="_blank" rel="noopener" href="http://apps.evozi.com/apk-downloader/">飞机直达</a><br>进入上面的网址,如果你进不去,那就想想自己为什么进不了google,<br>里面就一个输入框,把Google play里你想下的apk的网页链接填进去<br>点下面的按钮,马上就出来一个绿色按钮,点击即可直接用浏览器下载这个apk</p>
+<p>转自：<a target="_blank" rel="noopener" href="http://daxiaamu.com/">大侠阿木</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/java%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/java%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0/" class="post-title-link" itemprop="url">java中获取一个子字符串中出现的次数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 18:48:50" itemprop="dateCreated datePublished" datetime="2016-05-04T18:48:50+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/java%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0/" class="post-meta-item leancloud_visitors" data-flag-title="java中获取一个子字符串中出现的次数" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/java%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/java%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>假设要得到字符串B在字符串A中出现的次数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设字符串A和B已声明并赋值</span></span><br><span class="line"><span class="type">int</span> count=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> fromIndex=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(fromIndex!=-<span class="number">1</span>)&#123;</span><br><span class="line">	fromIndex=A.indexOf(B,fromIndex);</span><br><span class="line">	<span class="keyword">if</span>(fromIndex!=-<span class="number">1</span>)&#123;</span><br><span class="line">		fromIndex+=B.length();;</span><br><span class="line">		count++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(count);</span><br></pre></td></tr></table></figure>
+<p>主要用到的就是一个字符串对象的indexOf()方法</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%BB%8Earraylist%E7%94%9F%E6%88%90String-%E6%95%B0%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -741,553 +1283,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" class="post-title-link" itemprop="url">tilda开机启动不透明</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-01 14:37:24" itemprop="dateCreated datePublished" datetime="2016-05-01T14:37:24+08:00">2016-05-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" class="post-meta-item leancloud_visitors" data-flag-title="tilda开机启动不透明" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>当前系统,archlinux+xfce4</p>
-</blockquote>
-<h1 id="tilda简介"><a href="#tilda简介" class="headerlink" title="tilda简介"></a>tilda简介</h1><p>tilda有一个非常方便的功能,那就是绑定一个按键,来切换tilda这个终端模拟器的显示和隐藏,<br>注意是显示和隐藏而不是开启和关闭,它在切换的期间不会影响终端中所执行的命令,<br>如果用过deepin linux的话应该就知道dde自带的终端有个特殊的模式叫雷神模式,<br>原理就跟tilda一样</p>
-<h1 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h1><p>设置tilda开机启动很简单,就是在’~/.config/autostart/‘下放一个tilda的desktop文件就行了,<br>也可以把系统的链接过去:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /usr/share/applications/tilda.desktop ~/.config/autostart/</span><br></pre></td></tr></table></figure>
-
-<h1 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h1><p>可是当你开机后按’F1’(tilda默认绑定的按键)打开tilda后,如果你设置了tilda的背景为透明,<br>你会发现透明没有生效,而是黑色的背景,此时按’CTRL-SHIFT-q’退出tilda,再重新打开,<br>发现透明又生效了,经过再三校验tilda的配置文件的确正确后,只能猜测是xfce4桌面环境在<br>刚启动的时候,透明化这个功能暂时还没有初始化完成,而此时tilda已经启动了,所以就造成上述结果</p>
-<h1 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h1><p>既然tilda的透明化需要等待系统初始化完毕,那么让tilda暂停一会儿再启动就行了<br>所以上面开机启动一段在’~/.config/autostart/‘下的tilda.desktop文件就不要了,删掉后自己新建一个</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/01/tilda%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E4%B8%8D%E9%80%8F%E6%98%8E/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/" class="post-title-link" itemprop="url">android关闭手机实体按键开启虚拟按键</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-04-23 23:50:09" itemprop="dateCreated datePublished" datetime="2016-04-23T23:50:09+08:00">2016-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/" class="post-meta-item leancloud_visitors" data-flag-title="android关闭手机实体按键开启虚拟按键" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>注意实体按键和虚拟按键的区别<br>使用的是android4.2版本，硬件：mt6589<br><font color="red"><strong>以下操作都需要root权限！</strong></font></p>
-<h1 id="关闭实体按键功能"><a href="#关闭实体按键功能" class="headerlink" title="关闭实体按键功能"></a>关闭实体按键功能</h1><p>包括:菜单,返回,home,最近</p>
-<p>使用root文件管理器，如RE文件管理器<br>在<code>/system/usr/keylayout/Generic.kl</code>文件中搜索menu，<br>注意搜索结果应该是只有menu这一个单词，而不是包含menu的单词</p>
-<p>搜索到后在这一行的开头，添加上一个英文的符号：‘#’<br>也就是把这一行注释掉的意思！</p>
-<p>返回键：back<br>同理、同上</p>
-<p>我的手机菜单，home，返回键所对应的键值为(仅供参考)：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">139</span>    MENU</span><br><span class="line"><span class="number">158</span>    BACK</span><br><span class="line"><span class="number">172</span>    HOME</span><br></pre></td></tr></table></figure>
-<p>修改之后保存重启手机、被你注释掉的对应的实体功能键就失效了，点击没有任何反应<br>如果不成功可以尝试注释掉其他的行</p>
-<p>这只是关掉功能、但背光灯还是会亮的</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/04/23/android%E5%85%B3%E9%97%AD%E6%89%8B%E6%9C%BA%E5%AE%9E%E4%BD%93%E6%8C%89%E9%94%AE%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E6%8C%89%E9%94%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">linux中oracle数据库的监听和EM的开启和关闭shell脚本</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-04-23 23:33:19" itemprop="dateCreated datePublished" datetime="2016-04-23T23:33:19+08:00">2016-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/" class="post-meta-item leancloud_visitors" data-flag-title="linux中oracle数据库的监听和EM的开启和关闭shell脚本" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>linux和win下的oracle不同、开机后不能直接使用<br>经过一段时间摸索、终于大体摸清了linux下oracle的数据库启动流程<br>所以自己动手写了几个shell脚本、省的每次都要输一堆命令来启动数据库、启动监听、启动em。。<br>不同的数据库安装和不同的系统可能有较大的差异、不能保证都能用</p>
-<h1 id="启动数据库"><a href="#启动数据库" class="headerlink" title="启动数据库"></a>启动数据库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> 打开数据库</span><br><span class="line"><span class="built_in">echo</span> startup|sqlplus <span class="string">&quot;/as sysdba&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="关闭数据库"><a href="#关闭数据库" class="headerlink" title="关闭数据库"></a>关闭数据库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> 关闭数据库</span><br><span class="line"><span class="built_in">echo</span> shut|sqlplus <span class="string">&quot;/as sysdba&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="启动监听"><a href="#启动监听" class="headerlink" title="启动监听"></a>启动监听</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> 打开监听</span><br><span class="line">lsnrctl start</span><br></pre></td></tr></table></figure>
-
-<h1 id="关闭监听"><a href="#关闭监听" class="headerlink" title="关闭监听"></a>关闭监听</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> 关闭监听</span><br><span class="line">lsnrctl stop</span><br></pre></td></tr></table></figure>
-
-<h1 id="打开em"><a href="#打开em" class="headerlink" title="打开em"></a>打开em</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/04/23/linux%E4%B8%ADoracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%9B%91%E5%90%AC%E5%92%8CEM%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADshell%E8%84%9A%E6%9C%AC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/" class="post-title-link" itemprop="url">uefi-gpt-linux修复grub rescue</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-04-23 22:58:11" itemprop="dateCreated datePublished" datetime="2016-04-23T22:58:11+08:00">2016-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/" class="post-meta-item leancloud_visitors" data-flag-title="uefi-gpt-linux修复grub rescue" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>搜了点网上的资料、发现都是修复MBR分区的、我的电脑是GPT分区+UEFI、虽然不同、但也大同小异、<br>出现grub rescue模式一般是硬盘分区出现变动、导致旧的grub找不到启动文件而出现的、</p>
-<h1 id="错误提示"><a href="#错误提示" class="headerlink" title="错误提示"></a>错误提示</h1><p>今天开机是出现了这样的提示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error:file<span class="string">&#x27;/grub/x86_64-efi/normal.mod&#x27;</span>not found</span><br><span class="line">entering rescue mode...</span><br><span class="line">grub rescue&gt;</span><br></pre></td></tr></table></figure>
-
-<p>大概意思是那个路径下normal.mod文件找不到、从而进入了grub rescue模式<br>那么在grub rescue 模式下应该怎么修复呢？<br>首先使用set 命令只看当前错误的grub变量、下面是我的电脑的信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#返回信息是：</span></span><br><span class="line">cmdpath=(hd0,gpt1)/EFI/Deepin 2014.2</span><br><span class="line">prefix=(hd0,gpt10)/grub</span><br><span class="line">root=hd0,gpt10</span><br></pre></td></tr></table></figure>
-
-<h1 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h1><p>那么我们开分析下这些数据、首先cmdpath指向的是UEFI的启动文件、<br>这个应该不会错、因为硬盘第一分区一般都是EFI分区、并且目录“Deepin 2014.2”也不会出错</p>
-<p>所以就应该是prefix和root变量出错了、并且是”gpt10”这个指向的分区出错了、<br>这就好办了、只要找到并修改为正确的分区应该就行了</p>
-<p>接着使用ls命令来查看当前硬盘上有哪些分区：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/04/23/uefi-gpt-linux%E4%BF%AE%E5%A4%8Dgrub-rescue/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" class="post-title-link" itemprop="url">同步安卓源码:Cannot fetch CyanogenMod/android external svox</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-04-23 22:34:28" itemprop="dateCreated datePublished" datetime="2016-04-23T22:34:28+08:00">2016-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" class="post-meta-item leancloud_visitors" data-flag-title="同步安卓源码:Cannot fetch CyanogenMod/android external svox" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>同步CM10.1到99%出现错误：<br><code>error: Cannot fetch CyanogenMod/</code><font color=red><strong>Android</strong></font> <code>external svox</code></p>
-<p>或者是这样的提示：<br><code>repo sync Repository unavailable due to DMCA takedown</code></p>
-<p>解决办法：</p>
-<p>repo init后<br>修改 <code>.repo/manifests/default.xml</code><br>把<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;CyanogenMod/android_external_svox&quot;/&gt;</code><br>替换修改为<br><code>&lt;project path=&quot;external/svox&quot; name=&quot;platform/external/svox&quot; remote=&quot;aosp&quot; revision=&quot;refs/tags/android-4.4.4_r2&quot;/&gt;</code></p>
-<p>注意红色文字部分、那是你同步的版本号</p>
-<p>如果不确定应该改为多少、就搜索aosp、会发现每一个搜索结果中的行里都有一个类似的语句、</p>
-<p>把这句里的版本号改为你搜索到的那些版本号就行了</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1355,7 +1354,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1368,7 +1367,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">249</span>
+        <span class="site-state-item-count">255</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

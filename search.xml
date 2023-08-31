@@ -431,6 +431,40 @@
       </tags>
   </entry>
   <entry>
+    <title>Win 下的类 Linux 环境开发/运行环境</title>
+    <url>/2023/08/31/Win-%E4%B8%8B%E7%9A%84%E7%B1%BB-Linux-%E7%8E%AF%E5%A2%83%E5%BC%80%E5%8F%91-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h2 id="Cygwin"><a href="#Cygwin" class="headerlink" title="Cygwin"></a>Cygwin</h2><p>Cygwin 旨在通过一些 动态链接库（DLL），以 C 标准库的形式作为 API 兼容性层（转换为 Windows API 调用），提供一个完整的 POSIX 层，包括主流 Unix 的系统调用及库实现，以实现在 Windows 上直接编译和运行 Unix 程序，其重视兼容性优先于性能（这里的兼容性主要是 Unix 程序源码在此环境下编译时的兼容性）。</p>
+<p>由于这样的实现方式，在 Cygwin 上开发/编译的程序，在运行时会依赖那些提供了兼容层的 DLL，也就是说需要将 Cygwin 的 DLL 随程序一起发布，才能在其他机器上运行。（这些程序不能完全算是 Windows 原生程序，因为需要 Cygwin 这个调用转换层。）（同时也由于需要转换层，所以说程序性能一般）</p>
+<h2 id="MingGW"><a href="#MingGW" class="headerlink" title="MingGW"></a>MingGW</h2><p>MinGW 由 Cygwin 发展而来，着重简化与性能（主要提供 GUN 编译套件 gcc g++，而不是近 Unix/Linux 体验？），基于 MinGW 的程序是直接调用 Windows API 编译的（特指 C 语言？其他语言仍然依赖 GUN 运行时库？比如 libstdc++），得到的程序算是完全 Windows 原生的。</p>
+<p>但 MinGW 只提供了 Win32 的 API，且不提供 POSIX API，所以大多数 GNU 软件无法在不修改源代码的情况下用 MinGW 编译。MinGW 也在 Linux 下提供了用于交叉编译到 Windows 的环境。</p>
+<h2 id="Mingw-w64"><a href="#Mingw-w64" class="headerlink" title="Mingw-w64"></a>Mingw-w64</h2><p>Mingw-w64 是从 MinGW 分支出来的，主要用于扩展 MinGW 的特性，比如提供 64 位的开发、Win64 API、pthreads，但是同样不提供完整的 POSIX 兼容。</p>
+<p>很多 Windows 下的 IDE 使用其作为默认的编译套件/工具链，比如 Clion、QtCreator 等等（这些 IDE 说什么也是不可能在内部打包一套微软的编译套件的）。</p>
+<h2 id="MSYS2"><a href="#MSYS2" class="headerlink" title="MSYS2"></a>MSYS2</h2><p>MSYS2 基于修改版的 Cygwin，旨在提供 Windows 原生应用的编译环境。</p>
+<p>MSYS2 环境中的大量程序都是 Windows 原生的，比如 GCC, mingw-w64, CPython, CMake, Meson, OpenSSL, FFmpeg, Rust, Ruby 等等。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ul>
+<li>Cygwin 是一切的基础，在 Windows 上跑 Cygwin 里编译的程序，需要依赖 Cygwin 的 DLL 作为 API 转换层。提供了大量在 Cygwin 环境下编译好的 Unix 应用程序，包括常用的命令。</li>
+<li>Mingw-w64 主要提供 GUN 编译套件，来生成 Windows 原生应用，如果只安装 Mingw-w64，是不包含很多常用的 Unix 命令的，所以一般不会只安装 Mingw-w64，而是将其安装在某个系统或环境中，比如 Cygwin、MSYS2 或某个 Linux 发行版（提供到 Windows 原生应用的交叉编译）。</li>
+<li>MSYS2 在层级上看起来最高，Mingw-w64 只是作为其内部环境的一个工具/包。MSYS2 除了提供了大量 Windows 原生的 Unix 命令，在编译程序方面，更像是一个编译环境管理系统，可以提供多个不同的编译套件和底层库：<ul>
+<li>MSYS 环境下是 gcc 编译套件，底层库是 Cygwin DLL 和 libstdc++</li>
+<li>UCRT64 环境是 gcc 编译套件，底层库是 ucrt 和 libstdc++（较新的默认推荐环境）</li>
+<li>CLANG64 环境是 llvm 编译套件，底层库是 ucrt 和 libc++</li>
+<li>MINGW64 环境是 gcc 编译套件，底层库是 msvcrt 和 libstdc++</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>windows</tag>
+        <tag>msys2</tag>
+        <tag>cygwin</tag>
+        <tag>mingw</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>adt-sdk-tools-eclipse-java版本关系</title>
     <url>/2016/04/22/adt-sdk-tools-eclipse-java%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB/</url>
     <content><![CDATA[<p>图片、反正这东西只是查看、不需要复制粘贴<br><img src="version.png" alt="version"></p>
@@ -557,90 +591,6 @@
       <tags>
         <tag>像素</tag>
         <tag>密度</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>bash parameter expansion 参数扩展</title>
-    <url>/2021/08/15/bash-parameter-expansion-%E5%8F%82%E6%95%B0%E6%89%A9%E5%B1%95/</url>
-    <content><![CDATA[<p>摘自 bash man 手册</p>
-<p>字符 <code>$</code> 引入了参数扩展，命令替换和算术扩展。要扩展的参数名或符号可能包含在花括号中，花括号可选的，但是可以使得要扩展的变量不会与紧随其后的字符合并，成为新的名称。</p>
-<p>使用花括号的时候，匹配的右括号是第一个  <code>&#125;</code>，并且它没有被反斜杠引用或包含在一个引用的字符串中，也没有包含在一个嵌入的算术扩展，命令替换或是参数扩展中。</p>
-<ul>
-<li><p><code>$&#123;parameter&#125;</code></p>
-<p>  被替换为 parameter 的值。</p>
-<ul>
-<li>如果 parameter 是一个位置参数，并且数字多于一位时；或者当紧随 parameter 之后有不属于名称一部分的字符时，都必须加上花括号。</li>
-<li>如果 parameter 的第一个字符是一个感叹号，将引进一层间接变量。bash 使用以 parameter 的其余部分为名的变量的值作为变量的名称；接下来新的变量被扩展，它的值用在随后的替换当中，而不是使用 parameter 自身的值。这也称为 indirect expansion(间接扩展). 例外情况是下面讲到的 <code>$&#123;!prefix*&#125;</code>。</li>
-</ul>
-</li>
-</ul>
-<p>下面的每种情况中，word 都要经过波浪线扩展，参数扩展，命令替换和算术扩展。如果不进行子字符串扩展，bash 测试一个没有定义或值为空的参数；忽略冒号的结果是只测试未定义的参数。</p>
-<ul>
-<li><p><code>$&#123;parameter:-word&#125;</code></p>
-<p>  Use Default Values(使用默认值)。如果 parameter 未定义或值为空，将替换为 word 的扩展。否则，将替换为 parameter 的值。</p>
-</li>
-<li><p><code>$&#123;parameter:=word&#125;</code></p>
-<p>  Assign Default Values(赋默认值)。如果 parameter 未定义或值为空， word 的扩展将赋予 parameter. parameter 的值将被替换。位置参数和特殊参数不能用这种方式赋值。</p>
-</li>
-<li><p><code>$&#123;parameter:?word&#125;</code></p>
-<p>  Display Error if Null or Unset(显示错误，如果未定义或值为空)。如果 parameter 未定义或值为空，word (或一条信息，如果 word 不存在) 的扩展将写入到标准错误；shell 如果不是交互的，则将退出。否则，parameter 的值将被替换。</p>
-</li>
-<li><p><code>$&#123;parameter:+word&#125;</code><br>  Use Alternate Value(使用可选值)。如果 parameter 未定义或值为空，不会进行替换；否则将替换为 word 扩展后的值。</p>
-</li>
-<li><p><code>$&#123;parameter:offset&#125;</code> 和 <code>$&#123;parameter:offset:length&#125;</code></p>
-<p>  Substring Expansion(子字符串扩展)。扩展为 parameter 的最多 length 个字符，从 offset 指定的字符开始。</p>
-<ul>
-<li>如果忽略了 length，扩展为 parameter 的子字符串，从 offset 指定的字符串开始。length 和 offset 是算术表达式 (参见下面的 ARITHMETICEVALUATION 算术求值 段落)。length 必须是一个大于等于 0 的数值。</li>
-<li>如果 offset 求值结果小于 0，值将当作从 parameter 的值的末尾算起的偏移量。</li>
-<li>如果 parameter 是 @，结果是 length 个位置参数，从 offset 开始。</li>
-<li>如果 parameter 是一个数组名，以 @ 或 * 索引，结果是数组的 length 个成员，从 <code>$&#123;parameter[offset]&#125;</code> 开始。子字符串的下标是从 0 开始的，除非使用位置参数时，下标从 1 开始。</li>
-</ul>
-</li>
-<li><p><code>$&#123;!prefix*&#125;</code></p>
-<p>  扩展为名称以 prefix 开始的变量名，以特殊变量 IFS 的第一个字符分隔。</p>
-</li>
-<li><p><code>$&#123;#parameter&#125;</code></p>
-<p>  替换为 parameter 的值的长度 (字符数目)。</p>
-<ul>
-<li>如果 parameter 是 * 或者是 @, 替换的值是位置参数的个数。</li>
-<li>如果 parameter 是一个数组名，下标是 * 或者是 @, 替换的值是数组中元素的个数。</li>
-</ul>
-</li>
-<li><p><code>$&#123;parameter#word&#125;</code> 和 <code>$&#123;parameter##word&#125;</code></p>
-<p>  word  被扩展为一个模式，就像路径扩展中一样。</p>
-<ul>
-<li>如果这个模式匹配 parameter 的值的起始，那么扩展的结果是将 parameter 扩展后的值中，最短的匹配 (``#’’ 的情况) 或者最长的匹配 (``##’’的情况) 删除的结果。</li>
-<li>如果 parameter 是 @ 或者是 *, 则模式删除操作将依次施用于每个位置参数，最后扩展为结果的列表。</li>
-<li>如果 parameter 是一个数组变量，下标是 @ 或者是 *, 模式删除将依次施用于数组中的每个成员，最后扩展为结果的列表。</li>
-</ul>
-</li>
-<li><p><code>$&#123;parameter%word&#125;</code> 和 <code>$&#123;parameter%%word&#125;</code></p>
-<p>  word 被扩展为一个模式，就像路径扩展中一样。</p>
-<ul>
-<li>如果这个模式匹配 parameter 扩展后的值的尾部，那么扩展的结果是将 parameter 扩展后的值中，最短的匹配 (``%’’ 的情况) 或者最长的匹配 (``%%’’的情况) 删除的结果。</li>
-<li>如果 parameter 是 @ 或者是 *, 则模式删除操作将依次施用于每个位置参数，最后扩展为结果的列表。</li>
-<li>如果 parameter 是一个数组变量，下标是 @ 或者是 *, 模式删除将依次施用于数组中的每个成员，最后扩展为结果的列表。</li>
-</ul>
-</li>
-<li><p><code>$&#123;parameter/pattern/string&#125;</code> 和 <code>$&#123;parameter//pattern/string&#125;</code></p>
-<p>  pattern 被扩展为一个模式，就像路径扩展中一样。parameter 被扩展，其值中最长的匹配 pattern 的内容被替换为 string。在第一种形式中，只有第一个匹配被替换。第二种形式使得 pattern 中所有匹配都被替换为 string。</p>
-<ul>
-<li>如果 pattern 以 #  开始，它必须匹配 parameter 扩展后值的首部。</li>
-<li>如果 pattern 以 % 开始，它必须匹配 parameter 扩展后值的尾部。</li>
-<li>如果 string 是空值，pattern 的匹配都将被删除， pattern 之后的 / 将被忽略。</li>
-<li>如果 parameter 是 @ 或者是 *, 则替换操作将依次施用于每个位置参数，最后扩展为结果的列表。</li>
-<li>如果 parameter 是一个数组变量，下标是 @ 或者是 *, 模式删除将依次施用于数组中的每个成员，最后扩展为结果的列表。</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>bash</category>
-      </categories>
-      <tags>
-        <tag>parameter expansion</tag>
-        <tag>表达式扩展</tag>
-        <tag>bash</tag>
       </tags>
   </entry>
   <entry>
@@ -859,6 +809,90 @@
         <tag>xfce4</tag>
         <tag>uefi</tag>
         <tag>安装</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>bash parameter expansion 参数扩展</title>
+    <url>/2021/08/15/bash-parameter-expansion-%E5%8F%82%E6%95%B0%E6%89%A9%E5%B1%95/</url>
+    <content><![CDATA[<p>摘自 bash man 手册</p>
+<p>字符 <code>$</code> 引入了参数扩展，命令替换和算术扩展。要扩展的参数名或符号可能包含在花括号中，花括号可选的，但是可以使得要扩展的变量不会与紧随其后的字符合并，成为新的名称。</p>
+<p>使用花括号的时候，匹配的右括号是第一个  <code>&#125;</code>，并且它没有被反斜杠引用或包含在一个引用的字符串中，也没有包含在一个嵌入的算术扩展，命令替换或是参数扩展中。</p>
+<ul>
+<li><p><code>$&#123;parameter&#125;</code></p>
+<p>  被替换为 parameter 的值。</p>
+<ul>
+<li>如果 parameter 是一个位置参数，并且数字多于一位时；或者当紧随 parameter 之后有不属于名称一部分的字符时，都必须加上花括号。</li>
+<li>如果 parameter 的第一个字符是一个感叹号，将引进一层间接变量。bash 使用以 parameter 的其余部分为名的变量的值作为变量的名称；接下来新的变量被扩展，它的值用在随后的替换当中，而不是使用 parameter 自身的值。这也称为 indirect expansion(间接扩展). 例外情况是下面讲到的 <code>$&#123;!prefix*&#125;</code>。</li>
+</ul>
+</li>
+</ul>
+<p>下面的每种情况中，word 都要经过波浪线扩展，参数扩展，命令替换和算术扩展。如果不进行子字符串扩展，bash 测试一个没有定义或值为空的参数；忽略冒号的结果是只测试未定义的参数。</p>
+<ul>
+<li><p><code>$&#123;parameter:-word&#125;</code></p>
+<p>  Use Default Values(使用默认值)。如果 parameter 未定义或值为空，将替换为 word 的扩展。否则，将替换为 parameter 的值。</p>
+</li>
+<li><p><code>$&#123;parameter:=word&#125;</code></p>
+<p>  Assign Default Values(赋默认值)。如果 parameter 未定义或值为空， word 的扩展将赋予 parameter. parameter 的值将被替换。位置参数和特殊参数不能用这种方式赋值。</p>
+</li>
+<li><p><code>$&#123;parameter:?word&#125;</code></p>
+<p>  Display Error if Null or Unset(显示错误，如果未定义或值为空)。如果 parameter 未定义或值为空，word (或一条信息，如果 word 不存在) 的扩展将写入到标准错误；shell 如果不是交互的，则将退出。否则，parameter 的值将被替换。</p>
+</li>
+<li><p><code>$&#123;parameter:+word&#125;</code><br>  Use Alternate Value(使用可选值)。如果 parameter 未定义或值为空，不会进行替换；否则将替换为 word 扩展后的值。</p>
+</li>
+<li><p><code>$&#123;parameter:offset&#125;</code> 和 <code>$&#123;parameter:offset:length&#125;</code></p>
+<p>  Substring Expansion(子字符串扩展)。扩展为 parameter 的最多 length 个字符，从 offset 指定的字符开始。</p>
+<ul>
+<li>如果忽略了 length，扩展为 parameter 的子字符串，从 offset 指定的字符串开始。length 和 offset 是算术表达式 (参见下面的 ARITHMETICEVALUATION 算术求值 段落)。length 必须是一个大于等于 0 的数值。</li>
+<li>如果 offset 求值结果小于 0，值将当作从 parameter 的值的末尾算起的偏移量。</li>
+<li>如果 parameter 是 @，结果是 length 个位置参数，从 offset 开始。</li>
+<li>如果 parameter 是一个数组名，以 @ 或 * 索引，结果是数组的 length 个成员，从 <code>$&#123;parameter[offset]&#125;</code> 开始。子字符串的下标是从 0 开始的，除非使用位置参数时，下标从 1 开始。</li>
+</ul>
+</li>
+<li><p><code>$&#123;!prefix*&#125;</code></p>
+<p>  扩展为名称以 prefix 开始的变量名，以特殊变量 IFS 的第一个字符分隔。</p>
+</li>
+<li><p><code>$&#123;#parameter&#125;</code></p>
+<p>  替换为 parameter 的值的长度 (字符数目)。</p>
+<ul>
+<li>如果 parameter 是 * 或者是 @, 替换的值是位置参数的个数。</li>
+<li>如果 parameter 是一个数组名，下标是 * 或者是 @, 替换的值是数组中元素的个数。</li>
+</ul>
+</li>
+<li><p><code>$&#123;parameter#word&#125;</code> 和 <code>$&#123;parameter##word&#125;</code></p>
+<p>  word  被扩展为一个模式，就像路径扩展中一样。</p>
+<ul>
+<li>如果这个模式匹配 parameter 的值的起始，那么扩展的结果是将 parameter 扩展后的值中，最短的匹配 (``#’’ 的情况) 或者最长的匹配 (``##’’的情况) 删除的结果。</li>
+<li>如果 parameter 是 @ 或者是 *, 则模式删除操作将依次施用于每个位置参数，最后扩展为结果的列表。</li>
+<li>如果 parameter 是一个数组变量，下标是 @ 或者是 *, 模式删除将依次施用于数组中的每个成员，最后扩展为结果的列表。</li>
+</ul>
+</li>
+<li><p><code>$&#123;parameter%word&#125;</code> 和 <code>$&#123;parameter%%word&#125;</code></p>
+<p>  word 被扩展为一个模式，就像路径扩展中一样。</p>
+<ul>
+<li>如果这个模式匹配 parameter 扩展后的值的尾部，那么扩展的结果是将 parameter 扩展后的值中，最短的匹配 (``%’’ 的情况) 或者最长的匹配 (``%%’’的情况) 删除的结果。</li>
+<li>如果 parameter 是 @ 或者是 *, 则模式删除操作将依次施用于每个位置参数，最后扩展为结果的列表。</li>
+<li>如果 parameter 是一个数组变量，下标是 @ 或者是 *, 模式删除将依次施用于数组中的每个成员，最后扩展为结果的列表。</li>
+</ul>
+</li>
+<li><p><code>$&#123;parameter/pattern/string&#125;</code> 和 <code>$&#123;parameter//pattern/string&#125;</code></p>
+<p>  pattern 被扩展为一个模式，就像路径扩展中一样。parameter 被扩展，其值中最长的匹配 pattern 的内容被替换为 string。在第一种形式中，只有第一个匹配被替换。第二种形式使得 pattern 中所有匹配都被替换为 string。</p>
+<ul>
+<li>如果 pattern 以 #  开始，它必须匹配 parameter 扩展后值的首部。</li>
+<li>如果 pattern 以 % 开始，它必须匹配 parameter 扩展后值的尾部。</li>
+<li>如果 string 是空值，pattern 的匹配都将被删除， pattern 之后的 / 将被忽略。</li>
+<li>如果 parameter 是 @ 或者是 *, 则替换操作将依次施用于每个位置参数，最后扩展为结果的列表。</li>
+<li>如果 parameter 是一个数组变量，下标是 @ 或者是 *, 模式删除将依次施用于数组中的每个成员，最后扩展为结果的列表。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>bash</category>
+      </categories>
+      <tags>
+        <tag>parameter expansion</tag>
+        <tag>表达式扩展</tag>
+        <tag>bash</tag>
       </tags>
   </entry>
   <entry>
@@ -2710,6 +2744,18 @@
       </tags>
   </entry>
   <entry>
+    <title>linux 仅使用外接显示器很卡 鼠标流畅 但鼠标事件相应慢</title>
+    <url>/2023/08/31/linux-%E4%BB%85%E4%BD%BF%E7%94%A8%E5%A4%96%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%99%A8%E5%BE%88%E5%8D%A1-%E9%BC%A0%E6%A0%87%E6%B5%81%E7%95%85-%E4%BD%86%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E7%9B%B8%E5%BA%94%E6%85%A2/</url>
+    <content><![CDATA[<p>还是 linux 下双显卡的老大难问题，解决方法参考：</p>
+<p><a href="https://forum.manjaro.org/t/one-display-hdmi-setup-unusable-extremely-slow/26516">https://forum.manjaro.org/t/one-display-hdmi-setup-unusable-extremely-slow/26516</a></p>
+<p><a href="https://github.com/Askannz/optimus-manager">https://github.com/Askannz/optimus-manager</a></p>
+<p>安装 N 卡的切换工具</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>linux 原始套接字收发 packet</title>
     <url>/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/</url>
     <content><![CDATA[<p>近期工作接触到了些 linux 在 OSI 二层（数据链路层）使用 ethernet 协议收发数据包的内容，网上搜罗了一些有用的文档：</p>
@@ -3327,8 +3373,8 @@
         <category>msys2</category>
       </categories>
       <tags>
-        <tag>bash</tag>
         <tag>msys2</tag>
+        <tag>bash</tag>
         <tag>home</tag>
       </tags>
   </entry>
@@ -3589,6 +3635,37 @@
         <tag>fakevim</tag>
         <tag>vim</tag>
         <tag>fcitx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>qtcreator fakevim 自动切换中英输入法</title>
+    <url>/2023/08/31/qtcreator-fakevim-%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E4%B8%AD%E8%8B%B1%E8%BE%93%E5%85%A5%E6%B3%95/</url>
+    <content><![CDATA[<p>很久以前写过一篇<a href="https://listenerri.com/2018/11/04/qtcreator-fakevim-%E5%B0%8F%E4%BC%81%E9%B9%85%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%88%B0%E8%8B%B1%E6%96%87/">文章</a>介绍如何在 linux 下的 qtcreator 自动切换输入法，当时使用的方法比较简陋，而且只支持 linux，时过境迁，虽然 qtcreator 的 fakevim 插件功能仍然有限，但我搞出来了个跨平台的自动切换方案。</p>
+<p>qtcreator fakevim 的配置文件中增加如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot; 自动切换输入法</span><br><span class="line">&quot; 需要将可执行脚本文件放到标准可执行目录下，如：/usr/local/bin/</span><br><span class="line">inoremap &lt;ESC&gt; &lt;ESC&gt;:!fakevim-smartim en&lt;CR&gt;</span><br><span class="line">nnoremap i :!fakevim-smartim re&lt;CR&gt;i</span><br><span class="line">nnoremap I :!fakevim-smartim re&lt;CR&gt;I</span><br><span class="line">nnoremap a :!fakevim-smartim re&lt;CR&gt;a</span><br><span class="line">nnoremap A :!fakevim-smartim re&lt;CR&gt;A</span><br><span class="line">nnoremap s :!fakevim-smartim re&lt;CR&gt;s</span><br><span class="line">nnoremap S :!fakevim-smartim re&lt;CR&gt;S</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上述配置映射了些按键，在切换输入模式前，调用可执行程序 <code>fakevim-smartim</code>，这是我使用 golang 编写的一个小工具，源码：<a href="https://github.com/listenerri/scripts/tree/master/bin-srcs/fakevim-smartim">https://github.com/listenerri/scripts/tree/master/bin-srcs/fakevim-smartim</a></p>
+<p>有编译好的二进制可以直接下载：</p>
+<ul>
+<li>linux: <a href="https://github.com/listenerri/scripts/raw/master/bin/linux/fakevim-smartim-linux">https://github.com/listenerri/scripts/raw/master/bin/linux/fakevim-smartim-linux</a></li>
+<li>windows: <a href="https://github.com/listenerri/scripts/raw/master/bin/win/fakevim-smartim-win.exe">https://github.com/listenerri/scripts/raw/master/bin/win/fakevim-smartim-win.exe</a></li>
+<li>macos: <a href="https://github.com/listenerri/scripts/raw/master/bin/macos/fakevim-smartim-darwin">https://github.com/listenerri/scripts/raw/master/bin/macos/fakevim-smartim-darwin</a></li>
+</ul>
+<p>将下载或自己编译好的二进制重命名为 <code>fakevim-smartim</code> 并放到系统的可执行程序目录下，也就是 PATH 环境变量中的任意目录。</p>
+<p>其他依赖：</p>
+<ul>
+<li>linux 仅支持小企鹅输入法 fcitx，且依赖可执行程序 <code>fcitx5-remote</code>，这是较新版本的 fcitx 包中带有的命令，如果你使用的是旧版本的 fcitx，那么对应的应该是 <code>fcitx-remote</code>，可以修改 fakevim-smartim 的源码，将调用命令修改为 <code>fcitx-remote</code>，或者直接在 <code>fcitx-remote</code> 命令所在位置，创建一个符号链接 <code>ln -sf fcitx-remote fcitx5-remote</code>（未测试）。</li>
+<li>windows 依赖另一个小工具：<code>im-select</code>，下载地址： <a href="https://github.com/daipeihust/im-select/tree/master/win/out">https://github.com/daipeihust/im-select/tree/master/win/out</a></li>
+<li>macos 同样依赖 <code>im-select</code>，下载地址： <a href="https://github.com/daipeihust/im-select/tree/master/macOS/out">https://github.com/daipeihust/im-select/tree/master/macOS/out</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>vim</category>
+      </categories>
+      <tags>
+        <tag>qtcreator</tag>
+        <tag>fakevim</tag>
+        <tag>vim</tag>
       </tags>
   </entry>
   <entry>
@@ -4005,11 +4082,29 @@
         <category>vscode</category>
       </categories>
       <tags>
-        <tag>bash</tag>
         <tag>msys2</tag>
+        <tag>bash</tag>
         <tag>vscode</tag>
         <tag>mingw64</tag>
         <tag>terminal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>windows 不能发现 linux 下基于 samba 的共享</title>
+    <url>/2023/08/31/windows-%E4%B8%8D%E8%83%BD%E5%8F%91%E7%8E%B0-linux-%E4%B8%8B%E5%9F%BA%E4%BA%8E-samba-%E7%9A%84%E5%85%B1%E4%BA%AB/</url>
+    <content><![CDATA[<p>windows 不能发现 linux 下基于 samba 的共享，原因是从 windows 10 某些版本开始禁用了 smb1.0，不过尝试从 windows 系统中启用 smb1.0 后，仍然不能正常工作，</p>
+<p>最佳解决方案是，在 linux 系统中安装 wsdd，项目地址为：<a href="https://github.com/christgau/wsdd">https://github.com/christgau/wsdd</a></p>
+<p>安装后启动服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl start wsdd</span><br></pre></td></tr></table></figure>
+
+<p>效果立竿见影</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>samba</tag>
       </tags>
   </entry>
   <entry>
@@ -4238,6 +4333,23 @@
       <tags>
         <tag>wireshark</tag>
         <tag>filter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>wsl2 + docker-desktop 无法启动 centos6 等比较老的容器系统</title>
+    <url>/2023/08/31/wsl2-docker-desktop-%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8-centos6-%E7%AD%89%E6%AF%94%E8%BE%83%E8%80%81%E7%9A%84%E5%AE%B9%E5%99%A8%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>这个问题不只是在 windows wsl2 + docker-desktop 中存在，在 linux 系统中也会出现，解决方法是一样的，都是添加内核启动参数，linux 下一般是修改 grub 配置文件，windows 下的 wsl2 需要修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%userprofile%\.wslconfig</span><br><span class="line"></span><br><span class="line">[wsl2]</span><br><span class="line">kernelCommandLine = vsyscall=emulate</span><br></pre></td></tr></table></figure>
+
+<p>参考地址：<a href="https://github.com/microsoft/WSL/issues/4694">https://github.com/microsoft/WSL/issues/4694</a></p>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>centos</tag>
+        <tag>wsl</tag>
       </tags>
   </entry>
   <entry>

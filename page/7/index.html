@@ -202,6 +202,541 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/11/24/qt%E4%B8%AD%E7%9A%84QPointer-QSharedPointer%E7%AD%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/24/qt%E4%B8%AD%E7%9A%84QPointer-QSharedPointer%E7%AD%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">qt中的QPointer QSharedPointer等智能指针</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-24 23:55:45" itemprop="dateCreated datePublished" datetime="2018-11-24T23:55:45+08:00">2018-11-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/11/24/qt%E4%B8%AD%E7%9A%84QPointer-QSharedPointer%E7%AD%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-meta-item leancloud_visitors" data-flag-title="qt中的QPointer QSharedPointer等智能指针" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/11/24/qt%E4%B8%AD%E7%9A%84QPointer-QSharedPointer%E7%AD%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/24/qt%E4%B8%AD%E7%9A%84QPointer-QSharedPointer%E7%AD%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="QPointer"><a href="#QPointer" class="headerlink" title="QPointer"></a>QPointer</h1><p>QPointer在用法上跟普通的指针没有什么区别, 可以将它当做是一个普通指针一样使用. 例如:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">barFunc</span><span class="params">(QLabel *label)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QPointer&lt;QLabel&gt; pointer;</span><br><span class="line">pointer = <span class="keyword">new</span> QLabel;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接将pointer作为QLabel类型的指针传入barFunc函数作为参数</span></span><br><span class="line"><span class="built_in">barFunc</span>(pointer);</span><br></pre></td></tr></table></figure>
+
+<p><strong>主要作用:</strong></p>
+<p>QPointer的主要功能是避免<code>悬空指针</code>的出现, <strong>悬空指针是指: 指针不为空, 但是其指向的对象已经不在了.</strong> 也就是说当对象在其他地方被delete了, 而我们所持有的指向这个对象的指针依然指向那块内存地址, 而没有被置为空, 此时如果使用这个指针就会出错. 下面的QSharedPointer也有避免悬空指针的功能.</p>
+<p><strong>使用场景:</strong></p>
+<p>在多个不同地方的指针指向同一个对象, 当一个地方delete了这个对象后, 其他地方依然会使用指向这个对象的指针, 此时如果没有使用QPointer封装, <code>if (pointer)</code>返回的是<code>true</code>, 而如果使用QPointer封装, QPointer检测到对象被销毁那么<code>if (pointer)</code>返回的是<code>false</code>.</p>
+<p><strong>场景举例:</strong></p>
+<ul>
+<li>我需要将我的一个对象以指针的形式暴露出去, 而且我会在某些情况下<code>delete</code>这个对象, 那我暴露出去的指针就应该使用QPointer封装一下.</li>
+<li>(上面情况的另一个视角)我接收了一个指针, 但指针指向的对象会在别的地方被销毁, 那我接收这个指针时就应该使用QPointer封装一下.</li>
+</ul>
+<h1 id="QSharedPointer"><a href="#QSharedPointer" class="headerlink" title="QSharedPointer"></a>QSharedPointer</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/11/24/qt%E4%B8%AD%E7%9A%84QPointer-QSharedPointer%E7%AD%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-title-link" itemprop="url">qt中翻译静态成员变量中的字符串</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 20:20:51" itemprop="dateCreated datePublished" datetime="2018-11-04T20:20:51+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-meta-item leancloud_visitors" data-flag-title="qt中翻译静态成员变量中的字符串" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/04/qt%E4%B8%AD%E7%BF%BB%E8%AF%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 qt 中要翻译一个字符串很简单，只需要使用 <code>tr</code> 函数包裹住字符串即可。后来发现这一方法对于静态变量无效，经同事提醒原来静态数据初始化时，程序还没有加载翻译数据，也就是一般写在 main 函数中的 QTranslator::load() / app.installTranslator() 类似代码。</p>
+<p>经过一番搜索和阅读 qt 文档，找到了解决方法，原来 qt 早已有应对之策：<code>QT_TR_NOOP</code> 这个宏，或者说这类宏，因为类似的还有 <code>QT_TR_NOOP_UTF8</code> <code>QT_TRANSLATE_NOOP</code>，这里只是简要说一下其大概用法，想要了解更多可以查阅 qt 相关文档。下面只介绍 <code>QT_TR_NOOP</code> 这个宏的用法：</p>
+<p>这个宏跟 <code>tr</code> 函数的原理不同，<code>tr</code> 函数中的字符串会在程序加载时被替换为翻译后的文本，可以理解为这是一种类似宏展开的过程，因此这是一种静态的翻译，而 <code>QT_TR_NOOP</code> 这个宏则是动态翻译，传给这个宏的字符串将会被标记为需要动态翻译的内容，何为动态翻译，也就是说在程序加载时不会被修改/替换字符串( tr() 函数的过程)，而是在真正使用时再进行翻译，拿 qt 文档中的例子来看：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QString <span class="title">FriendlyConversation::greeting</span><span class="params">(<span class="type">int</span> type)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">char</span> *greeting_strings[] = &#123;</span><br><span class="line">  <span class="built_in">QT_TR_NOOP</span>(<span class="string">&quot;Hello&quot;</span>),</span><br><span class="line">  <span class="built_in">QT_TR_NOOP</span>(<span class="string">&quot;Goodbye&quot;</span>)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">tr</span>(greeting_strings[type]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中数组 <code>greeting_strings</code> 的成员是两个被标记为需要动态翻译的字符串，下面 return 就是真正要使用的地方，同样是用到了 <code>tr</code> 函数，将数据的成员传入即可。</p>
+<p>如果静态字符串数据是一个 QMap 或者 QList 那使用时就要将成员转化为 c 风格的字符串或byte数组，还是上面的代码，稍加修改为 QList 类型的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QString <span class="title">FriendlyConversation::greeting</span><span class="params">(<span class="type">int</span> type)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> QList *greeting_string_list = &#123;</span><br><span class="line">  <span class="built_in">QT_TR_NOOP</span>(<span class="string">&quot;Hello&quot;</span>),</span><br><span class="line">  <span class="built_in">QT_TR_NOOP</span>(<span class="string">&quot;Goodbye&quot;</span>)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">tr</span>(greeting_string_list[type].<span class="built_in">toUtf8</span>());</span><br><span class="line"><span class="comment">// 或者：greeting_string_list[type].toLocal8Bit() 之类的</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/11/04/qtcreator-fakevim-%E5%B0%8F%E4%BC%81%E9%B9%85%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%88%B0%E8%8B%B1%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/04/qtcreator-fakevim-%E5%B0%8F%E4%BC%81%E9%B9%85%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%88%B0%E8%8B%B1%E6%96%87/" class="post-title-link" itemprop="url">qtcreator-fakevim-小企鹅输入法自动切换到英文</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 20:03:21" itemprop="dateCreated datePublished" datetime="2018-11-04T20:03:21+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/11/04/qtcreator-fakevim-%E5%B0%8F%E4%BC%81%E9%B9%85%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%88%B0%E8%8B%B1%E6%96%87/" class="post-meta-item leancloud_visitors" data-flag-title="qtcreator-fakevim-小企鹅输入法自动切换到英文" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/11/04/qtcreator-fakevim-%E5%B0%8F%E4%BC%81%E9%B9%85%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%88%B0%E8%8B%B1%E6%96%87/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/04/qtcreator-fakevim-%E5%B0%8F%E4%BC%81%E9%B9%85%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E5%88%B0%E8%8B%B1%E6%96%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>qtcreator 的 fakevim 不支持原生 vim 的插件，所以就用不了 fcitx.vim 这个好用的插件了，所以只能自食其力喽。根据 fcitx 支持 dbus 通信的原理，实现了在 INSERT 模式下按 <code>ESC</code> 键回到 NORMAL 模式时自动切换到英文状态。<br>由于 fakevim 支持的特性过于简陋，目前只实现了这个，并不能像 fcitx.vim 插件一样记住 INSERT 模式下的中英文状态，等下次进入 INSERT 模式时再自动切回去，不过这样也舒服了很多了，将下面的配置放到 qtcreator fakevim 插件的配置文件中即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot; 从insert模式按esc回到normal模式时自动关闭小企鹅输入法</span><br><span class="line">inoremap &lt;ESC&gt; &lt;ESC&gt;:!dbus-send --type=method_call --dest=org.fcitx.Fcitx /inputmethod org.fcitx.Fcitx.InputMethod.InactivateIM&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在 qtcreator 的设置里有 fakevim 设置项，里面有一项是设置 fakevim 启动时要加载的配置文件的路径。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">gdb调试qt程序时打印qt特有的类型数据</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-23 21:16:50" itemprop="dateCreated datePublished" datetime="2018-10-23T21:16:50+08:00">2018-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/" class="post-meta-item leancloud_visitors" data-flag-title="gdb调试qt程序时打印qt特有的类型数据" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/10/23/gdb%E8%B0%83%E8%AF%95qt%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%93%E5%8D%B0qt%E7%89%B9%E6%9C%89%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>如果没有使用 qtcreator 调试 qt 程序，而是手动或利用其他 IDE 使用 gdb 调试，会发现 qt 类型的数据如 QString QList QMap 等不能直接查看其值。其实 gdb 是提供了关于打印数据的接口的，叫做 <code>Pretty-Printer</code>，这是一种利用 python 代码更好的输出变量数据的机制，感兴趣的可以搜索下相关内容。qtcreator 之所以可以愉快的打印出 qt 相应的数据也是因为它使用了这种机制，下面的命令可以查看 qtcreator 的安装目录中的 python 文件，命令在 debian 系的 linux 系统上有效:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apt-file show qtcreator-data | grep py</span></span><br><span class="line">qtcreator-data: /usr/share/doc/qtcreator-data/copyright</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/boosttypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/cdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/creatortypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/dumper.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/gdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/lldbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/misctypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/opencvtypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/pdbbridge.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/personaltypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/qttypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/debugger/stdtypes.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/qml/qmlpuppet/qml2puppet/instances/nodeinstancesignalspy.cpp</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/qml/qmlpuppet/qml2puppet/instances/nodeinstancesignalspy.h</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/classes/python/file.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/classes/python/wizard.json</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/files/python/file.py</span><br><span class="line">qtcreator-data: /usr/share/qtcreator/templates/wizards/files/python/wizard.json</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>/usr/share/qtcreator/debugger/</code> 目录下关于 qtcreator 对 debug 所做的优化，不过不知道为什么直接使用 qtcreator 提供的 qt 类型相关的脚本没有成功(有成功的可以在下面回复方法指点一下)。因此又在 github 上搜索相关内容找到了另一个 qt 相关的 Pretty-Print 脚本，项目地址为：<a target="_blank" rel="noopener" href="https://github.com/Lekensteyn/qt5printers">https://github.com/Lekensteyn/qt5printers</a>，在 linux 系统下具体使用方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆项目到~/.git/qt5printers目录下</span></span><br><span class="line">git <span class="built_in">clone</span> git@github.com:Lekensteyn/qt5printers.git ~/.git/qt5printers</span><br></pre></td></tr></table></figure>
+
+<p>复制以下内容到<code>~/.gdbinit</code>文件中，若文件不存在则手动创建：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python</span><br><span class="line"><span class="keyword">import</span> sys, os.path</span><br><span class="line">sys.path.insert(<span class="number">0</span>, os.path.expanduser(<span class="string">&#x27;~/.gdb&#x27;</span>))</span><br><span class="line"><span class="keyword">import</span> qt5printers</span><br><span class="line">qt5printers.register_printers(gdb.current_objfile())</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>做完之后就可以 debug 一个 qt 程序测试了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/10/04/hides-overloaded-virtual-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/04/hides-overloaded-virtual-function/" class="post-title-link" itemprop="url">hides overloaded virtual function</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-04 15:13:39" itemprop="dateCreated datePublished" datetime="2018-10-04T15:13:39+08:00">2018-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cpp/" itemprop="url" rel="index"><span itemprop="name">cpp</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/10/04/hides-overloaded-virtual-function/" class="post-meta-item leancloud_visitors" data-flag-title="hides overloaded virtual function" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/10/04/hides-overloaded-virtual-function/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/10/04/hides-overloaded-virtual-function/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在<code>重载</code>父类的同名虚函数时会出现<code>hides overloaded virtual function</code>编译警告。<br>从字面上的意思其实就可以理解：重载的虚函数被隐藏了。</p>
+<p>三个关键点：</p>
+<ul>
+<li>重载</li>
+<li>虚函数</li>
+<li>隐藏</li>
+</ul>
+<p>这个编译警告之所以出现，是因为上面三个关键点，首先是发生了<code>重载</code>，子类重载了父类的函数，其次被重载的是虚函数，这时这个被重载的父类的虚函数将会被隐藏。<br>何为隐藏呢，应该是不能使用子类实例直接调用父类被隐藏的函数，调用时必须指定父类命名空间，往深了说也就是编译器如果在子类中发现了要使用的函数的名字，注意，是名字不包含函数签名，只要名字匹配上，就不会再去父类中去寻找这个名字的函数，即便子类中的函数参数不匹配，也不会再去父类中寻找。</p>
+<p>其实去掉<code>虚函数</code>这个关键点，在c++中当重载了父类的函数时，隐藏同样会发生，举个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> <span class="built_in">B</span>();</span><br><span class="line">    b-&gt;<span class="built_in">foo</span>(); <span class="comment">//编译报错</span></span><br><span class="line">    b-&gt;A::<span class="built_in">foo</span>(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;<span class="built_in">foo</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当重载的父类函数为虚函数时，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123; <span class="comment">//将父类函数声明为虚函数</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123; <span class="comment">//此处会有编译警告：&quot;&#x27;B::foo&#x27; hides overloaded virtual function&quot;</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B *b = <span class="keyword">new</span> <span class="built_in">B</span>();</span><br><span class="line">    b-&gt;<span class="built_in">foo</span>(); <span class="comment">//编译报错依旧</span></span><br><span class="line">    b-&gt;A::<span class="built_in">foo</span>(); <span class="comment">//应该指定命名空间A::</span></span><br><span class="line">    b-&gt;<span class="built_in">foo</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译错误依旧，但多了一个编译警告，关于这个编译警告，有种解释说是为了避免书写错误，这就要说到多态，上面的例子没有应用多态有些不合适，修改一下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BookA</span>; <span class="comment">//改动处</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BookB</span>; <span class="comment">//改动处</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">foo</span><span class="params">(BookA *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;foo of A&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(BookB *)</span> </span>&#123; <span class="comment">//改动处</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;foo of B&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A *b = <span class="keyword">new</span> <span class="built_in">B</span>(); <span class="comment">//改动处</span></span><br><span class="line">    b-&gt;<span class="built_in">foo</span>(<span class="keyword">new</span> <span class="built_in">BookB</span>());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/04/hides-overloaded-virtual-function/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -692,546 +1227,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/" class="post-title-link" itemprop="url">linux下控制风扇转速</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-26 19:16:50" itemprop="dateCreated datePublished" datetime="2017-10-26T19:16:50+08:00">2017-10-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/" class="post-meta-item leancloud_visitors" data-flag-title="linux下控制风扇转速" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文不一定适用于所有电脑，需要自己找到对应的设备文件</p>
-<p>我的电脑中，风扇对应到linux下的设备文件的路径是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sys/class/hwmon/hwmon2/pwm1</span><br></pre></td></tr></table></figure>
-<p>其他电脑即便不是这个文件，也在类似的目录下，这个文件的内容是”0-255“的数值，<br>相应的数值大小对应相应的风扇转速，向这个文件中写入不同的数据风扇就控制风扇的转速了。</p>
-<p>我的电脑中这个文件的默认值是”85“。</p>
-<p>下面附上我写的一个shell脚本，放到PATH里就可以方便的控制风扇转速了：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">read -p &quot;input speed(0-255) and ENTER: &quot; SPEED</span><br><span class="line">[[ -z $SPEED ]] &amp;&amp; SPEED=85</span><br><span class="line">echo $SPEED | sudo tee /sys/class/hwmon/hwmon2/pwm1</span><br></pre></td></tr></table></figure>
-<p>注意如果上述提到的设备文件不同，需要修改脚本中的路径。<br>将上述代码保存为一个shell文件，如<code>fancontrol.sh</code>，并为其增加可执行权限：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x fancontrol.sh</span><br></pre></td></tr></table></figure>
-<p>然后复制到PATH下，如<code>/bin</code>下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">搞明白android中layout_weight的用法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-09-15 23:07:12" itemprop="dateCreated datePublished" datetime="2017-09-15T23:07:12+08:00">2017-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/" class="post-meta-item leancloud_visitors" data-flag-title="搞明白android中layout_weight的用法" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>本文是学习这篇博客所得的收获:<br><a target="_blank" rel="noopener" href="http://mobile.51cto.com/abased-375428.htm"> Android：Layout_weight的深刻理解</a></p>
-</blockquote>
-<p>当子控件有<code>layout_weight</code>属性时, 系统将先按照<code>layout_width</code>或<code>layout_hight</code>属性<br>先把子控件放到父控件中, 之后才解析<code>layout_weight</code>属性, 然后计算父控件中的剩余空间,<br>最后按比例分配剩余空间给子控件.</p>
-<p>看一下处理<code>layout_weight</code>时所用到的公式:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 实际尺寸: 子控件最终展示出来的尺寸</span><br><span class="line"># 当前尺寸: 子控件刚被放到布局中, 系统还没有解析其weight属性时的尺寸</span><br><span class="line"># weight比例: 子控件在所有有`layout_weight`属性的控件中所占的比例</span><br><span class="line">#             (例: 三个子控件, 第一个比重为1, 第二个为2, 第三个为2,</span><br><span class="line">#              那么第一个所占比例为1/5, 第二个为2/5, 第三个为2/5)</span><br><span class="line"># 剩余空间: 子控件刚被放到父控件中, 系统还没有解析其weight属性时父控件还有多少剩余空间</span><br><span class="line"></span><br><span class="line">剩余空间 = 父控件尺寸 - 子控件1尺寸 - 子控件2尺寸 - 子控件3尺寸...</span><br><span class="line">实际尺寸 = 当前尺寸 + weight比例 * 剩余空间尺寸</span><br></pre></td></tr></table></figure>
-<p>当控件的<code>layout_width</code>以及<code>layout_hight</code>的值为<code>0</code>或者<code>wrap_content</code>时,<br><code>layout_weight</code>属性很容易预测最终效果, 它们会按照自己的<code>weight比例</code>去<br>分配<code>剩余空间尺寸</code>.</p>
-<p>需要留意的是当控件的<code>layout_width</code>或<code>layout_hight</code>的值为<code>fill_parent</code>的时候,<br>此时每个子控件在刚被放到父控件中, 且系统还没有解析子控件的<code>layout_weight</code>时,<br>父控件就已经没有剩余空间了,<br><font color="red"><br>因为此时所有子控件的当前尺寸都等于父控件的尺寸, 且第一个子控件就已经占满了父控件!<br></font></p>
-<p>那么套用上述公式, 计算子控件最终实际尺寸的过程如下:</p>
-<blockquote>
-<p>下面假设一个父控件中有三个子控件, 其比重为1 : 2 : 3,<br>则子控件的<code>weight比例</code>依次为<code>1/6</code>, <code>2/6</code>, <code>3/6</code></p>
-</blockquote>
-<p>剩余空间的计算如下:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">剩余空间 = 父控件尺寸 - 子控件1当前尺寸 - 子控件2当前尺寸 - 子控件3当前尺寸</span><br><span class="line"># 上述等同于:</span><br><span class="line">剩余空间 = 父控件尺寸 - 父控件尺寸 - 父控件尺寸 - 父控件尺寸</span><br><span class="line"># 则(注意是负2):</span><br><span class="line">剩余空间 = -2 * 父控件尺寸</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/09/15/%E6%90%9E%E6%98%8E%E7%99%BDandroid%E4%B8%ADlayout-weight%E7%9A%84%E7%94%A8%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/09/13/docker-CMD-ENTRYPOINT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/13/docker-CMD-ENTRYPOINT/" class="post-title-link" itemprop="url">docker-CMD-ENTRYPOINT</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-09-13 00:06:26" itemprop="dateCreated datePublished" datetime="2017-09-13T00:06:26+08:00">2017-09-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/09/13/docker-CMD-ENTRYPOINT/" class="post-meta-item leancloud_visitors" data-flag-title="docker-CMD-ENTRYPOINT" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/09/13/docker-CMD-ENTRYPOINT/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/09/13/docker-CMD-ENTRYPOINT/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一张图解释Dockerfile中CMD和ENTRYPOINT的关系,<br>另外使用’docker run’新建容器时, 镜像后面跟的命令会覆盖Dockerfile中的CMD.<br><img src="docker.png" alt="docker"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/" class="post-title-link" itemprop="url">docker运行php容器网站无法运行</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-09-12 15:07:18" itemprop="dateCreated datePublished" datetime="2017-09-12T15:07:18+08:00">2017-09-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/" class="post-meta-item leancloud_visitors" data-flag-title="docker运行php容器网站无法运行" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/09/12/docker%E8%BF%90%E8%A1%8Cphp%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99%E6%97%A0%E6%B3%95%E8%BF%90%E8%A1%8C/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>使用如下命令启动一个php容器, 并将php项目的目录映射到容器内的apache容器下:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 80:80 --name php_app -v &quot;/project/directory&quot;:/var/www/html -d php</span><br></pre></td></tr></table></figure>
-<p>然后访问<code>127.0.0.1</code>, 结果网站无法运行, 提示:<code>Permission denied</code>,</p>
-<p>进入正在运行的php容器, 去看看项目目录在容器里的权限是什么:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it php_app bash</span><br><span class="line">cd /var/www/html</span><br><span class="line">ls -l</span><br></pre></td></tr></table></figure>
-<p>发现文件的拥有者和属组都无法识别, 直接显示的UID和GID, 都是1000,<br>这是因为项目文件在容器外, 也就是主机本地的拥有者和属组是都是我的用户,<br>而我的用户的UID和GID在主机中是1000,<br>但是php容器里却没有我这个账户, 所以也就无法正常识别所有者了,<br>自然网站无法正常运行. 要想解决这个问题就得知道php这个容器<br>使用的是哪个用户来启动apache和php服务, 经过搜索得知是”www-data”用户,<br>那么修改这个用户的UID和GID为我的就行了(这里都是1000):</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groupmod -g 1000 www-data &amp;&amp; usermod -u 1000 -g 1000 www-data</span><br></pre></td></tr></table></figure>
-
-<p>然后重启php容器即可:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart php_app</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" class="post-title-link" itemprop="url">python的库文件在哪儿</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-07-20 22:06:56" itemprop="dateCreated datePublished" datetime="2017-07-20T22:06:56+08:00">2017-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" class="post-meta-item leancloud_visitors" data-flag-title="python的库文件在哪儿" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>当前操作系统: deepin基于debian</p>
-</blockquote>
-<h1 id="模块管理器pip"><a href="#模块管理器pip" class="headerlink" title="模块管理器pip"></a>模块管理器pip</h1><p>默认的命令pip可能是来自pip2也可能是pip3, 这取决于安装pip2和pip3的顺序,<br>安装pip2或pip3时会覆盖原有pip可执行文件, 所以在使用pip安装python模块时,<br>最好明确指出使用pip2还是pip3, 而不是直接使用pip命令, 这样可以避免明明要安装python3的模块库, 下载安装的却是python2的模块库.</p>
-<h1 id="安装模块-库"><a href="#安装模块-库" class="headerlink" title="安装模块(库)"></a>安装模块(库)</h1><p>使用pip命令安装模块时, 是否使用sudo提权会影响安装路径.</p>
-<h2 id="使用sudo提权"><a href="#使用sudo提权" class="headerlink" title="使用sudo提权"></a>使用sudo提权</h2><p>会安装模块到以下路径:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># python自带的一些模块文件在这个路径下.</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># 用户自行安装的模块一般在这个路径下.</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="没有使用sudo提权"><a href="#没有使用sudo提权" class="headerlink" title="没有使用sudo提权"></a>没有使用sudo提权</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/20/python%E7%9A%84%E5%BA%93%E6%96%87%E4%BB%B6%E5%9C%A8%E5%93%AA%E5%84%BF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1299,7 +1298,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1312,7 +1311,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">249</span>
+        <span class="site-state-item-count">255</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -2,6 +2,60 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://listenerri.com/2023/08/31/linux-%E4%BB%85%E4%BD%BF%E7%94%A8%E5%A4%96%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%99%A8%E5%BE%88%E5%8D%A1-%E9%BC%A0%E6%A0%87%E6%B5%81%E7%95%85-%E4%BD%86%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E7%9B%B8%E5%BA%94%E6%85%A2/</loc>
+    
+    <lastmod>2023-08-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/2023/08/31/wsl2-docker-desktop-%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8-centos6-%E7%AD%89%E6%AF%94%E8%BE%83%E8%80%81%E7%9A%84%E5%AE%B9%E5%99%A8%E7%B3%BB%E7%BB%9F/</loc>
+    
+    <lastmod>2023-08-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/2023/08/31/windows-%E4%B8%8D%E8%83%BD%E5%8F%91%E7%8E%B0-linux-%E4%B8%8B%E5%9F%BA%E4%BA%8E-samba-%E7%9A%84%E5%85%B1%E4%BA%AB/</loc>
+    
+    <lastmod>2023-08-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/2023/08/31/qtcreator-fakevim-%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E4%B8%AD%E8%8B%B1%E8%BE%93%E5%85%A5%E6%B3%95/</loc>
+    
+    <lastmod>2023-08-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/2023/08/31/Win-%E4%B8%8B%E7%9A%84%E7%B1%BB-Linux-%E7%8E%AF%E5%A2%83%E5%BC%80%E5%8F%91-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</loc>
+    
+    <lastmod>2023-08-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/in-a-few-words/index.html</loc>
+    
+    <lastmod>2023-08-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://listenerri.com/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/</loc>
     
     <lastmod>2023-06-28</lastmod>
@@ -32,15 +86,6 @@
     <loc>https://listenerri.com/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/</loc>
     
     <lastmod>2023-06-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://listenerri.com/in-a-few-words/index.html</loc>
-    
-    <lastmod>2023-05-10</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -281,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://listenerri.com/2021/08/15/bash-parameter-expansion-%E5%8F%82%E6%95%B0%E6%89%A9%E5%B1%95/</loc>
+    <loc>https://listenerri.com/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/</loc>
     
     <lastmod>2022-10-29</lastmod>
     
@@ -290,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://listenerri.com/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/</loc>
+    <loc>https://listenerri.com/2021/08/15/bash-parameter-expansion-%E5%8F%82%E6%95%B0%E6%89%A9%E5%B1%95/</loc>
     
     <lastmod>2022-10-29</lastmod>
     
@@ -1319,6 +1364,34 @@
   </url>
   
   <url>
+    <loc>https://listenerri.com/tags/windows/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/msys2/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/cygwin/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/mingw/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://listenerri.com/tags/android/</loc>
     <lastmod>2023-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1375,27 +1448,6 @@
   </url>
   
   <url>
-    <loc>https://listenerri.com/tags/parameter-expansion/</loc>
-    <lastmod>2023-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://listenerri.com/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%A9%E5%B1%95/</loc>
-    <lastmod>2023-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://listenerri.com/tags/bash/</loc>
-    <lastmod>2023-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://listenerri.com/tags/archlinux/</loc>
     <lastmod>2023-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -1418,6 +1470,27 @@
   
   <url>
     <loc>https://listenerri.com/tags/%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/parameter-expansion/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%A9%E5%B1%95/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/bash/</loc>
     <lastmod>2023-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2096,13 +2169,6 @@
   </url>
   
   <url>
-    <loc>https://listenerri.com/tags/msys2/</loc>
-    <lastmod>2023-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://listenerri.com/tags/home/</loc>
     <lastmod>2023-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -2404,6 +2470,13 @@
   </url>
   
   <url>
+    <loc>https://listenerri.com/tags/samba/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://listenerri.com/tags/wireshark/</loc>
     <lastmod>2023-08-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -2412,6 +2485,20 @@
   
   <url>
     <loc>https://listenerri.com/tags/filter/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/centos/</loc>
+    <lastmod>2023-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://listenerri.com/tags/wsl/</loc>
     <lastmod>2023-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
