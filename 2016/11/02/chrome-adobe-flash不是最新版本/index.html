@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -288,7 +288,7 @@
 <p>解决方法也简单, 只是需要梯(fan)子(qiang), 如何找梯子本文就不提及了.<br>有了梯子之后, 设置好代理启动chrome, 在地址栏输入: <code>chrome://components/</code>, 回车,<br>然后找到flash player那一项, 点击更新就行了. </p>
 <p>下面详细说说linux下和windows下怎么设置代理:</p>
 <p>linux下在<code>终端</code>中设置好代理变量, 然后接着在同一个终端下以命令的方式启动chrome就行了,下面是具体命令:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export http_proxy&#x3D;127.0.0.1:8787</span><br><span class="line">export https_proxy&#x3D;127.0.0.1:8787</span><br><span class="line">google-chrome</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export http_proxy=127.0.0.1:8787</span><br><span class="line">export https_proxy=127.0.0.1:8787</span><br><span class="line">google-chrome</span><br></pre></td></tr></table></figure>
 
 <p>命令解释, 前两行主要是指定代理地址和端口, 因为我是在本机运行的代理软件, 所以地址是127.0.0.1<br>而8787则是代理软件监听的端口, 第三行则是启动chrome</p>
 <p>windows下就十分简单了, 启动代理软件, 一般代理软件都有系统代理的选项, 选择启动系统代理,<br>然后运行chrome就行了. </p>

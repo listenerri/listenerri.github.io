@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -375,7 +375,7 @@
 
       
           <p>有时候由于网络问题，会发现 android-studio 或 idea 下载不懂 gradle，可以修改 <code>gradle-wrapper.properties</code> 配置文件中的 <code>distributionUrl</code> 选项来解决这个问题。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl&#x3D;https\:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;gradle&#x2F;gradle-5.1.1-all.zip</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https\://mirrors.cloud.tencent.com/gradle/gradle-5.1.1-all.zip</span><br></pre></td></tr></table></figure>
 
 <p>这个选项表示从腾讯提供的 gradle 镜像服务下载数据，注意替换上面示例链接末尾的具体文件名。</p>
 <p>可以访问此链接查看有哪些版本的 gradle 可以下载：<a target="_blank" rel="noopener" href="https://mirrors.cloud.tencent.com/gradle/">https://mirrors.cloud.tencent.com/gradle/</a></p>
@@ -475,7 +475,7 @@
       
           <p>在公司内部服务器上搭了一个 <a target="_blank" rel="noopener" href="https://nextcloud.com/">Nextcloud</a> 服务，跑起来之后发现没有日历、邮件等应用，且不能打开应用商店，分析了服务日志发现是由于网络问题。</p>
 <p>启动服务时加上代理即可正常，比如使用 docker 跑的话：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nextcloud -p 8080:80 -e http_proxy&#x3D;http:&#x2F;&#x2F;192.168.1.100:1081 -e https_proxy&#x3D;http:&#x2F;&#x2F;192.168.1.100:1081 nextcloud</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nextcloud -p 8080:80 -e http_proxy=http://192.168.1.100:1081 -e https_proxy=http://192.168.1.100:1081 nextcloud</span><br></pre></td></tr></table></figure>
 
 <p>代理相关参数解释：</p>
 <ul>
@@ -689,7 +689,7 @@
       
           <p>我用来创建热点的工具是 create_ap 可以直接去官方仓库中查看 README 来安装：<a target="_blank" rel="noopener" href="https://github.com/oblique/create_ap">https://github.com/oblique/create_ap</a></p>
 <p>把 USB 无线网卡插到运行 linux 系统的机器上，然后使用 <code>lsusb</code> 命令查看信息，可以得到如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bus 001 Device 006: ID 0bda:8179 Realtek Semiconductor Corp. RTL8188EUS 802.11n Wireless Network Adapter</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bus 001 Device 006: ID 0bda:8179 Realtek Semiconductor Corp. RTL8188EUS 802.11n Wireless Network Adapter</span><br></pre></td></tr></table></figure>
 
 <p>可以看到芯片是 <code>RTL8188EUS</code>，在 manjaro 系统下，虽然可以识别设备，也能正常连接无线网使用，但默认驱动不能用来创建 wifi 热点，所以需要手动安装一个新的驱动。</p>
 <p>经过搜索和不断测试，最终确定一个可用驱动：<br><a target="_blank" rel="noopener" href="https://github.com/aircrack-ng/rtl8188eus">https://github.com/aircrack-ng/rtl8188eus</a></p>
@@ -792,15 +792,15 @@
       
           <p>ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。</p>
 <h2 id="安装-python3-8"><a href="#安装-python3-8" class="headerlink" title="安装 python3.8"></a>安装 python3.8</h2><p>执行如下命令增加 ppa 仓库，并更新源数据：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:deadsnakes&#x2F;ppa</span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:deadsnakes/ppa</span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
 
 <p>如果提示找不到 <code>add-apt-repository</code> 命令，执行如下命令安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install software-properties-common</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install software-properties-common</span><br></pre></td></tr></table></figure>
 
 <p>更新完成源数据之后，就可以安装 ppa 仓库中的包了，这个仓库中不止是包含 python3.8，还包含其他版本的 python 包，详细情况可查看链接：</p>
 <p><a target="_blank" rel="noopener" href="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa">https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa</a></p>
 <p>执行以下命令安装 python3.8 相关的包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.8 python3.8-dev python3.8-distutils python3.8-venv</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.8 python3.8-dev python3.8-distutils python3.8-venv</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/#more" rel="contents">
@@ -1130,7 +1130,7 @@
 <h2 id="std-initializer-list"><a href="#std-initializer-list" class="headerlink" title="std::initializer_list"></a>std::initializer_list</h2><p>(译：<code>花括号初始化器列表</code>)</p>
 <p>简介：<br>可以将其理解为类/模板类</p>
 <p>备注：<br>这表示一种花括号数据类型 <code>&#123;x, y, ...&#125;</code><br>当然，这也是一种普通的数据类型，其他类型怎么用，它就可以怎么用，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::initializer_list&lt;int&gt; foo &#x3D; &#123;1, 2, 3, 4&#125; &#x2F;&#x2F; 声明此类型数据并赋值</span><br><span class="line">auto foo &#x3D; &#123;1, 2, 3, 4&#125; &#x2F;&#x2F; 同上</span><br><span class="line">void func_bar(std::initializer_list&lt;int&gt; arg_var) &#123;&#125; &#x2F;&#x2F; 声明此类型数据为形参</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::initializer_list&lt;int&gt; foo = &#123;1, 2, 3, 4&#125; // 声明此类型数据并赋值</span><br><span class="line">auto foo = &#123;1, 2, 3, 4&#125; // 同上</span><br><span class="line">void func_bar(std::initializer_list&lt;int&gt; arg_var) &#123;&#125; // 声明此类型数据为形参</span><br></pre></td></tr></table></figure>
 
 <p>中英文链接：<br><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/utility/initializer_list">https://zh.cppreference.com/w/cpp/utility/initializer_list</a><br><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/initializer_list">https://en.cppreference.com/w/cpp/utility/initializer_list</a></p>
 <h2 id="List-initialization"><a href="#List-initialization" class="headerlink" title="List initialization"></a>List initialization</h2><p>(译：<code>列表初始化</code>)</p>

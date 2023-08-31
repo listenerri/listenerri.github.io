@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -295,7 +295,7 @@
 <p>如果没有对应的路径、可以尝试在类似的其他路径中搜索</p>
 <p>这种方法在关机重启之后会失效、也就是说在手机重启之后背光灯就又亮了<br>上面关闭功能的方法是永久生效的</p>
 <p>如果不想每次重新开机后都来这个路径下修改文件、可以手动写一个shell脚本、<br>将下面的代码复制保存为<code>brightnessOFF.sh</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/system/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> 0&gt;/sys/class/leds/button-backlight/brightness</span><br><span class="line">chown root:root /sys/class/leds/button-backlight/brightness</span><br><span class="line">chmod 777 /sys/class/leds/button-backlight/brightness</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/system/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> 0&gt;/sys/class/leds/button-backlight/brightness</span><br><span class="line"><span class="built_in">chown</span> root:root /sys/class/leds/button-backlight/brightness</span><br><span class="line"><span class="built_in">chmod</span> 777 /sys/class/leds/button-backlight/brightness</span><br></pre></td></tr></table></figure>
 <p>用RE文件管理器点击这个brightnessOFF.sh、弹出提示框、点击执行即可、立即生效<br>如果嫌这样还麻烦、那就需要点专业知识了<br>需要把上面的代码追加到安卓系统开机时自动执行的脚本文件中、<br>如：<code>/etc/install-recovery.sh或/etc/inti.goldfish.sh</code><br>或者自己修改内核以支持init.d、然后把这个脚本文件放在/etc/init.d目录中<br>注意可执行权限、也可以实现开机自动执行</p>
 <h1 id="开启虚拟按键"><a href="#开启虚拟按键" class="headerlink" title="开启虚拟按键"></a>开启虚拟按键</h1><p>RE文件管理器, <code>/system/build.prop</code>文件</p>
 <p>先在文件中搜索： <code>qemu.hw.mainkeys</code></p>

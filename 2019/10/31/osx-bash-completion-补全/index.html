@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -284,7 +284,7 @@
       
         <p>在 linux 下补全的配置一般发行版都给默认配了，原本以为在 OSX 下用 brew 装个 bash-completion 包，再在 bashrc 下贴两行配置也就搞定了，没想到不行，OSX 下 bash-completion 包有两个，另一个是 <code>bash-completion@2</code>，这两个包分别对应 bash 的两个版本，具体可以用 brew info <code>bash-completion@2</code> 来看。</p>
 <p>而且 <code>bash-completion@2</code> 跟 <code>bash-completion</code> 相比还要多一行配置，总之就是需要下面两行配置才行，原因是大多软件包都只提供了旧版本的 completion 文件，新版的没有提供支持，所以下面的第一行就是声明要兼容下旧的补全文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export BASH_COMPLETION_COMPAT_DIR&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;bash_completion.d&quot;</span><br><span class="line">[[ -r &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;profile.d&#x2F;bash_completion.sh&quot; ]] &amp;&amp; . &quot;&#x2F;usr&#x2F;local&#x2F;etc&#x2F;profile.d&#x2F;bash_completion.sh&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export BASH_COMPLETION_COMPAT_DIR=&quot;/usr/local/etc/bash_completion.d&quot;</span><br><span class="line">[[ -r &quot;/usr/local/etc/profile.d/bash_completion.sh&quot; ]] &amp;&amp; . &quot;/usr/local/etc/profile.d/bash_completion.sh&quot;</span><br></pre></td></tr></table></figure>
 
 <p>除此之外还有个问题，我自己设置了很多别名 alias，但是这些自定义的别名默认是不支持参数补全的，想要如丝般顺滑就要用另一个项目：<a target="_blank" rel="noopener" href="https://github.com/cykerway/complete-alias">https://github.com/cykerway/complete-alias</a>，具体的使用方法就不赘述了，可以去项目里看看怎么配置。</p>
 <p>经过实践发现这个项目也不支持旧版的 <code>bash-completion</code> 包，会提示 _completion_loader 找不到的错误，改装 <code>bash-completion@2</code> 就好了。</p>

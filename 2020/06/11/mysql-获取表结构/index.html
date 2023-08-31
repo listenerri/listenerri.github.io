@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -282,13 +282,13 @@
 
       
         <p>获取建表语句：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW CREATE TABLE table_name</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW CREATE TABLE table_name</span><br></pre></td></tr></table></figure>
 
 <p>获取表结构：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># DESC 是 DESCRIBE 的缩写</span><br><span class="line">DESC table_name</span><br><span class="line">SHOW COLUMNS FROM table_name</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># DESC 是 DESCRIBE 的缩写</span><br><span class="line">DESC table_name</span><br><span class="line">SHOW COLUMNS FROM table_name</span><br></pre></td></tr></table></figure>
 
 <p>筛选字段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># field_name 可以包括通配符</span><br><span class="line">DESC table_name &quot;field_name&quot;</span><br><span class="line">SHOW COLUMNS FROM table_name LIKE &quot;field_name&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># field_name 可以包括通配符</span><br><span class="line">DESC table_name &quot;field_name&quot;</span><br><span class="line">SHOW COLUMNS FROM table_name LIKE &quot;field_name&quot;</span><br></pre></td></tr></table></figure>
 
 <p>另外，经过测试，<code>SHOW COLUMNS FROM</code> 语句除了可以使用 LIKE 关键字，还可以使用 WHERE 子句，但 <code>DESCRIBE</code> 语句不支持。</p>
 

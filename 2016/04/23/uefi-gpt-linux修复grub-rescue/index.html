@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -294,14 +294,14 @@
 <h1 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h1><p>那么我们开分析下这些数据、首先cmdpath指向的是UEFI的启动文件、<br>这个应该不会错、因为硬盘第一分区一般都是EFI分区、并且目录“Deepin 2014.2”也不会出错</p>
 <p>所以就应该是prefix和root变量出错了、并且是”gpt10”这个指向的分区出错了、<br>这就好办了、只要找到并修改为正确的分区应该就行了</p>
 <p>接着使用ls命令来查看当前硬盘上有哪些分区：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br><span class="line"></span><br><span class="line">//返回信息是：</span><br><span class="line">hd0,gpt1 hd0,gpt2 hd0,gpt3 hd0,gpt4 hd0,gpt* .......</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line">//返回信息是：</span><br><span class="line">hd0,gpt1 hd0,gpt2 hd0,gpt3 hd0,gpt4 hd0,gpt* .......</span><br></pre></td></tr></table></figure>
 <p>接下来就该测试到底那个分区才是正确的启动分区、<font color=red><strong>我的linux的boot分区是单独挂出来的</strong></font><br>我们先往上看那个prefix变量、它指向一个分区下的grub目录、<br>那么我们就用这个目录来测试看那个分区中包含grub目录、<br>只要包含这个目录那么基本上就可以确定那个分区就是正确的启动分区了、也就是boot分区</p>
 <h1 id="查找正确分区"><a href="#查找正确分区" class="headerlink" title="查找正确分区"></a>查找正确分区</h1><p>使用<code>ls (hd0,gpt*)/grub</code>这个命令来逐一查看分区、注意命令中的<code>*</code>号、要用数字来代替<br>因为我可以确定前几个分区是windows分区、所以我就从(hd0,gpt10)附近的分区开始测试</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls (hd0,gpt11)/grub</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> (hd0,gpt11)/grub</span><br></pre></td></tr></table></figure>
 <p>返回信息是提示错误、找不到、或者提示unknown systemfile也就是未知的文件系统<br>所以这个分区：gpt11并不是我们要找的分区</p>
 <p>接着:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls (hd0,gpt9)/grub</span><br></pre></td></tr></table></figure>
-<p>返回了一些找到的文件夹和文件、其中就包含<font color=red>**”x86_64-efi”**</font>目录、<br>所以这个”gpt9”应该就是正确的启动分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> (hd0,gpt9)/grub</span><br></pre></td></tr></table></figure>
+<p>返回了一些找到的文件夹和文件、其中就包含<font color=red><strong>“x86_64-efi”</strong></font>目录、<br>所以这个”gpt9”应该就是正确的启动分区</p>
 <h1 id="设置正确变量"><a href="#设置正确变量" class="headerlink" title="设置正确变量"></a>设置正确变量</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> prefix=(hd0,gpt9)/grub</span><br><span class="line"><span class="built_in">set</span> root=hd0,gpt9</span><br></pre></td></tr></table></figure>
 
 <p>注意、这里我把原来错误的gpt10改为了gpt9<br>为什么不设置cmdpath呢？前面已经说了、这个变量一般是不会出错的<br>设置好了之后使用下面的命令来加载模块：</p>

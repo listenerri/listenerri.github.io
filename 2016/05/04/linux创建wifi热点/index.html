@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -285,7 +285,7 @@
         <p><strong><font color=red>本文中使用的系统是archlinux,其他系统应该只有安装方法不同</font></strong></p>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yaourt -S archlinuxcn/create_ap</span><br><span class="line"><span class="comment">#或者：</span></span><br><span class="line">yaourt -S aur/create_ap</span><br></pre></td></tr></table></figure>
 <h1 id="终端下创建热点"><a href="#终端下创建热点" class="headerlink" title="终端下创建热点"></a>终端下创建热点</h1><p>首先执行ifconfig命令查看网卡端口<br>下面是我的：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">        ...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        ...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">        ...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">        ...................</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ap0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">		...................</span><br><span class="line">enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu </span><br><span class="line">		...................</span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">		...................</span><br><span class="line">ppp0: flags=4305&lt;UP,POINTOPOINT,RUNNING,NOARP,MULTICAST&gt;  </span><br><span class="line">		...................</span><br><span class="line">wlp3s0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500</span><br><span class="line">		...................</span><br></pre></td></tr></table></figure>
 <p>解释：</p>
 <ul>
 <li>ap0：是我用create_ap命令创建出来的ap</li>
@@ -302,9 +302,9 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 ppp0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
 
 <h2 id="wifi"><a href="#wifi" class="headerlink" title="wifi"></a>wifi</h2><p>如果你使用wifi上网的:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建一个名字是wifiName，密码是wifiPasswd的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName wifiPasswd</span><br></pre></td></tr></table></figure>
 
-<h2 id="创建没有密码的热点"><a href="#创建没有密码的热点" class="headerlink" title="创建没有密码的热点"></a>创建没有密码的热点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建一个名字是wifiName，没有密码的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName</span><br></pre></td></tr></table></figure>
+<h2 id="创建没有密码的热点"><a href="#创建没有密码的热点" class="headerlink" title="创建没有密码的热点"></a>创建没有密码的热点</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建一个名字是wifiName，没有密码的热点</span><br><span class="line">sudo create_ap wlp3s0 wlp3s0 wifiName</span><br></pre></td></tr></table></figure>
 <p>也就是不写密码就行了</p>
 <blockquote>
 <p>上面几种方法根据自己的情况任选一种，创建好之后执行ifconfig命令就会发现多出来了一个ap0的接口信息</p>

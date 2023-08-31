@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -282,17 +282,17 @@
       
         <p>前段时间给两台机器装了 Manjaro，公司台式主机和 Redmi G 笔记本，使用的桌面环境是 KDE 发现两台机器都不能正常识别声音设备，笔记本是因为直接识别不到声卡，这个问题下一篇文章说一下解决方法，这里先说台式主机的问题。</p>
 <p>使用的扬声器其实就是个 3.5 毫米的耳机，在给这台机器重装之前使用的是 deepin 系统，这个耳机是可以正常工作的（虽然不常用，但印象里是可以工作的），但是在 Manjaro 里 KDE 提示找不到声音设备，经过测试当把耳机插入主机后面的插口时是可以工作的，这也说明系统是可以识别到声卡的，谷歌了一圈发现可以给声卡驱动添加启动参数针对一些设备的兼容。这台机器的声卡是 <code>ALC887</code>，可以通过执行一下命令查看开机日志，并搜索 <code>audio</code> 来找出声卡型号：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo journalctl -xb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo journalctl -xb</span><br></pre></td></tr></table></figure>
 
 <p>然后执行以下命令可以查看内核为这个声卡加载的驱动：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># lspci -v</span><br><span class="line">00:1b.0 Audio device: Intel Corporation 8 Series&#x2F;C220 Series Chipset High Definition Audio Controller (rev 05)</span><br><span class="line">        Subsystem: Gigabyte Technology Co., Ltd Device a182 </span><br><span class="line">        Flags: bus master, fast devsel, latency 0, IRQ 31</span><br><span class="line">        Memory at f7d10000 (64-bit, non-prefetchable) [size&#x3D;16K]</span><br><span class="line">        Capabilities: &lt;access denied&gt;</span><br><span class="line">        Kernel driver in use: snd_hda_intel                                                                                                                                                                                                 </span><br><span class="line">        Kernel modules: snd_hda_intel</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># lspci -v</span><br><span class="line">00:1b.0 Audio device: Intel Corporation 8 Series/C220 Series Chipset High Definition Audio Controller (rev 05)</span><br><span class="line">        Subsystem: Gigabyte Technology Co., Ltd Device a182 </span><br><span class="line">        Flags: bus master, fast devsel, latency 0, IRQ 31</span><br><span class="line">        Memory at f7d10000 (64-bit, non-prefetchable) [size=16K]</span><br><span class="line">        Capabilities: &lt;access denied&gt;</span><br><span class="line">        Kernel driver in use: snd_hda_intel                                                                                                                                                                                                 </span><br><span class="line">        Kernel modules: snd_hda_intel</span><br></pre></td></tr></table></figure>
 
 <p>可以发现使用的驱动是 snd_hda_intel，在内核 alsa 相关文档中可以找到有哪些选项：</p>
 <p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/v5.7/sound/hd-audio/models.html">https://www.kernel.org/doc/html/v5.7/sound/hd-audio/models.html</a></p>
 <p>按照声卡型号搜索，找到对应的选项：</p>
 <p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/v5.7/sound/hd-audio/models.html#alc88x-898-1150-1220">https://www.kernel.org/doc/html/v5.7/sound/hd-audio/models.html#alc88x-898-1150-1220</a></p>
 <p>之后编辑 <code>/etc/modprobe.d/alsa-base.conf</code> 文件（没有则创建），添加以下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options snd-hda-intel model&#x3D;acer-aspire-4930g</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options snd-hda-intel model=acer-aspire-4930g</span><br></pre></td></tr></table></figure>
 
 <p>注意替换 <code>model</code> 选项的值到对应声卡驱动的可选值。修改完成之后保存退出并重启系统，如果仍然识别不到声音设备可以继续修改选项的值。</p>
 <p>当终于找到一个合适的值让 alsa 可以识别播放设备了，但发现没有声音，可以执行命令 <code>sudo alsamixer</code> 命令手动取消对应设备的静音状态，处于静音状态的设备会标记为 <code>MM</code>，使用左右键切换到对应设备，按一下 <code>m</code> 键即可取消静音，取消静音之后 <code>MM</code> 会变成 <code>00</code></p>

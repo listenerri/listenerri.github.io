@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -292,7 +292,7 @@
 <h2 id="dopost方式"><a href="#dopost方式" class="headerlink" title="dopost方式"></a>dopost方式</h2><p>客户端先使用URL来new出<font color=red><strong>HttpPost</strong></font>的对象<br>接着使用NameValuePair来保存要传递的Post的参数<br>可以使用集合框架、例如new一个<font color=red><strong>List<NameValuePair></strong></font>的对象<font color=red><strong>params</strong></font>、并使用其<code>add(new BasicNameValuePair(&quot;name&quot;,&quot;value&quot;))</code>方法来将数据保存起来、</p>
 <p>此时还不能直接发送、要将<font color=red><strong>params</strong></font>放到<font color=red><strong>HttpPost</strong></font>的对象中才行、然而<font color=red><strong>List<NameValuePair></strong></font>类型的<font color=red><strong>params</strong></font>并不能直接被放置到<font color=red><strong>HttpPost</strong></font>中</p>
 <p>需要转换成另一种类型的数据：<font color=red><strong>HttpEntity</strong></font>、在转换的同时还可以设置一下编码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpEntity httpEntity=<span class="keyword">new</span> UrlEncodedFormEntity(<span class="string">&quot;params&quot;</span>,<span class="string">&quot;GB2312&quot;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpEntity httpEntity=<span class="keyword">new</span> <span class="title class_">UrlEncodedFormEntity</span>(<span class="string">&quot;params&quot;</span>,<span class="string">&quot;GB2312&quot;</span>);</span><br></pre></td></tr></table></figure>
 <p>将数据参数放置到<font color=red><strong>HttpPost</strong></font>中：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpPost.setEntity(httpEntity);</span><br></pre></td></tr></table></figure>
 <p>使用<font color=red><strong>HttpClient</strong></font>的对象：<font color=red><strong>deafultHttpClient</strong></font>来发送<font color=red><strong>HttpPost</strong></font>的对象到服务端、同时将会获得<font color=red><strong>HttpResponse</strong></font>对象、</p>

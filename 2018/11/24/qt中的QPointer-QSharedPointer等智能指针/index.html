@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -283,7 +283,7 @@
 
       
         <h1 id="QPointer"><a href="#QPointer" class="headerlink" title="QPointer"></a>QPointer</h1><p>QPointer在用法上跟普通的指针没有什么区别, 可以将它当做是一个普通指针一样使用. 例如:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">barFunc</span><span class="params">(QLabel *label)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QPointer&lt;QLabel&gt; pointer;</span><br><span class="line">pointer = <span class="keyword">new</span> QLabel;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接将pointer作为QLabel类型的指针传入barFunc函数作为参数</span></span><br><span class="line">barFunc(pointer);</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">barFunc</span><span class="params">(QLabel *label)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QPointer&lt;QLabel&gt; pointer;</span><br><span class="line">pointer = <span class="keyword">new</span> QLabel;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接将pointer作为QLabel类型的指针传入barFunc函数作为参数</span></span><br><span class="line"><span class="built_in">barFunc</span>(pointer);</span><br></pre></td></tr></table></figure>
 
 <p><strong>主要作用:</strong></p>
 <p>QPointer的主要功能是避免<code>悬空指针</code>的出现, <strong>悬空指针是指: 指针不为空, 但是其指向的对象已经不在了.</strong> 也就是说当对象在其他地方被delete了, 而我们所持有的指向这个对象的指针依然指向那块内存地址, 而没有被置为空, 此时如果使用这个指针就会出错. 下面的QSharedPointer也有避免悬空指针的功能.</p>

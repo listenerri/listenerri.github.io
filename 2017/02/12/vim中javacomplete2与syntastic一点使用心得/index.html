@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -300,22 +300,22 @@
 <p>当项目中的java文件没有在某个包中时,也就是文件头部没有”package”语句,<br>在eclipse中这叫”default package”,这时jc2也无法处理好多个类文件之间的关系.</p>
 <h2 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h2><p>syntastic在进行java的语法检查时,如果你当前目录不是特定的位置,<br>也会发生找不到某个类的情况.</p>
 <h1 id="处理问题"><a href="#处理问题" class="headerlink" title="处理问题"></a>处理问题</h1><h2 id="处理1"><a href="#处理1" class="headerlink" title="处理1"></a>处理1</h2><p>当使用eclipse等IDE时也就不会使用vim了,但如果不使用IDE时呢?<br>那就用gradle或maven吧,我现在是用的gradle,用gradle可以方便的创建一个项目,<br>而且项目的配置文件简单,甚至不用配置.<br>使用如下命令就可以轻松创建一个项目:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle init --type java-library</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle init --type java-library</span><br></pre></td></tr></table></figure>
 <p>执行完毕后当前目录结构如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">build.gradle</span><br><span class="line">settings.gradle    (不重要)</span><br><span class="line">gradle&#x2F;wrapper&#x2F;gradle-wrapper.jar    (不重要)</span><br><span class="line">gradle&#x2F;wrapper&#x2F;gradle-wrapper.properties    (不重要)</span><br><span class="line">gradlew    (不重要)</span><br><span class="line">gradlew.bat    (不重要)</span><br><span class="line">src&#x2F;main&#x2F;java&#x2F;Library.java    (创建的默认类)</span><br><span class="line">src&#x2F;test&#x2F;java&#x2F;LibraryTest.java    (创建的默认测试类,不重要)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">build.gradle</span><br><span class="line">settings.gradle    (不重要)</span><br><span class="line">gradle/wrapper/gradle-wrapper.jar    (不重要)</span><br><span class="line">gradle/wrapper/gradle-wrapper.properties    (不重要)</span><br><span class="line">gradlew    (不重要)</span><br><span class="line">gradlew.bat    (不重要)</span><br><span class="line">src/main/java/Library.java    (创建的默认类)</span><br><span class="line">src/test/java/LibraryTest.java    (创建的默认测试类,不重要)</span><br></pre></td></tr></table></figure>
 
 <p>如上这个项目只是测试一个小问题或者什么的,<br>那么被标记’不重要’的就是可以删除掉的了,这样就只剩下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">build.gradle</span><br><span class="line">src&#x2F;main&#x2F;java&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">build.gradle</span><br><span class="line">src/main/java/</span><br></pre></td></tr></table></figure>
 <p>简单明了,把java文件创建到”src/main/java/“下就行了.<br>但这样还不够,请看问题2.</p>
 <h2 id="处理2"><a href="#处理2" class="headerlink" title="处理2"></a>处理2</h2><p>问题2说了jc2需要有package语句,那就是说需要创建包目录,<br>比如需要创建<code>com.listenerri.test</code>包,那么就在src/main/java/目录下执行:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p com&#x2F;listenerri&#x2F;test&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p com/listenerri/test/</span><br></pre></td></tr></table></figure>
 <p>这样就创建了这个包目录,现在目录结构如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src&#x2F;main&#x2F;java&#x2F;com&#x2F;listenerri&#x2F;test&#x2F;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/main/java/com/listenerri/test/</span><br></pre></td></tr></table></figure>
 <p>这时就可以在test/目录下创建java文件了,而且要文件头部声明包:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.listenerri.test;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.listenerri.test;</span><br></pre></td></tr></table></figure>
 <p>现在就可以完整的使用jc2的补全功能,游走在多个类文件之间了.<br>如果你有使用syntastic插件,那就往下看,否则就可以去测试了.</p>
 <h2 id="处理3"><a href="#处理3" class="headerlink" title="处理3"></a>处理3</h2><p>在上面问题3中提到syntastic需要在特定的目录下才能正常检测java语法,<br>在本例中那个特定的目录就是<code>src/main/java/</code>,只需要在这个目录下打开<br>java文件就可以了,如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim com&#x2F;listenerri&#x2F;test&#x2F;HelloWorld.java</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim com/listenerri/test/HelloWorld.java</span><br></pre></td></tr></table></figure>
 <p>其实这个问题也跟java中间中声明的package语句有关,当声明包为:</p>
 <p><code> package com.listenerri.test;</code><br>包的起始目录为com,那么就要在com目录的上层目录打开java文件,<br>也就是要确保当前的工作目录下有完整的包目录.</p>
 <p><strong>Over  : )</strong></p>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -297,7 +297,7 @@
 <h2 id="使用-msys2-shell-cmd-启动-mingw64-环境（不推荐）"><a href="#使用-msys2-shell-cmd-启动-mingw64-环境（不推荐）" class="headerlink" title="使用 msys2_shell.cmd 启动 mingw64 环境（不推荐）"></a>使用 msys2_shell.cmd 启动 mingw64 环境（不推荐）</h2><p>msys2 安装后会生成各个环境的启动快捷方式到 windows 启动菜单里，在启动菜单里 mingw64 启动项上右键并点击“打开文件位置”就可以找到快捷方式所在的目录，然后在 mingw64 快捷方式上右键并点击属性，可以修改其启动命令，即“目标”输入框，默认是 C:\msys64\mingw64.exe</p>
 <p>msys2 有一个命令行工具，可以以指定参数的方式启动各个环境的终端，推荐使用终端 mintty（这里插句话，不要使用 windows 发布的 Terminal 终端程序启动 msys2 环境，某些情况下会有点问题，比如 msys2 下的 tmux 程序无法启动）。</p>
 <p>将 mingw64 快捷方式的启动命令修改为如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\msys64\msys2_shell.cmd -mingw64 -mintty -where &quot;C:\Users\ri&quot; -use-full-path</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\msys64\msys2_shell.cmd -mingw64 -mintty -where &quot;C:\Users\ri&quot; -use-full-path</span><br></pre></td></tr></table></figure>
 
 <p>保存后双击快捷方式打开，嗯，工作如预期。</p>
 <p>但是将快捷方式拖拽固定到任务栏时，发现 windows 不允许放置，即使启动后右键任务栏图标进行固定，下次打开时也不能正常工作，具体原因没有深究，估计是因为 msys2_shell.cmd 这个命令行脚本不允许固定吧。</p>
@@ -305,7 +305,7 @@
 <p>可是这种方式对 msys2 的 bash 侵入性太强，如果后面以相对路径执行 bash 脚本时，会导致找不到脚本文件。</p>
 <h2 id="修改-msys2-账户的-unix-家目录（不推荐）"><a href="#修改-msys2-账户的-unix-家目录（不推荐）" class="headerlink" title="修改 msys2 账户的 unix 家目录（不推荐）"></a>修改 msys2 账户的 unix 家目录（不推荐）</h2><p>同样对 msys2 侵入性太强。</p>
 <h2 id="修改-msys2-mingw64-windows-下的配置文件（推荐）"><a href="#修改-msys2-mingw64-windows-下的配置文件（推荐）" class="headerlink" title="修改 msys2 mingw64 windows 下的配置文件（推荐）"></a>修改 msys2 mingw64 windows 下的配置文件（推荐）</h2><p>今天突然发现 msys2 的安装目录下，每个环境的启动 exe 都对应了一个 ini 配置文件，比如 mingw64.exe 就对应 mingw64.ini，路径默认为：<code>C:\msys64\mingw64.ini</code>，其默认内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#MSYS&#x3D;winsymlinks:nativestrict</span><br><span class="line">#MSYS&#x3D;error_start:mingw64&#x2F;bin&#x2F;qtcreator.exe|-debug|&lt;process-id&gt;</span><br><span class="line">#CHERE_INVOKING&#x3D;1</span><br><span class="line">#MSYS2_PATH_TYPE&#x3D;inherit</span><br><span class="line">MSYSTEM&#x3D;MINGW64</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#MSYS=winsymlinks:nativestrict</span><br><span class="line">#MSYS=error_start:mingw64/bin/qtcreator.exe|-debug|&lt;process-id&gt;</span><br><span class="line">#CHERE_INVOKING=1</span><br><span class="line">#MSYS2_PATH_TYPE=inherit</span><br><span class="line">MSYSTEM=MINGW64</span><br></pre></td></tr></table></figure>
 
 <p>可以发现是几个环境变量：</p>
 <ul>

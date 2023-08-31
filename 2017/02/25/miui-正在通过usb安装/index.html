@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="最近miui有个坑爹的设计, 就是使用adb从电脑端安装应用的时候会弹出一个提示,询问是否同意安装, 之所以坑爹是最近的版本把关闭这个功能的选项取消了,导致每次调试应用都要手动点击同意安装, 解决方法: 需要的东西root任何可以管理手机根目录下文件的文件管理器, 比如RE文件管理器 位置以及修改用RE管理器进入以下目录: 1&#x2F;data&#x2F;data&#x2F;com.miui.s">
+  <meta name="description" content="最近miui有个坑爹的设计, 就是使用adb从电脑端安装应用的时候会弹出一个提示,询问是否同意安装, 之所以坑爹是最近的版本把关闭这个功能的选项取消了,导致每次调试应用都要手动点击同意安装, 解决方法: 需要的东西root任何可以管理手机根目录下文件的文件管理器, 比如RE文件管理器 位置以及修改用RE管理器进入以下目录: 1&#x2F;data&#x2F;data&#x2F;com.miui.securitycenter&#x2F;s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="miui 正在通过usb安装">
 <meta property="og:url" content="https://listenerri.com/2017/02/25/miui-%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87usb%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
-<meta property="og:description" content="最近miui有个坑爹的设计, 就是使用adb从电脑端安装应用的时候会弹出一个提示,询问是否同意安装, 之所以坑爹是最近的版本把关闭这个功能的选项取消了,导致每次调试应用都要手动点击同意安装, 解决方法: 需要的东西root任何可以管理手机根目录下文件的文件管理器, 比如RE文件管理器 位置以及修改用RE管理器进入以下目录: 1&#x2F;data&#x2F;data&#x2F;com.miui.s">
+<meta property="og:description" content="最近miui有个坑爹的设计, 就是使用adb从电脑端安装应用的时候会弹出一个提示,询问是否同意安装, 之所以坑爹是最近的版本把关闭这个功能的选项取消了,导致每次调试应用都要手动点击同意安装, 解决方法: 需要的东西root任何可以管理手机根目录下文件的文件管理器, 比如RE文件管理器 位置以及修改用RE管理器进入以下目录: 1&#x2F;data&#x2F;data&#x2F;com.miui.securitycenter&#x2F;s">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-02-25T09:19:55.000Z">
 <meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
@@ -285,15 +285,15 @@
         <p>最近miui有个坑爹的设计, 就是使用adb从电脑端安装应用的时候会弹出一个提示,<br>询问是否同意安装, 之所以坑爹是最近的版本把关闭这个功能的选项取消了,<br>导致每次调试应用都要手动点击同意安装, 解决方法:</p>
 <h1 id="需要的东西"><a href="#需要的东西" class="headerlink" title="需要的东西"></a>需要的东西</h1><p>root<br>任何可以管理手机根目录下文件的文件管理器, 比如RE文件管理器</p>
 <h1 id="位置以及修改"><a href="#位置以及修改" class="headerlink" title="位置以及修改"></a>位置以及修改</h1><p>用RE管理器进入以下目录:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;data&#x2F;data&#x2F;com.miui.securitycenter&#x2F;shared_prefs</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/data/com.miui.securitycenter/shared_prefs</span><br></pre></td></tr></table></figure>
 <p>用RE管理器的编辑模式(默认是查看模式)打开这个文件:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">remote_provider_preferences.xml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">remote_provider_preferences.xml</span><br></pre></td></tr></table></figure>
 
 <p>找到下面这句:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;boolean name&#x3D;&quot;perm_adb_install_notify&quot; value&#x3D;&quot;true&quot; &#x2F;&gt;</span><br><span class="line"># 将其中的&quot;true&quot;修改为&quot;false&quot;</span><br><span class="line"># 修改后为:</span><br><span class="line">&lt;boolean name&#x3D;&quot;perm_adb_install_notify&quot; value&#x3D;&quot;false&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;boolean name=&quot;perm_adb_install_notify&quot; value=&quot;true&quot; /&gt;</span><br><span class="line"># 将其中的&quot;true&quot;修改为&quot;false&quot;</span><br><span class="line"># 修改后为:</span><br><span class="line">&lt;boolean name=&quot;perm_adb_install_notify&quot; value=&quot;false&quot; /&gt;</span><br></pre></td></tr></table></figure>
 
 <p>还有找到这句:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 要确保这句中的值为&quot;true&quot;</span><br><span class="line"># 这个选项对应的时开发者选项里的&quot;USB安装&quot;</span><br><span class="line"># 只有这个值为&quot;true&quot;的时候这个选项才是打开的</span><br><span class="line">&lt;boolean name&#x3D;&quot;security_adb_install_enable&quot; value&#x3D;&quot;true&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 要确保这句中的值为&quot;true&quot;</span><br><span class="line"># 这个选项对应的时开发者选项里的&quot;USB安装&quot;</span><br><span class="line"># 只有这个值为&quot;true&quot;的时候这个选项才是打开的</span><br><span class="line">&lt;boolean name=&quot;security_adb_install_enable&quot; value=&quot;true&quot; /&gt;</span><br></pre></td></tr></table></figure>
 
 <p>OK了, 不过这个方法好像重启手机后会重置, 需要再次设置, 不过也是不错的了</p>
 

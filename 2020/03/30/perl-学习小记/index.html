@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -275,28 +275,28 @@
 <p><a target="_blank" rel="noopener" href="https://qntm.org/perl_cn">https://qntm.org/perl_cn</a></p>
 <p>下面是一些小笔记：</p>
 <p><strong>获取数组长度，前面的 scalar 表示在 scalar 上下文中求 @array 的值，此时即为求数组长度</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scalar @array</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scalar @array</span><br></pre></td></tr></table></figure>
 
 <p><strong>获取数组最大有效索引</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$#array</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$#array</span><br></pre></td></tr></table></figure>
 
 <p><strong>引用（可以理解为指针）</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@array &#x3D; (1,2,3,4)</span><br><span class="line">$array_ref &#x3D; \@array</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@array = (1,2,3,4)</span><br><span class="line">$array_ref = \@array</span><br></pre></td></tr></table></figure>
 
 <p><strong>匿名结构（也是引用）</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$array_ref &#x3D; [1,2,3,4] # 与上一个 array_ref 一样，都是一个包含四个 scalar 的 array 的引用，但引用的对象不同</span><br><span class="line">$hash_ref &#x3D; &#123;1 &#x3D;&gt; 2, 3 &#x3D;&gt; 4&#125; # hash_ref 是一个包含两个键值对的 hash 的引用</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$array_ref = [1,2,3,4] # 与上一个 array_ref 一样，都是一个包含四个 scalar 的 array 的引用，但引用的对象不同</span><br><span class="line">$hash_ref = &#123;1 =&gt; 2, 3 =&gt; 4&#125; # hash_ref 是一个包含两个键值对的 hash 的引用</span><br></pre></td></tr></table></figure>
 
 <p><strong>引用取值</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$array_ref -&gt; [0] # 获取第一个 scalar 1</span><br><span class="line">$hash_ref -&gt; &#123;1&#125; # 获取 1 对应的值 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$array_ref -&gt; [0] # 获取第一个 scalar 1</span><br><span class="line">$hash_ref -&gt; &#123;1&#125; # 获取 1 对应的值 2</span><br></pre></td></tr></table></figure>
 
 <p><strong>解引用</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@&#123; $array_ref &#125; # 等价于 @$array_ref</span><br><span class="line">%&#123; $hash_ref &#125; # 等价于 %$hash_ref</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@&#123; $array_ref &#125; # 等价于 @$array_ref</span><br><span class="line">%&#123; $hash_ref &#125; # 等价于 %$hash_ref</span><br></pre></td></tr></table></figure>
 
 <p><strong>解引用后取值就是正常取值操作</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@$array_ref[0] # 获取第一个 scalar 1</span><br><span class="line">%$hash_ref&#123;1&#125; # 获取 1 对应的值 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@$array_ref[0] # 获取第一个 scalar 1</span><br><span class="line">%$hash_ref&#123;1&#125; # 获取 1 对应的值 2</span><br></pre></td></tr></table></figure>
 
 <p><strong>原地修改 array</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pop, push, shift, unshift # 移除或新增 array 的开头或结尾</span><br><span class="line">splice # 修改 array 任意位置</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pop, push, shift, unshift # 移除或新增 array 的开头或结尾</span><br><span class="line">splice # 修改 array 任意位置</span><br></pre></td></tr></table></figure>
     </div>
 
     

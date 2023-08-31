@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。 安装 python3.8执行如下命令增加 ppa 仓库，并更新源数据： 12sudo add-apt-repository ppa:deadsnakes&#x2F;ppasudo apt update">
+  <meta name="description" content="ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。 安装 python3.8执行如下命令增加 ppa 仓库，并更新源数据： 12sudo add-apt-repository ppa:deadsnakes&#x2F;ppasudo apt update  如果提示找">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu16.04 安装 python3.8 以及对应版本的 pip">
 <meta property="og:url" content="https://listenerri.com/2021/08/10/ubuntu16-04-%E5%AE%89%E8%A3%85-python3-8-%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84-pip/index.html">
 <meta property="og:site_name" content="listenerri&#39;s blog">
-<meta property="og:description" content="ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。 安装 python3.8执行如下命令增加 ppa 仓库，并更新源数据： 12sudo add-apt-repository ppa:deadsnakes&#x2F;ppasudo apt update">
+<meta property="og:description" content="ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。 安装 python3.8执行如下命令增加 ppa 仓库，并更新源数据： 12sudo add-apt-repository ppa:deadsnakes&#x2F;ppasudo apt update  如果提示找">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-10T09:48:00.000Z">
 <meta property="article:modified_time" content="2022-10-29T16:51:37.155Z">
@@ -283,38 +283,38 @@
       
         <p>ubuntu 系统 16.04 版本中，最新版本的 python 是 3.5，从系统源中找不到更新版本的 python，本文介绍一种安装 python3.8 的方法，以及安装对应版本的 pip。</p>
 <h2 id="安装-python3-8"><a href="#安装-python3-8" class="headerlink" title="安装 python3.8"></a>安装 python3.8</h2><p>执行如下命令增加 ppa 仓库，并更新源数据：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:deadsnakes&#x2F;ppa</span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:deadsnakes/ppa</span><br><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
 
 <p>如果提示找不到 <code>add-apt-repository</code> 命令，执行如下命令安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install software-properties-common</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install software-properties-common</span><br></pre></td></tr></table></figure>
 
 <p>更新完成源数据之后，就可以安装 ppa 仓库中的包了，这个仓库中不止是包含 python3.8，还包含其他版本的 python 包，详细情况可查看链接：</p>
 <p><a target="_blank" rel="noopener" href="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa">https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa</a></p>
 <p>执行以下命令安装 python3.8 相关的包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.8 python3.8-dev python3.8-distutils python3.8-venv</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.8 python3.8-dev python3.8-distutils python3.8-venv</span><br></pre></td></tr></table></figure>
 
 <p>安装完成后，当需要使用 3.8 版本的 python 时，执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3.8 --version</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3.8 --version</span><br></pre></td></tr></table></figure>
 
 <h2 id="安装-pip"><a href="#安装-pip" class="headerlink" title="安装 pip"></a>安装 pip</h2><p>当需要使用 pip 时，由于系统源里的 pip 是 python3.5 对应的，所以针对 python3.8 并不能正常工作，比如使用 virtualenv 创建 python3.8 的虚拟环境时就会报错，可以执行如下命令查看 pip 是对应哪个 python 版本的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pip3 --version</span><br><span class="line"></span><br><span class="line"># 可能的输出如下，注意最后括号里的内容</span><br><span class="line">pip 8.1.1 from &#x2F;usr&#x2F;lib&#x2F;python3&#x2F;dist-packages (python 3.5)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pip3 --version</span><br><span class="line"></span><br><span class="line"># 可能的输出如下，注意最后括号里的内容</span><br><span class="line">pip 8.1.1 from /usr/lib/python3/dist-packages (python 3.5)</span><br></pre></td></tr></table></figure>
 
 <p>前面新增的 ppa 仓库中，只有 python 的包，没有 pip 的，所以需要额外的安装方法，参考 pip 官方安装教程：<a target="_blank" rel="noopener" href="https://pip.pypa.io/en/stable/installation/%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%A6%82%E4%B8%8B%E6%96%B9%E6%B3%95%E5%AE%89%E8%A3%85">https://pip.pypa.io/en/stable/installation/，使用如下方法安装</a> python3.8 对应的 pip：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O &#x2F;tmp&#x2F;get-pip.py https:&#x2F;&#x2F;bootstrap.pypa.io&#x2F;get-pip.py</span><br><span class="line">python3.8 &#x2F;tmp&#x2F;get-pip.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py</span><br><span class="line">python3.8 /tmp/get-pip.py</span><br></pre></td></tr></table></figure>
 
 <p>上面的两个命令是，下载 pip 官方安装脚本，然后使用 python3.8 执行安装脚本，执行完成后就安装好了 python3.8 对应的 pip，执行如下命令检验：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip --version</span><br><span class="line">pip3 --verison</span><br><span class="line">pip3.8 --version</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip --version</span><br><span class="line">pip3 --verison</span><br><span class="line">pip3.8 --version</span><br></pre></td></tr></table></figure>
 
 <p>注意！按照此方法安装 pip 后，系统中的默认 pip 将会是最新安装的 pip3.8，可执行程序位于 /usr/local/bin 目录下。</p>
 <p>系统默认源中的 python3-pip 包（如果之前安装过），也就是 python3.5 对应的 pip，如果丢失了，可通过执行如下命令重新安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install --reinstall python3-pip</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install --reinstall python3-pip</span><br></pre></td></tr></table></figure>
 
 <p>需要使用这个版本的 pip 时，使用如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;bin&#x2F;pip --version</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/pip --version</span><br></pre></td></tr></table></figure>
 
 <p>虽然重新安装了 python3.5 版本的 pip 但系统默认的 pip 仍然是 python3.8 的，因为 python3.8 的 pip 可执行程序位于 <code>/usr/local/bin/pip</code>，这个路径在环境变量中优先级一般更高。</p>
 <p>如果想让 python3.5 版本的 pip 作为默认 pip 使用，可以执行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -sf &#x2F;usr&#x2F;bin&#x2F;pip3 &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip</span><br><span class="line">sudo ln -sf &#x2F;usr&#x2F;bin&#x2F;pip3 &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -sf /usr/bin/pip3 /usr/local/bin/pip</span><br><span class="line">sudo ln -sf /usr/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure>
 
 <p>这样当需要使用 python3.8 版本的 pip 时，就需要使用命令 pip3.8 了。</p>
 

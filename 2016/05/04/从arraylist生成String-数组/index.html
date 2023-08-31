@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -282,9 +282,9 @@
 
       
         <p>在使用数组的时候要留意,一定要先完整的创建好数组,再对其操作</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String[] commands=<span class="keyword">null</span>;</span><br><span class="line">commands = <span class="keyword">new</span> String[arrayListCommand.size()];</span><br><span class="line">commands = (String[]) arrayListCommand.toArray(commands);</span><br><span class="line"><span class="comment">//可以成功cast到String数组</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String[] commands=<span class="literal">null</span>;</span><br><span class="line">commands = <span class="keyword">new</span> <span class="title class_">String</span>[arrayListCommand.size()];</span><br><span class="line">commands = (String[]) arrayListCommand.toArray(commands);</span><br><span class="line"><span class="comment">//可以成功cast到String数组</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String[] commands=<span class="keyword">null</span>;</span><br><span class="line">commands = (String[]) arrayListCommand.toArray();</span><br><span class="line"><span class="comment">//不能cast到String数组</span></span><br><span class="line"><span class="comment">//这是因为第一句只是声明了commands变量,</span></span><br><span class="line"><span class="comment">//此时它并没有在内存获得存储数据的位置,</span></span><br><span class="line"><span class="comment">//因此无法直接为其赋值</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String[] commands=<span class="literal">null</span>;</span><br><span class="line">commands = (String[]) arrayListCommand.toArray();</span><br><span class="line"><span class="comment">//不能cast到String数组</span></span><br><span class="line"><span class="comment">//这是因为第一句只是声明了commands变量,</span></span><br><span class="line"><span class="comment">//此时它并没有在内存获得存储数据的位置,</span></span><br><span class="line"><span class="comment">//因此无法直接为其赋值</span></span><br></pre></td></tr></table></figure>
 
     </div>
 

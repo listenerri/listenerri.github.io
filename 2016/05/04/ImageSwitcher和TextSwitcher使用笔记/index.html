@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -283,7 +283,7 @@
       
         <p>只有步骤，记录，备忘<br>只举ImageSwitcher的例子，TextSwitcher基本一样</p>
 <p>1、布局文件中添加ImageSwitcher控件<br>2、activity中findViewById()获取到ImageSwitcher对象<br>3、需要一个工厂来制造需要显示的ImageView，需要实现ViewFactory接口，并重写接口的makeView()方法，这里使用隐式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">imageSwitcher.setFactory(<span class="keyword">new</span> ViewFactory()&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> View <span class="title">makeView</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">//1、new一个ImageView</span></span><br><span class="line">            <span class="comment">//2、为ImageView设置一系列属性</span></span><br><span class="line">            <span class="comment">//3、return加工好的ImageView对象</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">imageSwitcher.setFactory(<span class="keyword">new</span> <span class="title class_">ViewFactory</span>()&#123;</span><br><span class="line">		<span class="keyword">public</span> View <span class="title function_">makeView</span><span class="params">()</span>&#123;</span><br><span class="line">			<span class="comment">//1、new一个ImageView</span></span><br><span class="line">			<span class="comment">//2、为ImageView设置一系列属性</span></span><br><span class="line">			<span class="comment">//3、return加工好的ImageView对象</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>4、使用ImageSwitcher对象的setInAnimation()和setOutAnimation()设置动画效果(可选)<br>5、使用ImageSwitcher对象setImageResource()切换要显示的图片</p>
 <p>结束</p>
 <blockquote>

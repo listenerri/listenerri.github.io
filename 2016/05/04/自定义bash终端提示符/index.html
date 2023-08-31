@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -309,14 +309,14 @@
 <h1 id="第三种"><a href="#第三种" class="headerlink" title="第三种"></a>第三种</h1><p>时隔两年再次有了新需求，第二种 git 提示获取的方法会导致卡顿，另外还想在提示符上显示时间，但是这样一来就会导致提示符过长，因此有了下面这种换行的：</p>
 <p><img src="third.png" alt="third"></p>
 <p>使用方法，首先在终端中执行以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type __git_ps1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type __git_ps1</span><br></pre></td></tr></table></figure>
 
 <p>如果没有任何输出，或者输出内容不是一个 shell 函数，那么需要下载这个脚本：<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/listenerri/dotfiles/master/git-prompt.sh">https://raw.githubusercontent.com/listenerri/dotfiles/master/git-prompt.sh</a>，例如将其放在 HOME 目录下：<code>~/git-prompt.sh</code>，然后在 ~/.bashrc 中添加以下内容执行此脚本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~&#x2F;git-prompt.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/git-prompt.sh</span><br></pre></td></tr></table></figure>
 
 <p><code>__git_ps1</code> 是一个 git 新版提供的函数，旧版本的 git 没有，因此需要下载并加载上面这个脚本，这个脚本是我从系统中提取出来的，未做任何修改。</p>
 <p>接着将下面的代码，复制粘贴到 ~/.bashrc 中，并且要在上面那行之后，如果你不需要执行第二部下载那个脚本，则下面的内容放在哪里都行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export GIT_PS1_SHOWDIRTYSTATE&#x3D;1</span><br><span class="line">export GIT_PS1_SHOWUNTRACKEDFILES&#x3D;1</span><br><span class="line">PS1&#x3D;&#39;$(</span><br><span class="line">if [[ $? &#x3D;&#x3D; 0 ]]; then</span><br><span class="line">    echo -n &quot;\[\e[1;32m\]:)&quot;;</span><br><span class="line">else</span><br><span class="line">    echo -n &quot;\[\e[1;31m\]:(&quot;;</span><br><span class="line">fi</span><br><span class="line">) \u@\H \D&#123;(%c)&#125;\n\[\e[1;36m\]\w\[\e[1;33m\]$(__git_ps1 &quot; (%s)&quot;) $(</span><br><span class="line">if [[ $&#123;EUID&#125; &#x3D;&#x3D; 0 ]]; then</span><br><span class="line">    echo -n &quot;\[\e[1;31m\]&quot;;</span><br><span class="line">else</span><br><span class="line">    echo -n &quot;\[\e[1;36m\]&quot;;</span><br><span class="line">fi</span><br><span class="line">)\$ \[\e[0m\]&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export GIT_PS1_SHOWDIRTYSTATE=1</span><br><span class="line">export GIT_PS1_SHOWUNTRACKEDFILES=1</span><br><span class="line">PS1=&#x27;$(</span><br><span class="line">if [[ $? == 0 ]]; then</span><br><span class="line">    echo -n &quot;\[\e[1;32m\]:)&quot;;</span><br><span class="line">else</span><br><span class="line">    echo -n &quot;\[\e[1;31m\]:(&quot;;</span><br><span class="line">fi</span><br><span class="line">) \u@\H \D&#123;(%c)&#125;\n\[\e[1;36m\]\w\[\e[1;33m\]$(__git_ps1 &quot; (%s)&quot;) $(</span><br><span class="line">if [[ $&#123;EUID&#125; == 0 ]]; then</span><br><span class="line">    echo -n &quot;\[\e[1;31m\]&quot;;</span><br><span class="line">else</span><br><span class="line">    echo -n &quot;\[\e[1;36m\]&quot;;</span><br><span class="line">fi</span><br><span class="line">)\$ \[\e[0m\]&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>另外需要启用 bash-completion 即 bash 的补全功能，这个一般都会启用的。</p>
 <p>推荐下我的 dotfiles 项目：<a target="_blank" rel="noopener" href="https://github.com/listenerri/dotfiles">https://github.com/listenerri/dotfiles</a>，里面或许有能让你有其他灵感的内容。</p>

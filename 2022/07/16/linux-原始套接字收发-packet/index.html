@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -306,10 +306,10 @@
 </ul>
 <p>下面是我对 linux man 手册 packet(7) 的翻译，虽然上面已有相关中文翻译的链接，但我个人认为有部分相关术语使用得不太合适，另外我自己再翻译一边也可以加深我个人理解。</p>
 <h1 id="NAME"><a href="#NAME" class="headerlink" title="NAME"></a>NAME</h1><p>packet - 设备层的 packet 接口</p>
-<h1 id="SYNOPSIS-概要"><a href="#SYNOPSIS-概要" class="headerlink" title="SYNOPSIS 概要"></a>SYNOPSIS 概要</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">#include &lt;linux&#x2F;if_packet.h&gt;</span><br><span class="line">#include &lt;net&#x2F;ethernet.h&gt; &#x2F;* the L2 protocols *&#x2F;</span><br><span class="line"></span><br><span class="line">packet_socket &#x3D; socket(AF_PACKET, int socket_type, int protocol);</span><br></pre></td></tr></table></figure>
+<h1 id="SYNOPSIS-概要"><a href="#SYNOPSIS-概要" class="headerlink" title="SYNOPSIS 概要"></a>SYNOPSIS 概要</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line">#include &lt;linux/if_packet.h&gt;</span><br><span class="line">#include &lt;net/ethernet.h&gt; /* the L2 protocols */</span><br><span class="line"></span><br><span class="line">packet_socket = socket(AF_PACKET, int socket_type, int protocol);</span><br></pre></td></tr></table></figure>
 
 <h1 id="DESCRIPTION-描述"><a href="#DESCRIPTION-描述" class="headerlink" title="DESCRIPTION 描述"></a>DESCRIPTION 描述</h1><p>如使用如下调用创建的 socket 被称为 packet socket：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packet_socket &#x3D; socket(AF_PACKET, int socket_type, int protocol);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packet_socket = socket(AF_PACKET, int socket_type, int protocol);</span><br></pre></td></tr></table></figure>
 
 <p>packet sockets 被用来在设备驱动层（OSI 2 层 数据链路层）收发数据包（raw packets）。这允许用户在 OSI 1 层 物理层之上实现 linux 用户空间的协议模块。</p>
 <p>socket_type 参数可以使用 SOCK_RAW 或者 SOCK_DGRAM，使用 SOCK_RAW 时收发的数据包 包含 链路层的协议头（译者注：通常是以太网链路层协议头），使用 SOCK_DGRAM 时收发的原始数据包 不包含 链路层协议头。链路层协议头相关信息可以从结构体 sockaddr_ll 中获取到。</p>
@@ -321,7 +321,7 @@
 <p>这种类型的 socket 不支持 connect 操作。</p>
 <p>当调用 recvmsg(2) recv(2) 或 recvfrom(2) 时，如果指定了 MSG_TRUNC flag，将会返回数据包的真实大小，即使数据包的大小比参数 buffer 要大。</p>
 <h2 id="Address-types"><a href="#Address-types" class="headerlink" title="Address types"></a>Address types</h2><p>结构体 sockaddr_ll 是设备无关的，其定义如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_ll &#123;</span><br><span class="line">   unsigned short sll_family;   &#x2F;* Always AF_PACKET *&#x2F;</span><br><span class="line">   unsigned short sll_protocol; &#x2F;* Physical-layer protocol *&#x2F;</span><br><span class="line">   int            sll_ifindex;  &#x2F;* Interface number *&#x2F;</span><br><span class="line">   unsigned short sll_hatype;   &#x2F;* ARP hardware type *&#x2F;</span><br><span class="line">   unsigned char  sll_pkttype;  &#x2F;* Packet type *&#x2F;</span><br><span class="line">   unsigned char  sll_halen;    &#x2F;* Length of address *&#x2F;</span><br><span class="line">   unsigned char  sll_addr[8];  &#x2F;* Physical-layer address *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_ll &#123;</span><br><span class="line">   unsigned short sll_family;   /* Always AF_PACKET */</span><br><span class="line">   unsigned short sll_protocol; /* Physical-layer protocol */</span><br><span class="line">   int            sll_ifindex;  /* Interface number */</span><br><span class="line">   unsigned short sll_hatype;   /* ARP hardware type */</span><br><span class="line">   unsigned char  sll_pkttype;  /* Packet type */</span><br><span class="line">   unsigned char  sll_halen;    /* Length of address */</span><br><span class="line">   unsigned char  sll_addr[8];  /* Physical-layer address */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>结构体成员相关含义如下（译者注：并非在所有使用场景下，都需要给所有的成员变量赋值，比如上面提到的调用 bind(2) 函数时，只需要设置 3 个成员即可）：</p>
 <ul>
@@ -339,15 +339,14 @@
 </ul>
 </li>
 <li>sll_halen 地址数据的长度</li>
-<li>sll_addr 地址（译者注：以太网协议时，是 MAC 地址）</li>
+<li>sll_addr 地址（译者注：以太网协议时，是 MAC 地址）当发送数据包时，只需要设置 sll_family + sll_protocol + sll_ifindex + sll_addr + sll_halen 即可，其他字段应该是 0。其他字段在接收数据时需要设置。</li>
 </ul>
-<p>当发送数据包时，只需要设置 sll_family + sll_protocol + sll_ifindex + sll_addr + sll_halen 即可，其他字段应该是 0。其他字段在接收数据时需要设置。</p>
 <blockquote>
 <p>后续内容未经过完整翻译</p>
 </blockquote>
 <h2 id="Socket-options"><a href="#Socket-options" class="headerlink" title="Socket options"></a>Socket options</h2><p>socket options 通过调用 setsockopt(2) 设置，level 参数应该是 SOL_PACKET</p>
 <ul>
-<li>PACKET_ADD_MEMBERSHIP / PACKET_DROP_MEMBERSHIP<br>  packet sockets 可以被用来设置物理层/链路层多播和 promiscuous 模式（传统的 ioctls SIOCSIFFLAGS SIOCADDMULTI  SIOCDELMULTI 也可以实现相同的目的）。PACKET_ADD_MEMBERSHIP 用来新增配置，相对应的 PACKET_DROP_MEMBERSHIP 则用来移除配置。它们都需要结构体 packet_mreq 作为参数，其定义如下：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct packet_mreq &#123;</span><br><span class="line">    int            mr_ifindex;    &#x2F;* interface index *&#x2F;</span><br><span class="line">    unsigned short mr_type;       &#x2F;* action *&#x2F;</span><br><span class="line">    unsigned short mr_alen;       &#x2F;* address length *&#x2F;</span><br><span class="line">    unsigned char  mr_address[8]; &#x2F;* physical-layer address *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<li>PACKET_ADD_MEMBERSHIP / PACKET_DROP_MEMBERSHIP<br>  packet sockets 可以被用来设置物理层/链路层多播和 promiscuous 模式（传统的 ioctls SIOCSIFFLAGS SIOCADDMULTI  SIOCDELMULTI 也可以实现相同的目的）。PACKET_ADD_MEMBERSHIP 用来新增配置，相对应的 PACKET_DROP_MEMBERSHIP 则用来移除配置。它们都需要结构体 packet_mreq 作为参数，其定义如下：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct packet_mreq &#123;</span><br><span class="line">    int            mr_ifindex;    /* interface index */</span><br><span class="line">    unsigned short mr_type;       /* action */</span><br><span class="line">    unsigned short mr_alen;       /* address length */</span><br><span class="line">    unsigned char  mr_address[8]; /* physical-layer address */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
   此结构体成员含义如下：<ul>
 <li>mr_ifindex 根据网络接口索引号，指定将要修改哪个网络接口</li>
 <li>mr_type 执行要执行什么操作，其可选值如下：<ul>
@@ -359,7 +358,7 @@
 <li>mr_alen / mr_address 用来在 mr_type 为 PACKET_MR_MULTICAST 时，设置 multicast group 相关信息</li>
 </ul>
 </li>
-<li>PACKET_AUXDATA (since Linux 2.6.21)<br>  If this binary option is enabled, the packet socket passes a metadata structure along with each packet in the recvmsg(2) control field.  The structure can be read with cmsg(3).  It is defined as  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct tpacket_auxdata &#123;</span><br><span class="line">  __u32 tp_status;</span><br><span class="line">  __u32 tp_len;      &#x2F;* packet length *&#x2F;</span><br><span class="line">  __u32 tp_snaplen;  &#x2F;* captured length *&#x2F;</span><br><span class="line">  __u16 tp_mac;</span><br><span class="line">  __u16 tp_net;</span><br><span class="line">  __u16 tp_vlan_tci;</span><br><span class="line">  __u16 tp_vlan_tpid; &#x2F;* Since Linux 3.14; earlier, these</span><br><span class="line">                         were unused padding bytes *&#x2F;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>PACKET_AUXDATA (since Linux 2.6.21)<br>  If this binary option is enabled, the packet socket passes a metadata structure along with each packet in the recvmsg(2) control field.  The structure can be read with cmsg(3).  It is defined as  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct tpacket_auxdata &#123;</span><br><span class="line">  __u32 tp_status;</span><br><span class="line">  __u32 tp_len;      /* packet length */</span><br><span class="line">  __u32 tp_snaplen;  /* captured length */</span><br><span class="line">  __u16 tp_mac;</span><br><span class="line">  __u16 tp_net;</span><br><span class="line">  __u16 tp_vlan_tci;</span><br><span class="line">  __u16 tp_vlan_tpid; /* Since Linux 3.14; earlier, these</span><br><span class="line">                         were unused padding bytes */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
 <li>PACKET_FANOUT (since Linux 3.1)</li>
 <li>PACKET_RESERVE (with PACKET_RX_RING)</li>
 <li>PACKET_RX_RING</li>
@@ -395,10 +394,10 @@
 <p>The default for sending is the standard Ethernet DIX encapsulation with the protocol filled in.<br>发送的默认值是标准的以太网 DIX 封装，并填充了协议。</p>
 <p>Packet sockets are not subject to the input or output firewall<br>chains.</p>
 <h2 id="Compatibility"><a href="#Compatibility" class="headerlink" title="Compatibility"></a>Compatibility</h2><p>In Linux 2.0, the only way to get a packet socket was with the<br>call:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket(AF_INET, SOCK_PACKET, protocol)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket(AF_INET, SOCK_PACKET, protocol)</span><br></pre></td></tr></table></figure>
 
 <p>This is still supported, but deprecated and strongly discouraged.<br>The main difference between the two methods is that SOCK_PACKET<br>uses the old struct sockaddr_pkt to specify an interface, which<br>doesn’t provide physical-layer independence.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_pkt &#123;</span><br><span class="line">   unsigned short spkt_family;</span><br><span class="line">   unsigned char  spkt_device[14];</span><br><span class="line">   unsigned short spkt_protocol;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_pkt &#123;</span><br><span class="line">   unsigned short spkt_family;</span><br><span class="line">   unsigned char  spkt_device[14];</span><br><span class="line">   unsigned short spkt_protocol;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>spkt_family contains the device type, spkt_protocol is the IEEE<br>802.3 protocol type as defined in &lt;sys/if_ether.h&gt; and<br>spkt_device is the device name as a null-terminated string, for<br>example, eth0.</p>
 <p>This structure is obsolete and should not be used in new code.</p>

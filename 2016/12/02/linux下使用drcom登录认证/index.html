@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -297,20 +297,20 @@
 <p>然后选择左上角的”文件”按钮,点击另存为:<br><img src="4.png" alt="saveas"></p>
 <p>名字随便写就行了,一会儿还要改的,本例中保存为<code>abc.pcapng</code>,到这里windows下的工作就完成了.</p>
 <h1 id="配置drcom-generic"><a href="#配置drcom-generic" class="headerlink" title="配置drcom-generic"></a>配置drcom-generic</h1><p>回到linux系统,把之前保存的<code>abc.pcapng</code>文件复制到<code>~/drcom-generic</code>目录下,然后打开”drcom_d_config.py”文件,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename &#x3D;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename =</span><br></pre></td></tr></table></figure>
 <p>搜索上面的文字,看看等号后面是什么,本例中是<code>3.pcapng</code>,<br>那么就把<code>abc.pcapng</code>改名为<code>3.pcapng</code>,然后打开一个终端,执行以下命令:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;drcom-generic</span><br><span class="line">python2 drcom_d_config.py &gt; config.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/drcom-generic</span><br><span class="line">python2 drcom_d_config.py &gt; config.txt</span><br></pre></td></tr></table></figure>
 <p>执行完毕后,如果一切正常那么打开”~/drcom-generic/config.txt”文件,就可以看到一些配置信息,</p>
 <p>不要关闭”config.txt”文件,再打开同目录下的”latest-wired.py”文件,找到类似”config.txt”内容的部分,<br>修改”latest-wired.py”里的那部分内容,改成和”config.txt”一样就行了</p>
 <p>然后再在”latest-wired.py”文件里找”IS_TEST =”,找到后将等号后面改成”False”</p>
 <p>最后连接就开始测试在linux下登录了,使用下面的命令来登录:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;drcom-generic</span><br><span class="line">python2 latest-wired.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/drcom-generic</span><br><span class="line">python2 latest-wired.py</span><br></pre></td></tr></table></figure>
 
 <p>我写了一个方便启动，关闭drcom的脚本，有兴趣的可以看看:<br><a target="_blank" rel="noopener" href="https://github.com/listenerri/scripts/blob/master/shell/drcom.sh">https://github.com/listenerri/scripts/blob/master/shell/drcom.sh</a></p>
 <p>下载下来后赋予可执行权限:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x drcom.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x drcom.sh</span><br></pre></td></tr></table></figure>
 <p>就可以用这个脚本来启动和关闭了,具体命令是:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#当不使用参数直接执行drcom.sh时,等同于使用-l参数</span><br><span class="line"></span><br><span class="line">#登录</span><br><span class="line">drcom.sh -l</span><br><span class="line">#重启</span><br><span class="line">drcom.sh -r</span><br><span class="line">#退出</span><br><span class="line">drcom.sh -q</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#当不使用参数直接执行drcom.sh时,等同于使用-l参数</span><br><span class="line"></span><br><span class="line">#登录</span><br><span class="line">drcom.sh -l</span><br><span class="line">#重启</span><br><span class="line">drcom.sh -r</span><br><span class="line">#退出</span><br><span class="line">drcom.sh -q</span><br></pre></td></tr></table></figure>
 
 
     </div>

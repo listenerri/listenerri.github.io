@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -288,7 +288,7 @@
 <h1 id="安装模块-库"><a href="#安装模块-库" class="headerlink" title="安装模块(库)"></a>安装模块(库)</h1><p>使用pip命令安装模块时, 是否使用sudo提权会影响安装路径.</p>
 <h2 id="使用sudo提权"><a href="#使用sudo提权" class="headerlink" title="使用sudo提权"></a>使用sudo提权</h2><p>会安装模块到以下路径:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># python自带的一些模块文件在这个路径下.</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># 用户自行安装的模块一般在这个路径下.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/lib/python*(版本不同,具体目录不同)</span><br><span class="line"><span class="comment"># 用户自行安装的模块一般在这个路径下.</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="没有使用sudo提权"><a href="#没有使用sudo提权" class="headerlink" title="没有使用sudo提权"></a>没有使用sudo提权</h2><p>会安装模块到以下路径:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.local/lib/python*(版本不同,具体目录不同)</span><br></pre></td></tr></table></figure>

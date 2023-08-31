@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -284,14 +284,14 @@
 
       
         <p>在 QtCreator 使用 Fakevim 可以指定读取配置文件，在配置文件中映射按键，我发现当映射 <code>+</code> 寄存器时（也就是系统剪切板）不生效，比如下面这行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Space&gt;yy &quot;+yy</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Space&gt;yy &quot;+yy</span><br></pre></td></tr></table></figure>
 
 <p>尝试了很多方法，比如转义：<code>\&quot;+yy</code> 等都不行，网上也搜不到相关问题，下载了 QtCreator 的源码后，分析 Fakevim 插件解析配置文件的部分，发现是一个 Bug，相关代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; qt-creator&#x2F;src&#x2F;plugins&#x2F;fakevim&#x2F;fakevimhandler.cpp</span><br><span class="line">&#x2F;&#x2F; bool FakeVimHandler::Private::handleExSourceCommand(const ExCommand &amp;cmd)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;  remove comment</span><br><span class="line">int i &#x3D; nextline.lastIndexOf(&#39;&quot;&#39;);</span><br><span class="line">if (i !&#x3D; -1)</span><br><span class="line">    nextline &#x3D; nextline.remove(i, nextline.size() - i);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// qt-creator/src/plugins/fakevim/fakevimhandler.cpp</span><br><span class="line">// bool FakeVimHandler::Private::handleExSourceCommand(const ExCommand &amp;cmd)</span><br><span class="line"></span><br><span class="line">//  remove comment</span><br><span class="line">int i = nextline.lastIndexOf(&#x27;&quot;&#x27;);</span><br><span class="line">if (i != -1)</span><br><span class="line">    nextline = nextline.remove(i, nextline.size() - i);</span><br></pre></td></tr></table></figure>
 
 <p>原来是判断 <code>&quot;</code> 号是配置文件注释，将 <code>&quot;</code> 号开始到结尾的部分给删除了，已经给 QtCreator 官方提了 Issue，说实话我也没想到修复这个问题的好方法。</p>
 <p>另辟蹊径，既然要判断 <code>&quot;</code> 号，而且代码里是判断最后一个 <code>&quot;</code> 号的位置，那就给它加上个行内注释，让它不删除命令内容就行，比如还是上面的命令，修改后如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Space&gt;yy &quot;+yy &quot; placehoder commend for a Fakevim parse bug</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Space&gt;yy &quot;+yy &quot; placehoder commend for a Fakevim parse bug</span><br></pre></td></tr></table></figure>
 
 <p>这样源码删除后面的注释后，剩下的就是原本想要执行的命令了，搞定 :)</p>
 

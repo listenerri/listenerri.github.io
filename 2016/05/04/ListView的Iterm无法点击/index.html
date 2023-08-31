@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -285,13 +285,13 @@
       
         <p>当listview中同时出现Button或者ImageButton时，只有item中的Button或ImageButton能够获取焦点(能点击)，<br>而整个item无法获取焦点(无法点击)</p>
 <p>原因：<br>因为ImageButton在初始化时把自己设置成setFocusable(true),这样，listView就获取不到焦点。<br>代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ImageButton</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyle);</span><br><span class="line">        setFocusable(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ImageButton</span><span class="params">(Context context, AttributeSet attrs, <span class="type">int</span> defStyle)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, attrs, defStyle);</span><br><span class="line">        setFocusable(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这里还要强调一下：当xml中注册多个 View的时候，当我们点击按键之后，<br>Android会先判定哪个View setFocusable(true)设置焦点了,如果都设置了，<br>那么Android 会默认响应在xml中第一个注册的view ,而不是两个都会响应。</p>
 <p>所以在item中使用Button或ImageButton时需要留意这个</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setFocusable(<span class="keyword">true</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setFocusable(<span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
 <p>方法、如果item无法响应点击，可以尝试给Button或ImageButton设置</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setFocusable(<span class="keyword">false</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setFocusable(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
 
     </div>
 

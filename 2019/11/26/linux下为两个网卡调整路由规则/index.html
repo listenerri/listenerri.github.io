@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
@@ -290,18 +290,18 @@
 <p>经过测试确定这两个方案都能满足我的需求，但是由于无线不如有限稳定，所以最后确定使用第二种方案。</p>
 <p>调整路由的工具使用 ip 命令的子命令 route，除了路由子命令还有很多其他网络相关的功能，具体可以查看 ip 命令的 man 手册。</p>
 <p>linux 下当连接无线网和有线网之后使用 <code>ip route</code>，可以简写为 <code>ip r</code> 可以列出当前所有的路由规则：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default via 192.168.1.1 dev enp2s0 proto static metric 100</span><br><span class="line">default via 192.168.1.1 dev wlx200db012a6be proto dhcp metric 600</span><br><span class="line">172.17.0.0&#x2F;16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown</span><br><span class="line">192.168.1.0&#x2F;24 dev enp2s0 proto kernel scope link src 192.168.1.208 metric 100</span><br><span class="line">192.168.1.0&#x2F;24 dev wlx200db012a6be proto kernel scope link src 192.168.1.74 metric 600</span><br><span class="line">192.168.252.0&#x2F;24 dev xdroid0 proto kernel scope link src 192.168.252.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default via 192.168.1.1 dev enp2s0 proto static metric 100</span><br><span class="line">default via 192.168.1.1 dev wlx200db012a6be proto dhcp metric 600</span><br><span class="line">172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown</span><br><span class="line">192.168.1.0/24 dev enp2s0 proto kernel scope link src 192.168.1.208 metric 100</span><br><span class="line">192.168.1.0/24 dev wlx200db012a6be proto kernel scope link src 192.168.1.74 metric 600</span><br><span class="line">192.168.252.0/24 dev xdroid0 proto kernel scope link src 192.168.252.1</span><br></pre></td></tr></table></figure>
 <p>其中 enp2s0 是有线网相关的路由，wlx200db012a6be 是无线网相关的路由，此外还有 docker 和 xdroid 相关的，后面这两个不用管，没有安装这两个程序的机器也不会有这两种路由。</p>
 <p>从上面的路由规则可以看到 enp2s0 相关的 metric 值为 100 而 wlx200db012a6be 相关的 metric 值为 600，这就表示 enp2s0 相关的路由规则比 wlx200db012a6be 相关的路由规则优先级高。在相同的条件下，如相同的 prefix（IP 地址段）时系统将优先使用 enp2s0。</p>
 <p>例如以下这两条规则，就表示访问 192.168.1.* 就会走 enp2s0：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.0&#x2F;24 dev enp2s0 proto kernel scope link src 192.168.1.208 metric 100</span><br><span class="line">192.168.1.0&#x2F;24 dev wlx200db012a6be proto kernel scope link src 192.168.1.74 metric 600</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.0/24 dev enp2s0 proto kernel scope link src 192.168.1.208 metric 100</span><br><span class="line">192.168.1.0/24 dev wlx200db012a6be proto kernel scope link src 192.168.1.74 metric 600</span><br></pre></td></tr></table></figure>
 
 <p>此外要注意调整路由规则需要 root 权限。</p>
 <h1 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h1><p>删除有线网的 default 规则即可实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip r del default via 192.168.1.1 dev enp2s0 proto static metric 100</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip r del default via 192.168.1.1 dev enp2s0 proto static metric 100</span><br></pre></td></tr></table></figure>
 <p>如此一来，除了 192.168.1.0/24 网段即内网网段内的 ip 访问会走有线网，其他的都会走无线网。</p>
 <h1 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h1><p>假设我要访问的境外服务器地址为 <code>123.456.789.111</code>，那么只需要添加一条走无线网的路由规则，其仅匹配这个 ip 地址而不是一个网段就行了，经过一番测试，最后确定以下命令可行，测试过程中的无效、错误命令就不贴了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip r add 123.456.789.111 via 192.168.1.1 dev wlx200db012a6be</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip r add 123.456.789.111 via 192.168.1.1 dev wlx200db012a6be</span><br></pre></td></tr></table></figure>
 <p>注意 via 后面需要写无线网的网关，不写或者写错都会导致这个 ip 无法访问。</p>
 
     </div>
