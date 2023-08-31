@@ -202,6 +202,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/" class="post-title-link" itemprop="url">增大osx启动分区大小</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-11-25 16:46:08" itemprop="dateCreated datePublished" datetime="2017-11-25T16:46:08+08:00">2017-11-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/osx/" itemprop="url" rel="index"><span itemprop="name">osx</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/" class="post-meta-item leancloud_visitors" data-flag-title="增大osx启动分区大小" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>场景：<br>osx，deepin linux, windows三系统, 需要扩大黑苹果的分区.</p>
+<p>osx下的磁盘工具简直不能更难用，有下面几个坑，很重要，要想扩容osx系统分区需要知道这些：</p>
+<ul>
+<li>不识别空分区，分区必要格式化，否则磁盘工具不识别</li>
+<li>必须是系统分区后面的分区才能合并到系统分区里</li>
+<li>要合到系统分区的分区必须和系统分区统一格式!!</li>
+</ul>
+<p>上面三个坑, 尤其是第三个, 搞得我差点重装osx, 磁盘工具竟然不自动格式化分区就直接和osx的系统盘合并了,<br>导致虽然系统盘容量增大了, 但却出现一个分区里却有两块不同格式的磁盘空间, 幸好我记得合并进去的分区是多大,<br>又动手压缩出来了, 然后格式化为osx系统分区格式, 再次合并才成功</p>
+<p>osx下的磁盘工具虽然难用, 但是要扩大osx系统分区只能用这个工具, 不像linux或windows可以在livecd或者pe下调整.</p>
+<p>正文:<br>草草画了几个图, 当时操作的时候没有截图, 下面这张图是我的硬盘的分区:<br><img src="origin.png" alt="origin"></p>
+<p>既然是扩容osx分区, 那就需要从其他分区压缩出来一部分空间, 推荐在linux下使用gparted工具压缩和移动分区,<br>当然windows下也可以, 可以用diskgenius软件操作.<br>我需要从linux分区中压缩出来100G分给osx, 那么我就压缩之后的样子如下图:<br><img src="yasuo.png" alt="yasuo"></p>
+<p>虽然压缩出来的空间已经挨着osx的分区了, 但是osx的磁盘工具不能将osx之前的分区合并到osx的系统分区中,<br>所以仅仅是压缩出来是不够的, 还需要将压缩出来的分区移动到osx分区之后, 且紧挨着osx分区, 移动后如下图:<br><img src="yidong.png" alt="yidong"></p>
+<p>然后格式化那块压缩出来的空间, 如果gparted或者diskgenius不支持当前osx分区的格式, 那就格式化成fat32格式,<br>格式化完成之后就可以启动到osx系统了, 打开磁盘工具, 将那块压缩出来的分区的格式改成当前osx分区的格式,<br>切记!! 一定要与当前osx分区的格式相同!!<br>然后点击磁盘工具上的‘分区’按钮, 再点击那块格式化好的压缩出来的分区, 再点一下’+‘旁边的’-‘号按钮,<br>也就是删除这个分区, 点击确定就行了, 删除这个分区后磁盘工具就会将其合并到osx的分区了.<br>大功告成, 如下图:<br><img src="zuihou.png" alt="zuihou"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/10/26/linux%E4%B8%8B%E6%8E%A7%E5%88%B6%E9%A3%8E%E6%89%87%E8%BD%AC%E9%80%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1169,117 +1276,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/" class="post-title-link" itemprop="url">c语言在函数中修改指针的值</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-11-06 22:56:40" itemprop="dateCreated datePublished" datetime="2016-11-06T22:56:40+08:00">2016-11-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/" class="post-meta-item leancloud_visitors" data-flag-title="c语言在函数中修改指针的值" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>继续学习c语言中…</p>
-<h1 id="引入话题"><a href="#引入话题" class="headerlink" title="引入话题"></a>引入话题</h1><p>请注意文章标题: 在函数中修改指针的值, 而不是修改指针指向的值<br>修改指针指向的值很容易理解, 在函数参数中声明一个指针类型,<br>然后调用方法的时候把需要修改的值的指针传递过去就行了, 大体如下:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    *a = *a + 1; //使用取值运算符让指针a指向的值+1</span><br><span class="line">    printf(&quot;a: %d&quot;, *a);</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int a = 0;</span><br><span class="line">    test(&amp;a);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a: 1</span><br></pre></td></tr></table></figure>
-
-<p>但本文所要说的是如何修改指针的值, 看下面的例子:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    a = a + 1; //让指针a的值+1</span><br><span class="line">    if (a != NULL) &#123;</span><br><span class="line">	printf(&quot;test: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int *a = NULL;</span><br><span class="line">    if (a == NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    test(a);</span><br><span class="line">    if (a == NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">main: a为空</span><br><span class="line">test: a不为空</span><br><span class="line">main: a为空</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1351,20 +1347,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">255</span>
+        <span class="site-state-item-count">257</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

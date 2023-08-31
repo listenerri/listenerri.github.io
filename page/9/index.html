@@ -202,6 +202,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/" class="post-title-link" itemprop="url">c语言在函数中修改指针的值</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-06 22:56:40" itemprop="dateCreated datePublished" datetime="2016-11-06T22:56:40+08:00">2016-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/" class="post-meta-item leancloud_visitors" data-flag-title="c语言在函数中修改指针的值" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>继续学习c语言中…</p>
+<h1 id="引入话题"><a href="#引入话题" class="headerlink" title="引入话题"></a>引入话题</h1><p>请注意文章标题: 在函数中修改指针的值, 而不是修改指针指向的值<br>修改指针指向的值很容易理解, 在函数参数中声明一个指针类型,<br>然后调用方法的时候把需要修改的值的指针传递过去就行了, 大体如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    *a = *a + 1; //使用取值运算符让指针a指向的值+1</span><br><span class="line">    printf(&quot;a: %d&quot;, *a);</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int a = 0;</span><br><span class="line">    test(&amp;a);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a: 1</span><br></pre></td></tr></table></figure>
+
+<p>但本文所要说的是如何修改指针的值, 看下面的例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void test(int *a) &#123;</span><br><span class="line">    a = a + 1; //让指针a的值+1</span><br><span class="line">    if (a != NULL) &#123;</span><br><span class="line">	printf(&quot;test: a不为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int main(void) &#123;</span><br><span class="line">    int *a = NULL;</span><br><span class="line">    if (a == NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    test(a);</span><br><span class="line">    if (a == NULL) &#123;</span><br><span class="line">	printf(&quot;main: a为空\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">main: a为空</span><br><span class="line">test: a不为空</span><br><span class="line">main: a为空</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/11/02/chrome-adobe-flash%E4%B8%8D%E6%98%AF%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1173,104 +1284,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">hybrid-sleep和sleep以及hibernate的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 20:22:11" itemprop="dateCreated datePublished" datetime="2016-05-04T20:22:11+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-meta-item leancloud_visitors" data-flag-title="hybrid-sleep和sleep以及hibernate的区别" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="bybrid-sleep"><a href="#bybrid-sleep" class="headerlink" title="bybrid-sleep"></a>bybrid-sleep</h1><p>混合休眠模式:<br>是指电脑sleep(睡眠模式)和hibernate(休眠模式)同时进行,即把信息保存到内存的同时也写入到系统主分区的hiberfil.sys文件中</p>
-<h1 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h1><p>睡眠模式,linux下也叫挂起(suspend):<br>把信息到存到内存中,但不能断电,断电后数据丢失,恢复最快</p>
-<h1 id="hibernate"><a href="#hibernate" class="headerlink" title="hibernate"></a>hibernate</h1><p>休眠模式:<br>把信息写入到文件中,也就是硬盘中,不会有断电丢失数据的问题,但恢复时最慢,和重新开机一样</p>
-<h1 id="对比图表"><a href="#对比图表" class="headerlink" title="对比图表:"></a>对比图表:</h1><p><img src="duibi.png" alt="duibi"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1342,20 +1355,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">255</span>
+        <span class="site-state-item-count">257</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

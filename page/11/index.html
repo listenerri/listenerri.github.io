@@ -202,6 +202,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/ListView%E7%9A%84Iterm%E6%97%A0%E6%B3%95%E7%82%B9%E5%87%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/ListView%E7%9A%84Iterm%E6%97%A0%E6%B3%95%E7%82%B9%E5%87%BB/" class="post-title-link" itemprop="url">ListView的Iterm无法点击</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 19:31:47" itemprop="dateCreated datePublished" datetime="2016-05-04T19:31:47+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/ListView%E7%9A%84Iterm%E6%97%A0%E6%B3%95%E7%82%B9%E5%87%BB/" class="post-meta-item leancloud_visitors" data-flag-title="ListView的Iterm无法点击" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/ListView%E7%9A%84Iterm%E6%97%A0%E6%B3%95%E7%82%B9%E5%87%BB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/ListView%E7%9A%84Iterm%E6%97%A0%E6%B3%95%E7%82%B9%E5%87%BB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>当listview中同时出现Button或者ImageButton时，只有item中的Button或ImageButton能够获取焦点(能点击)，<br>而整个item无法获取焦点(无法点击)</p>
+<p>原因：<br>因为ImageButton在初始化时把自己设置成setFocusable(true),这样，listView就获取不到焦点。<br>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ImageButton</span><span class="params">(Context context, AttributeSet attrs, <span class="type">int</span> defStyle)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, attrs, defStyle);</span><br><span class="line">        setFocusable(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里还要强调一下：当xml中注册多个 View的时候，当我们点击按键之后，<br>Android会先判定哪个View setFocusable(true)设置焦点了,如果都设置了，<br>那么Android 会默认响应在xml中第一个注册的view ,而不是两个都会响应。</p>
+<p>所以在item中使用Button或ImageButton时需要留意这个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setFocusable(<span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+<p>方法、如果item无法响应点击，可以尝试给Button或ImageButton设置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setFocusable(<span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1166,123 +1269,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">archlinux+xfce4+lightdm+uefi个人安装记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 16:32:00" itemprop="dateCreated datePublished" datetime="2016-05-04T16:32:00+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" class="post-meta-item leancloud_visitors" data-flag-title="archlinux+xfce4+lightdm+uefi个人安装记录" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p><strong><font color="red">本文篇幅较长，最好通过文章内容上面的目录进行查看，否则很容易迷失在一个又一个的步骤中</font></strong></p>
-</blockquote>
-<hr>
-<blockquote>
-<p><strong>前言：</strong><br>在中文+英文arch-wiki的指导下，大概经过了将近十次的格式化+重装，终于满意了，这个过程中也了解了linux新的系统服务管理机制:systemd(systemclt)，<br>不说废话了，开始安装步骤<br><font color="red">折腾日期为:2015-4-28到2015-5-??</font><br>arch更新迅速，如果要参考本文，自行留意日期，也可以自己去arch-wiki去看官方教程：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Beginners%27_guide_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E9.85.8D.E7.BD.AE.E7.BD.91.E7.BB.9C">arch-wiki-Beginners’guide</a></p>
-</blockquote>
-<blockquote>
-<p><font color="red">本文将简略的说一下步骤，主要说我在安装过程中出现的问题！<br>所以如果你是对大概的linux命令都不熟悉的新手，本文也许不适合你，<br>你应该先去看arch-wiki，然后再来这里看</font></p>
-</blockquote>
-<h1 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h1><blockquote>
-<p>安装arch，是不能没有网络的，毕竟官方提供的是最小化安装镜像，只有核心linux和官方修改配置的脚本，其他的都要靠联网下载安装<br>网络配置这一步骤<strong>需要进行两次！</strong><br><strong>第一次</strong>是刚刚启动安装镜像时，这一次的网络配置生效区域是安装镜像所在的系统，而非你安装到硬盘上的系统，这个配置将会随着安装镜像系统的退出而清除！<br><strong>第二次</strong>是使用arch-chroot命令后切换到到真实的，安装在了硬盘上的系统！这第二次的网络配置，将会写到你将来要用的系统所在的硬盘分区上的配置文件中，所以只要你以后不再修改，那么它的生效区域是永久的！<br><strong>自行理解上文所提到的安装镜像所在的系统和真实系统的区别！这个不好说，说不清</strong></p>
-</blockquote>
-<p>arch官方推荐使用他们自己的netctl来作为网络管理工具,但是经过使用后我还是<strong>推荐使用networkmanager</strong>来作为管理工具,因为networkmanager不论在命令行还是图形界面都有简单的使用方法！</p>
-<h2 id="使用netctl"><a href="#使用netctl" class="headerlink" title="使用netctl"></a>使用netctl</h2><p>如果你使用netctl那么将会有无线和有线两种大的联网方式，其中又各自细分出了几种不同的联网方式，**<font color="red">第一次配置安装镜像所在的系统时你只需要选择其中一种，让电脑能正常联网就行了！第二次为真实系统配置时再自行选择配置几种</font>**。具体配置方法看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Beginners%27_guide_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29#.E9.85.8D.E7.BD.AE.E7.BD.91.E7.BB.9C">arch-wiki-Beginners’guide</a>这里不多说！<br>按照官方教程会启用dhcpcd守护进程、这会导致系统系统的DNS每次开机都被dhcpcd替换为自动获取的DNS配置文件：/etc/resolv.conf<br>如果按照官方教程配置netctl后，出现了能ping通域名(如：ping t.cn)，但使用pacman -Syy却无法联网时那么你就需要修改/etc/resolv.conf文件中的DNS：</p>
-<figure class="highlight bash"><figcaption><span>shell</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nameserver 8.8.4.4</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1354,20 +1340,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">255</span>
+        <span class="site-state-item-count">257</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

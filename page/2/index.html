@@ -202,6 +202,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2022/10/30/wireshark-filter-Manual-Page/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/30/wireshark-filter-Manual-Page/" class="post-title-link" itemprop="url">wireshark-filter-Manual-Page</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-10-30 01:16:51 / 修改时间：18:53:07" itemprop="dateCreated datePublished" datetime="2022-10-30T01:16:51+08:00">2022-10-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/10/30/wireshark-filter-Manual-Page/" class="post-meta-item leancloud_visitors" data-flag-title="wireshark-filter-Manual-Page" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/10/30/wireshark-filter-Manual-Page/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/10/30/wireshark-filter-Manual-Page/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="NAME"><a href="#NAME" class="headerlink" title="NAME"></a>NAME</h1><p>wireshark-filter - Wireshark display filter 显示过滤器语法手册</p>
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS" class="headerlink" title="SYNOPSIS"></a>SYNOPSIS</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wireshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]</span><br><span class="line"></span><br><span class="line">tshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION" class="headerlink" title="DESCRIPTION"></a>DESCRIPTION</h1><p>Wireshark 和 TShark 共享一个强大的过滤引擎，有助于从数据包列表中去除“噪音”，只看到您感兴趣的数据包。如果一个数据包符合你的过滤器中表达的要求，那么它就会显示在数据包列表中。显示过滤器可让您将协议中的字段与特定值进行比较，将字段与字段进行比较，并检查指定字段或协议是否存在。</p>
+<p>过滤器也被其他功能所使用，如统计数据的生成和数据包列表的着色（后者只对Wireshark有效）。本手册页描述了它们的语法。可以在 Wireshark 和 <a target="_blank" rel="noopener" href="https://www.wireshark.org/docs/dfref/">https://www.wireshark.org/docs/dfref/</a> 的显示过滤器参考中找到过滤器字段的全部参考文档。</p>
+<h1 id="FILTER-语法"><a href="#FILTER-语法" class="headerlink" title="FILTER 语法"></a>FILTER 语法</h1><h2 id="判断一个字段或者协议是否存在"><a href="#判断一个字段或者协议是否存在" class="headerlink" title="判断一个字段或者协议是否存在"></a>判断一个字段或者协议是否存在</h2><p>最简单的过滤器允许您检查协议或字段是否存在。如果您想查看所有包含 IP 协议的数据包，过滤器将是 <code>ip</code>。要查看包含 Token-Ring RIF 字段的所有数据包，请使用 <code>tr.rif</code>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/30/wireshark-filter-Manual-Page/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2022/07/16/linux-%E5%8E%9F%E5%A7%8B%E5%A5%97%E6%8E%A5%E5%AD%97%E6%94%B6%E5%8F%91-packet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1221,109 +1323,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2021/08/12/linux-%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8-comfast-CF-WU810N-%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E5%88%9B%E5%BB%BA-wifi-%E7%83%AD%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/12/linux-%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8-comfast-CF-WU810N-%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E5%88%9B%E5%BB%BA-wifi-%E7%83%AD%E7%82%B9/" class="post-title-link" itemprop="url">linux 系统使用 comfast CF-WU810N 无线网卡创建 wifi 热点</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-08-12 15:50:00" itemprop="dateCreated datePublished" datetime="2021-08-12T15:50:00+08:00">2021-08-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/08/12/linux-%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8-comfast-CF-WU810N-%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E5%88%9B%E5%BB%BA-wifi-%E7%83%AD%E7%82%B9/" class="post-meta-item leancloud_visitors" data-flag-title="linux 系统使用 comfast CF-WU810N 无线网卡创建 wifi 热点" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/08/12/linux-%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8-comfast-CF-WU810N-%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E5%88%9B%E5%BB%BA-wifi-%E7%83%AD%E7%82%B9/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/12/linux-%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8-comfast-CF-WU810N-%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E5%88%9B%E5%BB%BA-wifi-%E7%83%AD%E7%82%B9/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我用来创建热点的工具是 create_ap 可以直接去官方仓库中查看 README 来安装：<a target="_blank" rel="noopener" href="https://github.com/oblique/create_ap">https://github.com/oblique/create_ap</a></p>
-<p>把 USB 无线网卡插到运行 linux 系统的机器上，然后使用 <code>lsusb</code> 命令查看信息，可以得到如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bus 001 Device 006: ID 0bda:8179 Realtek Semiconductor Corp. RTL8188EUS 802.11n Wireless Network Adapter</span><br></pre></td></tr></table></figure>
-
-<p>可以看到芯片是 <code>RTL8188EUS</code>，在 manjaro 系统下，虽然可以识别设备，也能正常连接无线网使用，但默认驱动不能用来创建 wifi 热点，所以需要手动安装一个新的驱动。</p>
-<p>经过搜索和不断测试，最终确定一个可用驱动：<br><a target="_blank" rel="noopener" href="https://github.com/aircrack-ng/rtl8188eus">https://github.com/aircrack-ng/rtl8188eus</a></p>
-<p>手动安装方法可以参考驱动代码仓库的 README 文档。</p>
-<p>如果是 arch 系的系统，比如 manjaro 系统，可以直接 aur 仓库里的包：<code>8188eu-aircrack-dkms-git</code>，这个包里带有必要的配置文件，安装完成后重启即可生效。</p>
-<p>驱动生效后就可以使用 <code>create_ap</code> 工具创建 wifi 热点了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1395,20 +1394,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">255</span>
+        <span class="site-state-item-count">257</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

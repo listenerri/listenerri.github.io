@@ -202,6 +202,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/" class="post-title-link" itemprop="url">终于发现了素数的一种用途</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-21 15:48:42" itemprop="dateCreated datePublished" datetime="2019-10-21T15:48:42+08:00">2019-10-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/" class="post-meta-item leancloud_visitors" data-flag-title="终于发现了素数的一种用途" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>以前只知道素数的定义：<code>质数又称素数。一个大于 1 的自然数，除了 1 和它自身外，不能被其他自然数整除的数叫做质数；否则称为合数</code>。今天在学习<a target="_blank" rel="noopener" href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/Readme.md">《编程之法》(github) </a>时，第一章第二节 <a target="_blank" rel="noopener" href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/01.02.md">“字符串包含”</a>，其提到的一种算法用到了素数，在此仅摘取原文部分内容作为记录。<strong>需要注意的是，这种算法并不是这个问题的最优解</strong>，具体请查看原文。</p>
+<p>以下为原文摘录：</p>
+<hr>
+<p><strong>字符串包含</strong></p>
+<p>题目描述：<br>给定两个分别由字母组成的字符串 A 和字符串 B，字符串 B 的长度比字符串 A 短。请问，如何最快地判断字符串 B 中所有字母是否都在字符串 A 里？</p>
+<p>为了简单起见，我们规定输入的字符串只包含大写英文字母，请实现函数 <code>bool StringContains(string &amp;A, string &amp;B)</code></p>
+<p>比如，如果是下面两个字符串：</p>
+<p>String 1：ABCD</p>
+<p>String 2：BAD</p>
+<p>答案是 true，即 String2 里的字母在 String1 里也都有，或者说 String2 是 String1 的真子集。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/10/21/%E7%BB%88%E4%BA%8E%E5%8F%91%E7%8E%B0%E4%BA%86%E7%B4%A0%E6%95%B0%E7%9A%84%E4%B8%80%E7%A7%8D%E7%94%A8%E9%80%94/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/11/%E9%80%9A%E8%BF%87%E6%89%93DSDT%E8%A1%A5%E4%B8%81%E8%AE%A9%E9%BB%91%E8%8B%B9%E6%9E%9C%E6%98%BE%E7%A4%BA%E7%94%B5%E6%B1%A0%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2124,114 +2235,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/02/02/QPropertyAnimation%E4%B8%8D%E7%94%9F%E6%95%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/02/QPropertyAnimation%E4%B8%8D%E7%94%9F%E6%95%88/" class="post-title-link" itemprop="url">QPropertyAnimation不生效</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-02 11:36:23" itemprop="dateCreated datePublished" datetime="2019-02-02T11:36:23+08:00">2019-02-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/02/02/QPropertyAnimation%E4%B8%8D%E7%94%9F%E6%95%88/" class="post-meta-item leancloud_visitors" data-flag-title="QPropertyAnimation不生效" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/02/02/QPropertyAnimation%E4%B8%8D%E7%94%9F%E6%95%88/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/02/02/QPropertyAnimation%E4%B8%8D%E7%94%9F%E6%95%88/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 Qt 中实现动画的一种方便的做法就是使用 QPropertyAnimation 类, 构造 QPropertyAnimation 时设置目标 widget 和 property, 然后设置一下初始和结束的 property 值剩下的 Qt 就会帮我们做了.</p>
-<p>常用的一个动画属性就是 “geometry”, 这个属性包含了 widget 的位置以及形状(矩形), 所以通过设置这个属性可以实现 widget 的位置和大小动画.</p>
-<p>只是使用这个属性实现大小动画时要留意, widget 不能被设置固定的大小, 即下面这类函数不能调用, 否则 QPropertyAnimation 将无法调整目标 widget 的大小, 其中缘由细细想一下便可知道:</p>
-<ul>
-<li>setFixedSize</li>
-<li>setFixedWidth</li>
-<li>setFixedHeight</li>
-</ul>
-<p>但如果目的 widget 不得不设置一个初始大小的话可以调用如下这些函数:</p>
-<ul>
-<li>setMinimumSize</li>
-<li>setMaxmumSize</li>
-<li>setGeometry</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2303,20 +2306,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">255</span>
+        <span class="site-state-item-count">257</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

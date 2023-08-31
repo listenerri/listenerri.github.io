@@ -202,6 +202,157 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">zeromq 使用笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-08-31 17:43:08 / 修改时间：17:43:49" itemprop="dateCreated datePublished" datetime="2023-08-31T17:43:08+08:00">2023-08-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/zeromq/" itemprop="url" rel="index"><span itemprop="name">zeromq</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="zeromq 使用笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><ol>
+<li>客户端可以在服务端没有监听端口 （bind）时，直接创建连接，这会在服务端开始监听端口时自动连接并传输消息</li>
+<li>已经创建过的连接，如果中途中断，会自动重连</li>
+<li>一个服务端 socket 可以监听多个不同的地址，端口不同甚至协议不同</li>
+<li>socket 内部有 IO 线程，send 函数返回时，消息并不一定已经发出了，有可能还在队列里等待</li>
+<li>每创建一个 context 对象都会隐式创建一个 IO 线程</li>
+<li>C 需要库中处理字符串时 不/不应该 发送空终止字符，所以需要在接收字符串数据后，手动追加空终止字符</li>
+<li>zmq_send/zmq_recv 和 zmq_msg_send/zmq_msg_recv，主要区别在于是否需要调用者提供 msg 结构体对象，前者不需要，会自动将数据封装到一个默认的 msg 对象中</li>
+<li>使用 ZMQ_SNDMORE 参数发送多块消息体，当对端接收到数据时，其实肯定已经接收到了所有消息体，但仍旧需要调用多次 get_socketopt + zmq_recv 接口，读取出来所有消息体数据</li>
+<li>使用 zmq_poll（理解参考 linux poll 或 python 协程 异步 IO）相关接口，可以实现同时处理多个 socket 的 send/recv</li>
+</ol>
+<h1 id="上下文-Context-对象"><a href="#上下文-Context-对象" class="headerlink" title="上下文 Context 对象"></a>上下文 Context 对象</h1><ol>
+<li>程序一般都以创建 context 开始</li>
+<li>一个进程通常应该创建并使用一个 context 对象</li>
+<li>也有创建多个 context 对象的场景，这相当于拥有多个独立的 zqm 实例，并且要注意销毁所有 context 对象</li>
+</ol>
+<h1 id="请求-响应-模式（REQ-REP）"><a href="#请求-响应-模式（REQ-REP）" class="headerlink" title="请求-响应 模式（REQ-REP）"></a>请求-响应 模式（REQ-REP）</h1><ol>
+<li>服务端一般使用 响应 REP 类型的 socket</li>
+<li>客户端一般使用 请求 REQ 类型的 socket</li>
+<li>REQ 必须遵守 send-recv 配对规则，先请求并且得到响应后，再发起下一个请求，打乱顺序会报错；REP 同样但它先 recv 再 send</li>
+<li>理论上可以有 N 多个客户端连接到服务端，同时连接都没问题</li>
+<li>这个模式和常见的 CS/BS 模式很类似</li>
+<li>多个 REQ 连接到一个 REP 时，从逻辑上来看 REP 端的消息处理流程是同步的，必须要等到当前已接收消息处理完毕并回复对端后，才能去接收处理下一个 REQ 请求，其他 REQ 请求都在阻塞</li>
+<li>一个 REQ 可以连接到多个 REP 对端，请求会被负载均衡得发送到多个 REP 端</li>
+<li>REQ 和 REP 在概念上可以认为是基于 Router-Dealer 实现的，内部自动处理了信封，上层应用不会看到信封（包括空帧），只会看到数据</li>
+<li>当 REQ 直接与 REP 连接时，底层/内部使用的信封是最简单的格式，没有 地址标识帧，只有空帧+数据帧</li>
+<li>当 REQ 和 REP 中间加入了 Router-Dealer 作为代理层时，REP 收到的数据包含了 地址标识帧 + 空帧 + 数据帧</li>
+<li>REP 会认为从第一帧开始直到空帧为止都是信封帧，所以当 REQ 直接与 REP 连接时即便没有地址帧，也需要有空帧，这是为了兼容 Router-Dealer 作为代理时的情况</li>
+<li>REP 在收到消息时，会保存此消息的信封，在回复消息时会自动在把信封加在数据帧前面；由于 REP 必须遵守 请求-响应 配对规则，所以在回复消息时肯定是知道需要使用的信封的</li>
+</ol>
+<h1 id="Router-Dealer"><a href="#Router-Dealer" class="headerlink" title="Router-Dealer"></a>Router-Dealer</h1><ol>
+<li>多用于在 REQ 和 REP 中间作为代理层： REQ(可以是多个) &lt;–&gt; Router(一个) &lt;–&gt; Deader(一个) &lt;–&gt; REP(可以是多个)</li>
+<li>可以成对得出现多个 Router-Dealer 来实现多层代理</li>
+<li>异步的，调用完 recv/send 接口之后不用必须调用反向的 send/recv 接口</li>
+<li>需要显式处理信封，信封用于标识请求来源，同时回复消息时也需要用信封来标识回复到哪一个具体的请求端</li>
+<li>信封可以嵌套，用于表示数据被多个 Router 转发</li>
+<li>需要自己借助信封处理 路由规则（消息发送到哪些对端）</li>
+<li>Router 在收到消息时，会跟踪每一个 TCP 连接，并自动在消息前面追加 地址标识帧，以此告诉上层应用此数据的来源</li>
+<li>Router 在发送消息时，根据 地址标识帧 判断需要使用哪个 TCP 连接，发送消息给正确的目标，但真正发送消息前，会移除掉 地址标识帧</li>
+<li>Dealer 在逻辑上几乎不处理任何东西，只会接收和发送所有帧，不管是信封帧还是数据帧，不会擅自增加或删除任意帧，就像是一个异步的收发中转站</li>
+<li>Router 只关心 地址标识帧，它不知道也不关心后面的帧，包括空帧</li>
+<li>当业务层直接使用 Router 时，可以自己处理 地址标识帧，换句话说，可以更灵活得控制消息的路由规则</li>
+<li>当业务层直接使用 Dealer 与 REP 连接时，Deader 应该按照如下规则实现：Deader 发送消息时，必须先发送一个空帧（send-more），来模拟 REQ 的消息信封，否则 REP 会丢弃掉没有空帧的消息；在接收数据时，应该判断第一帧是否是空帧，是的话跳过并取得数据帧，不是的话则丢弃掉整个消息（包括数据帧）</li>
+<li>类似的，当业务层直接使用 Dealer 与 REQ 连接时，Deader 应该按照如下规则实现：Deader 在接收到的消息时，应该判断第一帧是否是空帧，是的话跳过并取得数据帧，不是的话则丢弃掉整个消息（包括数据帧）；在发送消息时，同样需要先发送空帧</li>
+<li>Router 一般会自动为一个新的连接生成标识，也就是 地址标识帧，但如果对端使用 setsockopt 明确设置了标识，Router 则不再自动生成</li>
+</ol>
+<h1 id="发布-订阅-模式（PUB-SUB）"><a href="#发布-订阅-模式（PUB-SUB）" class="headerlink" title="发布-订阅 模式（PUB-SUB）"></a>发布-订阅 模式（PUB-SUB）</h1><ol>
+<li>没有订阅者的话，发布者会把所有消息都丢弃掉</li>
+<li>订阅者可以订阅多个发布者，消息将会以轮次获取的方式公平得从每个发布者处获取</li>
+<li>如果订阅者使用 TCP 创建连接，但处理消息比较慢，发布者会缓存一定量的消息</li>
+<li>在不同版本和连接协议下，filtering 消息过滤这一操作可能在发布者一侧，也可能在订阅者一侧</li>
+<li>一个消息会被所有订阅者获取到</li>
+<li>订阅者必须要设置 SUBSCRIBE 否则收不到任何数据</li>
+<li>订阅者可以设置多个 SUBSCRIBES，匹配到 任何一个 都会收到数据</li>
+<li>消息的读写都是异步的</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/08/31/linux-%E4%BB%85%E4%BD%BF%E7%94%A8%E5%A4%96%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%99%A8%E5%BE%88%E5%8D%A1-%E9%BC%A0%E6%A0%87%E6%B5%81%E7%95%85-%E4%BD%86%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E7%9B%B8%E5%BA%94%E6%85%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1105,108 +1256,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2022/10/30/wireshark-filter-Manual-Page/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/30/wireshark-filter-Manual-Page/" class="post-title-link" itemprop="url">wireshark-filter-Manual-Page</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-10-30 01:16:51 / 修改时间：18:53:07" itemprop="dateCreated datePublished" datetime="2022-10-30T01:16:51+08:00">2022-10-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/10/30/wireshark-filter-Manual-Page/" class="post-meta-item leancloud_visitors" data-flag-title="wireshark-filter-Manual-Page" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/10/30/wireshark-filter-Manual-Page/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/10/30/wireshark-filter-Manual-Page/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="NAME"><a href="#NAME" class="headerlink" title="NAME"></a>NAME</h1><p>wireshark-filter - Wireshark display filter 显示过滤器语法手册</p>
-<h1 id="SYNOPSIS"><a href="#SYNOPSIS" class="headerlink" title="SYNOPSIS"></a>SYNOPSIS</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wireshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]</span><br><span class="line"></span><br><span class="line">tshark [other options] [ -Y &quot;display filter expression&quot; | --display-filter &quot;display filter expression&quot; ]</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="DESCRIPTION"><a href="#DESCRIPTION" class="headerlink" title="DESCRIPTION"></a>DESCRIPTION</h1><p>Wireshark 和 TShark 共享一个强大的过滤引擎，有助于从数据包列表中去除“噪音”，只看到您感兴趣的数据包。如果一个数据包符合你的过滤器中表达的要求，那么它就会显示在数据包列表中。显示过滤器可让您将协议中的字段与特定值进行比较，将字段与字段进行比较，并检查指定字段或协议是否存在。</p>
-<p>过滤器也被其他功能所使用，如统计数据的生成和数据包列表的着色（后者只对Wireshark有效）。本手册页描述了它们的语法。可以在 Wireshark 和 <a target="_blank" rel="noopener" href="https://www.wireshark.org/docs/dfref/">https://www.wireshark.org/docs/dfref/</a> 的显示过滤器参考中找到过滤器字段的全部参考文档。</p>
-<h1 id="FILTER-语法"><a href="#FILTER-语法" class="headerlink" title="FILTER 语法"></a>FILTER 语法</h1><h2 id="判断一个字段或者协议是否存在"><a href="#判断一个字段或者协议是否存在" class="headerlink" title="判断一个字段或者协议是否存在"></a>判断一个字段或者协议是否存在</h2><p>最简单的过滤器允许您检查协议或字段是否存在。如果您想查看所有包含 IP 协议的数据包，过滤器将是 <code>ip</code>。要查看包含 Token-Ring RIF 字段的所有数据包，请使用 <code>tr.rif</code>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/30/wireshark-filter-Manual-Page/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1278,20 +1327,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">255</span>
+        <span class="site-state-item-count">257</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
