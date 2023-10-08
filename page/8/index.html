@@ -202,6 +202,111 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">vim-ycm-qt自动补全问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-21 17:17:50" itemprop="dateCreated datePublished" datetime="2017-12-21T17:17:50+08:00">2017-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vim/" itemprop="url" rel="index"><span itemprop="name">vim</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/" class="post-meta-item leancloud_visitors" data-flag-title="vim-ycm-qt自动补全问题" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/12/21/vim-ycm-qt%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>更新：<br>可以使用<a target="_blank" rel="noopener" href="https://github.com/rdnetto/YCM-Generator">rdnetto/YCM-Generator</a>插件来自动生成<code>.ycm_extra_conf.py</code></p>
+</blockquote>
+<blockquote>
+<p>当前操作系统: osx 10.13<br/><br>使用brew安装的qt5</p>
+</blockquote>
+<p>qt安装目录在哪里不需要管, 因为使用brew更新qt后安装目录会随着版本变动而变动, 但不管哪个版本brew都会在<code>/usr/local/opt/</code>创建一个链接指向真正的目录, 我只安装了qt5, 所以上述目录下有两个链接, qt和qt5, 这两个目录都指向qt5的安装目录, 任选一个路径用于下面的命令即可, 这里使用这个路径:<code>/usr/local/opt/qt</code>.</p>
+<p>执行一个命令来找到所有需要的库的路径:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /usr/local/opt/qt/ -name &quot;Headers&quot; | grep &quot;framework\/Headers&quot; &gt; ~/headers</span><br></pre></td></tr></table></figure>
+<p>执行完毕后会在HOME下生成<code>headers</code>文件, 文件的内容就是qt5所有的库的路径(头文件), 接下来就是将这些路径添加到ycm的配置文件<code>.ycm_extra_conf.py</code>里了, 下面是我修改好的, 保存为:<code>.ycm_extra_conf.py</code>放到项目目录下(或上级目录), ycm就会自动读取了.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br></pre></td><td class="code"><pre><span class="line">from distutils.sysconfig import get_python_inc</span><br><span class="line">import platform</span><br><span class="line">import os</span><br><span class="line">import ycm_core</span><br><span class="line"></span><br><span class="line"># These are the compilation flags that will be used in case there&#x27;s no</span><br><span class="line"># compilation database set (by default, one is not set).</span><br><span class="line"># CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.</span><br><span class="line">flags = [</span><br><span class="line">&#x27;-Wall&#x27;,</span><br><span class="line">&#x27;-Wextra&#x27;,</span><br><span class="line">&#x27;-Werror&#x27;,</span><br><span class="line">&#x27;-Wno-long-long&#x27;,</span><br><span class="line">&#x27;-Wno-variadic-macros&#x27;,</span><br><span class="line">&#x27;-fexceptions&#x27;,</span><br><span class="line">&#x27;-DNDEBUG&#x27;,</span><br><span class="line"># You 100% do NOT need -DUSE_CLANG_COMPLETER in your flags; only the YCM</span><br><span class="line"># source code needs it.</span><br><span class="line">&#x27;-DUSE_CLANG_COMPLETER&#x27;,</span><br><span class="line"># THIS IS IMPORTANT! Without the &#x27;-x&#x27; flag, Clang won&#x27;t know which language to</span><br><span class="line"># use when compiling headers. So it will guess. Badly. So C++ headers will be</span><br><span class="line"># compiled as C headers. You don&#x27;t want that so ALWAYS specify the &#x27;-x&#x27; flag.</span><br><span class="line"># For a C project, you would set this to &#x27;c&#x27; instead of &#x27;c++&#x27;.</span><br><span class="line">&#x27;-x&#x27;,</span><br><span class="line">&#x27;c++&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;../BoostParts&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">get_python_inc(),</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;../llvm/include&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;../llvm/tools/clang/include&#x27;,</span><br><span class="line">&#x27;-I&#x27;,</span><br><span class="line">&#x27;.&#x27;,</span><br><span class="line">&#x27;-I&#x27;,</span><br><span class="line">&#x27;./ClangCompleter&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;./tests/gmock/gtest&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;./tests/gmock/gtest/include&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;./tests/gmock&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;./tests/gmock/include&#x27;,</span><br><span class="line">&#x27;-isystem&#x27;,</span><br><span class="line">&#x27;./benchmarks/benchmark/include&#x27;,</span><br><span class="line"># for qt5 which installed by brew in mac</span><br><span class="line">&#x27;-I&#x27;, &#x27;/usr/local/opt/qt/include&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DAnimation.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DCore.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DExtras.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DInput.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DLogic.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DQuick.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DQuickAnimation.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DQuickExtras.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DQuickInput.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DQuickRender.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DQuickScene2D.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/Qt3DRender.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtBluetooth.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtCharts.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtConcurrent.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtCore.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtDataVisualization.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtDBus.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtDesigner.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtDesignerComponents.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtGamepad.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtGui.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtHelp.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtLocation.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtMacExtras.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtMultimedia.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtMultimediaQuick_p.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtMultimediaWidgets.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtNetwork.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtNetworkAuth.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtNfc.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtOpenGL.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtPositioning.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtPrintSupport.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtPurchasing.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQml.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQuick.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQuickControls2.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQuickParticles.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQuickTemplates2.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQuickTest.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtQuickWidgets.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtRemoteObjects.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtRepParser.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtScript.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtScriptTools.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtScxml.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtSensors.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtSerialBus.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtSerialPort.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtSql.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtSvg.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtTest.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtTextToSpeech.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtUiPlugin.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWebChannel.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWebEngine.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWebEngineCore.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWebEngineWidgets.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWebSockets.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWebView.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtWidgets.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtXml.framework/Headers&#x27;,</span><br><span class="line">&#x27;-I&#x27;,&#x27;/usr/local/opt/qt/lib/QtXmlPatterns.framework/Headers&#x27;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"># Clang automatically sets the &#x27;-std=&#x27; flag to &#x27;c++14&#x27; for MSVC 2015 or later,</span><br><span class="line"># which is required for compiling the standard library, and to &#x27;c++11&#x27; for older</span><br><span class="line"># versions.</span><br><span class="line">if platform.system() != &#x27;Windows&#x27;:</span><br><span class="line">  flags.append( &#x27;-std=c++11&#x27; )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Set this to the absolute path to the folder (NOT the file!) containing the</span><br><span class="line"># compile_commands.json file to use that instead of &#x27;flags&#x27;. See here for</span><br><span class="line"># more details: http://clang.llvm.org/docs/JSONCompilationDatabase.html</span><br><span class="line">#</span><br><span class="line"># You can get CMake to generate this file for you by adding:</span><br><span class="line">#   set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )</span><br><span class="line"># to your CMakeLists.txt file.</span><br><span class="line">#</span><br><span class="line"># Most projects will NOT need to set this to anything; you can just change the</span><br><span class="line"># &#x27;flags&#x27; list of compilation flags. Notice that YCM itself uses that approach.</span><br><span class="line">compilation_database_folder = &#x27;&#x27;</span><br><span class="line"></span><br><span class="line">if os.path.exists( compilation_database_folder ):</span><br><span class="line">  database = ycm_core.CompilationDatabase( compilation_database_folder )</span><br><span class="line">else:</span><br><span class="line">  database = None</span><br><span class="line"></span><br><span class="line">SOURCE_EXTENSIONS = [ &#x27;.cpp&#x27;, &#x27;.cxx&#x27;, &#x27;.cc&#x27;, &#x27;.c&#x27;, &#x27;.m&#x27;, &#x27;.mm&#x27; ]</span><br><span class="line"></span><br><span class="line">def DirectoryOfThisScript():</span><br><span class="line">  return os.path.dirname( os.path.abspath( __file__ ) )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def IsHeaderFile( filename ):</span><br><span class="line">  extension = os.path.splitext( filename )[ 1 ]</span><br><span class="line">  return extension in [ &#x27;.h&#x27;, &#x27;.hxx&#x27;, &#x27;.hpp&#x27;, &#x27;.hh&#x27; ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def GetCompilationInfoForFile( filename ):</span><br><span class="line">  # The compilation_commands.json file generated by CMake does not have entries</span><br><span class="line">  # for header files. So we do our best by asking the db for flags for a</span><br><span class="line">  # corresponding source file, if any. If one exists, the flags for that file</span><br><span class="line">  # should be good enough.</span><br><span class="line">  if IsHeaderFile( filename ):</span><br><span class="line">    basename = os.path.splitext( filename )[ 0 ]</span><br><span class="line">    for extension in SOURCE_EXTENSIONS:</span><br><span class="line">      replacement_file = basename + extension</span><br><span class="line">      if os.path.exists( replacement_file ):</span><br><span class="line">        compilation_info = database.GetCompilationInfoForFile(</span><br><span class="line">          replacement_file )</span><br><span class="line">        if compilation_info.compiler_flags_:</span><br><span class="line">          return compilation_info</span><br><span class="line">    return None</span><br><span class="line">  return database.GetCompilationInfoForFile( filename )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def FlagsForFile( filename, **kwargs ):</span><br><span class="line">  if not database:</span><br><span class="line">    return &#123;</span><br><span class="line">      &#x27;flags&#x27;: flags,</span><br><span class="line">      &#x27;include_paths_relative_to_dir&#x27;: DirectoryOfThisScript()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  compilation_info = GetCompilationInfoForFile( filename )</span><br><span class="line">  if not compilation_info:</span><br><span class="line">    return None</span><br><span class="line"></span><br><span class="line">  # Bear in mind that compilation_info.compiler_flags_ does NOT return a</span><br><span class="line">  # python list, but a &quot;list-like&quot; StringVec object.</span><br><span class="line">  final_flags = list( compilation_info.compiler_flags_ )</span><br><span class="line"></span><br><span class="line">  # NOTE: This is just for YouCompleteMe; it&#x27;s highly likely that your project</span><br><span class="line">  # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR</span><br><span class="line">  # ycm_extra_conf IF YOU&#x27;RE NOT 100% SURE YOU NEED IT.</span><br><span class="line">  try:</span><br><span class="line">    final_flags.remove( &#x27;-stdlib=libc++&#x27; )</span><br><span class="line">  except ValueError:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    &#x27;flags&#x27;: final_flags,</span><br><span class="line">    &#x27;include_paths_relative_to_dir&#x27;: compilation_info.compiler_working_dir_</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/11/25/%E5%A2%9E%E5%A4%A7osx%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1167,115 +1272,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" class="post-title-link" itemprop="url">linux下使用drcom登录认证</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-12-02 18:22:56" itemprop="dateCreated datePublished" datetime="2016-12-02T18:22:56+08:00">2016-12-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" class="post-meta-item leancloud_visitors" data-flag-title="linux下使用drcom登录认证" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p>首先感谢开发者:<br><a target="_blank" rel="noopener" href="https://github.com/drcoms/drcom-generic">https://github.com/drcoms/drcom-generic</a><br>这个项目基于python实现了d,p,x版drcom认证,请到上述链接查看相关信息,<br>项目的wiki简单介绍了各版本的使用方法.</p>
-<p>首先下载上面的<code>drcom-generic</code>,我将其下载到了家目录<code>~/</code>下,完整目录:<code>~/drcom-generic</code></p>
-<h1 id="取得必要信息"><a href="#取得必要信息" class="headerlink" title="取得必要信息"></a>取得必要信息</h1><p>下面启动到windows,或者找一个有windows系统的电脑,因为需要知道官方的drcom客户端是连接的哪个服务器,<br>以及其他信息,用来配置drcom-generic</p>
-<p>在windows下安装上一个软件: wireshark<br>这个软件很好找,就不说怎么安装了,安装好之后,如果你现在使用drcom上网的,<br>那么就<font color="red">退出drcom客户端,也就是注销登录(这一步是必须的)</font></p>
-<p>然后打开wireshark, 软件会列出有所有的网络适配器,我用的是无线网,适配器名称时:”无线网络连接”,<br>只有已连接网络的适配器会有数据波动,如图所示:<br><img src="1.png" alt="list"></p>
-<p>双击已连接网络的适配器,本例中是第二项”无线网络连接”,然后wireshark就开始记录这个适配器的数据了,</p>
-<p>现在打开drcom客户端,输入账户密码点击登录,如图所示:<br><img src="2.png" alt="drcom"></p>
-<p>等登录成功后,点击drcom客户端里的注销,注销之后点击wireshark软件里的”停止”按钮,如图:<br><img src="3.png" alt="stop"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1347,7 +1343,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1360,7 +1356,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">257</span>
+        <span class="site-state-item-count">259</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

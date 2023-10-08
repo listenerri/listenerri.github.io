@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/listenerri-favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/listenerri-favicon-16x16.png">
+  <link rel="mask-icon" href="/images/listenerri-favicon-32x32.png" color="#222">
+  <meta name="baidu-site-verification" content="eshpSLiJfj">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"listenerri.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 概述在 Linux 中生成进程时会执行几个步骤。如果程序依赖于共享库，则除了可执行二进制程序之外，还会将动态链接器加载到内存中。 在本教程中，我们将讨论动态链接器 &#x2F;lib64&#x2F;ld-linux-x86-64.so.2。（译者注：动态链接器名字不是固定的，也可能是 &#x2F;lib&#x2F;ld-linux.so.2 等等，但一般都是以 ld- 开头的一个 so 文件或符号链接） 首先，我们将简要讨论运行程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ld.so linux 动态链接器">
+<meta property="og:url" content="https://listenerri.com/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="listenerri&#39;s blog">
+<meta property="og:description" content="1. 概述在 Linux 中生成进程时会执行几个步骤。如果程序依赖于共享库，则除了可执行二进制程序之外，还会将动态链接器加载到内存中。 在本教程中，我们将讨论动态链接器 &#x2F;lib64&#x2F;ld-linux-x86-64.so.2。（译者注：动态链接器名字不是固定的，也可能是 &#x2F;lib&#x2F;ld-linux.so.2 等等，但一般都是以 ld- 开头的一个 so 文件或符号链接） 首先，我们将简要讨论运行程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-08T07:27:23.000Z">
+<meta property="article:modified_time" content="2023-10-08T07:53:00.040Z">
+<meta property="article:author" content="listenerri">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="ld.so">
+<meta property="article:tag" content="动态链接器">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://listenerri.com/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ld.so linux 动态链接器 | listenerri's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f4f2d9354392e6db69ef67305fca0a31";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">listenerri's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学的越多越发现会的越少 : )</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-in-a-few-words">
+
+    <a href="/in-a-few-words/" rel="section"><i class="fa fa-fw fa-list"></i>句不成章</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ld.so linux 动态链接器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-10-08 15:27:23 / 修改时间：15:53:00" itemprop="dateCreated datePublished" datetime="2023-10-08T15:27:23+08:00">2023-10-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/" class="post-meta-item leancloud_visitors" data-flag-title="ld.so linux 动态链接器" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>在 Linux 中生成进程时会执行几个步骤。如果程序依赖于共享库，则除了可执行二进制程序之外，还会将动态链接器加载到内存中。</p>
+<p>在本教程中，我们将讨论动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code>。（译者注：动态链接器名字不是固定的，也可能是 <code>/lib/ld-linux.so.2</code> 等等，但一般都是以 <code>ld-</code> 开头的一个 so 文件或符号链接）</p>
+<p>首先，我们将简要讨论运行程序的内部结构以及动态链接在此过程中发生的位置。然后，我们将看到一个显示动态链接器用法的示例。</p>
+<h1 id="2-动态链接器简介"><a href="#2-动态链接器简介" class="headerlink" title="2. 动态链接器简介"></a>2. 动态链接器简介</h1><p>在了解动态链接器之前，我们首先简要讨论程序的执行，以了解动态链接器的作用。</p>
+<h2 id="2-1-可执行二进制文件是如何执行的？"><a href="#2-1-可执行二进制文件是如何执行的？" class="headerlink" title="2.1. 可执行二进制文件是如何执行的？"></a>2.1. 可执行二进制文件是如何执行的？</h2><p>当我们从命令行启动一个进程时，shell 首先调用系统调用 <code>execve()</code> 来执行程序。它打开可执行文件，并经过一些准备后，将可执行文件加载到内存中。</p>
+<p><strong>如果可执行文件具有共享库依赖项，则还会加载并运行解释器来组装依赖的共享库。这个解释器就是动态链接器。</strong></p>
+<p>一旦动态链接器完成其工作，控制权就会传递给用户程序。</p>
+<h2 id="2-2-动态链接器"><a href="#2-2-动态链接器" class="headerlink" title="2.2. 动态链接器"></a>2.2. 动态链接器</h2><p>ELF（可执行和可链接格式）是 Linux 中的标准二进制文件格式。</p>
+<p><strong>可执行文件的 ELF 文件始终有一个称为程序头表的部分。此部分提供运行可执行文件时所需的信息。</strong></p>
+<p>运行可执行文件时程序头表中重要的条目之一是 <code>PT_INTERP</code> 条目。此条目指定在运行之前组装完整程序所需的运行时或动态链接器。</p>
+<p>动态链接器执行多项任务：</p>
+<ul>
+<li>找到必要的共享库</li>
+<li>将共享库加载到内存中</li>
+<li>使用共享库中的符号解析程序的未定义符号</li>
+<li>组装程序，以便进程可以在运行时调用共享库中的函数</li>
+</ul>
+<p>换句话说，程序头表中 <code>PT_INTERP</code> 条目指定的解释器在运行时管理可执行文件依赖的共享库。</p>
+<p>（译者注：在某些系统下）gcc 默认将动态链接器设置为 <code>/lib64/ld-linux-x86-64.so.2</code>。我们可以使用 readelf 命令检查它的存在：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">readelf -l /usr/bin/ls | head -20</span><br><span class="line"></span><br><span class="line">Elf file type is DYN (Shared object file)</span><br><span class="line">Entry point 0x6b10</span><br><span class="line">There are 13 program headers, starting at offset 64</span><br><span class="line"></span><br><span class="line">Program Headers:</span><br><span class="line">  Type           Offset             VirtAddr           PhysAddr                 FileSiz            MemSiz              Flags  Align</span><br><span class="line">  PHDR           0x0000000000000040 0x0000000000000040 0x0000000000000040       0x00000000000002d8 0x00000000000002d8  R      0x8</span><br><span class="line">  INTERP         0x0000000000000318 0x0000000000000318 0x0000000000000318       0x000000000000001c 0x000000000000001c  R      0x1      [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]</span><br><span class="line">  LOAD           0x0000000000000000 0x0000000000000000 0x0000000000000000       0x0000000000003510 0x0000000000003510  R      0x1000</span><br><span class="line">  LOAD           0x0000000000004000 0x0000000000004000 0x0000000000004000       0x0000000000013111 0x0000000000013111  R E    0x1000</span><br><span class="line">  LOAD           0x0000000000018000 0x0000000000018000 0x0000000000018000       0x0000000000007530 0x0000000000007530  R      0x1000</span><br><span class="line">  LOAD           0x000000000001ff70 0x0000000000020f70 0x0000000000020f70</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 head 命令来获得更短的输出。 readelf 的 <code>-l</code> 选项列出 ELF 文件中的程序头。我们列出 <code>/usr/bin/ls</code> 的程序头作为示例。正如我们在程序头的 <code>INTERP</code> 条目中看到的，可执行文件需要动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code> 作为解释器。</p>
+<p>因此，当我们运行具有共享库依赖项的可执行文件时，动态链接器会间接运行。但是，也可以通过调用动态链接器来直接运行动态链接的程序。我们将在下一节中看到一个示例。</p>
+<p>ldd 命令也可以列出动态链接器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ldd /usr/bin/ls</span><br><span class="line">	linux-vdso.so.1 (0x00007fff54f89000)</span><br><span class="line">	libselinux.so.1 =&gt; /lib64/libselinux.so.1 (0x00007f1000b17000)</span><br><span class="line">	libcap.so.2 =&gt; /lib64/libcap.so.2 (0x00007f1000b0d000)</span><br><span class="line">	libc.so.6 =&gt; /lib64/libc.so.6 (0x00007f1000903000)</span><br><span class="line">	libpcre2-8.so.0 =&gt; /lib64/libpcre2-8.so.0 (0x00007f100086c000)</span><br><span class="line">	/lib64/ld-linux-x86-64.so.2 (0x00007f1000b74000)</span><br></pre></td></tr></table></figure>
+
+<p>动态链接器是输出中的最后一个条目。</p>
+<h1 id="3-一个例子"><a href="#3-一个例子" class="headerlink" title="3. 一个例子"></a>3. 一个例子</h1><p>在本节中，我们将使用示例来试验动态链接器。</p>
+<h2 id="3-1-示例代码"><a href="#3-1-示例代码" class="headerlink" title="3.1. 示例代码"></a>3.1. 示例代码</h2><p>我们将在示例中使用以下 C 程序 hello.c：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(int ac, char **av)</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Hello %s\n&quot;, av[1]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构建了可执行文件后，让我们运行它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>可执行文件按预期运行。</p>
+<h2 id="3-2-显式使用动态链接器"><a href="#3-2-显式使用动态链接器" class="headerlink" title="3.2. 显式使用动态链接器"></a>3.2. 显式使用动态链接器</h2><p>现在，让我们使用动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code> 运行 hello：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/lib64/ld-linux-x86-64.so.2 ./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>可执行文件再次按预期运行。我们只需将可执行文件及其参数传递给动态链接器。</p>
+<p>即使二进制文件没有执行权限，我们也可以使用动态链接器运行二进制文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod -x hello</span><br><span class="line">ls -l hello</span><br><span class="line">-rw-rw-r-- 1 centos centos 25680 Aug 27 05:17 hello</span><br><span class="line">/lib64/ld-linux-x86-64.so.2 ./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>如输出所示，使用 <code>chmod -x hello</code> 删除二进制 hello 的执行权限后，我们仍然可以使用动态链接器运行应用程序。</p>
+<h2 id="3-3-显式设置动态链接器"><a href="#3-3-显式设置动态链接器" class="headerlink" title="3.3. 显式设置动态链接器"></a>3.3. 显式设置动态链接器</h2><p>正如我们已经看到的，（译者注：在某些系统下）gcc 默认将 <code>/lib64/ld-linux-x86-64.so.2</code> 设置为动态链接器。但是，可以在链接期间显式设置动态链接器。</p>
+<p>首先，我们将 <code>/lib64/ld-linux-x86-64.so.2</code> 复制到 <code>/tmp</code>，名称为 <code>my_ld.so</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /lib64/ld-linux-x86-64.so.2 /tmp/my_ld.so</span><br></pre></td></tr></table></figure>
+
+<p>我们将在构建 hello 时指定 <code>/tmp/my_ld.so</code> 作为动态链接器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o hello hello.c -Wl,-I/tmp/my_ld.so</span><br></pre></td></tr></table></figure>
+
+<p>gcc 的 <code>-Wl</code> 选项让我们可以传递链接器选项。在我们的例子中，<code>-Wl,-I/tmp/my_ld.so</code> 指定 <code>/tmp/my_ld.so</code> 用作动态链接器。让我们使用 readelf 检查程序头表中的 <code>PT_INTERP</code> 条目：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">readelf -l ./hello | grep -B2 interpreter</span><br><span class="line">  INTERP         0x0000000000000318 0x0000000000400318 0x0000000000400318 0x000000000000000e 0x000000000000000e  R      0x1      [Requesting program interpreter: /tmp/my_ld.so]</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 grep 来优化 readelf 的输出。从输出中可以明显看出，动态链接器现在是 <code>/tmp/my_ld.so</code>。让我们使用 <code>/tmp/my_ld.so</code> 运行 hello：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/tmp/my_ld.so ./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>程序按预期运行。因此，我们成功地更改了默认的动态链接器。</p>
+<h1 id="4-结论"><a href="#4-结论" class="headerlink" title="4. 结论"></a>4. 结论</h1><p>在本文中，我们讨论了动态链接器。我们看到动态链接器在生成进程时管理其共享库依赖关系方面发挥着至关重要的作用。</p>
+<p>我们了解到 <code>/lib64/ld-linux-x86-64.so.2</code> （译者注：在某些系统下）是默认的动态链接器。然后，我们讨论了一个例子。我们看到我们可以在链接程序时更改动态链接器。</p>
+<blockquote>
+<p>翻译自：<a target="_blank" rel="noopener" href="https://www.baeldung.com/linux/dynamic-linker">https://www.baeldung.com/linux/dynamic-linker</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/ld-so/" rel="tag"># ld.so</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%99%A8/" rel="tag"># 动态链接器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" rel="prev" title="zeromq 使用笔记">
+      <i class="fa fa-chevron-left"></i> zeromq 使用笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">2. 动态链接器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%8F%AF%E6%89%A7%E8%A1%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E6%98%AF%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%E7%9A%84%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 可执行二进制文件是如何执行的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 动态链接器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">3.</span> <span class="nav-text">3. 一个例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 示例代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%98%BE%E5%BC%8F%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 显式使用动态链接器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%98%BE%E5%BC%8F%E8%AE%BE%E7%BD%AE%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%99%A8"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. 显式设置动态链接器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%BB%93%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">4. 结论</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="listenerri"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">listenerri</p>
+  <div class="site-description" itemprop="description">学的越多越发现会的越少 : )</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">259</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/listenerri" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;listenerri" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:listenerri@gmail.com" title="E-Mail → mailto:listenerri@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.justforlxz.com/" title="http:&#x2F;&#x2F;blog.justforlxz.com" rel="noopener" target="_blank">竹子</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_33449307" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_33449307" rel="noopener" target="_blank">DD</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/itguangit" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;itguangit" rel="noopener" target="_blank">XiaoGuang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhiqiu.top/" title="https:&#x2F;&#x2F;zhiqiu.top" rel="noopener" target="_blank">一叶知秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.mksoft.work/" title="http:&#x2F;&#x2F;www.mksoft.work" rel="noopener" target="_blank">YC</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listenerri</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'X0UkF88VBoXXbzI80WhmgIyF-gzGzoHsz',
+      appKey     : 'CLyVWqSO30mL4Hg34jCGTheF',
+      placeholder: "I have something to say",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -202,6 +202,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/" class="post-title-link" itemprop="url">ld.so linux 动态链接器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-10-08 15:27:23 / 修改时间：15:53:00" itemprop="dateCreated datePublished" datetime="2023-10-08T15:27:23+08:00">2023-10-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index"><span itemprop="name">translation</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/" class="post-meta-item leancloud_visitors" data-flag-title="ld.so linux 动态链接器" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>在 Linux 中生成进程时会执行几个步骤。如果程序依赖于共享库，则除了可执行二进制程序之外，还会将动态链接器加载到内存中。</p>
+<p>在本教程中，我们将讨论动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code>。（译者注：动态链接器名字不是固定的，也可能是 <code>/lib/ld-linux.so.2</code> 等等，但一般都是以 <code>ld-</code> 开头的一个 so 文件或符号链接）</p>
+<p>首先，我们将简要讨论运行程序的内部结构以及动态链接在此过程中发生的位置。然后，我们将看到一个显示动态链接器用法的示例。</p>
+<h1 id="2-动态链接器简介"><a href="#2-动态链接器简介" class="headerlink" title="2. 动态链接器简介"></a>2. 动态链接器简介</h1><p>在了解动态链接器之前，我们首先简要讨论程序的执行，以了解动态链接器的作用。</p>
+<h2 id="2-1-可执行二进制文件是如何执行的？"><a href="#2-1-可执行二进制文件是如何执行的？" class="headerlink" title="2.1. 可执行二进制文件是如何执行的？"></a>2.1. 可执行二进制文件是如何执行的？</h2><p>当我们从命令行启动一个进程时，shell 首先调用系统调用 <code>execve()</code> 来执行程序。它打开可执行文件，并经过一些准备后，将可执行文件加载到内存中。</p>
+<p><strong>如果可执行文件具有共享库依赖项，则还会加载并运行解释器来组装依赖的共享库。这个解释器就是动态链接器。</strong></p>
+<p>一旦动态链接器完成其工作，控制权就会传递给用户程序。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/08/31/zeromq-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1153,109 +1255,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">关于 vspd 中的几个模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-06-12 14:14:39 / 修改时间：14:20:00" itemprop="dateCreated datePublished" datetime="2023-06-12T14:14:39+08:00">2023-06-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/" class="post-meta-item leancloud_visitors" data-flag-title="关于 vspd 中的几个模式" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>vspd 全称虚拟串口驱动，官方也没有给出很详细的文档，这里仅记录一些自己的理解</p>
-<p>测试版本：vspd-v9.0，我主要用来创建虚拟串口以供测试使用</p>
-<h2 id="模式-Pairing"><a href="#模式-Pairing" class="headerlink" title="模式 Pairing"></a>模式 Pairing</h2><p>可成对得创建相互连通的虚拟 COM 口，仅能选择新的虚拟 COM 口进行创建，不能使用已存在的 COM 口</p>
-<p>举例：<br>创建 COM100 与 COM101 作为 Pairing，使用串口工具打开两个 COM 口，可以互发数据</p>
-<h2 id="模式-Split"><a href="#模式-Split" class="headerlink" title="模式 Split"></a>模式 Split</h2><p>将一个真实 COM 串口 split 为多个虚拟 COM 口<br>在这种情况下，被 split 的真实 COM 口接收到的所有数据都会发送到每个 split 出来的虚拟 COM 口<br>反之亦然，即每个 split 出来的虚拟 COM 口接收到的所有数据，都会发送到真实 COM 口</p>
-<p>注意，一旦设置生效，则被 split 的真实 COM 口将始终处于被占用状态，其他串口调试工具将无法再次打开它，split 出来的虚拟 COM 口则必须是新创建的，不能是已存在的 COM 口</p>
-<p>举例：<br>电脑上存在一个真实 COM 口名为 COM1，将其在 Split 模式下拆分到新的 2 个虚拟 COM 口：COM100 和 COM101，当 COM1 （从外部）接收到数据时，COM100 和 COM101 也都能接收到同样的数据<br>反过来，当 COM100 或 COM101 接收到数据时，COM1 也将接收到同样的数据</p>
-<p>注：<br>所以 COM100 和 COM101 都相当于是 COM1 的引用？<br>并发问题？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/12/%E5%85%B3%E4%BA%8E-vspd-%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1327,7 +1326,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1340,7 +1339,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">257</span>
+        <span class="site-state-item-count">259</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

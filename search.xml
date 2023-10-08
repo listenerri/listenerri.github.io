@@ -2182,19 +2182,6 @@
       </tags>
   </entry>
   <entry>
-    <title>docker 容器起不来怎么办</title>
-    <url>/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
-    <content><![CDATA[<p>有时 docker 容器会由于错误修改了某些配置文件而无法启动，如 <code>entrypoint</code> 脚本或服务程序的配置文件等等，如果容器内没有什么有价值的数据，那么重新创建容器自然是首选，本文讨论的是容器不能被删除，该如何修复这种情况。</p>
-<p>容器跑不起来，<code>docker exec</code> 命令就无法运行，这意味着无法进入容器，修正有问题的配置文件；此时可以使用 <code>docker cp</code> 命令，将容器内的出问题的配置文件复制出来到主机上，在主机上修正配置文件后，再使用 <code>docker cp</code> 命令将其复制回容器内，覆盖掉容器内的原文件，此时执行 <code>docker start</code> 命令启动容器就可以了。</p>
-]]></content>
-      <categories>
-        <category>docker</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>docker-CMD-ENTRYPOINT</title>
     <url>/2017/09/13/docker-CMD-ENTRYPOINT/</url>
     <content><![CDATA[<p>一张图解释Dockerfile中CMD和ENTRYPOINT的关系,<br>另外使用’docker run’新建容器时, 镜像后面跟的命令会覆盖Dockerfile中的CMD.<br><img src="docker.png" alt="docker"></p>
@@ -2206,6 +2193,19 @@
         <tag>docker</tag>
         <tag>cmd</tag>
         <tag>entrypoint</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker 容器起不来怎么办</title>
+    <url>/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+    <content><![CDATA[<p>有时 docker 容器会由于错误修改了某些配置文件而无法启动，如 <code>entrypoint</code> 脚本或服务程序的配置文件等等，如果容器内没有什么有价值的数据，那么重新创建容器自然是首选，本文讨论的是容器不能被删除，该如何修复这种情况。</p>
+<p>容器跑不起来，<code>docker exec</code> 命令就无法运行，这意味着无法进入容器，修正有问题的配置文件；此时可以使用 <code>docker cp</code> 命令，将容器内的出问题的配置文件复制出来到主机上，在主机上修正配置文件后，再使用 <code>docker cp</code> 命令将其复制回容器内，覆盖掉容器内的原文件，此时执行 <code>docker start</code> 命令启动容器就可以了。</p>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -2744,6 +2744,81 @@
       </tags>
   </entry>
   <entry>
+    <title>ld.so linux 动态链接器</title>
+    <url>/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/</url>
+    <content><![CDATA[<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>在 Linux 中生成进程时会执行几个步骤。如果程序依赖于共享库，则除了可执行二进制程序之外，还会将动态链接器加载到内存中。</p>
+<p>在本教程中，我们将讨论动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code>。（译者注：动态链接器名字不是固定的，也可能是 <code>/lib/ld-linux.so.2</code> 等等，但一般都是以 <code>ld-</code> 开头的一个 so 文件或符号链接）</p>
+<p>首先，我们将简要讨论运行程序的内部结构以及动态链接在此过程中发生的位置。然后，我们将看到一个显示动态链接器用法的示例。</p>
+<h1 id="2-动态链接器简介"><a href="#2-动态链接器简介" class="headerlink" title="2. 动态链接器简介"></a>2. 动态链接器简介</h1><p>在了解动态链接器之前，我们首先简要讨论程序的执行，以了解动态链接器的作用。</p>
+<h2 id="2-1-可执行二进制文件是如何执行的？"><a href="#2-1-可执行二进制文件是如何执行的？" class="headerlink" title="2.1. 可执行二进制文件是如何执行的？"></a>2.1. 可执行二进制文件是如何执行的？</h2><p>当我们从命令行启动一个进程时，shell 首先调用系统调用 <code>execve()</code> 来执行程序。它打开可执行文件，并经过一些准备后，将可执行文件加载到内存中。</p>
+<p><strong>如果可执行文件具有共享库依赖项，则还会加载并运行解释器来组装依赖的共享库。这个解释器就是动态链接器。</strong></p>
+<p>一旦动态链接器完成其工作，控制权就会传递给用户程序。</p>
+<h2 id="2-2-动态链接器"><a href="#2-2-动态链接器" class="headerlink" title="2.2. 动态链接器"></a>2.2. 动态链接器</h2><p>ELF（可执行和可链接格式）是 Linux 中的标准二进制文件格式。</p>
+<p><strong>可执行文件的 ELF 文件始终有一个称为程序头表的部分。此部分提供运行可执行文件时所需的信息。</strong></p>
+<p>运行可执行文件时程序头表中重要的条目之一是 <code>PT_INTERP</code> 条目。此条目指定在运行之前组装完整程序所需的运行时或动态链接器。</p>
+<p>动态链接器执行多项任务：</p>
+<ul>
+<li>找到必要的共享库</li>
+<li>将共享库加载到内存中</li>
+<li>使用共享库中的符号解析程序的未定义符号</li>
+<li>组装程序，以便进程可以在运行时调用共享库中的函数</li>
+</ul>
+<p>换句话说，程序头表中 <code>PT_INTERP</code> 条目指定的解释器在运行时管理可执行文件依赖的共享库。</p>
+<p>（译者注：在某些系统下）gcc 默认将动态链接器设置为 <code>/lib64/ld-linux-x86-64.so.2</code>。我们可以使用 readelf 命令检查它的存在：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">readelf -l /usr/bin/ls | head -20</span><br><span class="line"></span><br><span class="line">Elf file type is DYN (Shared object file)</span><br><span class="line">Entry point 0x6b10</span><br><span class="line">There are 13 program headers, starting at offset 64</span><br><span class="line"></span><br><span class="line">Program Headers:</span><br><span class="line">  Type           Offset             VirtAddr           PhysAddr                 FileSiz            MemSiz              Flags  Align</span><br><span class="line">  PHDR           0x0000000000000040 0x0000000000000040 0x0000000000000040       0x00000000000002d8 0x00000000000002d8  R      0x8</span><br><span class="line">  INTERP         0x0000000000000318 0x0000000000000318 0x0000000000000318       0x000000000000001c 0x000000000000001c  R      0x1      [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]</span><br><span class="line">  LOAD           0x0000000000000000 0x0000000000000000 0x0000000000000000       0x0000000000003510 0x0000000000003510  R      0x1000</span><br><span class="line">  LOAD           0x0000000000004000 0x0000000000004000 0x0000000000004000       0x0000000000013111 0x0000000000013111  R E    0x1000</span><br><span class="line">  LOAD           0x0000000000018000 0x0000000000018000 0x0000000000018000       0x0000000000007530 0x0000000000007530  R      0x1000</span><br><span class="line">  LOAD           0x000000000001ff70 0x0000000000020f70 0x0000000000020f70</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 head 命令来获得更短的输出。 readelf 的 <code>-l</code> 选项列出 ELF 文件中的程序头。我们列出 <code>/usr/bin/ls</code> 的程序头作为示例。正如我们在程序头的 <code>INTERP</code> 条目中看到的，可执行文件需要动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code> 作为解释器。</p>
+<p>因此，当我们运行具有共享库依赖项的可执行文件时，动态链接器会间接运行。但是，也可以通过调用动态链接器来直接运行动态链接的程序。我们将在下一节中看到一个示例。</p>
+<p>ldd 命令也可以列出动态链接器：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ldd /usr/bin/ls</span><br><span class="line">	linux-vdso.so.1 (0x00007fff54f89000)</span><br><span class="line">	libselinux.so.1 =&gt; /lib64/libselinux.so.1 (0x00007f1000b17000)</span><br><span class="line">	libcap.so.2 =&gt; /lib64/libcap.so.2 (0x00007f1000b0d000)</span><br><span class="line">	libc.so.6 =&gt; /lib64/libc.so.6 (0x00007f1000903000)</span><br><span class="line">	libpcre2-8.so.0 =&gt; /lib64/libpcre2-8.so.0 (0x00007f100086c000)</span><br><span class="line">	/lib64/ld-linux-x86-64.so.2 (0x00007f1000b74000)</span><br></pre></td></tr></table></figure>
+
+<p>动态链接器是输出中的最后一个条目。</p>
+<h1 id="3-一个例子"><a href="#3-一个例子" class="headerlink" title="3. 一个例子"></a>3. 一个例子</h1><p>在本节中，我们将使用示例来试验动态链接器。</p>
+<h2 id="3-1-示例代码"><a href="#3-1-示例代码" class="headerlink" title="3.1. 示例代码"></a>3.1. 示例代码</h2><p>我们将在示例中使用以下 C 程序 hello.c：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(int ac, char **av)</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Hello %s\n&quot;, av[1]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构建了可执行文件后，让我们运行它：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>可执行文件按预期运行。</p>
+<h2 id="3-2-显式使用动态链接器"><a href="#3-2-显式使用动态链接器" class="headerlink" title="3.2. 显式使用动态链接器"></a>3.2. 显式使用动态链接器</h2><p>现在，让我们使用动态链接器 <code>/lib64/ld-linux-x86-64.so.2</code> 运行 hello：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/lib64/ld-linux-x86-64.so.2 ./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>可执行文件再次按预期运行。我们只需将可执行文件及其参数传递给动态链接器。</p>
+<p>即使二进制文件没有执行权限，我们也可以使用动态链接器运行二进制文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod -x hello</span><br><span class="line">ls -l hello</span><br><span class="line">-rw-rw-r-- 1 centos centos 25680 Aug 27 05:17 hello</span><br><span class="line">/lib64/ld-linux-x86-64.so.2 ./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>如输出所示，使用 <code>chmod -x hello</code> 删除二进制 hello 的执行权限后，我们仍然可以使用动态链接器运行应用程序。</p>
+<h2 id="3-3-显式设置动态链接器"><a href="#3-3-显式设置动态链接器" class="headerlink" title="3.3. 显式设置动态链接器"></a>3.3. 显式设置动态链接器</h2><p>正如我们已经看到的，（译者注：在某些系统下）gcc 默认将 <code>/lib64/ld-linux-x86-64.so.2</code> 设置为动态链接器。但是，可以在链接期间显式设置动态链接器。</p>
+<p>首先，我们将 <code>/lib64/ld-linux-x86-64.so.2</code> 复制到 <code>/tmp</code>，名称为 <code>my_ld.so</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp /lib64/ld-linux-x86-64.so.2 /tmp/my_ld.so</span><br></pre></td></tr></table></figure>
+
+<p>我们将在构建 hello 时指定 <code>/tmp/my_ld.so</code> 作为动态链接器：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc -o hello hello.c -Wl,-I/tmp/my_ld.so</span><br></pre></td></tr></table></figure>
+
+<p>gcc 的 <code>-Wl</code> 选项让我们可以传递链接器选项。在我们的例子中，<code>-Wl,-I/tmp/my_ld.so</code> 指定 <code>/tmp/my_ld.so</code> 用作动态链接器。让我们使用 readelf 检查程序头表中的 <code>PT_INTERP</code> 条目：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">readelf -l ./hello | grep -B2 interpreter</span><br><span class="line">  INTERP         0x0000000000000318 0x0000000000400318 0x0000000000400318 0x000000000000000e 0x000000000000000e  R      0x1      [Requesting program interpreter: /tmp/my_ld.so]</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 grep 来优化 readelf 的输出。从输出中可以明显看出，动态链接器现在是 <code>/tmp/my_ld.so</code>。让我们使用 <code>/tmp/my_ld.so</code> 运行 hello：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/tmp/my_ld.so ./hello Baeldung</span><br><span class="line">Hello Baeldung</span><br></pre></td></tr></table></figure>
+
+<p>程序按预期运行。因此，我们成功地更改了默认的动态链接器。</p>
+<h1 id="4-结论"><a href="#4-结论" class="headerlink" title="4. 结论"></a>4. 结论</h1><p>在本文中，我们讨论了动态链接器。我们看到动态链接器在生成进程时管理其共享库依赖关系方面发挥着至关重要的作用。</p>
+<p>我们了解到 <code>/lib64/ld-linux-x86-64.so.2</code> （译者注：在某些系统下）是默认的动态链接器。然后，我们讨论了一个例子。我们看到我们可以在链接程序时更改动态链接器。</p>
+<blockquote>
+<p>翻译自：<a href="https://www.baeldung.com/linux/dynamic-linker">https://www.baeldung.com/linux/dynamic-linker</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>translation</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ld.so</tag>
+        <tag>动态链接器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>linux 仅使用外接显示器很卡 鼠标流畅 但鼠标事件相应慢</title>
     <url>/2023/08/31/linux-%E4%BB%85%E4%BD%BF%E7%94%A8%E5%A4%96%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%99%A8%E5%BE%88%E5%8D%A1-%E9%BC%A0%E6%A0%87%E6%B5%81%E7%95%85-%E4%BD%86%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E7%9B%B8%E5%BA%94%E6%85%A2/</url>
     <content><![CDATA[<p>还是 linux 下双显卡的老大难问题，解决方法参考：</p>
@@ -3226,6 +3301,27 @@
       </tags>
   </entry>
   <entry>
+    <title>macvim 图形界面无法显示中文</title>
+    <url>/2020/02/17/macvim-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87/</url>
+    <content><![CDATA[<p>使用 brew cask 安装的 macvim，版本为：<code>8.1.2234,161</code></p>
+<p>macvim 图形界面中文显示成问号，但在终端下面却可以正常显示，网上搜了很久都在说编码问题，其实不是，正解如下：</p>
+<ol>
+<li>打开 macvim GUI</li>
+<li>点击菜单栏-Preferences</li>
+<li>点击 Advanced</li>
+<li>取消选中 <code>Use Core Text renderer</code> 选项</li>
+<li>重启 macvim GUI</li>
+</ol>
+]]></content>
+      <categories>
+        <category>osx</category>
+      </categories>
+      <tags>
+        <tag>osx</tag>
+        <tag>macvim</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>minikube 启动失败</title>
     <url>/2020/04/07/minikube-%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/</url>
     <content><![CDATA[<p>首先：</p>
@@ -3274,27 +3370,6 @@
       </categories>
       <tags>
         <tag>minikube</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>macvim 图形界面无法显示中文</title>
-    <url>/2020/02/17/macvim-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87/</url>
-    <content><![CDATA[<p>使用 brew cask 安装的 macvim，版本为：<code>8.1.2234,161</code></p>
-<p>macvim 图形界面中文显示成问号，但在终端下面却可以正常显示，网上搜了很久都在说编码问题，其实不是，正解如下：</p>
-<ol>
-<li>打开 macvim GUI</li>
-<li>点击菜单栏-Preferences</li>
-<li>点击 Advanced</li>
-<li>取消选中 <code>Use Core Text renderer</code> 选项</li>
-<li>重启 macvim GUI</li>
-</ol>
-]]></content>
-      <categories>
-        <category>osx</category>
-      </categories>
-      <tags>
-        <tag>osx</tag>
-        <tag>macvim</tag>
       </tags>
   </entry>
   <entry>
@@ -6020,6 +6095,43 @@
       </tags>
   </entry>
   <entry>
+    <title>线段树-区间树-范围树-二叉索引树</title>
+    <url>/2020/04/02/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E5%8C%BA%E9%97%B4%E6%A0%91-%E8%8C%83%E5%9B%B4%E6%A0%91-%E4%BA%8C%E5%8F%89%E7%B4%A2%E5%BC%95%E6%A0%91/</url>
+    <content><![CDATA[<blockquote>
+<p>原文：<a href="https://stackoverflow.com/a/17504505">https://stackoverflow.com/a/17504505</a></p>
+</blockquote>
+<p>中英对照：</p>
+<ul>
+<li>Segment tree 线段树</li>
+<li>Interval tree 区间树</li>
+<li>Range tree 范围树</li>
+<li>Binary indexed tree 二叉索引树</li>
+</ul>
+<p>主要用于解决的问题：</p>
+<ul>
+<li>Segment tree 存储区间，查询哪些区间包含给定的点</li>
+<li>Interval tree 存储区间，查询哪些区间与给定区间相交，也支持点查询（Segment tree）</li>
+<li>Range tree 存储点，查询哪些点落在了给定区间</li>
+<li>Binary indexed tree 存储每个索引的项目数，查询索引 m 和 n 之间有多少个项目</li>
+</ul>
+<p>性能（k 是结果数）：</p>
+<ul>
+<li>Segment tree O(n logn) 预处理时间，O(k+logn) 查询，O(n logn) 空间</li>
+<li>Interval tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
+<li>Range tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
+<li>Binary indexed tree O(n logn) 预处理时间，O(logn) 查询，O(n) 空间</li>
+</ul>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>segment</tag>
+        <tag>interval</tag>
+        <tag>range</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>源码构建qtcreator记录</title>
     <url>/2019/02/24/%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BAqtcreator%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>在 deepin linux 系统下编译 qtcreator 4.8.0 版本，可是按照官方 README 却始终编译不通过，遇到了以下几个问题，并列出了相关解决方案。当然官方的 README 上所说的编译依赖还是要装上的。</p>
@@ -6065,43 +6177,6 @@
         <tag>qtcreator</tag>
         <tag>build</tag>
         <tag>编译</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>线段树-区间树-范围树-二叉索引树</title>
-    <url>/2020/04/02/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E5%8C%BA%E9%97%B4%E6%A0%91-%E8%8C%83%E5%9B%B4%E6%A0%91-%E4%BA%8C%E5%8F%89%E7%B4%A2%E5%BC%95%E6%A0%91/</url>
-    <content><![CDATA[<blockquote>
-<p>原文：<a href="https://stackoverflow.com/a/17504505">https://stackoverflow.com/a/17504505</a></p>
-</blockquote>
-<p>中英对照：</p>
-<ul>
-<li>Segment tree 线段树</li>
-<li>Interval tree 区间树</li>
-<li>Range tree 范围树</li>
-<li>Binary indexed tree 二叉索引树</li>
-</ul>
-<p>主要用于解决的问题：</p>
-<ul>
-<li>Segment tree 存储区间，查询哪些区间包含给定的点</li>
-<li>Interval tree 存储区间，查询哪些区间与给定区间相交，也支持点查询（Segment tree）</li>
-<li>Range tree 存储点，查询哪些点落在了给定区间</li>
-<li>Binary indexed tree 存储每个索引的项目数，查询索引 m 和 n 之间有多少个项目</li>
-</ul>
-<p>性能（k 是结果数）：</p>
-<ul>
-<li>Segment tree O(n logn) 预处理时间，O(k+logn) 查询，O(n logn) 空间</li>
-<li>Interval tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
-<li>Range tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
-<li>Binary indexed tree O(n logn) 预处理时间，O(logn) 查询，O(n) 空间</li>
-</ul>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>segment</tag>
-        <tag>interval</tag>
-        <tag>range</tag>
       </tags>
   </entry>
   <entry>

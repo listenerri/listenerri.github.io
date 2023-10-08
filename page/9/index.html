@@ -202,6 +202,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" class="post-title-link" itemprop="url">linux下使用drcom登录认证</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-12-02 18:22:56" itemprop="dateCreated datePublished" datetime="2016-12-02T18:22:56+08:00">2016-12-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" class="post-meta-item leancloud_visitors" data-flag-title="linux下使用drcom登录认证" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p>首先感谢开发者:<br><a target="_blank" rel="noopener" href="https://github.com/drcoms/drcom-generic">https://github.com/drcoms/drcom-generic</a><br>这个项目基于python实现了d,p,x版drcom认证,请到上述链接查看相关信息,<br>项目的wiki简单介绍了各版本的使用方法.</p>
+<p>首先下载上面的<code>drcom-generic</code>,我将其下载到了家目录<code>~/</code>下,完整目录:<code>~/drcom-generic</code></p>
+<h1 id="取得必要信息"><a href="#取得必要信息" class="headerlink" title="取得必要信息"></a>取得必要信息</h1><p>下面启动到windows,或者找一个有windows系统的电脑,因为需要知道官方的drcom客户端是连接的哪个服务器,<br>以及其他信息,用来配置drcom-generic</p>
+<p>在windows下安装上一个软件: wireshark<br>这个软件很好找,就不说怎么安装了,安装好之后,如果你现在使用drcom上网的,<br>那么就<font color="red">退出drcom客户端,也就是注销登录(这一步是必须的)</font></p>
+<p>然后打开wireshark, 软件会列出有所有的网络适配器,我用的是无线网,适配器名称时:”无线网络连接”,<br>只有已连接网络的适配器会有数据波动,如图所示:<br><img src="1.png" alt="list"></p>
+<p>双击已连接网络的适配器,本例中是第二项”无线网络连接”,然后wireshark就开始记录这个适配器的数据了,</p>
+<p>现在打开drcom客户端,输入账户密码点击登录,如图所示:<br><img src="2.png" alt="drcom"></p>
+<p>等登录成功后,点击drcom客户端里的注销,注销之后点击wireshark软件里的”停止”按钮,如图:<br><img src="3.png" alt="stop"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/12/02/linux%E4%B8%8B%E4%BD%BF%E7%94%A8drcom%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/11/06/c%E8%AF%AD%E8%A8%80%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BF%AE%E6%94%B9%E6%8C%87%E9%92%88%E7%9A%84%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1174,116 +1283,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/" class="post-title-link" itemprop="url">c语言strlen()与sizeof</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 20:25:13" itemprop="dateCreated datePublished" datetime="2016-05-04T20:25:13+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/" class="post-meta-item leancloud_visitors" data-flag-title="c语言strlen()与sizeof" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>c语言没有string类型,字符串的处理使用的是char数组<br>c会默认在字符串的尾部增加一个<code>&#39;\0&#39;</code>,也叫空字符(用来标记字符串的结束),所以字符串真正在内存中占用的字节数会比字符串的字符数多1.</p>
-</blockquote>
-<h1 id="strlen"><a href="#strlen" class="headerlink" title="strlen()"></a>strlen()</h1><p>我们使用strlen()方法可以获取字符串的长度,也就是包含多少个字符数<br>然而获取到的这个字符数并不包含尾部被自动追加的<code>&#39;\0&#39;</code>空字符</p>
-<h1 id="sizeof"><a href="#sizeof" class="headerlink" title="sizeof"></a>sizeof</h1><p>sizeof 这并不是一个方法,而是一个关键字,用来获得类型的大小,或某个量的大小,这里只讨论获取具体量的大小<br>sizeof获取的是c或者程序员为这个具体量分配了多大的空间(字节数)<br>以字符串,数组char举例:<br>声明了一个20大小的字符串:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">name = jack;</span><br></pre></td></tr></table></figure>
-<p>那么<code>sizeof name</code>获得的大小就是20,而不是<code>jack</code>的字符数4,也不是真是占用内存的字节数5<br>而<code>strlen(name)</code>,方法获得的大小则是4,而不是5或者20</p>
-<h1 id="测试源码"><a href="#测试源码" class="headerlink" title="测试源码"></a>测试源码</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TEST <span class="string">&quot;i am jack&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;type your name:\n&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;name is :%s\n&quot;</span>, name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sizeof name is : %ld\n&quot;</span>, <span class="keyword">sizeof</span> name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;strlen name is : %ld\n&quot;</span>, <span class="built_in">strlen</span>(name));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sizeof TEST is : %ld\n&quot;</span>, <span class="keyword">sizeof</span> TEST);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;strlen TEST is : %ld\n&quot;</span>, <span class="built_in">strlen</span>(TEST));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果为:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1355,7 +1354,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1368,7 +1367,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">257</span>
+        <span class="site-state-item-count">259</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

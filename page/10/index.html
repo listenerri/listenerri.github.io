@@ -202,6 +202,116 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/" class="post-title-link" itemprop="url">c语言strlen()与sizeof</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-04 20:25:13" itemprop="dateCreated datePublished" datetime="2016-05-04T20:25:13+08:00">2016-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/" class="post-meta-item leancloud_visitors" data-flag-title="c语言strlen()与sizeof" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>c语言没有string类型,字符串的处理使用的是char数组<br>c会默认在字符串的尾部增加一个<code>&#39;\0&#39;</code>,也叫空字符(用来标记字符串的结束),所以字符串真正在内存中占用的字节数会比字符串的字符数多1.</p>
+</blockquote>
+<h1 id="strlen"><a href="#strlen" class="headerlink" title="strlen()"></a>strlen()</h1><p>我们使用strlen()方法可以获取字符串的长度,也就是包含多少个字符数<br>然而获取到的这个字符数并不包含尾部被自动追加的<code>&#39;\0&#39;</code>空字符</p>
+<h1 id="sizeof"><a href="#sizeof" class="headerlink" title="sizeof"></a>sizeof</h1><p>sizeof 这并不是一个方法,而是一个关键字,用来获得类型的大小,或某个量的大小,这里只讨论获取具体量的大小<br>sizeof获取的是c或者程序员为这个具体量分配了多大的空间(字节数)<br>以字符串,数组char举例:<br>声明了一个20大小的字符串:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">name = jack;</span><br></pre></td></tr></table></figure>
+<p>那么<code>sizeof name</code>获得的大小就是20,而不是<code>jack</code>的字符数4,也不是真是占用内存的字节数5<br>而<code>strlen(name)</code>,方法获得的大小则是4,而不是5或者20</p>
+<h1 id="测试源码"><a href="#测试源码" class="headerlink" title="测试源码"></a>测试源码</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TEST <span class="string">&quot;i am jack&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> name[<span class="number">20</span>];</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;type your name:\n&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;name is :%s\n&quot;</span>, name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sizeof name is : %ld\n&quot;</span>, <span class="keyword">sizeof</span> name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;strlen name is : %ld\n&quot;</span>, <span class="built_in">strlen</span>(name));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sizeof TEST is : %ld\n&quot;</span>, <span class="keyword">sizeof</span> TEST);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;strlen TEST is : %ld\n&quot;</span>, <span class="built_in">strlen</span>(TEST));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果为:</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/05/04/c%E8%AF%AD%E8%A8%80strlen-%E4%B8%8Esizeof/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/hybrid-sleep%E5%92%8Csleep%E4%BB%A5%E5%8F%8Ahibernate%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1133,114 +1243,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">一些关于Fragment的笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-05-04 19:36:22" itemprop="dateCreated datePublished" datetime="2016-05-04T19:36:22+08:00">2016-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="一些关于Fragment的笔记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>注意:<br>android3.0以及之后的版本支持fragment技术，低版本要想使用fragment技术需要android.support.v4.app包<br>获取fragmentManager的方法不同：<br>3.0以下：getSupportFragmentManager()<br>3.0以上：getFragmentManager()</p>
-</blockquote>
-<h1 id="fragment以及activity生命周期"><a href="#fragment以及activity生命周期" class="headerlink" title="fragment以及activity生命周期"></a>fragment以及activity生命周期</h1><p>附上图片一张:<br><img src="fragment-activity.jpg" alt="fragment-activity"></p>
-<h1 id="学习fragment时碰到的几个名词："><a href="#学习fragment时碰到的几个名词：" class="headerlink" title="学习fragment时碰到的几个名词："></a>学习fragment时碰到的几个名词：</h1><h2 id="FragmentActivity："><a href="#FragmentActivity：" class="headerlink" title="FragmentActivity："></a>FragmentActivity：</h2><p>一个android.support.v4.app中的一个继承了Activity的类，如果你要在3.0以下使用fragment就需要让页面继承FragmentActivity而不是Activity，FragmentActivity中包含了3.0以下操作fragment的方法，使用方法同3.0以上一样，只是获取Manager的方法不同</p>
-<h2 id="FragmentPagerAdapter"><a href="#FragmentPagerAdapter" class="headerlink" title="FragmentPagerAdapter"></a>FragmentPagerAdapter</h2><p>可以作为ViewPager的适配器</p>
-<h2 id="ListFragment"><a href="#ListFragment" class="headerlink" title="ListFragment"></a>ListFragment</h2><p>列表样式， 自带一个默认的包含ListView控件的布局文件，无需手动重写onCreateView()使用inflat()方法加载自定义布局文件，只需要重写onCreate()方法，在其中用setListAdapter()方法绑定适配器，在绑定适配器的时候给item设置一个布局文件就行了。<br>若想修改ListView，可以在onCreateView(LayoutInflater, ViewGroup, Bundle)中进行修改，需要注意在自定义的ListFragment对应的布局文件中，必须指定一个 android:id 为 “@android:id/list” 的ListView控件!<br>当然，用户也可以在ListFragment对应的布局中包含其它的控件。<br>显示：在主activity中使用new关键字获取对象的引用</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/05/04/%E4%B8%80%E4%BA%9B%E5%85%B3%E4%BA%8EFragment%E7%9A%84%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1312,7 +1314,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1325,7 +1327,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">257</span>
+        <span class="site-state-item-count">259</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
