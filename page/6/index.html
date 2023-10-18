@@ -202,6 +202,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/" class="post-title-link" itemprop="url">vscode vim 在 mac osx 和 linux 下输入法自动切换</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-24 09:42:30" itemprop="dateCreated datePublished" datetime="2019-10-24T09:42:30+08:00">2019-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/" class="post-meta-item leancloud_visitors" data-flag-title="vscode vim 在 mac osx 和 linux 下输入法自动切换" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>目前 vscode 的 vim 插件支持在不同输入模式下自动切换输入法，可是 vscode 的配置目前不支持判断操作系统， 所以关于输入法切换的相关配置不能在 mac osx 和 linux 下通用，但是又不想因为这个问题维护两份 vscode 的配置文件，所以就想办法在 linux 使用 shell 脚本模仿了一个 im-select 的命令。</p>
+<p>关于 vscode vim 插件输入法相关的配置可以到下面的链接中查看：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/VSCodeVim/Vim#input-method">https://github.com/VSCodeVim/Vim#input-method</a></p>
+<p>按照上面的链接在 mac osx 下安装 im-select 并在 vscode 中进行如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;vim.autoSwitchInputMethod.enable&quot;: true,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.defaultIM&quot;: &quot;com.apple.keylayout.ABC&quot;,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.obtainIMCmd&quot;: &quot;/usr/local/bin/im-select&quot;,</span><br><span class="line">&quot;vim.autoSwitchInputMethod.switchIMCmd&quot;: &quot;/usr/local/bin/im-select &#123;im&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>关于 <code>vim.autoSwitchInputMethod.defaultIM</code>，我在 mac osx 下用的英文输入法是 <code>com.apple.keylayout.ABC</code>，也可能是其他选项如：<code>com.apple.keylayout.US</code>，这个要根据具体情况来设置。</p>
+<p><strong>需要注意的是这个选项的值关系到下面脚本的内容，需要保持一致。</strong></p>
+<p>上面的配置在 linux 下会报错，因为上面在 mac osx 下安装的 im-select 没有提供对 linux 的支持，im-select 项目里建议直接使用 fcitx-remote 命令，链接如下：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/daipeihust/im-select#fcitx">https://github.com/daipeihust/im-select#fcitx</a></p>
+<p>鉴于不想维护两份 vscode 配置文件的原因，分析了一下 vscode 调用 im-select 的情况，在 linux 使用 shell 实现了一个仿冒 mac osx 下 im-select 的脚本，脚本内容如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/10/24/vscode-vim-%E5%9C%A8-mac-osx-%E5%92%8C-linux-%E4%B8%8B%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/10/22/typedef-%E5%87%BD%E6%95%B0%E5%88%AB%E5%90%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2114,114 +2225,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">dde-dock插件开发入门</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-16 12:45:42" itemprop="dateCreated datePublished" datetime="2019-03-16T12:45:42+08:00">2019-03-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" class="post-meta-item leancloud_visitors" data-flag-title="dde-dock插件开发入门" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近公司需要补充一些项目的文档，我负责的几个项目中比较有实用价值的是这个 dde-dock 插件的开发入门教程，这里是转载，<a target="_blank" rel="noopener" href="https://github.com/linuxdeepin/dde-dock/blob/master/plugins/plugin-guide/plugins-developer-guide.md">原发</a>在 dde-dock 项目源码中。</p>
-<h1 id="插件的工作原理"><a href="#插件的工作原理" class="headerlink" title="插件的工作原理"></a>插件的工作原理</h1><p>插件是一种在不需要改动并重新编译主程序本身的情况下去扩展主程序功能的一种机制。<br>dde-dock 插件是根据 Qt 插件标准所开发的共享库文件(<code>so</code>)，通过实现 Qt 的插件标准和 dde-dock 提供的接口，共同完成 dde-dock 的功能扩展。<br>可以通过以下链接查看关于 Qt 插件更详细的介绍：</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.qt.io/Plugins">https://wiki.qt.io/Plugins</a><br><a target="_blank" rel="noopener" href="https://doc.qt.io/qt-5/plugins-howto.html">https://doc.qt.io/qt-5/plugins-howto.html</a></p>
-<h2 id="dde-dock-插件加载流程"><a href="#dde-dock-插件加载流程" class="headerlink" title="dde-dock 插件加载流程"></a>dde-dock 插件加载流程</h2><p>在 dde-dock 启动时会跑一个线程去检测目录<code>/usr/lib/dde-dock/plugins</code>下的所有文件，并检测是否是一个正常的动态库文件，如果是则尝试加载。尝试加载即检测库文件的元数据，插件的元数据定义在一个 JSON 文件中，这个后文会介绍，如果元数据检测通过就开始检查插件是否实现了 dde-dock 指定的接口，这一步也通过之后就会开始初始化插件，获取插件提供的控件，进而将控件显示在任务栏上。</p>
-<h2 id="接口列表"><a href="#接口列表" class="headerlink" title="接口列表"></a>接口列表</h2><p>这里先列出 dde-dock 都提供了哪些接口，可作为一个手册查看，注意，为 dde-dock 编写插件并不是要实现所有接口，这些接口提供了 dde-dock 允许各种可能的功能，插件开发者可以根据自己的需求去实现自己需要的接口。后续的插件示例也将会用到这里列出的部分接口。</p>
-<p>接口定义的文件一般在系统的如下位置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/include/dde-dock/pluginproxyinterface.h</span><br><span class="line">/usr/include/dde-dock/pluginsiteminterface.h</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/16/dde-dock%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2293,20 +2296,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">259</span>
+        <span class="site-state-item-count">262</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

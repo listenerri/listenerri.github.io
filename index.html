@@ -202,6 +202,116 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/" class="post-title-link" itemprop="url">为什么 Windows 不像 Linux 可以混用 Debug 和 Release 库</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-10-18 19:27:24 / 修改时间：19:34:13" itemprop="dateCreated datePublished" datetime="2023-10-18T19:27:24+08:00">2023-10-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/" class="post-meta-item leancloud_visitors" data-flag-title="为什么 Windows 不像 Linux 可以混用 Debug 和 Release 库" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>比如在程序中链接使用了第三方的 Release 动态链接库，如果在 VS 中使用 Debug 模式编译，一般情况下都会报错，反之亦然</p>
+<p>在 VS2010 之前，这种做法是可以编译通过的，但在运行阶段可能会出现奇怪的错误</p>
+<p>从 VS2010 开始 Windows 增加了这种混用的检测，并在编译阶段进行报错</p>
+<p>那么 Windows 这样做是为了避免什么问题呢？什么原因导致的问题呢？</p>
+<p>这就提到运行时库（一般是指 C 运行时库：CRT），这是系统提供的基础库，Windows 一个有别于 Linux 的重要区别是：<br>在 Windows 下可以为一个进程加载多个 CRT，在 Linux 下则不支持这个行为</p>
+<p>在 VS 中项目属性中可以查看和设置项目的 CRT，可以发现 exe/dll/lib 项目都可以设置自己要使用的 CRT，有多种 CRT 可以选择：</p>
+<ul>
+<li>/MT Multi-threaded</li>
+<li>/MTd Multi-threaded Debug</li>
+<li>/MD Multi-threaded DLL</li>
+<li>/MDd Multi-threaded DLL Debug</li>
+</ul>
+<p>不带 Debug 的则表示 Release 版本的 CRT，不带 DLL 的表示使用静态库，这意味着甚至可以把 CRT 静态链接到目标中</p>
+<p>默认情况下，程序在 Debug 模式下就会默认使用 Debug 模式的 CRT，除非手动修改了此选项，Release 模式下同理</p>
+<p>那么这就很清楚了，如果第三方的 dll 库是 Release 版的，那么可以认为其使用的 CRT 是 Release 版的</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/10/08/ld-so-linux-%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1149,112 +1259,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/" class="post-title-link" itemprop="url">windows 下 vscode 使用 msys2 mingw64 作为默认 shell 时识别路径失败</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-06-25 23:28:50 / 修改时间：23:54:51" itemprop="dateCreated datePublished" datetime="2023-06-25T23:28:50+08:00">2023-06-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vscode/" itemprop="url" rel="index"><span itemprop="name">vscode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/" class="post-meta-item leancloud_visitors" data-flag-title="windows 下 vscode 使用 msys2 mingw64 作为默认 shell 时识别路径失败" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这两天遇到一个 vscode 下 vim 插件的问题（另写一篇文章详述），按照 <a target="_blank" rel="noopener" href="https://github.com/VSCodeVim/Vim/blob/master/.github/CONTRIBUTING.md#first-time-setup">vscodevim</a> 扩展的构建文档尝试本地调试时，发现无法编译，报如下错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">正在执行任务: node_modules\.bin\gulp.cmd build-dev</span><br><span class="line">bash: node_modules.bingulp.cmd: 未找到命令</span><br><span class="line">终端进程“C:\msys64\usr\bin\bash.exe &#x27;--login&#x27;, &#x27;-i&#x27;, &#x27;-c&#x27;, &#x27;node_modules\.bin\gulp.cmd build-dev&#x27;”已终止，退出代码: 127。</span><br></pre></td></tr></table></figure>
-
-<p>可以看出来是命令找不到，但第二行的报错很奇怪，丢失了 windows 风格路径分隔符 <code>\</code>，查看 vscode 的终端配置发现，我把默认集成终端设置成了 msys2，那么问题很明确了，是因为 msys2 中的 bash 命令不支持 windows 风格的路径分隔符，将其解析为了转义符导致的。</p>
-<p>在网上几番搜索皆无果，没有优雅的解决方案，还趁着这个机会认真学习了 vscode 的 launch.json, tasks.json, task provider 等文档，对问题有了一个更深入的了解。</p>
-<p>我目前遇到的问题是因为 vscode 自带的 gulp task provider 导致的，当其发现 vscode 在 windows 下运行时，就生成 windows 风格的 gulp 命令路径参数，这在 vscode 使用 cmd 或 powershell 作为默认集成终端时没有问题，但对使用了 bash 作为 shell 的情况就会导致出错了，vscode 的 github 仓库里有几个类似、相关的，已经被关闭并锁定了的 issues:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/35593">https://github.com/microsoft/vscode/issues/35593</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/48149">https://github.com/microsoft/vscode/issues/48149</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/40954">https://github.com/microsoft/vscode/issues/40954</a></p>
-<p>无意间从 <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/49779607/7059407">这篇回答中找到了灵感</a>，所以有了如下解决方案，修改 vscode 的配置文件 settings.json，在对集成终端的配置中添加一个自定义终端配置，并将其设置为默认终端：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&quot;terminal.integrated.profiles.windows&quot;: &#123;</span><br><span class="line">    &quot;bash (MINGW64-MSYS2)&quot;: &#123;</span><br><span class="line">        &quot;path&quot;: &quot;C:\\msys64\\usr\\bin\\bash.exe&quot;,</span><br><span class="line">        &quot;args&quot;: [</span><br><span class="line">            &quot;--login&quot;,</span><br><span class="line">            &quot;-i&quot;,</span><br><span class="line">            &quot;-c&quot;,</span><br><span class="line">            &quot;if [ -z \&quot;$@\&quot; ]; then bash; else eval \&quot;$(cygpath \&quot;$@\&quot;)\&quot;; fi&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;env&quot;: &#123;</span><br><span class="line">            &quot;CHERE_INVOKING&quot;: &quot;1&quot;,</span><br><span class="line">            &quot;MSYSTEM&quot;: &quot;MINGW64&quot;,</span><br><span class="line">            &quot;MSYS2_PATH_TYPE&quot;: &quot;inherit&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    // other terminal profiles</span><br><span class="line">    // ....</span><br><span class="line">&#125;,</span><br><span class="line">&quot;terminal.integrated.defaultProfile.windows&quot;: &quot;bash (MINGW64-MSYS2)&quot;,</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/25/windows-%E4%B8%8B-vscode-%E4%BD%BF%E7%94%A8-msys2-mingw64-%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4-shell-%E6%97%B6%E8%AF%86%E5%88%AB%E8%B7%AF%E5%BE%84%E5%A4%B1%E8%B4%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1326,20 +1330,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">259</span>
+        <span class="site-state-item-count">262</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

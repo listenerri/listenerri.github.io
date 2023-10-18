@@ -4635,6 +4635,46 @@
       </tags>
   </entry>
   <entry>
+    <title>为什么 Windows 不像 Linux 可以混用 Debug 和 Release 库</title>
+    <url>/2023/10/18/%E4%B8%BA%E4%BB%80%E4%B9%88-Windows-%E4%B8%8D%E5%83%8F-Linux-%E5%8F%AF%E4%BB%A5%E6%B7%B7%E7%94%A8-Debug-%E5%92%8C-Release-%E5%BA%93/</url>
+    <content><![CDATA[<p>比如在程序中链接使用了第三方的 Release 动态链接库，如果在 VS 中使用 Debug 模式编译，一般情况下都会报错，反之亦然</p>
+<p>在 VS2010 之前，这种做法是可以编译通过的，但在运行阶段可能会出现奇怪的错误</p>
+<p>从 VS2010 开始 Windows 增加了这种混用的检测，并在编译阶段进行报错</p>
+<p>那么 Windows 这样做是为了避免什么问题呢？什么原因导致的问题呢？</p>
+<p>这就提到运行时库（一般是指 C 运行时库：CRT），这是系统提供的基础库，Windows 一个有别于 Linux 的重要区别是：<br>在 Windows 下可以为一个进程加载多个 CRT，在 Linux 下则不支持这个行为</p>
+<p>在 VS 中项目属性中可以查看和设置项目的 CRT，可以发现 exe/dll/lib 项目都可以设置自己要使用的 CRT，有多种 CRT 可以选择：</p>
+<ul>
+<li>/MT Multi-threaded</li>
+<li>/MTd Multi-threaded Debug</li>
+<li>/MD Multi-threaded DLL</li>
+<li>/MDd Multi-threaded DLL Debug</li>
+</ul>
+<p>不带 Debug 的则表示 Release 版本的 CRT，不带 DLL 的表示使用静态库，这意味着甚至可以把 CRT 静态链接到目标中</p>
+<p>默认情况下，程序在 Debug 模式下就会默认使用 Debug 模式的 CRT，除非手动修改了此选项，Release 模式下同理</p>
+<p>那么这就很清楚了，如果第三方的 dll 库是 Release 版的，那么可以认为其使用的 CRT 是 Release 版的</p>
+<p>而我们的程序 exe 项目如果在 Debug 模式下运行，则默认是使用 Debug 模式的 CRT，这就会导致 Windows 在同一个进程中同时加载了 Debug 和 Release 版的两个 CRT</p>
+<p>而在 Windows 下 Debug 和 Release 的 CRT 是  ABI 不兼容的，甚至即便都是 Release/Debug 版本的 CRT，如果版本号不同也可能是不兼容的，而 ABI 不兼容的情况下，结构体、类、函数、变量在内存中的结构和状态可能是不同的，那么不同的 CRT 根据自己的实现处理同一块内存时就可能导致内存异常进而程序崩溃</p>
+<p>举个便于理解的例子：</p>
+<p>比如当 exe 调用 dll 中的函数，dll 使用自己的 CRT 在内存中为一个结构体创建了一个实例，即申请了一块内存存放结构体的数据，然后将这个结构体内存的指针返回给了 exe</p>
+<p>在 exe 拿到此指针后，也会使用自己的 CRT 处理这个结构体指针指向的内存，比如：调用结构体的函数，甚至销毁了这个结构体（释放其内存）</p>
+<p>这块内存在两个 ABI 不兼容的 CRT 看来，虽然头文件中此结构体的声明是相同的，但预期的内存结构和状态可能是不同的</p>
+<p>比如根据 dll 的 CRT 实现，申请使用的内存大小为 10，而根据 exe 的 CRT 实现，这块内存大小应该是 20</p>
+<p>那么如果 exe CRT 拿着这个指针去释放这块 dll CRT 申请的内存的话，就会把 20 个字节的内存空间释放掉，然后将它们分配给其他地方使用</p>
+<p>这意味着后 10 个字节内存（原本不是 dll CRT 申请的），也被意外的释放了，那些内存原本可能是正在被使用的，进而就导致了内存一场，出现奇怪的错误</p>
+<p>而 Linux 一直致力于保持运行时库的兼容性，且不允许在单个进程中加载多个运行时库，所以 Linux 混用 Debug 和 Release 一般没问题</p>
+]]></content>
+      <categories>
+        <category>windows</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>windows</tag>
+        <tag>debug</tag>
+        <tag>release</tag>
+        <tag>crt</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>为自己的网站启用 https</title>
     <url>/2019/10/28/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E5%90%AF%E7%94%A8-https/</url>
     <content><![CDATA[<p>使用 let’s encrypt 证书颁发机构的免费证书，如果想看官方的文档访问下面的链接，官方文档提供了各种方案来启用 https，我使用是推荐的 Certbot 方案。</p>
@@ -6095,43 +6135,6 @@
       </tags>
   </entry>
   <entry>
-    <title>线段树-区间树-范围树-二叉索引树</title>
-    <url>/2020/04/02/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E5%8C%BA%E9%97%B4%E6%A0%91-%E8%8C%83%E5%9B%B4%E6%A0%91-%E4%BA%8C%E5%8F%89%E7%B4%A2%E5%BC%95%E6%A0%91/</url>
-    <content><![CDATA[<blockquote>
-<p>原文：<a href="https://stackoverflow.com/a/17504505">https://stackoverflow.com/a/17504505</a></p>
-</blockquote>
-<p>中英对照：</p>
-<ul>
-<li>Segment tree 线段树</li>
-<li>Interval tree 区间树</li>
-<li>Range tree 范围树</li>
-<li>Binary indexed tree 二叉索引树</li>
-</ul>
-<p>主要用于解决的问题：</p>
-<ul>
-<li>Segment tree 存储区间，查询哪些区间包含给定的点</li>
-<li>Interval tree 存储区间，查询哪些区间与给定区间相交，也支持点查询（Segment tree）</li>
-<li>Range tree 存储点，查询哪些点落在了给定区间</li>
-<li>Binary indexed tree 存储每个索引的项目数，查询索引 m 和 n 之间有多少个项目</li>
-</ul>
-<p>性能（k 是结果数）：</p>
-<ul>
-<li>Segment tree O(n logn) 预处理时间，O(k+logn) 查询，O(n logn) 空间</li>
-<li>Interval tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
-<li>Range tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
-<li>Binary indexed tree O(n logn) 预处理时间，O(logn) 查询，O(n) 空间</li>
-</ul>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-      <tags>
-        <tag>segment</tag>
-        <tag>interval</tag>
-        <tag>range</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>源码构建qtcreator记录</title>
     <url>/2019/02/24/%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BAqtcreator%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>在 deepin linux 系统下编译 qtcreator 4.8.0 版本，可是按照官方 README 却始终编译不通过，遇到了以下几个问题，并列出了相关解决方案。当然官方的 README 上所说的编译依赖还是要装上的。</p>
@@ -6177,6 +6180,43 @@
         <tag>qtcreator</tag>
         <tag>build</tag>
         <tag>编译</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线段树-区间树-范围树-二叉索引树</title>
+    <url>/2020/04/02/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E5%8C%BA%E9%97%B4%E6%A0%91-%E8%8C%83%E5%9B%B4%E6%A0%91-%E4%BA%8C%E5%8F%89%E7%B4%A2%E5%BC%95%E6%A0%91/</url>
+    <content><![CDATA[<blockquote>
+<p>原文：<a href="https://stackoverflow.com/a/17504505">https://stackoverflow.com/a/17504505</a></p>
+</blockquote>
+<p>中英对照：</p>
+<ul>
+<li>Segment tree 线段树</li>
+<li>Interval tree 区间树</li>
+<li>Range tree 范围树</li>
+<li>Binary indexed tree 二叉索引树</li>
+</ul>
+<p>主要用于解决的问题：</p>
+<ul>
+<li>Segment tree 存储区间，查询哪些区间包含给定的点</li>
+<li>Interval tree 存储区间，查询哪些区间与给定区间相交，也支持点查询（Segment tree）</li>
+<li>Range tree 存储点，查询哪些点落在了给定区间</li>
+<li>Binary indexed tree 存储每个索引的项目数，查询索引 m 和 n 之间有多少个项目</li>
+</ul>
+<p>性能（k 是结果数）：</p>
+<ul>
+<li>Segment tree O(n logn) 预处理时间，O(k+logn) 查询，O(n logn) 空间</li>
+<li>Interval tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
+<li>Range tree O(n logn) 预处理时间，O(k+logn) 查询，O(n) 空间</li>
+<li>Binary indexed tree O(n logn) 预处理时间，O(logn) 查询，O(n) 空间</li>
+</ul>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>segment</tag>
+        <tag>interval</tag>
+        <tag>range</tag>
       </tags>
   </entry>
   <entry>

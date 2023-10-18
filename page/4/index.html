@@ -202,6 +202,127 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/09/22/python-%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/22/python-%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">python 生成器与协程的关系和区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-22 18:36:18" itemprop="dateCreated datePublished" datetime="2020-09-22T18:36:18+08:00">2020-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/09/22/python-%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB/" class="post-meta-item leancloud_visitors" data-flag-title="python 生成器与协程的关系和区别" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/09/22/python-%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/22/python-%E7%94%9F%E6%88%90%E5%99%A8%E4%B8%8E%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>部分摘录自官方中文文档，python 版本 <code>3.7.4</code></p>
+<p>注意概念区分：生成器函数，生成器，协程函数，协程，异步生成器函数，异步生成器</p>
+<p>主要是学习笔记，没有进行过多整理</p>
+<ul>
+<li><p>使用 async def 语法定义的函数总是为协程函数，即使它们不包含 await 或 async 关键字，另外 await，async for 以及 async with 只能在协程函数体中使用（注：以普通函数调用方式调用协程函数时，将返回协程对象，而不是运行协程）</p>
+</li>
+<li><p>在一个函数体内使用 yield 表达式会使这个函数变成一个生成器，并且在一个 async def 定义的函数体（注：协程函数）内使用 yield 表达式会让协程函数变成异步的生成器（注：以普通函数调用方式调用生成器函数时，将返回生成器对象，而不是运行生成器；以普通函数调用方式调用异步生成器函数时，将返回异步生成器对象，而不是运行异步生成器）</p>
+</li>
+<li><p>生成器函数与协程（注：函数）非常相似，它们 yield 多次，它们具有多个入口点，并且它们的执行可以被挂起。唯一的区别是生成器函数不能控制在它在 yield 后交给哪里继续执行，控制权总是转移到生成器的调用者</p>
+</li>
+<li><p>当使用 yield from <expr> 时，它会将所提供的表达式视为一个子迭代器，这个子迭代器产生的所有值都直接被传递给当前生成器方法的调用者</p>
+</li>
+<li><p>启动一个生成器的方法有两种，注意，这两种调用都有返回值，返回的是生成器 yield 的值：</p>
+<ul>
+<li>使用内建的 next() 函数，继续使用 next() 函数将继续运行生成器</li>
+<li>使用生成器的 send() 方法，但启动时必须传参 None，继续调用 send() 方法将继续运行生成器，此时可以向生成器传入任意值</li>
+</ul>
+</li>
+<li><p>启动一个协程的方法：导入 asyncio 包，使用 asyncio.run() 函数执行一个协程，注意，需要传入协程对象作为参数，而不是协程函数</p>
+</li>
+<li><p>注意，await 语句返回指定协程 return 的值（与生成器的 yeild 有区别）</p>
+</li>
+<li><p>如果只有一个协程在运行的话，代码执行流程与普通函数一样，因为协程函数中的 await &lt;指定协程&gt; 语句将会挂起（阻塞）当前协程，去执行 await 语句指定的协程，直到指定协程执行结束返回后才恢复当前协程</p>
+</li>
+<li><p>可以使用 asyncio.gather() 函数并发执行多个协程</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/09/20/Redmi-G-manjaro-%E4%B8%8D%E8%83%BD%E8%AF%86%E5%88%AB%E5%A3%B0%E5%8D%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1181,110 +1302,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/03/30/perl-%E5%AD%A6%E4%B9%A0%E5%B0%8F%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/30/perl-%E5%AD%A6%E4%B9%A0%E5%B0%8F%E8%AE%B0/" class="post-title-link" itemprop="url">perl-学习小记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-30 18:03:19" itemprop="dateCreated datePublished" datetime="2020-03-30T18:03:19+08:00">2020-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-
-          
-            <span id="/2020/03/30/perl-%E5%AD%A6%E4%B9%A0%E5%B0%8F%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="perl-学习小记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/03/30/perl-%E5%AD%A6%E4%B9%A0%E5%B0%8F%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/30/perl-%E5%AD%A6%E4%B9%A0%E5%B0%8F%E8%AE%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>因工作需要，学习了原本十分抗拒的 perl 语言，不过整体看下来后发现 perl 也有其自身的特点与优势，看来每个语言都不可小觑。</p>
-<p>由于时间比较急，所以在网上找了一篇速读文章学习，教程很棒，读完后对各种奇葩语法有了一定的认识，链接如下：</p>
-<p><a target="_blank" rel="noopener" href="https://qntm.org/perl_cn">https://qntm.org/perl_cn</a></p>
-<p>下面是一些小笔记：</p>
-<p><strong>获取数组长度，前面的 scalar 表示在 scalar 上下文中求 @array 的值，此时即为求数组长度</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scalar @array</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取数组最大有效索引</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$#array</span><br></pre></td></tr></table></figure>
-
-<p><strong>引用（可以理解为指针）</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@array = (1,2,3,4)</span><br><span class="line">$array_ref = \@array</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/30/perl-%E5%AD%A6%E4%B9%A0%E5%B0%8F%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1356,20 +1373,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">259</span>
+        <span class="site-state-item-count">262</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
