@@ -202,6 +202,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">msys2 修改默认启动位置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-28 10:36:21 / 修改时间：11:47:38" itemprop="dateCreated datePublished" datetime="2023-06-28T10:36:21+08:00">2023-06-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/msys2/" itemprop="url" rel="index"><span itemprop="name">msys2</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/" class="post-meta-item leancloud_visitors" data-flag-title="msys2 修改默认启动位置" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>msys2 为 windows 平台提供了大量 unix 命令，其基于 cygwin 同时带来了更多更强大的特性，是个很赞的项目。</p>
+<p>msys2 默认提供了几个不同的环境：</p>
+<ul>
+<li>msys</li>
+<li>mingw64</li>
+<li>mingw32</li>
+<li>ucrt64</li>
+<li>clang64</li>
+<li>clangarm64</li>
+</ul>
+<p>其中 msys 环境是其他几个环境共用的基础环境，出于兼容性考虑，我一般使用 mingw64 环境，安装新的软件包时，也是找 <code>mingw-w64-x86_64-</code> 开头的包，这个软件包的前缀很重要，如果在 mingw64 环境下，安装了 <code>mingw-w64-ucrt-x86_64-</code> 开头的包，是找不到新装包的命令的，必须要到 ucrt64 环境下才能找到。</p>
+<p>关于各个环境的主要区别，可以阅读官方文档：<a target="_blank" rel="noopener" href="https://www.msys2.org/docs/environments/">https://www.msys2.org/docs/environments/</a></p>
+<p>书回正传，这里先假设我的 windows 账户名称是 <code>ri</code>，那么我在 windows 系统中的账户主文件夹/主目录会是 <code>C:\Users\ri</code> 目录。后续出现 <code>ri</code> 时，请注意替换理解。</p>
+<p>msys2 使用了自己的 unix 风格目录结构，其 unix 根目录 <code>/</code> 默认是 msys2 在 windows 下载的安装目录，如果安装 msys2 过程中没有主动修改的话，那就是 <code>C:\msys64</code> 目录。</p>
+<p>另外，msys2 会把 windows 不同的本地磁盘，以盘符为名字，“挂载”到 unix 根目录 <code>/</code> 下，比如 windows 的 C 盘，会被挂载在 unix 的 <code>/c</code> 目录上，windows D 盘同理。</p>
+<p>而 msys2 默认的 unix 家(HOME)目录则是 <code>/home/ri</code>，注意这里的 <code>/home/ri</code> 并不是 <code>C:\Users\ri</code> 目录。</p>
+<p>启动 mingw64 环境时，默认是从 unix 家目录启动的，这对我来说有些不方便，我希望每次启动后所在目录都是 windows 账户的主目录  <code>C:\Users\ri</code>。同时还要保留 msys2 的 unix 家目录，以便将 msys2 相关的各种配置文件，独立放置在 msys2 自己的目录体系内。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/06/28/msys2-%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E4%BD%8D%E7%BD%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2023/06/26/vscodevim-%E5%9C%A8-wsl-%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E8%BE%93%E5%85%A5%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1222,103 +1334,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/" class="post-title-link" itemprop="url">qtcreator qDebug 没有打印输出</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-08-14 11:22:00" itemprop="dateCreated datePublished" datetime="2021-08-14T11:22:00+08:00">2021-08-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/" class="post-meta-item leancloud_visitors" data-flag-title="qtcreator qDebug 没有打印输出" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>前段时间遇到个奇怪的问题，在 qtcreator 中 <code>qDebug</code> 语句的打印内容一直出不来，解决方法是在构建工具链设置中新增一个环境变量：<code>QT_ASSUME_STDERR_HAS_CONSOLE=1</code></p>
-<p>具体步骤（英文菜单）：<br>点击 qtcreator 工具栏，依次点击 <code>Tools</code> &gt; <code>Options</code> &gt; <code>Kits</code>，之后选择正在使用的 <code>Kits</code>，滚动找到 <code>Environment</code>, 点击 <code>Change</code> 然后新增上面提到的环境变量即可。</p>
-<p>参考链接：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41425530/qtcreator-qdebug-messages-not-shown">https://stackoverflow.com/questions/41425530/qtcreator-qdebug-messages-not-shown</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1390,7 +1405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1464,7 +1479,7 @@
 <div class="copyright">
   
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

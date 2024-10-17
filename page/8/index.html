@@ -202,6 +202,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/" class="post-title-link" itemprop="url">git-找回已删除的分支</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-04 13:59:47" itemprop="dateCreated datePublished" datetime="2018-10-04T13:59:47+08:00">2018-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/" class="post-meta-item leancloud_visitors" data-flag-title="git-找回已删除的分支" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/10/04/git-%E6%89%BE%E5%9B%9E%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>手残总是难免的，有时候不小心删掉了一个还没有合并或者push的分支，等反应过来似乎已经找不到这个分支在仓库中存在的痕迹了。</p>
+<p>这时<code>git reflog</code>命令就体现出了它的价值，其实git会把我们在仓库里的所有操作都记录下来，<br>从<code>git reflog</code>命令的输出就可以看到，就算是从分支A切换到分支B也会被记录下来，那么假设，分支B被误删，<br>执行<code>git reflog</code>命令后就可以找到分支B的痕迹: “commit id”，不管是从其他分支切换到分支B，还是分支B的一个提交记录，<br>都会看到其”commit id”，复制这个”commit id”然后切换过去，此时仓库处于分离头指针状态，其实现在已经是在分支B了，<br>只需要从当前状态创建一个分支，那么分支B也就复活了： <code>git checkout -b B-reborn</code><br>这个分支<code>B-reborn</code>就是先前删除的分支B。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2018/09/24/qprocess%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1132,107 +1228,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/" class="post-title-link" itemprop="url">cocos2d-x-3.15缺少libfmod.so.6</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-06-20 19:44:42" itemprop="dateCreated datePublished" datetime="2017-06-20T19:44:42+08:00">2017-06-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/cocos2d/" itemprop="url" rel="index"><span itemprop="name">cocos2d</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/" class="post-meta-item leancloud_visitors" data-flag-title="cocos2d-x-3.15缺少libfmod.so.6" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/06/20/cocos2d-x-3-15%E7%BC%BA%E5%B0%91libfmod-so-6/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>cocos2d-x v3.15版, 在linux下编译之后执行test里的demo时报错:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./cpp-tests </span><br><span class="line">./cpp-tests: error while loading shared libraries: libfmod.so.6:</span><br><span class="line">cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
-<p>从报错可以看出缺少<code>libfmod.so.6</code>这个库文件, 网上搜索后得知这个文件在:<br><code>$COCOS2D_HOME/external/linux-specific/fmod/prebuilt/64-bit</code>目录下,<br>而且是在执行<code>$COCOS2D_HOME/build/install-deps-linux.sh</code>时发生报错的,</p>
-<p>他们的解决办法是将上述目录下的两个库文件<code>libfmod.so</code>和<code>libfmodL.so</code>,<br>复制到<code>/usr/local/lib/</code>目录下, 并创建链接文件, 然后接着执行<code>install-deps-linux.sh</code>,<br>但是这个方法对我没有作用, 可能是因为我是用的系统的缘故<code>(deepin linux)</code>.</p>
-<p><font color=red>如果上述方法对你也没用就试试下面的方法:</font><br>复制两个库文件到<code>/usr/lib/</code>目录下, 然后创建链接文件:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#在cocos2d目录下执行</span><br><span class="line">cp external/linux-specific/fmod/prebuilt/64-bit/* /usr/lib/</span><br><span class="line">cd /usr/lib</span><br><span class="line">ln -s libfmod.so libfmod.so.6</span><br></pre></td></tr></table></figure>
-<p>然后就可以直接测试demo了, 不用重新编译</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1304,7 +1299,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1378,7 +1373,7 @@
 <div class="copyright">
   
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

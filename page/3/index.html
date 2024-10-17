@@ -202,6 +202,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="listenerri">
+      <meta itemprop="description" content="学的越多越发现会的越少 : )">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listenerri's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/" class="post-title-link" itemprop="url">qtcreator qDebug 没有打印输出</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-14 11:22:00" itemprop="dateCreated datePublished" datetime="2021-08-14T11:22:00+08:00">2021-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/qt/" itemprop="url" rel="index"><span itemprop="name">qt</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/" class="post-meta-item leancloud_visitors" data-flag-title="qtcreator qDebug 没有打印输出" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/14/qtcreator-qDebug-%E6%B2%A1%E6%9C%89%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>前段时间遇到个奇怪的问题，在 qtcreator 中 <code>qDebug</code> 语句的打印内容一直出不来，解决方法是在构建工具链设置中新增一个环境变量：<code>QT_ASSUME_STDERR_HAS_CONSOLE=1</code></p>
+<p>具体步骤（英文菜单）：<br>点击 qtcreator 工具栏，依次点击 <code>Tools</code> &gt; <code>Options</code> &gt; <code>Kits</code>，之后选择正在使用的 <code>Kits</code>，滚动找到 <code>Environment</code>, 点击 <code>Change</code> 然后新增上面提到的环境变量即可。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41425530/qtcreator-qdebug-messages-not-shown">https://stackoverflow.com/questions/41425530/qtcreator-qdebug-messages-not-shown</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://listenerri.com/2021/08/13/%E8%A7%A3%E5%86%B3-gradle-%E4%B8%8B%E8%BD%BD%E4%B8%8D%E4%B8%8B%E6%9D%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1168,102 +1265,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://listenerri.com/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="listenerri">
-      <meta itemprop="description" content="学的越多越发现会的越少 : )">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="listenerri's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/" class="post-title-link" itemprop="url">docker 容器起不来怎么办</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-07 12:29:25" itemprop="dateCreated datePublished" datetime="2020-10-07T12:29:25+08:00">2020-10-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 00:51:37" itemprop="dateModified" datetime="2022-10-30T00:51:37+08:00">2022-10-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/" class="post-meta-item leancloud_visitors" data-flag-title="docker 容器起不来怎么办" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/07/docker-%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%8D%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有时 docker 容器会由于错误修改了某些配置文件而无法启动，如 <code>entrypoint</code> 脚本或服务程序的配置文件等等，如果容器内没有什么有价值的数据，那么重新创建容器自然是首选，本文讨论的是容器不能被删除，该如何修复这种情况。</p>
-<p>容器跑不起来，<code>docker exec</code> 命令就无法运行，这意味着无法进入容器，修正有问题的配置文件；此时可以使用 <code>docker cp</code> 命令，将容器内的出问题的配置文件复制出来到主机上，在主机上修正配置文件后，再使用 <code>docker cp</code> 命令将其复制回容器内，覆盖掉容器内的原文件，此时执行 <code>docker start</code> 命令启动容器就可以了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1335,7 +1336,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1409,7 +1410,7 @@
 <div class="copyright">
   
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

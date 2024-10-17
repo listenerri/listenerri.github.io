@@ -569,6 +569,31 @@
       </tags>
   </entry>
   <entry>
+    <title>android获取屏幕像素和密度</title>
+    <url>/2016/05/04/android%E8%8E%B7%E5%8F%96%E5%B1%8F%E5%B9%95%E5%83%8F%E7%B4%A0%E5%92%8C%E5%AF%86%E5%BA%A6/</url>
+    <content><![CDATA[<blockquote>
+<p>用来测试的虚拟机是320*480像素mdpi的<br>总结了以下三种方法</p>
+</blockquote>
+<p>(一)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Point</span> <span class="variable">point</span> <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">Point</span>();</span><br><span class="line">getWindowManager().getDefaultDisplay().getSize(point);</span><br><span class="line">point.x;<span class="comment">//(320)</span></span><br><span class="line">point.y;<span class="comment">//(480)</span></span><br></pre></td></tr></table></figure>
+<p>(二)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DisplayMetrics metrics=<span class="keyword">new</span> <span class="title class_">DisplayMetrics</span>();</span><br><span class="line">getWindowManager().getDefaultDisplay().getMetrics(metrics);</span><br><span class="line">metrics.widthPixels;<span class="comment">//(320)</span></span><br><span class="line">metrics.heightPixels;<span class="comment">//(480)</span></span><br><span class="line">metrics.xdpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics.ydpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics.density;<span class="comment">//(1.0)</span></span><br><span class="line">metrics.densityDpi;<span class="comment">//(160)</span></span><br></pre></td></tr></table></figure>
+<p>(三)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DisplayMetrics metrics2=getResources().getDisplayMetrics();</span><br><span class="line">metrics2.widthPixels;<span class="comment">//(320)</span></span><br><span class="line">metrics2.heightPixels;<span class="comment">//(480)</span></span><br><span class="line">metrics2.xdpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics2.ydpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics2.density;<span class="comment">//(1.0)</span></span><br><span class="line">metrics2.densityDpi;<span class="comment">//(160)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当不是在activity中时，就不能直接用getWindowManager()等方法了，这时可以用Context.getSystemService(Context.WINDOW_SERVICE)方法，其他的类似</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>像素</tag>
+        <tag>密度</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>archlinux+xfce4+lightdm+uefi个人安装记录</title>
     <url>/2016/05/04/archlinux-xfce4-lightdm-uefi%E4%B8%AA%E4%BA%BA%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<blockquote>
@@ -784,31 +809,6 @@
         <tag>xfce4</tag>
         <tag>uefi</tag>
         <tag>安装</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>android获取屏幕像素和密度</title>
-    <url>/2016/05/04/android%E8%8E%B7%E5%8F%96%E5%B1%8F%E5%B9%95%E5%83%8F%E7%B4%A0%E5%92%8C%E5%AF%86%E5%BA%A6/</url>
-    <content><![CDATA[<blockquote>
-<p>用来测试的虚拟机是320*480像素mdpi的<br>总结了以下三种方法</p>
-</blockquote>
-<p>(一)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Point</span> <span class="variable">point</span> <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">Point</span>();</span><br><span class="line">getWindowManager().getDefaultDisplay().getSize(point);</span><br><span class="line">point.x;<span class="comment">//(320)</span></span><br><span class="line">point.y;<span class="comment">//(480)</span></span><br></pre></td></tr></table></figure>
-<p>(二)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DisplayMetrics metrics=<span class="keyword">new</span> <span class="title class_">DisplayMetrics</span>();</span><br><span class="line">getWindowManager().getDefaultDisplay().getMetrics(metrics);</span><br><span class="line">metrics.widthPixels;<span class="comment">//(320)</span></span><br><span class="line">metrics.heightPixels;<span class="comment">//(480)</span></span><br><span class="line">metrics.xdpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics.ydpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics.density;<span class="comment">//(1.0)</span></span><br><span class="line">metrics.densityDpi;<span class="comment">//(160)</span></span><br></pre></td></tr></table></figure>
-<p>(三)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DisplayMetrics metrics2=getResources().getDisplayMetrics();</span><br><span class="line">metrics2.widthPixels;<span class="comment">//(320)</span></span><br><span class="line">metrics2.heightPixels;<span class="comment">//(480)</span></span><br><span class="line">metrics2.xdpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics2.ydpi;<span class="comment">//(160.0)</span></span><br><span class="line">metrics2.density;<span class="comment">//(1.0)</span></span><br><span class="line">metrics2.densityDpi;<span class="comment">//(160)</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>当不是在activity中时，就不能直接用getWindowManager()等方法了，这时可以用Context.getSystemService(Context.WINDOW_SERVICE)方法，其他的类似</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>像素</tag>
-        <tag>密度</tag>
       </tags>
   </entry>
   <entry>
@@ -2610,6 +2610,23 @@
       </tags>
   </entry>
   <entry>
+    <title>java字符输入输出流在输出结尾多一个乱码字符:&#39;?&#39;</title>
+    <url>/2016/04/23/java%E5%AD%97%E7%AC%A6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81%E5%9C%A8%E8%BE%93%E5%87%BA%E7%BB%93%E5%B0%BE%E5%A4%9A%E4%B8%80%E4%B8%AA%E4%B9%B1%E7%A0%81%E5%AD%97%E7%AC%A6/</url>
+    <content><![CDATA[<p>原因以及解决方法：</p>
+<p>核心方法如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line"></span><br><span class="line">         FileReader fr=<span class="keyword">new</span> <span class="title class_">FileReader</span>(<span class="string">&quot;test.txt&quot;</span>);</span><br><span class="line">         FileWriter fw=<span class="keyword">new</span> <span class="title class_">FileWriter</span>(<span class="string">&quot;test2.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">         <span class="comment">/*</span></span><br><span class="line"><span class="comment">         int b=0;</span></span><br><span class="line"><span class="comment">         while(b!=-1)&#123;</span></span><br><span class="line"><span class="comment">             b=fr.read();</span></span><br><span class="line"><span class="comment">             System.out.print(&quot;-&quot;+(char)b);</span></span><br><span class="line"><span class="comment">             fw.write(b);</span></span><br><span class="line"><span class="comment">         &#125;</span></span><br><span class="line"><span class="comment">         用这种方法会比下面的方法在最后的文本后面多出一个乱码&#x27;?&#x27;</span></span><br><span class="line"><span class="comment">         因为当读取到最后一个字符时，b此时还不等于-1，判断后会接着读取</span></span><br><span class="line"><span class="comment">         下一个字符，但在上一次读取时已读取到最后一个字符，所以这次</span></span><br><span class="line"><span class="comment">         就什么都读取不到(产生乱码)，并返回-1，结束循环</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">         <span class="type">int</span> b;</span><br><span class="line">         <span class="keyword">while</span>((b=fr.read())!=-<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">             System.out.print(<span class="string">&quot;-&quot;</span>+(<span class="type">char</span>)b);</span><br><span class="line">             fw.write(b);</span><br><span class="line">　　　　　　<span class="comment">//这个方法的优点在于它会在读取的同时判断是否执行方法体</span></span><br><span class="line">         &#125;</span><br><span class="line">         fr.close();</span><br><span class="line">         fw.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>乱码字符</tag>
+        <tag>输出流</tag>
+        <tag>输入流</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>java打印三角和乘法口诀</title>
     <url>/2016/05/04/java%E6%89%93%E5%8D%B0%E4%B8%89%E8%A7%92%E5%92%8C%E4%B9%98%E6%B3%95%E5%8F%A3%E8%AF%80/</url>
     <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//打印正三角</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">helloworld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String cell=<span class="string">&quot;*&quot;</span>;</span><br><span class="line">        String space=<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> lines=<span class="number">1</span>; lines&lt;=<span class="number">9</span>; lines++) &#123;</span><br><span class="line">            <span class="comment">// 只有偶数时才打印</span></span><br><span class="line">            <span class="keyword">if</span> (lines%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印三角</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> cells=<span class="number">1</span>; cells&lt;=lines; cells++) &#123;</span><br><span class="line">                    System.out.print(cell);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印空格</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> spaces=<span class="number">1</span>; spaces&lt;=(<span class="number">9</span>-lines)/<span class="number">2</span>; spaces++) &#123;</span><br><span class="line">                    System.out.print(space);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2626,23 +2643,6 @@
         <tag>乘法口诀</tag>
         <tag>三角</tag>
         <tag>打印</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java字符输入输出流在输出结尾多一个乱码字符:&#39;?&#39;</title>
-    <url>/2016/04/23/java%E5%AD%97%E7%AC%A6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81%E5%9C%A8%E8%BE%93%E5%87%BA%E7%BB%93%E5%B0%BE%E5%A4%9A%E4%B8%80%E4%B8%AA%E4%B9%B1%E7%A0%81%E5%AD%97%E7%AC%A6/</url>
-    <content><![CDATA[<p>原因以及解决方法：</p>
-<p>核心方法如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line"></span><br><span class="line">         FileReader fr=<span class="keyword">new</span> <span class="title class_">FileReader</span>(<span class="string">&quot;test.txt&quot;</span>);</span><br><span class="line">         FileWriter fw=<span class="keyword">new</span> <span class="title class_">FileWriter</span>(<span class="string">&quot;test2.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">         <span class="comment">/*</span></span><br><span class="line"><span class="comment">         int b=0;</span></span><br><span class="line"><span class="comment">         while(b!=-1)&#123;</span></span><br><span class="line"><span class="comment">             b=fr.read();</span></span><br><span class="line"><span class="comment">             System.out.print(&quot;-&quot;+(char)b);</span></span><br><span class="line"><span class="comment">             fw.write(b);</span></span><br><span class="line"><span class="comment">         &#125;</span></span><br><span class="line"><span class="comment">         用这种方法会比下面的方法在最后的文本后面多出一个乱码&#x27;?&#x27;</span></span><br><span class="line"><span class="comment">         因为当读取到最后一个字符时，b此时还不等于-1，判断后会接着读取</span></span><br><span class="line"><span class="comment">         下一个字符，但在上一次读取时已读取到最后一个字符，所以这次</span></span><br><span class="line"><span class="comment">         就什么都读取不到(产生乱码)，并返回-1，结束循环</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">         <span class="type">int</span> b;</span><br><span class="line">         <span class="keyword">while</span>((b=fr.read())!=-<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">             System.out.print(<span class="string">&quot;-&quot;</span>+(<span class="type">char</span>)b);</span><br><span class="line">             fw.write(b);</span><br><span class="line">　　　　　　<span class="comment">//这个方法的优点在于它会在读取的同时判断是否执行方法体</span></span><br><span class="line">         &#125;</span><br><span class="line">         fr.close();</span><br><span class="line">         fw.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>乱码字符</tag>
-        <tag>输出流</tag>
-        <tag>输入流</tag>
       </tags>
   </entry>
   <entry>
@@ -3818,6 +3818,19 @@
       </tags>
   </entry>
   <entry>
+    <title>网站已迁移</title>
+    <url>/2024/10/17/site-migrated/</url>
+    <content><![CDATA[<p>博客网站已迁移至：<a href="https://blog.listenerri.com/">https://blog.listenerri.com</a></p>
+<p>新站基于 halo 搭建：<a href="https://www.halo.run/">https://www.halo.run</a></p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+      <tags>
+        <tag>others</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>the menu is gone in qt on mac osx</title>
     <url>/2018/01/06/the-menu-is-gone-in-qt-on-mac-osx/</url>
     <content><![CDATA[<p>在osx系统下, qt程序菜单项的名字如果是“quit”,”about”(不区分大小写), 这个菜单项就会消失, 如果这个菜单只包含这些会消失的菜单项, 那么这个菜单也会消失.<br>猜测: 这应该是由于跟osx系统默认给程序提供了一些菜单项有冲突的关系.</p>
@@ -4873,6 +4886,24 @@
       </categories>
   </entry>
   <entry>
+    <title>判断是否是 vscode 内启动的终端</title>
+    <url>/2020/04/10/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF-vscode-%E5%86%85%E5%90%AF%E5%8A%A8%E7%9A%84%E7%BB%88%E7%AB%AF/</url>
+    <content><![CDATA[<p>由于在 <code>bashrc</code> 中配置了自动 run/attach tmux，因此在 vscode 内启动终端时也会找 tmux，如果想避免这种情况或者类似的情况可以通过修改 vscode 的配置文件，添加自定义环境变量，然后在 <code>bashrc</code> 里进行判断，比如在 vscode 的配置文件中添加如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// NOTE: 在 deepin linux bash 下经过测试发现，不能使用 VSCODE_ 开头的名字作为变量，否则无效</span><br><span class="line">&quot;terminal.integrated.env.linux&quot;: &#123;</span><br><span class="line">    &quot;IS_VSCODE_INTEGRATED_TERMINAL&quot;: &quot;1&quot;</span><br><span class="line">&#125;,</span><br><span class="line">&quot;terminal.integrated.env.osx&quot;: &#123;</span><br><span class="line">    &quot;IS_VSCODE_INTEGRATED_TERMINAL&quot;: &quot;1&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>表示在 linux/osx 下的 vscode 里，为终端设置值为 1 的环境变量： <code>IS_VSCODE_INTEGRATED_TERMINAL</code></p>
+<p>然后在 <code>bashrc</code> 文件中进行检测，如果存在此变量则不启动 tmux：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [[ -z $IS_VSCODE_INTEGRATED_TERMINAL ]]; then</span><br><span class="line">    which tmux &gt; /dev/null 2&gt;&amp;1\</span><br><span class="line">        &amp;&amp; [[ -z &quot;$TMUX&quot; ]]\</span><br><span class="line">        &amp;&amp; &#123; if ! tmux a; then exec tmux; fi; &#125;</span><br><span class="line">else</span><br><span class="line">    echo &quot;-&gt; disabled tmux &lt;-&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>vscode</category>
+      </categories>
+      <tags>
+        <tag>terminal</tag>
+        <tag>bashrc</tag>
+        <tag>tmux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>同步安卓源码:Cannot fetch CyanogenMod/android external svox</title>
     <url>/2016/04/23/%E5%90%8C%E6%AD%A5%E5%AE%89%E5%8D%93%E6%BA%90%E7%A0%81-Cannot-fetch-CyanogenMod-android-external-svox/</url>
     <content><![CDATA[<p>同步CM10.1到99%出现错误：<br><code>error: Cannot fetch CyanogenMod/</code><font color=red><strong>Android</strong></font> <code>external svox</code></p>
@@ -4893,24 +4924,6 @@
         <tag>fetch</tag>
         <tag>external</tag>
         <tag>svox</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>判断是否是 vscode 内启动的终端</title>
-    <url>/2020/04/10/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF-vscode-%E5%86%85%E5%90%AF%E5%8A%A8%E7%9A%84%E7%BB%88%E7%AB%AF/</url>
-    <content><![CDATA[<p>由于在 <code>bashrc</code> 中配置了自动 run/attach tmux，因此在 vscode 内启动终端时也会找 tmux，如果想避免这种情况或者类似的情况可以通过修改 vscode 的配置文件，添加自定义环境变量，然后在 <code>bashrc</code> 里进行判断，比如在 vscode 的配置文件中添加如下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// NOTE: 在 deepin linux bash 下经过测试发现，不能使用 VSCODE_ 开头的名字作为变量，否则无效</span><br><span class="line">&quot;terminal.integrated.env.linux&quot;: &#123;</span><br><span class="line">    &quot;IS_VSCODE_INTEGRATED_TERMINAL&quot;: &quot;1&quot;</span><br><span class="line">&#125;,</span><br><span class="line">&quot;terminal.integrated.env.osx&quot;: &#123;</span><br><span class="line">    &quot;IS_VSCODE_INTEGRATED_TERMINAL&quot;: &quot;1&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-
-<p>表示在 linux/osx 下的 vscode 里，为终端设置值为 1 的环境变量： <code>IS_VSCODE_INTEGRATED_TERMINAL</code></p>
-<p>然后在 <code>bashrc</code> 文件中进行检测，如果存在此变量则不启动 tmux：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [[ -z $IS_VSCODE_INTEGRATED_TERMINAL ]]; then</span><br><span class="line">    which tmux &gt; /dev/null 2&gt;&amp;1\</span><br><span class="line">        &amp;&amp; [[ -z &quot;$TMUX&quot; ]]\</span><br><span class="line">        &amp;&amp; &#123; if ! tmux a; then exec tmux; fi; &#125;</span><br><span class="line">else</span><br><span class="line">    echo &quot;-&gt; disabled tmux &lt;-&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>vscode</category>
-      </categories>
-      <tags>
-        <tag>terminal</tag>
-        <tag>bashrc</tag>
-        <tag>tmux</tag>
       </tags>
   </entry>
   <entry>
